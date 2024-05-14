@@ -14,6 +14,3 @@ use Modules\Permission\Http\Controllers\PermissionController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('permission', PermissionController::class)->names('permission');
-});
