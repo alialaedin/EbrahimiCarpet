@@ -2,5 +2,6 @@
     "Permission": true,
     "Core": true,
     "Admin": true,
-    "Auth": true
+    "Auth": true,
+    "Customer": true
 }
