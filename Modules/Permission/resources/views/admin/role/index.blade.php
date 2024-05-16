@@ -1,84 +1,83 @@
-@extends('layouts.admin.master')
+@extends('admin.layouts.master')
 
 @section('content')
-    <!--  Page-header opened -->
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fe fe-life-buoy ml-1"></i> داشبورد</a></li>
-            <li class="breadcrumb-item active" aria-current="page">لیست نقش ها</li>
-        </ol>
-        <div class="mt-3 mt-lg-0">
-            <div class="d-flex align-items-center flex-wrap text-nowrap">
-                <a href="{{ route('admin.roles.create') }}" class="btn btn-indigo">
-                    ثبت نقش جدید
-                    <i class="fa fa-plus"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!--  Page-header closed -->
+  <div class="col-12">
+    <div class="col-xl-12 col-md-12 col-lg-12">
 
-    <!-- row opened -->
-    <div class="row">
-        <div class="col-md-12 col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">لیست همه نقش ها ({{ $roles->total() }})</div>
-                    <div class="card-options">
-                        <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-                        <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-                        <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="example-2" class="table table-striped table-bordered text-nowrap text-center">
-                            <thead>
-                            <tr>
-                                <th class="wd-20p border-bottom-0">@sortablelink('id', 'شناسه')</th>
-                                <th class="wd-20p border-bottom-0">@sortablelink('name', 'نام')</th>
-                                <th class="wd-20p border-bottom-0">@sortablelink('label', 'نام قابل مشاهده')</th>
-                                <th class="wd-25p border-bottom-0">@sortablelink('created_at', 'تاریخ ثبت')</th>
-                                <th class="wd-10p border-bottom-0">عملیات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($roles as $role)
-                                <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>{{ $role->label }}</td>
-                                    <td>
-                                        @jalaliDate($role->created_at)
-                                    </td>
-                                    <td>
-                                        {{-- Edit--}}
-                                        <a href="{{ route('admin.roles.edit', [$role->id]) }}" class="btn btn-warning btn-sm text-white" data-toggle="tooltip" data-original-title="ویرایش"><i class="fa fa-pencil"></i></a>
-                                        {{-- Delete--}}
-                                        <button class="btn btn-danger btn-sm text-white" onclick="confirmDelete('delete-{{ $role->id }}')" @disabled(!$role->isDeletable())><i class="fa fa-trash-o"></i></button>
-                                        <form action="{{ route('admin.roles.destroy', $role->id) }}" method="post" id="delete-{{ $role->id }}" style="display: none">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5">
-                                        <p class="text-danger"><strong>در حال حاضر هیچ نقشی یافت نشد!</strong></p>
-                                    </td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                        {{ $roles->appends(request()->query())->links() }}
-                    </div>
-                </div>
-                <!-- table-wrapper -->
-            </div>
-            <!-- section-wrapper -->
+			<div class="page-header">
+        <x-core::breadcrumb :items="$breadcrumbItems" />
+        @can('create roles')
+          <x-core::register-button route="admin.roles.create" title="ثبت نقش جدید"/>
+        @endcan
+    	</div>
+
+      <div class="card">
+
+        <div class="card-header border-0 justify-content-between ">
+          <div class="d-flex">
+            <p class="card-title ml-2" style="font-weight: bolder;">لیست نقش ها</p>
+            <span class="fs-15 ">({{ $rolesCount }})</span>
+          </div>
         </div>
+        
+        <div class="card-body">
+          <div class="table-responsive">
+            <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+              <div class="row">
+                <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th class="text-center border-top">شناسه</th>
+                      <th class="text-center border-top">نام</th>
+                      <th class="text-center border-top">نام قابل مشاهده</th>
+                      <th class="text-center border-top">تاریخ ثبت</th>
+                      <th class="text-center border-top">عملیات</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @forelse ($roles as $role)
+                      <tr>
+                        <td class="text-center">{{ $role->id }}</td>
+                        <td class="text-center">{{ $role->name }}</td>
+                        <td class="text-center">{{ $role->label }}</td>
+                        <td class="text-center">{{ verta($role->created_at) }}</td>
+                        <td class="text-center">
+                          <div class="d-flex justify-content-center">
+
+                            @can('edit roles')
+                              <a href="{{route("admin.roles.edit", $role)}}" class="action-btns1 bg-warning mx-1">
+                                <i class="fe fe-edit text-white py-1"></i>
+                              </a>
+                            @endcan
+
+                            @can('delete roles')
+                              <button onclick="confirmDelete('delete-{{ $role->id }}')" class="action-btns1 bg-danger mx-1">
+                                <i class="fe fe-trash-2 text-white py-1"></i>
+                              </button>
+                              <form 
+                                action="{{ route("admin.roles.destroy", $role) }}" 
+                                method="POST" 
+                                id="delete-{{ $role->id }}" 
+                                style="display: none">
+                                @csrf
+                                @method('DELETE')
+                              </form>
+                            @endcan
+
+                          </div>
+                        </td>
+                      </tr>
+                      @empty
+												<x-core::data-not-found-alert colspan="5"/>
+                    @endforelse
+                  </tbody>
+                </table>
+                {{ $roles->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- row closed -->
+  </div>
 @endsection
-

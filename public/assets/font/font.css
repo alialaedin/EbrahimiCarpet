@@ -1,0 +1,8 @@
+@font-face {
+  font-family: Shabnam;
+  src: url("IRANSansWeb_Medium.ttf");
+}
+
+body {
+  font-family: Shabnam !important;
+}
