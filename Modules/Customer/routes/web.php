@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Customer\Http\Controllers\CustomerController;
+use Modules\Customer\Http\Controllers\Admin\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,6 @@ use Modules\Customer\Http\Controllers\CustomerController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('customer', CustomerController::class)->names('customer');
+Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function() {
+	Route::resource('/customers', CustomerController::class);
 });

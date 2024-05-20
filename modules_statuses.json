@@ -3,5 +3,7 @@
     "Core": true,
     "Admin": true,
     "Auth": true,
-    "Customer": true
+    "Customer": true,
+    "Personnel": true,
+    "Supplier": true
 }

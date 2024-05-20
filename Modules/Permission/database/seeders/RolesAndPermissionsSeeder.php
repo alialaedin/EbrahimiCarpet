@@ -33,15 +33,30 @@ class RolesAndPermissionsSeeder extends Seeder
 			'create settings' => 'ایجاد تنظیمات',
 			'edit settings' => 'ویرایش تنظیمات',
 			//admins
-			'view admins' => 'مشاهده ادمین ها',
-			'create admins' => 'ایجاد ادمین ها',
-			'edit admins' => 'ویرایش ادمین ها',
-			'delete admins' => 'حذف ادمین ها',
+			// 'view admins' => 'مشاهده ادمین ها',
+			// 'create admins' => 'ایجاد ادمین ها',
+			// 'edit admins' => 'ویرایش ادمین ها',
+			// 'delete admins' => 'حذف ادمین ها',
 			//roles NEW
 			'view roles' => 'مشاهده نقش ها',
 			'create roles' => 'ایجاد نقش ها',
 			'edit roles' => 'ویرایش نقش ها',
 			'delete roles' => 'حذف نقش ها',
+			//customers
+			'view customers' => 'مشاهده مشتری ها',
+			'create customers' => 'ایجاد مشتری ها',
+			'edit customers' => 'ویرایش مشتری ها',
+			'delete customers' => 'حذف مشتری ها',
+			//personnels
+			'view personnels' => 'مشاهده پرسنل',
+			'create personnels' => 'ایجاد پرسنل',
+			'edit personnels' => 'ویرایش پرسنل',
+			'delete personnels' => 'حذف پرسنل',
+			//suppliers
+			'view suppliers' => 'مشاهده تامین کننده ها',
+			'create suppliers' => 'ایجاد تامین کننده ها',
+			'edit suppliers' => 'ویرایش تامین کننده ها',
+			'delete suppliers' => 'حذف تامین کننده ها',
 		];
 
 		foreach ($permissions as $name => $label) {

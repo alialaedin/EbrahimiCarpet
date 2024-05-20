@@ -16,7 +16,7 @@
     </div>
     <ul class="side-menu">
 
-       <li class="slide">
+      <li class="slide">
         <a class="side-menu__item"  href="{{route("admin.dashboard")}}">
           <i class="feather feather-home sidemenu_icon"></i>
           <span class="side-menu__label">داشبورد</span>
@@ -25,15 +25,40 @@
 
       <li class="slide">
         <a class="side-menu__item" data-toggle="slide" href="#">
-          <i class="fe fe-user sidemenu_icon"></i>
-          <span class="side-menu__label">مدیریت اشخاص</span><i class="angle fa fa-angle-left"></i>
+          <i class="fa fa-user sidemenu_icon"></i>
+          <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">
-          @can('view admins')
-            <li><a href="{{route("admin.admins.index")}}" class="slide-item">کاربران سایت</a></li>
+          @role('super_admin')
+            <li><a href="{{route("admin.roles.index")}}" class="slide-item">مدیریت نقش ها</a></li>
+          @endrole
+        </ul>
+      </li>
+
+      <li class="slide">
+        <a class="side-menu__item" data-toggle="slide" href="#">
+          <i class="fa fa-user sidemenu_icon"></i>
+          <span class="side-menu__label">مدیریت کاربران</span><i class="angle fa fa-angle-left"></i>
+        </a>
+        <ul class="slide-menu">
+          @role('super_admin')
+            <li><a href="{{route("admin.admins.index")}}" class="slide-item">ادمین ها</a></li>
+          @endrole
+          @can('view customers')
+            <li><a href="{{route("admin.customers.index")}}" class="slide-item">مشتری ها</a></li>
+          @endcan
+          @can('view personnels')
+            <li><a href="{{route("admin.personnels.index")}}" class="slide-item">پرسنل</a></li>
+          @endcan
+          @can('view suppliers')
+            <li><a href="{{route("admin.suppliers.index")}}" class="slide-item">تامین کنندگان</a></li>
           @endcan
         </ul>
       </li>
+
+      
+
+      
 
 {{--
       @can('view users')

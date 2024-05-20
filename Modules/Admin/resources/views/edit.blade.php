@@ -26,18 +26,18 @@
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را به فارسی وارد کنید" value="{{ old('mobile') ?? $admin->mobile }}" required>
+									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') ?? $admin->mobile }}" required>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> انتخاب نقش: <span class="text-danger">&starf;</span></label>
                   <select name="role" class="form-control">
-                    @if ($adminRoleName == 'super_admin')
+                    @if ($admin->getRoleName() == 'super_admin')
                       <option value="super_admin" selected> مدیر ارشد </option>
                     @endif
                     @foreach ($roles as $role)
-                      <option value="{{ $role->name }}" @selected($role->name == $adminRoleName)> {{ $role->label }} </option>
+                      <option value="{{ $role->name }}" @selected($role->name == $admin->getRoleName())> {{ $role->label }} </option>
                     @endforeach
                   </select>
 								</div>

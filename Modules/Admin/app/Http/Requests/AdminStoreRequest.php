@@ -4,7 +4,7 @@ namespace Modules\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
-use Modules\Core\App\Rules\IranMobile;
+use Modules\Core\Rules\IranMobile;
 
 class AdminStoreRequest extends FormRequest
 {
@@ -23,7 +23,7 @@ class AdminStoreRequest extends FormRequest
 	public function validated($key = null, $default = null) {
 		
 		$validatedData = parent::validated();
-		$validatedData['status'] = filled($this->input('status')) ? 1 : 0;
+		$validatedData['status'] = $this->filled('status') ? 1 : 0;
 		unset($validatedData['role']);
 
 		return $validatedData;

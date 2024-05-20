@@ -10,9 +10,9 @@ class DataNotFoundAlert extends Component
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(public $colsspan)
+	public function __construct(public int $colspan)
 	{
-		$this->colsspan = $colsspan;
+		$this->colspan = $colspan;
 	}
 
 	/**

@@ -45,13 +45,19 @@
                           <div class="d-flex justify-content-center">
 
                             @can('edit roles')
-                              <a href="{{route("admin.roles.edit", $role)}}" class="action-btns1 bg-warning mx-1">
+                              <a 
+                                href="{{route("admin.roles.edit", $role)}}" 
+                                class="action-btns1 bg-warning mx-1" 
+                                @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
                                 <i class="fe fe-edit text-white py-1"></i>
                               </a>
                             @endcan
 
                             @can('delete roles')
-                              <button onclick="confirmDelete('delete-{{ $role->id }}')" class="action-btns1 bg-danger mx-1">
+                              <button 
+                                onclick="confirmDelete('delete-{{ $role->id }}')" 
+                                class="action-btns1 bg-danger mx-1" 
+                                @disabled($role->name == 'super_admin')>
                                 <i class="fe fe-trash-2 text-white py-1"></i>
                               </button>
                               <form 
@@ -68,7 +74,7 @@
                         </td>
                       </tr>
                       @empty
-												<x-core::data-not-found-alert colspan="5"/>
+												<x-core::data-not-found-alert :colspan="5"/>
                     @endforelse
                   </tbody>
                 </table>

@@ -5,7 +5,7 @@ namespace Modules\Admin\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use Modules\Core\App\Rules\IranMobile;
+use Modules\Core\Rules\IranMobile;
 
 class AdminUpdateRequest extends FormRequest
 {

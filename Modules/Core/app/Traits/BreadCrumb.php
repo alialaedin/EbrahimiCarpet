@@ -26,6 +26,12 @@ trait BreadCrumb
 					'title' => "ویرایش $model",
 					'link' => null
 				]
+			]),
+			'show' => array_merge($commonItem, [
+				[
+					'title' => "نمایش $model",
+					'link' => null
+				]
 			])
 		];
 

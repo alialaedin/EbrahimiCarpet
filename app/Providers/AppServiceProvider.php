@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		//
+		app()->useLangPath(base_path('Modules/Core/resources/lang'));
 	}
 
 	/**

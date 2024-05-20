@@ -12,6 +12,7 @@ use Modules\Admin\Models\Admin;
 use Modules\Core\Traits\BreadCrumb;
 use Modules\Core\Traits\Form;
 use Modules\Permission\Models\Role;
+use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller implements HasMiddleware
 {
@@ -43,9 +44,18 @@ class AdminController extends Controller implements HasMiddleware
 		return view('admin::index', compact('admins', 'adminsCount', 'breadcrumbItems'));
 	}
 
-	public function show(Admin $admn)
+	public function show(Admin $admin)
 	{
-		dd('show');
+		$activities = Activity::query()
+			->select('id', 'causer_id', 'description', 'created_at')
+			->where('causer_id', $admin->id)
+			->latest('id')
+			->paginate(15);
+
+		$totalActivity = $activities->total();
+		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
+
+		return view('admin::show', compact('admin', 'activities', 'totalActivity', 'breadcrumbItems'));
 	}
 
 	public function create()
@@ -69,9 +79,8 @@ class AdminController extends Controller implements HasMiddleware
 	{
 		$roles = Role::query()->select('id', 'name', 'label')->whereNot('name', 'super_admin')->get();
 		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
-		$adminRoleName = $admin->getRoleNames()->first();
 
-		return view('admin::edit', compact('admin', 'roles', 'adminRoleName', 'breadcrumbItems'));
+		return view('admin::edit', compact('admin', 'roles', 'breadcrumbItems'));
 	}
 
 	public function update(AdminUpdateRequest $request, Admin $admin)
@@ -98,7 +107,7 @@ class AdminController extends Controller implements HasMiddleware
 		$adminRole = $admin->roles()->first();
 		$admin->removeRole($adminRole);
 		$admin->delete();
-		
+
 		toastr()->success("ادمین با نام {$admin->name} با موفقیت پاک شد.");
 
 		return redirect()->back();
