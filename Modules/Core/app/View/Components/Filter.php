@@ -7,19 +7,14 @@ use Illuminate\View\View;
 
 class Filter extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(
-        public string $action,
-        public array $inputs,
-    ) {}
+	public function __construct(public string $route, public array $inputs)
+	{
+		$this->route = $route;
+		$this->inputs = $inputs;
+	}
 
-    /**
-     * Get the view/contents that represent the component.
-     */
-    public function render(): View|string
-    {
-        return view('core::components.filter');
-    }
+	public function render(): View|string
+	{
+		return view('core::components.filter');
+	}
 }

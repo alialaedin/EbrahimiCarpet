@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Core\Traits\BreadCrumb;
+use Modules\Core\Traits\FormInputs;
 use Modules\Customer\Http\Requests\Admin\CustomerStoreRequest;
 use Modules\Customer\Http\Requests\Admin\CustomerUpdateRequest;
 use Modules\Customer\Models\Customer;
 
 class CustomerController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
+	use BreadCrumb, FormInputs;
 	public const MODEL = 'مشتری';
 	public const TABLE = 'customers';
 
@@ -45,8 +46,9 @@ class CustomerController extends Controller implements HasMiddleware
 
 		$customersCount =  $customers->total();
 		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
+		$filterInputs = $this->generateFilterFormInputs();
 
-		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems'));
+		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems', 'filterInputs'));
 	}
 
 	public function create()
@@ -85,5 +87,21 @@ class CustomerController extends Controller implements HasMiddleware
 		toastr()->success("مشتری با نام {$customer->name} با موفقیت حذف شد.");
 
 		return redirect()->back();
+	}
+
+	private function generateFilterFormInputs() 
+	{
+		$statusOptions = [
+			'all' => 'همه',
+			1 => 'فعال',
+			0 => 'غیر فعال',
+		];
+
+		return [
+			'name' => $this->generateTextInput('text', 'full_name', 'نام و نام خانوادگی'),
+			'telephone' => $this->generateTextInput('text', 'telephone', 'تلفن ثابت'),
+			'mobile' => $this->generateTextInput('text', 'mobile', 'تلفن همراه'),
+			'status' => $this->generateSelectOption('status', 'انتخاب وضعیت', $statusOptions),
+		];
 	}
 }

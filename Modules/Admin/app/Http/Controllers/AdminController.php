@@ -10,13 +10,12 @@ use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Traits\BreadCrumb;
-use Modules\Core\Traits\Form;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller implements HasMiddleware
 {
-	use BreadCrumb, Form;
+	use BreadCrumb;
 
 	public const MODEL = 'ادمین';
 	public const TABLE = 'admins';

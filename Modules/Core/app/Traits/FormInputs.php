@@ -2,28 +2,24 @@
 
 namespace Modules\Core\Traits;
 
-trait Form
+trait FormInputs
 {
-	public function generateInput($type, $label, $isRequired, $value = null)
+	public function generateTextInput($type, $name, $label)
 	{
 		return [
 			'type' => $type,
+			'name' => $name,
 			'label' => $label,
-			'is_required' => $isRequired,
-			'value' => $value,
 		];
 	}
 
-	public function generateSelectInput($placeholder, $options, $isRequired, $value, $class, $multiple)
+	public function generateSelectOption($name, $label, $options)
 	{
 		return [
 			'type' => 'select_option',
-			'placeholder' => $placeholder,
+			'name' => $name,
+			'label' => $label,
 			'options' => $options,
-			'value' => $value,
-			'class' => $class,
-			'multiple' => $multiple,
-			'is_required' => $isRequired,
 		];
 	}
 
