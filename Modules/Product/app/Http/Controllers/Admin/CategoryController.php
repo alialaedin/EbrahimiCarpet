@@ -3,65 +3,101 @@
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Modules\Core\Traits\BreadCrumb;
+use Modules\Product\Http\Requests\Admin\Category\CategoryStoreRequest;
+use Modules\Product\Http\Requests\Admin\Category\CategoryUpdateRequest;
+use Modules\Product\Models\Category;
 
-class CategoryController extends Controller
+use function Flasher\Toastr\Prime\toastr;
+
+class CategoryController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('product::index');
-    }
+	use BreadCrumb;
+	public const MODEL = 'دسته بندی';
+	public const TABLE = 'categories';
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('product::create');
-    }
+	public static function middleware()
+	{
+		return [
+			new Middleware('can:view categories', ['index']),
+			new Middleware('can:create categories', ['create', 'store']),
+			new Middleware('can:edit categories', ['edit', 'update']),
+			new Middleware('can:delete categories', ['destroy']),
+		];
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+	public function index()
+	{
+		$title = request('title');
+		$parentId = request('parent_id') !== 'all' ? request('parent_id') : null;
+		$unitType = request('unit_type') !== 'all' ? request('unit_type') : null;
+		$status = request('status') !== 'all' ? request('status') : null;
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('product::show');
-    }
+		$categories = Category::query()
+			->select('id', 'title', 'parent_id', 'status', 'unit_type', 'created_at')
+			->when($title, fn (Builder $query) => $query->where('name', 'like', "%{$title}%"))
+			->when($parentId, fn (Builder $query) => $query->where('parent_id', $parentId))
+			->when($unitType, fn (Builder $query) => $query->where('unit_type', $unitType))
+			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
+			->with('parent:id,title')
+			->latest('id')
+			->paginate(15)
+			->withQueryString();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('product::edit');
-    }
+		$parentCategories = Category::query()->select('id', 'title')->whereNull('parent_id')->get();
+		$categoriesCount = $categories->total();
+		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
+		return view('product::category.index', compact('categories', 'categoriesCount', 'parentCategories', 'breadcrumbItems'));
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
+	public function create()
+	{
+		$parentCategories = Category::query()
+			->select('id', 'title')
+			->whereNull('parent_id')
+			->get();
+		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
+
+		return view('product::category.create', compact('parentCategories', 'breadcrumbItems'));
+	}
+
+	public function store(CategoryStoreRequest $request)
+	{
+		$category = Category::create($request->validated());
+		toastr()->success("دسته بندی جدید به نام {$category->title} با موفقیت ساخته شد.");
+
+		return to_route('admin.categories.index');
+	}
+
+	public function edit(Category $category)
+	{
+		$parentCategories = Category::query()
+			->select('id', 'title')
+			->whereNull('parent_id')
+			->whereNot('id', $category->id)
+			->get();
+		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
+
+		return view('product::category.edit', compact('category', 'parentCategories', 'breadcrumbItems'));
+	}
+
+	public function update(CategoryUpdateRequest $request, Category $category)
+	{
+		$category->update($request->validated());
+		toastr()->success("دسته بندی با نام {$category->title} با موفقیت بروزرسانی شد.");
+
+		return redirect()->back()->withInput();
+	}
+
+	public function destroy(Category $category)
+	{
+		$category->delete();
+		toastr()->success("دسته بندی با نام {$category->title} با موفقیت حذف شد.");
+
+		return redirect()->back();
+	}
 }

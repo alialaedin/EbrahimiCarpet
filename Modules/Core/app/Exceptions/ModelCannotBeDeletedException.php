@@ -29,7 +29,8 @@ class ModelCannotBeDeletedException extends Exception
 			return response()->error($this->getMessage(), $code);
 		}
 
-		return redirect()->back()
-			->with('error', $this->getMessage());
+		toastr()->error($this->getMessage());
+
+		return redirect()->back();
 	}
 }

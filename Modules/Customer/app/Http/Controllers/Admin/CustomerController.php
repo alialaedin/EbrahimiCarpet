@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Core\Traits\BreadCrumb;
-use Modules\Core\Traits\FormInputs;
-use Modules\Core\Traits\Table;
 use Modules\Customer\Http\Requests\Admin\CustomerStoreRequest;
 use Modules\Customer\Http\Requests\Admin\CustomerUpdateRequest;
 use Modules\Customer\Models\Customer;
