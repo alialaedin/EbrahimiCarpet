@@ -2,10 +2,9 @@
 
 namespace Modules\Admin\Models;
 
-use Carbon\Carbon;
-use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admin\Database\Factories\AdminFactory;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -34,6 +33,11 @@ class Admin extends Authenticatable
 		];
 	}
 
+	protected static function newFactory(): AdminFactory
+	{
+		return AdminFactory::new();
+	}
+
 	public function getActivitylogOptions(): LogOptions
 	{
 		$events = [
@@ -46,7 +50,7 @@ class Admin extends Authenticatable
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($events) {
 				$model = $this;
-				$admin = auth()->user();
+				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 				$createdDate = verta($model->created_at)->format('Y/m/d');
 				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
 

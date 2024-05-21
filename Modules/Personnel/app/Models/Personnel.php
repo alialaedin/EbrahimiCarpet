@@ -4,6 +4,8 @@ namespace Modules\Personnel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admin\Models\Admin;
+use Modules\Personnel\Database\Factories\PersonnelFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -24,6 +26,11 @@ class Personnel extends Model
 		'telephone'
 	];
 
+	protected static function newFactory(): PersonnelFactory
+	{
+		return PersonnelFactory::new();
+	}
+
 	public function getActivitylogOptions(): LogOptions
 	{
 		$events = [
@@ -36,7 +43,7 @@ class Personnel extends Model
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($events) {
 				$model = $this;
-				$admin = auth()->user();
+				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 				$createdDate = verta($model->created_at)->format('Y/m/d');
 				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
 
