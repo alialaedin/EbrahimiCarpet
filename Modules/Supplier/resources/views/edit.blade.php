@@ -10,86 +10,47 @@
 			@include('core::includes.validation-errors')
 			<div class="card">
 				<div class="card-header">
-					<h3 class="card-title">ویرایش کارمند</h3>
+					<h3 class="card-title">ویرایش تامین کننده</h3>
 				</div>
 				<div class="card-body">
-					<form action="{{ route('admin.personnels.update', $personnel) }}" method="post" class="save">
+					<form action="{{ route('admin.personnels.update', $supplier) }}" method="post" class="save">
 						@csrf
             @method('PATCH')
 						<div class="row">
 
-							<div class="col-lg-4 col-md-6 col-12">
+							<div class="col-md-6">
 								<div class="form-group">
 									<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name') ?? $personnel->name}}" required autofocus>
+									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $supplier->name) }}" required autofocus>
 								</div>
 							</div>
 
-							<div class="col-lg-4 col-md-6 col-12">
+							<div class="col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') ?? $personnel->mobile}}" required>
-								</div>
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> تلفن ثابت:</label>
-									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone') ?? $personnel->telephone}}">
-								</div>
-							</div>
-							
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> کد ملی:</label>
-									<input type="text" class="form-control" name="national_code" placeholder="کد ملی را وارد کنید" value="{{ old('national_code') ?? $personnel->national_code}}" >
-								</div>
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="to_date_show" class="control-label">تاریخ استخدام : <span class="text-danger">&starf;</span></label>
-									<input class="form-control fc-datepicker" id="employmented_date_show" type="text" autocomplete="off"/>
-									<input name="employmented_at" id="employmented_date" type="hidden" required value="{{	old('employmented_at') ?? $personnel->employmented_at}}"/>
-								</div>
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> میزان حقوق (تومن): <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control comma" name="salary" placeholder="میزان حقوق را وارد کنید" value="{{ old('salary') ?? $personnel->salary}}" required>
+									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $supplier->mobile) }}" required>
 								</div>
 							</div>
 
 							<div class="col-12">
 								<div class="form-group">
 									<label class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
-									<textarea name="address" class="form-control" rows="3" required>{{ old('address') ?? $personnel->address}}</textarea>
+									<textarea name="address" class="form-control" rows="3" placeholder="آدرس خود را وارد کنید" required>{{ old('address', $supplier->address) }}</textarea>
 								</div>
 							</div>
+
+							<div class="col-12">
+								<div class="form-group">
+									<label for="label" class="control-label"> وضعیت: </label>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="status" value="1" @checked($supplier->status)>
+                    <span class="custom-control-label">فعال</span>
+                  </label>
+                </div>
+							</div>
+
 						</div>
 							
-						<div class="row">
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> شماره کارت: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="card_number" placeholder="شماره کارت را وارد کنید" value="{{ old('card_number') ?? $personnel->card_number}}" required>
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> شماره شبا:</label>
-									<input type="text" class="form-control" name="sheba_number" placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number') ?? $personnel->sheba_number}}">
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-6 col-12">
-								<div class="form-group">
-									<label for="label" class="control-label"> نام بانک: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="bank_name" placeholder="نام بانک را وارد کنید" value="{{ old('bank_name') ?? $personnel->bank_name}}" required>
-								</div>
-							</div>
-						</div>
-
 						<div class="row">
 							<div class="col">
 								<div class="text-center">
@@ -103,21 +64,4 @@
       </div>
     </div>
   </div>
-@endsection
-
-@section('scripts')
-  
-  <script>   
-    $('#employmented_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#employmented_date',        
-      targetTextSelector: '#employmented_date_show',
-      englishNumber: false,        
-      toDate:true,
-      enableTimePicker: false,        
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
-      groupId: 'rangeSelector1',
-    });
-  </script>
-
 @endsection

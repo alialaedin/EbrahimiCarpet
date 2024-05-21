@@ -1,5 +1,5 @@
-<button onclick="confirmDelete('delete-{{ $model->id }}')" class="action-btns1 bg-danger mx-1">
-  <i class="fe fe-trash-2 text-white"></i>
+<button onclick="confirmDelete('delete-{{ $model->id }}')" class="btn btn-sm btn-icon bg-danger text-white">
+  <i class="fa fa-trash-o"></i>
 </button>
 <form 
   action="{{ route($route, $model) }}" 

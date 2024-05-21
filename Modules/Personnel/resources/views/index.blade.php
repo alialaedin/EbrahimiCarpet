@@ -96,19 +96,15 @@
                         <td class="text-center">{{ number_format($personnel->salary) }}</td>
                         <td class="text-center">{{ verta($personnel->employmented_at)->format('Y/m/d') }}</td>
                         <td class="text-center">
-                          <div class="d-flex justify-content-center">
-                            @can('view personnels')
-                              <x-core::show-button route="admin.personnels.show" :model="$personnel"/>
-                            @endcan
-
-                            @can('edit personnels')
-                              <x-core::edit-button route="admin.personnels.edit" :model="$personnel"/>
-                            @endcan
-
-                            @can('delete personnels')
-                              <x-core::delete-button route="admin.personnels.destroy" :model="$personnel"/>
-                            @endcan
-                          </div>
+                          @can('view personnels')
+                            <x-core::show-button route="admin.personnels.show" :model="$personnel"/>
+                          @endcan
+                          @can('edit personnels')
+                            <x-core::edit-button route="admin.personnels.edit" :model="$personnel"/>
+                          @endcan
+                          @can('delete personnels')
+                            <x-core::delete-button route="admin.personnels.destroy" :model="$personnel"/>
+                          @endcan
                         </td>
                       </tr>
                       @empty

@@ -20,13 +20,13 @@
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name') ?? $admin->name }}" required autofocus>
+									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $admin->name) }}" required autofocus>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') ?? $admin->mobile }}" required>
+									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $admin->mobile) }}" required>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6">

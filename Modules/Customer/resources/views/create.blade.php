@@ -34,7 +34,7 @@
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="landline_phone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('landline_phone') }}" required>
+									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone') }}" required>
 								</div>
 							</div>
 

@@ -93,21 +93,17 @@
                           />
                         <td class="text-center">{{ verta($supplier->created_at)->format('Y/m/d') }}</td>
                         <td class="text-center">
-                          <div class="d-flex justify-content-center">
 
-                            @can('view suppliers')
-                              <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
-                            @endcan
+                          @can('view suppliers')
+                            <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
+                          @endcan
+                          @can('edit suppliers')
+                            <x-core::edit-button route="admin.suppliers.edit" :model="$supplier"/>
+                          @endcan
+                          @can('delete suppliers')
+                            <x-core::delete-button route="admin.suppliers.destroy" :model="$supplier"/>
+                          @endcan
 
-                            @can('edit suppliers')
-                              <x-core::edit-button route="admin.suppliers.edit" :model="$supplier"/>
-                            @endcan
-
-                            @can('delete suppliers')
-                              <x-core::delete-button route="admin.suppliers.destroy" :model="$supplier"/>
-                            @endcan
-
-                          </div>
                         </td>
                       </tr>
                       @empty

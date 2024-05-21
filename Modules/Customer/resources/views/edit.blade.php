@@ -21,28 +21,28 @@
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name') ?? $customer->name}}" required autofocus>
+									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $customer->name) }}" required autofocus>
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') ?? $customer->mobile}}" required>
+									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $customer->mobile) }}" required>
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="label" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="landline_phone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('landline_phone') ?? $customer->landline_phone}}" required>
+									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone', $customer->telephone) }}" required>
 								</div>
 							</div>
 
 							<div class="col-12">
 								<div class="form-group">
 									<label class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
-									<textarea name="address" class="form-control" rows="3">{{ old('address') ?? $customer->address}}</textarea>
+									<textarea name="address" class="form-control" rows="3">{{ old('address', $customer->address) }}</textarea>
 								</div>
 							</div>
 							

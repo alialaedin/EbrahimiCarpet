@@ -15,7 +15,7 @@ return new class extends Migration
 			$table->id();
 			$table->string('name');
 			$table->string('mobile', 11)->unique();
-			$table->string('landline_phone', 11)->unique();
+			$table->string('telephone', 11)->unique();
 			$table->text('address');
 			$table->boolean('status');
 			$table->timestamps();

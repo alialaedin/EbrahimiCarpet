@@ -56,9 +56,21 @@
         </ul>
       </li>
 
-      
+      <li class="slide">
+        <a class="side-menu__item" data-toggle="slide" href="#">
+          <i class="fa fa-user sidemenu_icon"></i>
+          <span class="side-menu__label">مدیریت محصولات</span><i class="angle fa fa-angle-left"></i>
+        </a>
+        <ul class="slide-menu">
+          @can('view categories')
+            <li><a href="{{route("admin.categories.index")}}" class="slide-item">دسته بندی ها</a></li>
+          @endcan
+          @can('view products')
+            <li><a href="{{route("admin.products.index")}}" class="slide-item">محصولات</a></li>
+          @endcan
+        </ul>
+      </li>
 
-      
 
 {{--
       @can('view users')

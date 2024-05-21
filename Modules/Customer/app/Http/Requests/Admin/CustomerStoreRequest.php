@@ -15,7 +15,7 @@ class CustomerStoreRequest extends FormRequest
 		return [
 			'name' => ['required', 'string', 'min:3', 'max:50'],
 			'mobile' => ['required', 'numeric', 'unique:customers,mobile', 'digits:11', new IranMobile()],
-			'landline_phone' => ['required', 'numeric', 'unique:customers,landline_phone', 'digits:11'],
+			'telephone' => ['required', 'numeric', 'unique:customers,telephone', 'digits:11'],
 			'address' => ['required', 'string'],
 			'status' => ['nullable', 'in:1']
 		];

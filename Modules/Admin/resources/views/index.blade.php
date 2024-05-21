@@ -53,21 +53,15 @@
                         </td>
                         <td class="text-center">{{ verta($admin->created_at) }}</td>
                         <td class="text-center">
-                          <div class="d-flex justify-content-center">
-
-                            @can('view admins')
-                              <x-core::show-button route="admin.admins.show" :model="$admin"/>
-                            @endcan
-
-                            @can('edit admins')
-                              <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
-                            @endcan
-
-                            @can('delete admins')
-                              <x-core::delete-button route="admin.admins.destroy" :model="$admin"/>
-                            @endcan
-                            
-                          </div>
+                          @can('view admins')
+                            <x-core::show-button route="admin.admins.show" :model="$admin"/>
+                          @endcan
+                          @can('edit admins')
+                            <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
+                          @endcan
+                          @can('delete admins')
+                            <x-core::delete-button route="admin.admins.destroy" :model="$admin"/>
+                          @endcan
                         </td>
                       </tr>
                       @empty

@@ -21,28 +21,28 @@
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name') ?? $personnel->name}}" required autofocus>
+									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $personnel->name)}}" required autofocus>
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') ?? $personnel->mobile}}" required>
+									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $personnel->mobile) }}" required>
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> تلفن ثابت:</label>
-									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone') ?? $personnel->telephone}}">
+									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone', $personnel->telephone) }}">
 								</div>
 							</div>
 							
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> کد ملی:</label>
-									<input type="text" class="form-control" name="national_code" placeholder="کد ملی را وارد کنید" value="{{ old('national_code') ?? $personnel->national_code}}" >
+									<input type="text" class="form-control" name="national_code" placeholder="کد ملی را وارد کنید" value="{{ old('national_code', $personnel->national_code) }}" >
 								</div>
 							</div>
 
@@ -50,21 +50,21 @@
 								<div class="form-group">
 									<label for="to_date_show" class="control-label">تاریخ استخدام : <span class="text-danger">&starf;</span></label>
 									<input class="form-control fc-datepicker" id="employmented_date_show" type="text" autocomplete="off"/>
-									<input name="employmented_at" id="employmented_date" type="hidden" required value="{{	old('employmented_at') ?? $personnel->employmented_at}}"/>
+									<input name="employmented_at" id="employmented_date" type="hidden" required value="{{	old('employmented_at', $personnel->employmented_at) }}"/>
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> میزان حقوق (تومن): <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control comma" name="salary" placeholder="میزان حقوق را وارد کنید" value="{{ old('salary') ?? $personnel->salary}}" required>
+									<input type="text" class="form-control comma" name="salary" placeholder="میزان حقوق را وارد کنید" value="{{ old('salary', number_format($personnel->salary)) }}" required>
 								</div>
 							</div>
 
 							<div class="col-12">
 								<div class="form-group">
 									<label class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
-									<textarea name="address" class="form-control" rows="3" required>{{ old('address') ?? $personnel->address}}</textarea>
+									<textarea name="address" class="form-control" rows="3" required>{{ old('address', $personnel->address) }}</textarea>
 								</div>
 							</div>
 						</div>
@@ -73,19 +73,19 @@
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره کارت: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="card_number" placeholder="شماره کارت را وارد کنید" value="{{ old('card_number') ?? $personnel->card_number}}" required>
+									<input type="text" class="form-control" name="card_number" placeholder="شماره کارت را وارد کنید" value="{{ old('card_number', $personnel->card_number) }}" required>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> شماره شبا:</label>
-									<input type="text" class="form-control" name="sheba_number" placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number') ?? $personnel->sheba_number}}">
+									<input type="text" class="form-control" name="sheba_number" placeholder="شماره شبا را وارد کنید" value="{{ old('sheba_number', $personnel->sheba_number) }}">
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-6 col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> نام بانک: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="bank_name" placeholder="نام بانک را وارد کنید" value="{{ old('bank_name') ?? $personnel->bank_name}}" required>
+									<input type="text" class="form-control" name="bank_name" placeholder="نام بانک را وارد کنید" value="{{ old('bank_name', $personnel->bank_name) }}" required>
 								</div>
 							</div>
 						</div>

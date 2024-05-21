@@ -32,7 +32,7 @@
                 <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
                   <div class="form-group">
                     <label class="font-weight-bold">تلفن ثابت :</label>
-                    <input type="text" name="landline_phone" class="form-control" value="{{ request('landline_phone') }}">
+                    <input type="text" name="telephone" class="form-control" value="{{ request('telephone') }}">
                   </div>
                 </div>
 
@@ -94,7 +94,7 @@
                         <td class="text-center">{{ $customer->id }}</td>
                         <td class="text-center">{{ $customer->name }}</td>
                         <td class="text-center">{{ $customer->mobile }}</td>
-                        <td class="text-center">{{ $customer->landline_phone }}</td>
+                        <td class="text-center">{{ $customer->telephone }}</td>
                         <td class="text-center">
                           <x-core::badge 
                             type="{{ $customer->status ? 'success' : 'danger' }}" 
@@ -103,21 +103,15 @@
                         </td>
                         <td class="text-center">{{ verta($customer->created_at) }}</td>
                         <td class="text-center">
-                          <div class="d-flex justify-content-center">
-
-                            @can('view customers')
-                              <x-core::show-button route="admin.customers.show" :model="$customer"/>
-                            @endcan
-
-                            @can('edit customers')
-                              <x-core::edit-button route="admin.customers.edit" :model="$customer"/>
-                            @endcan
-
-                            @can('delete customers')
-                              <x-core::delete-button route="admin.customers.destroy" :model="$customer"/>
-                            @endcan
-
-                          </div>
+                          @can('view customers')
+                            <x-core::show-button route="admin.customers.show" :model="$customer"/>
+                          @endcan
+                          @can('edit customers')
+                            <x-core::edit-button route="admin.customers.edit" :model="$customer"/>
+                          @endcan
+                          @can('delete customers')
+                            <x-core::delete-button route="admin.customers.destroy" :model="$customer"/>
+                          @endcan
                         </td>
                       </tr>
                       @empty
