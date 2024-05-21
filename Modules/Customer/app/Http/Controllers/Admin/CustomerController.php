@@ -8,13 +8,14 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Core\Traits\BreadCrumb;
 use Modules\Core\Traits\FormInputs;
+use Modules\Core\Traits\Table;
 use Modules\Customer\Http\Requests\Admin\CustomerStoreRequest;
 use Modules\Customer\Http\Requests\Admin\CustomerUpdateRequest;
 use Modules\Customer\Models\Customer;
 
 class CustomerController extends Controller implements HasMiddleware
 {
-	use BreadCrumb, FormInputs;
+	use BreadCrumb, FormInputs, Table;
 	public const MODEL = 'مشتری';
 	public const TABLE = 'customers';
 
@@ -30,23 +31,23 @@ class CustomerController extends Controller implements HasMiddleware
 	public function index()
 	{
 		$fullName = request('full_name');
-		$landlinePhone = request('lanline_phone');
+		$telephone = request('telephone');
 		$mobile = request('mobile');
 		$status = request('status') !== 'all' ? request('status') : null;
 
 		$customers = Customer::query()
-			->select('id', 'name', 'mobile', 'landline_phone', 'status', 'created_at')
+			->select('id', 'name', 'mobile', 'telephone', 'status', 'created_at')
 			->when($fullName, fn (Builder $query) => $query->where('name', 'like', "%{$fullName}%"))
-			->when($landlinePhone, fn (Builder $query) => $query->where('lanline_phone', $landlinePhone))
+			->when($telephone, fn (Builder $query) => $query->where('telephone', $telephone))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
 			->latest('id')
 			->paginate(15)
 			->withQueryString();
 
-		$customersCount =  $customers->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
+		$customersCount = $customers->total();
 		$filterInputs = $this->generateFilterFormInputs();
+		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
 		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems', 'filterInputs'));
 	}
@@ -104,4 +105,5 @@ class CustomerController extends Controller implements HasMiddleware
 			'status' => $this->generateSelectOption('status', 'انتخاب وضعیت', $statusOptions),
 		];
 	}
+
 }
