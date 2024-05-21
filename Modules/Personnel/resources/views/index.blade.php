@@ -38,17 +38,17 @@
 
                 <div class="col-12 col-md-6 col-xl-3">
                   <div class="form-group">
-                    <label for="from_deployment_date_show" class="font-weight-bold">استخدام از تاریخ :</label>
-                    <input class="form-control fc-datepicker" id="from_deployment_date_show" type="text" autocomplete="off"/>
-                    <input name="from_deployment_at" id="from_deployment_date" type="hidden" value="{{ request("from_deployment_at") }}"/>  
+                    <label for="from_employmented_date_show" class="font-weight-bold">استخدام از تاریخ :</label>
+                    <input class="form-control fc-datepicker" id="from_employmented_date_show" type="text" autocomplete="off"/>
+                    <input name="from_employmented_at" id="from_employmented_date" type="hidden" value="{{ request("from_employmented_at") }}"/>  
                   </div>
                 </div>
       
                 <div class="col-12 col-md-6 col-xl-3">
                   <div class="form-group">
-                    <label for="to_deployment_date_show" class="font-weight-bold">تا تاریخ :</label>
-                    <input class="form-control fc-datepicker" id="to_deployment_date_show" type="text" autocomplete="off"/>
-                    <input name="to_deployment_at" id="to_deployment_date" type="hidden" value="{{ request("to_deployment_at") }}"/>
+                    <label for="to_employmented_date_show" class="font-weight-bold">تا تاریخ :</label>
+                    <input class="form-control fc-datepicker" id="to_employmented_date_show" type="text" autocomplete="off"/>
+                    <input name="to_employmented_at" id="to_employmented_date" type="hidden" value="{{ request("to_employmented_at") }}"/>
                   </div>
                 </div>
 
@@ -94,7 +94,7 @@
                         <td class="text-center">{{ $personnel->mobile }}</td>
                         <td class="text-center">{{ $personnel->national_code }}</td>
                         <td class="text-center">{{ number_format($personnel->salary) }}</td>
-                        <td class="text-center">{{ verta($personnel->deployment_at)->format('Y/m/d') }}</td>
+                        <td class="text-center">{{ verta($personnel->employmented_at)->format('Y/m/d') }}</td>
                         <td class="text-center">
                           <div class="d-flex justify-content-center">
                             @can('view personnels')
@@ -128,9 +128,9 @@
 @section('scripts')
 
   <script>   
-    $('#from_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#from_deployment_date',        
-      targetTextSelector: '#from_deployment_date_show',
+    $('#from_employmented_date_show').MdPersianDateTimePicker({
+      targetDateSelector: '#from_employmented_date',        
+      targetTextSelector: '#from_employmented_date_show',
       englishNumber: false,        
       toDate:true,
       enableTimePicker: false,        
@@ -139,9 +139,9 @@
       groupId: 'rangeSelector1',
     });
 
-    $('#to_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#to_deployment_date',        
-      targetTextSelector: '#to_deployment_date_show',
+    $('#to_employmented_date_show').MdPersianDateTimePicker({
+      targetDateSelector: '#to_employmented_date',        
+      targetTextSelector: '#to_employmented_date_show',
       englishNumber: false,        
       toDate:true,
       enableTimePicker: false,        

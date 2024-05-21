@@ -11,7 +11,57 @@
         @endcan
     	</div>
 
-      <x-core::filter route="admin.customers.index" :inputs="$filterInputs"/>
+      <div class="card">
+
+        <div class="card-header border-0">
+          <p class="card-title" style="font-weight: bolder;">جستجو پیشرفته</p>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <form action="{{ route("admin.customers.index") }}" class="col-12">
+              <div class="row">
+      
+                <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+                  <div class="form-group">
+                    <label class="font-weight-bold">نام و نام خانوادگی :</label>
+                    <input type="text" name="full_name" class="form-control" value="{{ request('full_name') }}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+                  <div class="form-group">
+                    <label class="font-weight-bold">تلفن ثابت :</label>
+                    <input type="text" name="landline_phone" class="form-control" value="{{ request('landline_phone') }}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+                  <div class="form-group">
+                    <label class="font-weight-bold">تلفن همراه :</label>
+                    <input type="text" name="mobile" class="form-control" value="{{ request('mobile') }}">
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+                  <div class="form-group">
+                    <label class="font-weight-bold">وضعیت :</label>
+                    <select name="status" class="form-control">
+                      <option value="all">همه</option>
+                      <option value="1" @selected(request("status") == "1")>فعال</option>
+                      <option value="0" @selected(request("status") == "0")>غیر فعال</option>
+                    </select>
+                  </div>
+                </div>
+      
+              </div>
+
+              <x-core::filter-buttons table="customers"/>
+              
+            </form>
+          </div>
+        </div>
+      </div>
 
       <div class="card">
 
@@ -81,7 +131,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 @endsection

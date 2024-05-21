@@ -15,7 +15,7 @@ use Modules\Customer\Models\Customer;
 
 class CustomerController extends Controller implements HasMiddleware
 {
-	use BreadCrumb, FormInputs, Table;
+	use BreadCrumb;
 	public const MODEL = 'مشتری';
 	public const TABLE = 'customers';
 
@@ -46,10 +46,9 @@ class CustomerController extends Controller implements HasMiddleware
 			->withQueryString();
 
 		$customersCount = $customers->total();
-		$filterInputs = $this->generateFilterFormInputs();
 		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems', 'filterInputs'));
+		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems'));
 	}
 
 	public function create()
@@ -89,21 +88,4 @@ class CustomerController extends Controller implements HasMiddleware
 
 		return redirect()->back();
 	}
-
-	private function generateFilterFormInputs() 
-	{
-		$statusOptions = [
-			'all' => 'همه',
-			1 => 'فعال',
-			0 => 'غیر فعال',
-		];
-
-		return [
-			'name' => $this->generateTextInput('text', 'full_name', 'نام و نام خانوادگی'),
-			'telephone' => $this->generateTextInput('text', 'telephone', 'تلفن ثابت'),
-			'mobile' => $this->generateTextInput('text', 'mobile', 'تلفن همراه'),
-			'status' => $this->generateSelectOption('status', 'انتخاب وضعیت', $statusOptions),
-		];
-	}
-
 }

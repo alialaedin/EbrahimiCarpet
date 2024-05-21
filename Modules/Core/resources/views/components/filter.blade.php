@@ -25,7 +25,7 @@
 											<option value="{{ $value }}" @selected(request($inputName) == "{$value}")>{{ $label }}</option>
 										@endforeach
 									</select>
-								@elseif($value['type'] == 'date')
+								@elseif($inputDetails['type'] == 'date')
 									<input class="form-control fc-datepicker" id="{{ $inputName }}_show" type="text" autocomplete="off"/>
 									<input name="{{ $inputName }}" id="{{ $inputName }}_hidden" type="hidden" value="{{ request($inputName) }}"/>  
 								@endif
@@ -38,3 +38,27 @@
 		</div>
   </div>
 </div>
+
+@section('scripts')	
+	@foreach ($inputs as $inputName => $inputDetails)
+		@if($inputDetails['type'] == 'date')
+		<script>
+			console.log(12);
+		</script>
+				<script>
+					var inputName = @json($inputName);
+					console.log(1);
+					$('#' + inputName + '_show').MdPersianDateTimePicker({
+						targetDateSelector: '#' + inputName + '_show',        
+						targetTextSelector: '#' + inputName + '_hidden',
+						englishNumber: false,        
+						toDate:true,
+						enableTimePicker: false,        
+						dateFormat: 'yyyy-MM-dd',
+						textFormat: 'yyyy-MM-dd',        
+						groupId: 'rangeSelector1',
+					});
+				</script>
+		@endif
+	@endforeach
+@endsection	
