@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Order\Http\Controllers\Admin;
+namespace Modules\Purchase\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class OrderController extends Controller
+class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('order::index');
+        return view('purchase::index');
     }
 
     /**
@@ -22,7 +22,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view('order::create');
+        return view('purchase::create');
     }
 
     /**
@@ -38,7 +38,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        return view('order::show');
+        return view('purchase::show');
     }
 
     /**
@@ -46,7 +46,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        return view('order::edit');
+        return view('purchase::edit');
     }
 
     /**

@@ -10,128 +10,60 @@
       
       <div class="row">
 
-        <div class="col-lg-3 col-md-6">
-          <div class="card">
+        <div class="col-md-6">
+          <div class="card overflow-hidden">
             <div class="card-header border-0">
-              <p class="card-title font-weight-bold">اطلاعات محصول</p>
+              <p class="card-title font-weight-bold" style="font-size: 24px;">اطلاعات اولیه</p>
             </div>
             <div class="card-body">
-              <div class="row">
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">شناسه محصول :</span>
-                    <span class="fs-14 mr-1"> {{ $product->id }} </span>
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">عنوان :</span>
-                    <span class="fs-14 mr-1"> {{ $product->title }} </span>
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">قیمت پایه (تومان) :</span>
-                    <span class="fs-14 mr-1"> {{ number_format($product->price) }} </span>
-                  </div>
-                </div>
-  
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">تخفیف (تومان) :</span>
-                    <span class="fs-14 mr-1"> {{ number_format($product->discount) }} </span>
-                  </div>
-                </div>
-  
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">وضعیت :</span>
-                    <x-core::badge 
-                      type="{{ $product->status ? 'success' : 'danger' }}" 
-                      text="{{ $product->status ? 'فعال' : 'غیر فعال' }}" 
-                    />
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">تاریخ ثبت :</span>
-                    <span class="fs-14 mr-1"> {{ verta($product->created_at)->format('Y/m/d') }} </span>
-                  </div>
-                </div>
-  
-              </div>
+              <ul class="list-group">
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">شناسه محصول: </span> {{ $product->id }} </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">عنوان: </span> {{ $product->title }} </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">دسته بندی: </span> {{ $product->category->title }} </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">قیمت پایه: </span> {{ number_format($product->price) }} تومان </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">مقدار تخفیف: </span> {{ number_format($product->getDiscount()) }} تومان </li>
+                <li class="list-group-item">
+                  <span class="font-weight-bold text-muted ml-1">وضعیت: </span>
+                  <x-core::badge 
+                    type="{{ $product->status ? 'success' : 'danger' }}" 
+                    text="{{ $product->status ? 'فعال' : 'غیر فعال' }}" 
+                  />
+                </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">تاریخ ثبت: </span> {{ verta($product->created_at)->format('Y/m/d') }} </li>
+                <li class="list-group-item"><span class="font-weight-bold text-muted ml-1">تاریخ آخرین ویرایش: </span> {{ verta($product->updated_at)->format('Y/m/d') }} </li>
+              </ul>
             </div>
           </div>
         </div>
-  
-        <div class="col-lg-3 col-md-6">
-          <div class="card">
-      
+
+        <div class="col-md-6">
+          <div class="card overflow-hidden">
             <div class="card-header border-0">
-              <p class="card-title font-weight-bold">اطلاعات دسته بندی</p>
+              <p class="card-title font-weight-bold" style="font-size: 24px;">تصویر</p>
             </div>
-    
             <div class="card-body">
-              <div class="row">
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">شناسه دسته بندی :</span>
-                    <span class="fs-14 mr-1"> {{ $product->category->id }} </span>
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">عنوان :</span>
-                    <span class="fs-14 mr-1"> {{ $product->category->title }} </span>
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1"> والد:</span>
-                    <span class="fs-14 mr-1"> {{ $product->category->parent->title }} </span>
-                  </div>
-                </div>
-  
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1"> نوع واحد:</span>
-                    <span class="fs-14 mr-1"> {{ $product->category->getUnitType() }} </span>
-                  </div>
-                </div>
-  
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">وضعیت :</span>
-                    <x-core::badge 
-                      type="{{ $product->category->status ? 'success' : 'danger' }}" 
-                      text="{{ $product->category->status ? 'فعال' : 'غیر فعال' }}" 
-                    />
-                  </div>
-                </div>
-    
-                <div class="col-12">
-                  <div class="d-flex align-items-center justify-content-between my-1">
-                    <span class="fs-16 font-weight-bold ml-1">تاریخ ثبت :</span>
-                    <span class="fs-14 mr-1"> {{ verta($product->category->created_at)->format('Y/m/d') }} </span>
-                  </div>
-                </div>
-  
-              </div>
+              <figure class="figure w-100">
+                <a target="blank" href="{{ Storage::url($product->image) }}">
+                  <img src="{{ Storage::url($product->image) }}" class="w-100" style="height: 377px;"/>
+                </a>
+              </figure>
             </div>
-      
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card overflow-hidden">
+            <div class="card-header border-0">
+              <p class="card-title font-weight-bold" style="font-size: 24px;">توضیحات</p>
+            </div>
+            <div class="card-body">
+              <p> {{ $product->description ?? '-' }} </p>
+            </div>
           </div>
         </div>
 
       </div>
 
     </div>
-    
   </div>
 @endsection 

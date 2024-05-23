@@ -7,5 +7,5 @@
     "Personnel": true,
     "Supplier": true,
     "Product": true,
-    "Order": true
+    "Purchase": true
 }

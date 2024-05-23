@@ -70,7 +70,10 @@ class ProductController extends Controller implements HasMiddleware
 
 	public function show(Product $product)
 	{
-		$product->load('category');
+		$product->load([
+			'category',
+			'category.parent'
+		]);
 		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
 		return view('product::product.show', compact('product', 'breadcrumbItems'));

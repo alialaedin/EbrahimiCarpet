@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Order\Providers;
+namespace Modules\Purchase\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class OrderServiceProvider extends ServiceProvider
+class PurchaseServiceProvider extends ServiceProvider
 {
-    protected string $moduleName = 'Order';
+    protected string $moduleName = 'Purchase';
 
-    protected string $moduleNameLower = 'order';
+    protected string $moduleNameLower = 'purchase';
 
     /**
      * Boot the application events.

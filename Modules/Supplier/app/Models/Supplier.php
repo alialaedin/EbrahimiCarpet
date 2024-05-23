@@ -4,6 +4,8 @@ namespace Modules\Supplier\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Order\Models\Order;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -41,5 +43,10 @@ class Supplier extends Model
 
 				return $message;
 			});
+	}
+
+	public function orders(): HasMany
+	{
+		return $this->hasMany(Order::class);
 	}
 }
