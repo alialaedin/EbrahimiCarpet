@@ -27,6 +27,8 @@ class Category extends Model
 		static::deleting(function (Category $category) {
 			if ($category->children()->exists()) {
 				throw new ModelCannotBeDeletedException('دسته بندی دارای فرزند است و قابل حذف نمی باشد.');
+			} elseif ($category->products()->exists()) {
+				throw new ModelCannotBeDeletedException('از این دسته بندی محصولی ثبت شده است و قابل حذف نمی باشد.');
 			}
 		});
 	}
@@ -65,6 +67,11 @@ class Category extends Model
 	public function parent(): BelongsTo
 	{
 		return $this->belongsTo(Category::class, 'parent_id');
+	}
+
+	public function products(): HasMany
+	{
+		return $this->hasMany(Product::class);
 	}
 
 	// Functions

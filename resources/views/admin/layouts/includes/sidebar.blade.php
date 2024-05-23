@@ -25,7 +25,7 @@
 
       <li class="slide">
         <a class="side-menu__item" data-toggle="slide" href="#">
-          <i class="fa fa-user sidemenu_icon"></i>
+          <i class="fe fe-edit sidemenu_icon"></i>
           <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">
@@ -37,7 +37,7 @@
 
       <li class="slide">
         <a class="side-menu__item" data-toggle="slide" href="#">
-          <i class="fa fa-user sidemenu_icon"></i>
+          <i class="fe fe-user sidemenu_icon"></i>
           <span class="side-menu__label">مدیریت کاربران</span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">
@@ -58,7 +58,7 @@
 
       <li class="slide">
         <a class="side-menu__item" data-toggle="slide" href="#">
-          <i class="fa fa-user sidemenu_icon"></i>
+          <i class="fa fa-shopping-basket sidemenu_icon"></i>
           <span class="side-menu__label">مدیریت محصولات</span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">

@@ -3,26 +3,34 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Product\Models\Category;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            
-            $table->timestamps();
-        });
-    }
+	/**
+	 * Run the migrations.
+	 */
+	public function up(): void
+	{
+		Schema::create('products', function (Blueprint $table) {
+			$table->id();
+			$table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+			$table->string('title')->unique();
+			$table->text('description')->nullable();
+			$table->unsignedBigInteger('price');
+			$table->boolean('status');
+			$table->string('image')->nullable();
+			$table->unsignedBigInteger('discount')->nullable();
+			$table->timestamps();
+			// image => media library
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('products');
-    }
+	/**
+	 * Reverse the migrations.
+	 */
+	public function down(): void
+	{
+		Schema::dropIfExists('products');
+	}
 };

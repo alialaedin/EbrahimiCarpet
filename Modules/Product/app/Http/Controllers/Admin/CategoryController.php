@@ -32,14 +32,22 @@ class CategoryController extends Controller implements HasMiddleware
 	public function index()
 	{
 		$title = request('title');
-		$parentId = request('parent_id') !== 'all' ? request('parent_id') : null;
-		$unitType = request('unit_type') !== 'all' ? request('unit_type') : null;
-		$status = request('status') !== 'all' ? request('status') : null;
+		$parentId = request('parent_id');
+		$unitType = request('unit_type');
+		$status = request('status');
 
 		$categories = Category::query()
 			->select('id', 'title', 'parent_id', 'status', 'unit_type', 'created_at')
-			->when($title, fn (Builder $query) => $query->where('name', 'like', "%{$title}%"))
-			->when($parentId, fn (Builder $query) => $query->where('parent_id', $parentId))
+			->when($title, fn (Builder $query) => $query->where('title', 'like', "%{$title}%"))
+			->when($parentId, function (Builder $query) use ($parentId) {
+				return $query->where(function ($query) use ($parentId) {
+					if ($parentId == 'none') {
+						$query->whereNull('parent_id');
+					} else {
+						$query->where('parent_id', $parentId);
+					}
+				});
+			})
 			->when($unitType, fn (Builder $query) => $query->where('unit_type', $unitType))
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
 			->with('parent:id,title')
