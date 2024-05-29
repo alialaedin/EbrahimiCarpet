@@ -67,6 +67,26 @@ class RolesAndPermissionsSeeder extends Seeder
 			'create products' => 'ایجاد محصولات',
 			'edit products' => 'ویرایش محصولات',
 			'delete products' => 'حذف محصولات',
+			//purchases
+			'view purchases' => 'مشاهده خرید ها',
+			'create purchases' => 'ایجاد خرید ها',
+			'edit purchases' => 'ویرایش خرید ها',
+			'delete purchases' => 'حذف خرید ها',
+			//purchase_items
+			'view purchase_items' => 'مشاهده اقلام خرید',
+			'create purchase_items' => 'ایجاد اقلام خرید',
+			'edit purchase_items' => 'ویرایش اقلام خرید',
+			'delete purchase_items' => 'حذف اقلام خرید',
+			//payments
+			'view payments' => 'مشاهده پرداختی ها',
+			'create payments' => 'ایجاد پرداختی ها',
+			'edit payments' => 'ویرایش پرداختی ها',
+			'delete payments' => 'حذف پرداختی ها',
+			//stores
+			'view stores' => 'مشاهده انبار',
+			'create stores' => 'ایجاد انبار',
+			'edit stores' => 'ویرایش انبار',
+			'delete stores' => 'حذف انبار',
 		];
 
 		foreach ($permissions as $name => $label) {

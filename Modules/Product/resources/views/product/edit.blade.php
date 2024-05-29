@@ -53,7 +53,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label class="control-label"> تخفیف (تومان): </label>
-									<input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', number_format($product->discount)) }}">
+									<input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', $product->discount ? number_format($product->discount) : null) }}">
 								</div>
 							</div>
 

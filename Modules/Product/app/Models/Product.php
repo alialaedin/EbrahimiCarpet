@@ -5,7 +5,12 @@ namespace Modules\Product\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Admin\Models\Admin;
+use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Purchase\Models\PurchaseItem;
+use Modules\Store\Models\Store;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -23,26 +28,41 @@ class Product extends Model
 		'image'
 	];
 
+	protected static function booted(): void
+	{
+		static::deleting(function (Category $category) {
+			if ($category->store()->exists()) {
+				throw new ModelCannotBeDeletedException('از این محصول در انبار موجود است و قابل حذف نمی باشد.');
+			} elseif ($category->purchaseItems()->exists()) {
+				throw new ModelCannotBeDeletedException('ازین محصول خریدی ثبت شده است و قابل حذف نمی باشد.');
+			}
+		});
+	}
+
 	public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
+				
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+				$productTitle = $this->title;
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "محصول با شناسه {$model->id} ({$model->title}) را {$action}.";
-				}
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک محصول جدید با عنوان {$productTitle} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} محصول با عنوان {$productTitle} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} محصول با عنوان {$productTitle} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});
@@ -52,6 +72,16 @@ class Product extends Model
 	public function category(): BelongsTo
 	{
 		return $this->belongsTo(Category::class);
+	}
+
+	public function store(): HasOne
+	{
+		return $this->hasOne(Store::class);
+	}
+	
+	public function purchaseItems(): HasMany
+	{
+		return $this->hasMany(PurchaseItem::class);
 	}
 
 	// Functions

@@ -8,7 +8,7 @@
 <link href="{{asset('assets/css-rtl/dark.css')}}" rel="stylesheet" />
 <link href="{{asset('assets/css-rtl/skin-modes.css')}}" rel="stylesheet" />
 <!-- Animate css -->
-<link href="{{asset('assets/cws-rtl/animated.css')}}" rel="stylesheet" />
+{{-- <link href="{{asset('assets/cws-rtl/animated.css')}}" rel="stylesheet" /> --}}
 <!-- Sidemenu css -->
 <link href="{{asset('assets/css-rtl/sidemenu.css')}}" rel="stylesheet">
 <!-- P-scroll bar css-->

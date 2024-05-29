@@ -28,31 +28,35 @@ class Category extends Model
 			if ($category->children()->exists()) {
 				throw new ModelCannotBeDeletedException('دسته بندی دارای فرزند است و قابل حذف نمی باشد.');
 			} elseif ($category->products()->exists()) {
-				throw new ModelCannotBeDeletedException('از این دسته بندی محصولی ثبت شده است و قابل حذف نمی باشد.');
+				throw new ModelCannotBeDeletedException('از این دسته بندی محصول یا محصولاتی ثبت شده است و قابل حذف نمی باشد.');
 			}
 		});
 	}
 
 	public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "دسته بندی با شناسه {$model->id} ({$model->title}) را {$action}.";
-				}
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+				$categoryTitle = $this->title;
+
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک دسته بندی جدید با عنوان {$categoryTitle} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} دسته بندی با عنوان {$categoryTitle} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} دسته بندی با عنوان {$categoryTitle} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});

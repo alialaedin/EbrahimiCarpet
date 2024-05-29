@@ -1,19 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Purchase\Http\Controllers\PurchaseController;
+use Modules\Purchase\Http\Controllers\Admin\PurchaseController;
+use Modules\Purchase\Http\Controllers\Admin\PurchaseItemController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::group([], function () {
-    Route::resource('purchase', PurchaseController::class)->names('purchase');
+Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
+	Route::resource('/purchases', PurchaseController::class);
+	Route::resource('/purchase-items', PurchaseItemController::class)->only('store', 'update', 'destroy');
 });

@@ -8,7 +8,7 @@
 <script src="{{asset('assets/plugins/bootstrap/popper.min.js')}}"></script>
 <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
 <!--Othercharts js-->
-<script src="{{asset('assets/plugins/othercharts/jquery.sparkline.min.js')}}"></script>
+{{-- <script src="{{asset('assets/plugins/othercharts/jquery.sparkline.min.js')}}"></script> --}}
 <!--Sidemenu js-->
 <script src="{{asset('assets/plugins/sidemenu/sidemenu.js')}}"></script>
 <!-- P-scroll js-->

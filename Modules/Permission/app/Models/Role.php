@@ -2,7 +2,8 @@
 
 namespace Modules\Permission\Models;
 
-use Modules\Core\App\Exceptions\ModelCannotBeDeletedException;
+use Modules\Admin\Models\Admin;
+use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Role as SpatieRole;
@@ -20,24 +21,28 @@ class Role extends SpatieRole
 
 	public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
-
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
+		
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "نقش با شناسه {$model->id} ({$model->name}) را {$action}.";
-				}
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+				$roleLabel = $this->label;
+
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک نقش جدید با عنوان {$roleLabel} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} نقش {$roleLabel} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} نقش {$roleLabel} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});
@@ -48,16 +53,21 @@ class Role extends SpatieRole
 		return $this->attributes['name'] !== static::SUPER_ADMIN;
 	}
 
-	// public static function booted(): void
-	// {
-	// 	static::deleting(function (Role $role) {
-	// 		$superAdmin = static::SUPER_ADMIN;
-	// 		if ($role->name === $superAdmin) {
-	// 			throw new ModelCannotBeDeletedException("نقش {$superAdmin} قابل حذف نمی باشد.");
-	// 		}
-	// 		if ($role->users()->exists()) {
-	// 			throw new ModelCannotBeDeletedException("نقش {$superAdmin} به کاربر یا کاربرانی نسبت داده شده و قابل حذف نمی باشد.");
-	// 		}
-	// 	});
-	// }
+	public static function booted(): void
+	{
+		static::deleting(function (Role $role) {
+			$superAdmin = static::SUPER_ADMIN;
+			if ($role->name === $superAdmin) {
+				throw new ModelCannotBeDeletedException("نقش {$superAdmin} قابل حذف نمی باشد.");
+			}
+			if ($role->admins()->exists()) {
+				throw new ModelCannotBeDeletedException("نقش {$role->label} به کاربر یا کاربرانی نسبت داده شده و قابل حذف نمی باشد.");
+			}
+		});
+	}
+
+	public function admins()
+	{
+		return $this->belongsToMany(Admin::class, 'model_has_roles', 'model_id');
+	}
 }

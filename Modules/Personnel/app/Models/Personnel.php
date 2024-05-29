@@ -33,24 +33,28 @@ class Personnel extends Model
 
 	public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "کارمند با شناسه {$model->id} ({$model->name}) را {$action}.";
-				}
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+				$personnelName = $this->name;
+
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک کارمند جدید با نام {$personnelName} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} کارمند با نام {$personnelName} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} کارمند با نام {$personnelName} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});

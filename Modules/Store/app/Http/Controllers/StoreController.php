@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Purchase\Http\Controllers;
+namespace Modules\Store\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class PurchaseController extends Controller
+class StoreController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('purchase::index');
+        return view('store::index');
     }
 
     /**
@@ -22,7 +22,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        return view('purchase::create');
+        return view('store::create');
     }
 
     /**
@@ -38,7 +38,7 @@ class PurchaseController extends Controller
      */
     public function show($id)
     {
-        return view('purchase::show');
+        return view('store::show');
     }
 
     /**
@@ -46,7 +46,7 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
-        return view('purchase::edit');
+        return view('store::edit');
     }
 
     /**

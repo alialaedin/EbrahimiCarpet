@@ -5,7 +5,8 @@ namespace Modules\Supplier\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Order\Models\Order;
+use Modules\Admin\Models\Admin;
+use Modules\Purchase\Models\Purchase;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -22,31 +23,35 @@ class Supplier extends Model
 
 	public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
+				
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+				$supplierName = $this->name;
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "تامین کننده با شناسه {$model->id} ({$model->name}) را {$action}.";
-				}
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک تامین کننده جدید با نام {$supplierName} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} تامین کننده با نام {$supplierName} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} تامین کننده با نام {$supplierName} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});
 	}
 
-	public function orders(): HasMany
+	public function purchases(): HasMany
 	{
-		return $this->hasMany(Order::class);
+		return $this->hasMany(Purchase::class);
 	}
 }

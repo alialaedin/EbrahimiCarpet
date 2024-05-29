@@ -4,6 +4,7 @@ namespace Modules\Customer\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Admin\Models\Admin;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -21,24 +22,30 @@ class Customer extends Model
 
   public function getActivitylogOptions(): LogOptions
 	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+			->setDescriptionForEvent(function (string $eventName) use ($admin) {
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "مشتری با شناسه {$model->id} ({$model->name}) را {$action}.";
-				}
+				$eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+
+				$customerId = $this->id;
+				$customerName = $this->name;
+
+				switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک مشتری جدید با نام {$customerName} را ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} مشتری با شناسه عددی {$customerId} به نام {$customerName} را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} مشتری با شناسه عددی {$customerId} به نام {$customerName} را حذف کرد.";
+            break;
+        }
 
 				return $message;
 			});
