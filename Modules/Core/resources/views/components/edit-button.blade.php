@@ -1,7 +1,7 @@
-<a 
-  href="{{route($route, $model)}}" 
-  class="btn btn-sm btn-icon bg-warning text-white" 
-  data-toggle="tooltip" 
+<a
+  href="{{route($route, $model)}}"
+  class="btn btn-sm btn-icon bg-warning text-white"
+  data-toggle="tooltip"
   data-original-title="ویرایش">
   <i class="fa fa-pencil" ></i>
 </a>

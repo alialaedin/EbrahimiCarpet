@@ -4,10 +4,10 @@
     "Admin": true,
     "Auth": true,
     "Customer": true,
-    "Personnel": true,
     "Supplier": true,
     "Product": true,
     "Purchase": true,
     "Store": true,
-    "Payment": true
+    "Payment": true,
+    "Employee": true
 }

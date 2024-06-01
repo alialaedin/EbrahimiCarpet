@@ -47,11 +47,11 @@ class RolesAndPermissionsSeeder extends Seeder
 			'create customers' => 'ایجاد مشتری ها',
 			'edit customers' => 'ویرایش مشتری ها',
 			'delete customers' => 'حذف مشتری ها',
-			//personnels
-			'view personnels' => 'مشاهده پرسنل',
-			'create personnels' => 'ایجاد پرسنل',
-			'edit personnels' => 'ویرایش پرسنل',
-			'delete personnels' => 'حذف پرسنل',
+			//employees
+			'view employees' => 'مشاهده پرسنل',
+			'create employees' => 'ایجاد پرسنل',
+			'edit employees' => 'ویرایش پرسنل',
+			'delete employees' => 'حذف پرسنل',
 			//suppliers
 			'view suppliers' => 'مشاهده تامین کنندگان',
 			'create suppliers' => 'ایجاد تامین کنندگان',
