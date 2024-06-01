@@ -7,7 +7,6 @@
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
     	</div>
-			@include('core::includes.validation-errors')
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">ویرایش محصول</h3>
@@ -22,45 +21,50 @@
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title', $product->title) }}">
-								</div>
+									<label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
+									<input type="text" id="title" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title', $product->title) }}">
+                  <x-core::show-validation-error name="title" />
+                </div>
 							</div>
 
-							<div class="col-md-6">	
+							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
-									<select name="category_id" class="form-control">
+									<label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
+									<select name="category_id" id="category_id" class="form-control">
 										@foreach ($parentCategories as $category)
 										<option value="{{ $category->id }}" class="text-muted" @selected(old('category_id', $product->category_id) == $category->id)>{{ $category->title }}</option>
 											@if ($category->has('children'))
 												@foreach($category->children as $child)
 													<option value="{{ $child->id }}" @selected(old('category_id', $product->category_id) == $child->id)>&nbsp;&nbsp;{{ $child->title }}</option>
 												@endforeach
-											@endif	
+											@endif
 										@endforeach
 									</select>
+                  <x-core::show-validation-error name="category_id" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> قیمت (تومان): <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control comma" name="price" placeholder="قیمت را به تومان وارد کنید" value="{{ old('price', number_format($product->price)) }}">
-								</div>
+									<label for="price" class="control-label"> قیمت (تومان): <span class="text-danger">&starf;</span></label>
+									<input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت را به تومان وارد کنید" value="{{ old('price', number_format($product->price)) }}">
+                  <x-core::show-validation-error name="price" />
+                </div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> تخفیف (تومان): </label>
-									<input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', $product->discount ? number_format($product->discount) : null) }}">
-								</div>
+									<label for="discount" class="control-label"> تخفیف (تومان): </label>
+									<input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', $product->discount ? number_format($product->discount) : null) }}">
+                  <x-core::show-validation-error name="discount" />
+                </div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> انتخاب عکس </label>
-									<input type="file" class="form-control" name="image" value="{{ old('image') }}">
+									<label for="image" class="control-label"> انتخاب عکس </label>
+									<input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
+                  <x-core::show-validation-error name="image" />
 								</div>
 							</div>
 
@@ -80,8 +84,9 @@
 
 							<div class="col-12">
 								<div class="form-group">
-									<label class="control-label">توضیحات :</label>
-									<textarea name="description" class="form-control" rows="4"> {{ old('description', $product->description) }} </textarea>
+									<label for="description" class="control-label">توضیحات :</label>
+									<textarea name="description" id="description" class="form-control" rows="4"> {{ old('description', $product->description) }} </textarea>
+                  <x-core::show-validation-error name="description" />
 								</div>
 							</div>
 
@@ -98,6 +103,7 @@
 											<span class="custom-control-label">غیر فعال</span>
 										</label>
 									</div>
+                  <x-core::show-validation-error name="status" />
                 </div>
 							</div>
 
@@ -114,10 +120,10 @@
 					</form>
 
 					@if ($product->image)
-						<form 
-							action="{{ route('admin.products.image.destroy', $product) }}" 
-							id="delete-image-{{$product->id}}" 
-							method="POST" 
+						<form
+							action="{{ route('admin.products.image.destroy', $product) }}"
+							id="delete-image-{{$product->id}}"
+							method="POST"
 							style="display: none;">
 							@csrf
 							@method("DELETE")

@@ -68,7 +68,7 @@ class PaymentController extends Controller implements HasMiddleware
 			if (!is_null($payment->image)) {
 				Storage::delete($payment->image);
 			}
-			$inputs['image'] = $request->file('image')->store('images/products', 'public');
+			$inputs['image'] = $request->file('image')->store('images/payments', 'public');
 		}
 
 		$payment->update($inputs);

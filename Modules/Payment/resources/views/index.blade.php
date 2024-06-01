@@ -29,8 +29,6 @@
 
     	</div>
 
-			@include('core::includes.validation-errors')
-
       <div class="card">
   
         <div class="card-header border-0 justify-content-between ">
@@ -93,6 +91,7 @@
                       <th class="text-center border-top">ردیف</th>
                       <th class="text-center border-top">مبلغ پرداختی (تومان)</th>
                       <th class="text-center border-top">تاریخ پرداخت</th>
+                      <th class="text-center border-top">عکس رسید</th>
                       <th class="text-center border-top">تاریخ ثبت</th>
                       <th class="text-center border-top">عملیات</th>
                     </tr>
@@ -102,16 +101,27 @@
                       <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ number_format($payment->amount) }}</td>
-                        <td class="text-center">{{ verta($payment->payment_date) }}</td>
-                        <td class="text-center">{{ verta($payment->created_at) }}</td>
+                        <td class="text-center">{{ verta($payment->payment_date)->formatDate() }}</td>
+                        <td class="text-center m-0 p-0">
+                          @if ($payment->image)
+                            <figure class="figure my-2">
+                              <a target="_blank" href="{{ Storage::url($payment->image) }}">
+                                <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" width="50" style="max-height: 32.5px;" />
+                              </a>
+                            </figure>
+                          @else
+                            <span> - </span>
+                          @endif
+                        </td>
+                        <td class="text-center">{{ verta($payment->created_at)->formatDate() }}</td>
                         <td class="text-center">
 
-                          <button class="btn btn-sm btn-icon btn-success" onclick="showPaymentImage('{{$payment->image ? Storage::url($payment->image) : null }}')">
-                            <i class="fa fa-image" data-toggle="tooltip" data-original-title="تصویر"></i>
-                          </button>
-
-                          <button class="btn btn-sm btn-icon btn-primary" onclick="showPaymentDescriptionModal('{{$payment->description}}')">
-                            <i class="fa fa-book" data-toggle="tooltip" data-original-title="توضیحات"></i>
+                          <button 
+                            class="btn btn-sm btn-icon btn-primary" 
+                            onclick="showPaymentDescriptionModal('{{$payment->description}}')" 
+                            data-toggle="tooltip" 
+                            data-original-title="توضیحات">
+                            <i class="fa fa-book" ></i>
                           </button>
 
                           @can('edit payments')
@@ -181,7 +191,7 @@
                           @if ($payment->image)
                             <figure class="figure my-2">
                               <a target="_blank" href="{{ Storage::url($payment->image) }}">
-                                <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" width="50" height="50" />
+                                <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" width="50" style="max-height: 32.5px;" />
                               </a>
                             </figure>
                           @else

@@ -7,7 +7,6 @@
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
     	</div>
-			@include('core::includes.validation-errors')
 			<div class="card">
 				<div class="card-header justify-content-between">
 					<p class="card-title">ثبت خرید جدید</p>
@@ -38,7 +37,7 @@
 								<div class="form-group">
 									<label for="purchased_date_show" class="control-label">تاریخ خرید :<span class="text-danger">&starf;</span></label>
 									<input class="form-control fc-datepicker" id="purchased_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید"/>
-									<input name="purchased_at" id="purchased_date" type="hidden" value="{{ old("purchased_at") }}"/>  
+									<input name="purchased_at" id="purchased_date" type="hidden" value="{{ old("purchased_at") }}"/>
 								</div>
 							</div>
 
@@ -50,7 +49,7 @@
 							</div>
 
 						</div>
-						
+
 						<div  id="contentArea"></div>
 
 						<div class="row">
@@ -71,13 +70,13 @@
 @section('scripts')
 	<script>
 		$('#purchased_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#purchased_date',        
+      targetDateSelector: '#purchased_date',
       targetTextSelector: '#purchased_date_show',
-      englishNumber: false,        
+      englishNumber: false,
       toDate:true,
-      enableTimePicker: false,        
+      enableTimePicker: false,
       dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
+      textFormat: 'yyyy-MM-dd',
       groupId: 'rangeSelector1',
     });
 	</script>

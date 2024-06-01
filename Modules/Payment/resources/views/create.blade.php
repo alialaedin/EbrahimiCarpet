@@ -25,7 +25,6 @@
 
     	</div>
 
-			@include('core::includes.validation-errors')
 
 			<div class="card">
 				<div class="card-header border-0 justify-content-between">
@@ -46,6 +45,7 @@
                     <option value="cheque" @selected(old('type') == 'cheque')>چک</option>
                     <option value="installment" @selected(old('type') == 'installment')>قسط</option>
                   </select>
+                  <x-core::show-validation-error name="type" />
                 </div>
               </div>
     
@@ -53,6 +53,7 @@
                 <div class="form-group">
                   <label class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
                   <input type="text" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به تومان وارد کنید" value="{{ old('amount') }}">
+                  <x-core::show-validation-error name="amount" />
                 </div>
               </div>
     
@@ -62,6 +63,7 @@
                   <label for="payment_date_show" class="control-label">تاریخ پرداخت:</label>
                   <input class="form-control fc-datepicker" id="payment_date_show" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
                   <input name="payment_date" id="payment_date_hidden" type="hidden" required value="{{	old('payment_date') }}"/>
+                  <x-core::show-validation-error name="payment_date" />
                 </div>
               </div>
   
@@ -70,6 +72,7 @@
                   <label for="due_date_show" class="control-label">تاریخ سررسید:</label>
                   <input class="form-control fc-datepicker" id="due_date_show" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
                   <input name="due_date" id="due_date_hidden" type="hidden" required value="{{	old('due_date') }}"/>
+                  <x-core::show-validation-error name="due_date" />
                 </div>
               </div>
   
@@ -77,6 +80,7 @@
                 <div class="form-group">
                   <label class="control-label"> انتخاب عکس </label>
                   <input type="file" class="form-control" name="image" value="{{ old('image') }}">
+                  <x-core::show-validation-error name="image" />
                 </div>
               </div>
   
@@ -84,6 +88,7 @@
                 <div class="form-group">
                   <label class="control-label">توضیحات :</label>
                   <textarea name="description" class="form-control" rows="4"> {{ old('description') }} </textarea>
+                  <x-core::show-validation-error name="description" />
                 </div>
               </div>
 
@@ -100,6 +105,7 @@
 											<span class="custom-control-label">غیر فعال</span>
 										</label>
 									</div>
+                  <x-core::show-validation-error name="status" />
                 </div>
 							</div>
   

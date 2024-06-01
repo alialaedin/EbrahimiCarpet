@@ -5,12 +5,15 @@ namespace Modules\Purchase\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Product\Models\Product;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class PurchaseItem extends Model
 {
-	use HasFactory;
+	use HasFactory, LogsActivity;
 
 	protected $fillable = [
 		'purchase_id',
@@ -19,6 +22,34 @@ class PurchaseItem extends Model
 		'price',
 		'discount',
 	];
+
+	public function getActivitylogOptions(): LogOptions
+  {
+    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
+
+    return LogOptions::defaults()
+      ->logAll()
+      ->setDescriptionForEvent(function (string $eventName) use ($admin) {
+
+        $eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
+        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+
+        switch ($eventName) {
+          case 'created':
+            $message = "{$messageBase} یک آیتم جدید برای  خرید با شناسه {$this->purchase_id} ثبت کرد.";
+            break;
+          case 'updated':
+            $message = "{$messageBase} آیتم با شناسه {$this->id} که متعلق به خرید شماره {$this->purchase_id} است را ویرایش کرد.";
+            break;
+          case 'deleted':
+            $message = "{$messageBase} آیتم با شناسه {$this->id} که متعلق به خرید شماره {$this->purchase_id} بود را حذف کرد.";
+            break;
+        }
+
+        return $message;
+      });
+  }
 
 	protected static function booted(): void
 	{

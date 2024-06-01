@@ -124,9 +124,12 @@
                           <td class="text-center">{{ number_format($item->getPriceWithDiscount()) }}</td>
                           <td class="text-center">
                             @can('edit purchase_items')
-                            <button class="btn btn-sm btn-icon btn-warning" data-target="#editPurchaseItemModal{{$item->id}}" data-toggle="modal">
-                              <i class="fa fa-pencil" data-toggle="tooltip" data-original-title="ویرایش"></i>
-                            </button>
+                              <button 
+                                class="btn btn-sm btn-icon btn-warning"
+                                data-target="#editPurchaseItemModal{{$item->id}}" 
+                                data-toggle="modal">
+                                <i class="fa fa-pencil"></i>
+                              </button>
                             @endcan
                             @can('delete purchase_items')
                               <x-core::delete-button route="admin.purchase-items.destroy" :model="$item"/>

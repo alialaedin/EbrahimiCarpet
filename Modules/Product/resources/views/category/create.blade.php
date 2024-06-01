@@ -6,9 +6,8 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
-    	</div>
-			@include('core::includes.validation-errors')
-			<div class="card">
+      </div>
+      <div class="card">
 				<div class="card-header">
 					<h3 class="card-title">ثبت دسته بندی جدید</h3>
 				</div>
@@ -20,24 +19,26 @@
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title') }}" required autofocus>
+									<label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
+									<input type="text" id="title" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title') }}" required autofocus>
+									<x-core::show-validation-error name="title" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> انتخاب دسته بندی والد:</label>
-                  <select name="parent_id" class="form-control">
+									<label for="parent_id" class="control-label"> انتخاب دسته بندی والد:</label>
+                  <select name="parent_id" id="parent_id" class="form-control">
 										<option value=""> بدون والد </option>
                     @foreach ($parentCategories as $category)
                       <option value="{{ $category->id }}" @selected(old('parent_id') == $category->id)> {{ $category->title }} </option>
                     @endforeach
                   </select>
+									<x-core::show-validation-error name="parent_id" />
 								</div>
 							</div>
 
-							
+
 							<div class="col-md-6">
 								<div class="form-group">
 									<label class="control-label"> نوع واحد:<span class="text-danger">&starf;</span></label>
@@ -51,6 +52,7 @@
 											<span class="custom-control-label">عدد</span>
 										</label>
 									</div>
+									<x-core::show-validation-error name="unit_type" />
                 </div>
 							</div>
 
@@ -67,6 +69,7 @@
 											<span class="custom-control-label">غیر فعال</span>
 										</label>
 									</div>
+									<x-core::show-validation-error name="status" />
                 </div>
 							</div>
 

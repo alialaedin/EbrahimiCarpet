@@ -61,8 +61,12 @@
                         <td class="text-center">{{ verta($purchase->purchased_at)->formatDate() }}</td>
                         <td class="text-center">
                           @can('view payments')
-                            <a href="{{ route('admin.purchases.payments.index', $purchase) }}" class="btn btn-success btn-icon btn-sm">
-                              <i class="fa fa-money" data-toggle="tooltip" data-original-title="پرداختی ها"></i>
+                            <a 
+                              href="{{ route('admin.purchases.payments.index', $purchase) }}" 
+                              class="btn btn-success btn-icon btn-sm"
+                              data-toggle="tooltip" 
+                              data-original-title="پرداختی ها">
+                              <i class="fa fa-money" ></i>
                             </a>
                           @endcan
                           @can('view purchases')

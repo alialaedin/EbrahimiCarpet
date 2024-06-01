@@ -83,6 +83,13 @@
         </ul>
       </li>
 
+      <li class="slide">
+        <a class="side-menu__item"  href="{{route("admin.stores.index")}}">
+          <i class="fa fa-database sidemenu_icon"></i>
+          <span class="side-menu__label">مدیریت انبار</span>
+        </a>
+      </li>
+
 
 {{--
       @can('view users')

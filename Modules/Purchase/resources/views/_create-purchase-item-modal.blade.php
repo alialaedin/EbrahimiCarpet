@@ -12,8 +12,8 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-                <select name="product_id" class="form-control">
+                <label for="product_id" class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
+                <select name="product_id" id="product_id" class="form-control">
                   <option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
@@ -25,27 +25,31 @@
                     @endif
                   @endforeach
                 </select>
+                <x-core::show-validation-error name="product_id" />
               </div>
             </div>
-  
+
             <div class="col-md-6">
               <div class="form-group">
-                <label class="control-label">تعداد:<span class="text-danger">&starf;</span></label>
-                <input type="number" class="form-control" name="quantity" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('quantity') }}">
+                <label for="quantity" class="control-label">تعداد:<span class="text-danger">&starf;</span></label>
+                <input type="number" id="quantity" class="form-control" name="quantity" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('quantity') }}">
+                <x-core::show-validation-error name="quantity" />
               </div>
             </div>
-  
+
             <div class="col-md-6">
               <div class="form-group">
-                <label class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
-                <input type="text" class="form-control comma" name="price" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('price') }}">
+                <label for="price" class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
+                <input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('price') }}">
+                <x-core::show-validation-error name="price" />
               </div>
             </div>
-  
+
             <div class="col-md-6">
               <div class="form-group">
-                <label class="control-label">تخفیف (تومان): </label>
-                <input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}">
+                <label for="discount" class="control-label">تخفیف (تومان): </label>
+                <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}">
+                <x-core::show-validation-error name="discount" />
               </div>
             </div>
           </div>

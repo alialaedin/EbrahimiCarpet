@@ -7,7 +7,6 @@
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
     	</div>
-			@include('core::includes.validation-errors')
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">ثبت محصول جدید</h3>
@@ -22,6 +21,7 @@
 								<div class="form-group">
 									<label class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
 									<input type="text" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title') }}" required autofocus>
+									<x-core::show-validation-error name="title" />
 								</div>
 							</div>
 
@@ -38,6 +38,7 @@
 											@endif	
 										@endforeach
 									</select>
+									<x-core::show-validation-error name="category_id" />
 								</div>
 							</div>
 								
@@ -45,6 +46,7 @@
 								<div class="form-group">
 									<label class="control-label"> قیمت (تومان): <span class="text-danger">&starf;</span></label>
 									<input type="text" class="form-control comma" name="price" placeholder="قیمت را به تومان وارد کنید" value="{{ old('price') }}">
+									<x-core::show-validation-error name="price" />
 								</div>
 							</div>
 
@@ -52,6 +54,7 @@
 								<div class="form-group">
 									<label class="control-label"> تخفیف (تومان): </label>
 									<input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}">
+									<x-core::show-validation-error name="discount" />
 								</div>
 							</div>
 
@@ -59,6 +62,7 @@
 								<div class="form-group">
 									<label class="control-label"> انتخاب عکس </label>
 									<input type="file" class="form-control" name="image" value="{{ old('image') }}">
+									<x-core::show-validation-error name="image" />
 								</div>
 							</div>
 
@@ -66,6 +70,7 @@
 								<div class="form-group">
 									<label class="control-label">توضیحات :</label>
 									<textarea name="description" class="form-control" rows="4"> {{ old('description') }} </textarea>
+									<x-core::show-validation-error name="description" />
 								</div>
 							</div>
 
@@ -82,6 +87,7 @@
 											<span class="custom-control-label">غیر فعال</span>
 										</label>
 									</div>
+									<x-core::show-validation-error name="status" />
                 </div>
 							</div>
 

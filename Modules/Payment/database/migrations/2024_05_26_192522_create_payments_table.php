@@ -16,7 +16,7 @@ return new class extends Migration
 			$table->id();
 			$table->foreignIdFor(Purchase::class)->constrained()->cascadeOnDelete();
 			$table->unsignedBigInteger('amount');
-			$table->enum('type', ['cach', 'cheque', 'installment']);
+			$table->enum('type', ['cash', 'cheque', 'installment']);
 			$table->string('image')->nullable();
 			$table->timestamp('payment_date')->nullable();
 			$table->date('due_date')->nullable();

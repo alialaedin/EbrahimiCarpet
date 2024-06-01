@@ -7,7 +7,6 @@
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
     	</div>
-			@include('core::includes.validation-errors')
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">ویرایش دسته بندی</h3>
@@ -22,20 +21,22 @@
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title', $category->title) }}" required autofocus>
+									<label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
+									<input type="text" id="title" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title', $category->title) }}" required autofocus>
+									<x-core::show-validation-error name="title" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="control-label"> انتخاب دسته بندی والد:</label>
-                  <select name="parent_id" class="form-control">
+									<label for="parent_id" class="control-label"> انتخاب دسته بندی والد:</label>
+                  <select name="parent_id" id="parent_id" class="form-control">
 										<option value=""> بدون والد </option>
                     @foreach ($parentCategories as $parentCategory)
                       <option value="{{ $parentCategory->id }}" @selected(old('parent_id', $category->parent_id) == $parentCategory->id)> {{ $parentCategory->title }} </option>
                     @endforeach
                   </select>
+									<x-core::show-validation-error name="parent_id" />
 								</div>
 							</div>
 
@@ -53,6 +54,7 @@
 											<span class="custom-control-label">عدد</span>
 										</label>
 									</div>
+									<x-core::show-validation-error name="unit_type" />
                 </div>
 							</div>
 
@@ -69,6 +71,7 @@
 											<span class="custom-control-label">غیر فعال</span>
 										</label>
 									</div>
+									<x-core::show-validation-error name="status" />
                 </div>
 							</div>
 
