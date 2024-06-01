@@ -33,7 +33,7 @@ class Payment extends Model
 
 	public function getActivitylogOptions(): LogOptions
   {
-    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
+    $admin = auth()->user() ?? Admin::query()->where('mobile', '09368917169')->first();
 
     return LogOptions::defaults()
       ->logAll()
@@ -41,18 +41,20 @@ class Payment extends Model
 
         $eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
-        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+        $messageBase = " ادمین با شناسه{$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate ساعت $eventTime";
 				$payType = $this->getType();
+        $purchaseId = $this->attributes['purchase_id'];
+        $amount = $this->attributes['amount'];
 
         switch ($eventName) {
           case 'created':
-            $message = "{$messageBase} یک پرداختی جدید از نوع {$payType} برای خرید با شناسه {$this->purchase_id} ثبت کرد.";
+            $message = "$messageBase یک پرداختی جدید از نوع $payType برای خرید با شناسه $purchaseI. ثبت کرد ";
             break;
           case 'updated':
-            $message = "{$messageBase} پرداخت از نوع {$payType} با مبلغ {$this->amount} تومان که متعلق به خرید با شناسه {$this->purchase_id} است را ویرایش کرد";
+            $message = "$messageBase پرداخت از نوع $payType با مبلغ $amount تومان که متعلق به خرید با شناسه $purchaseId بود را ویرایش کرد.";
             break;
           case 'deleted':
-            $message = "{$messageBase} پرداخت از نوع {$payType} با مبلغ {$this->amount} تومان که متعلق به خرید با شناسه {$this->purchase_id} بود را حذف کرد";
+            $message = "$messageBase پرداخت از نوع $payType با مبلغ $amount تومان که متعلق به خرید با شناسه $purchaseId بود را حذف کرد.";
             break;
         }
 
@@ -66,9 +68,9 @@ class Payment extends Model
     return $this->belongsTo(Purchase::class);
   }
 
-	// Functions 
-	public function getType()
-	{
+	// Functions
+	public function getType(): string
+  {
 		return static::TYPES[$this->attributes['type']];
 	}
 }

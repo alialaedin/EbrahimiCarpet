@@ -21,24 +21,28 @@
           <li class="breadcrumb-item active">
             <a>ویرایش پرداختی</a>
           </li>
-        </ol> 
+        </ol>
 
     	</div>
 
 			<div class="card">
+
 				<div class="card-header border-0 justify-content-between">
 					<p class="card-title">ویرایش پرداختی</p>
 				</div>
+
 				<div class="card-body">
 					<form action="{{ route('admin.purchases.payments.update', $payment) }}" method="post" class="save" enctype="multipart/form-data">
+
             @csrf
             @method('PATCH')
+
             <div class="row">
-  
+
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label">نوع پرداخت: <span class="text-danger">&starf;</span></label>
-                  <select name="type" class="form-control">
+                  <label for="type" class="control-label">نوع پرداخت: <span class="text-danger">&starf;</span></label>
+                  <select name="type" id="type" class="form-control">
                     <option value="" class="text-muted">-- نوع پرداخت را انتخاب کنید --</option>
                     <option value="cash" @selected(old('type', $payment->type) == 'cash')>وجه نقد</option>
                     <option value="cheque" @selected(old('type', $payment->type) == 'cheque')>چک</option>
@@ -47,16 +51,16 @@
                   <x-core::show-validation-error name="type" />
                 </div>
               </div>
-    
+
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
-                  <input type="text" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به تومان وارد کنید" value="{{ old('amount', number_format($payment->amount)) }}">
+                  <label for="amount" class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
+                  <input type="text" id="amount" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به تومان وارد کنید" value="{{ old('amount', number_format($payment->amount)) }}">
                   <x-core::show-validation-error name="amount" />
                 </div>
               </div>
-    
-    
+
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="payment_date_show" class="control-label">تاریخ پرداخت:</label>
@@ -65,7 +69,7 @@
                   <x-core::show-validation-error name="payment_date" />
                 </div>
               </div>
-  
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="due_date_show" class="control-label">تاریخ سررسید:</label>
@@ -74,7 +78,7 @@
                   <x-core::show-validation-error name="due_date" />
                 </div>
               </div>
-  
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label"> انتخاب عکس </label>
@@ -91,16 +95,16 @@
 									<br>
 									<figure class="figure">
 										<a target="_blank" href="{{ Storage::url($payment->image) }}">
-											<img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" width="50" height="50" />
+											<img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" height="50" />
 										</a>
 									</figure>
 								</div>
 							@endif
-  
+
               <div class="col-12">
                 <div class="form-group">
-                  <label class="control-label">توضیحات :</label>
-                  <textarea name="description" class="form-control" rows="4"> {{ old('description', $payment->description) }} </textarea>
+                  <label for="description" class="control-label">توضیحات :</label>
+                  <textarea name="description" id="description" class="form-control" rows="4"> {{ old('description', $payment->description) }} </textarea>
                   <x-core::show-validation-error name="description" />
                 </div>
               </div>
@@ -121,9 +125,9 @@
                   <x-core::show-validation-error name="status" />
                 </div>
 							</div>
-  
+
             </div>
-  
+
             <div class="row">
 							<div class="col">
 								<div class="text-center">
@@ -131,14 +135,14 @@
 								</div>
 							</div>
 						</div>
-              
+
           </form>
 
           @if ($payment->image)
-            <form 
-              action="{{ route('admin.purchases.payments.image.destroy', $payment) }}" 
-              id="delete-image-{{$payment->id}}" 
-              method="POST" 
+            <form
+              action="{{ route('admin.purchases.payments.image.destroy', $payment) }}"
+              id="delete-image-{{$payment->id}}"
+              method="POST"
               style="display: none;">
               @csrf
               @method("DELETE")
@@ -155,24 +159,24 @@
   <script>
 
     $('#payment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#payment_date_hidden',        
+      targetDateSelector: '#payment_date_hidden',
       targetTextSelector: '#payment_date_show',
-      englishNumber: false,        
+      englishNumber: false,
       toDate:true,
-      enableTimePicker: false,        
+      enableTimePicker: false,
       dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
+      textFormat: 'yyyy-MM-dd',
       groupId: 'rangeSelector1',
     });
 
     $('#due_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#due_date_hidden',        
+      targetDateSelector: '#due_date_hidden',
       targetTextSelector: '#due_date_show',
-      englishNumber: false,        
+      englishNumber: false,
       toDate:true,
-      enableTimePicker: false,        
+      enableTimePicker: false,
       dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
+      textFormat: 'yyyy-MM-dd',
       groupId: 'rangeSelector1',
     });
 

@@ -23,9 +23,13 @@ class Purchase extends Model
     'discount'
   ];
 
+//  private mixed $supplier;
+//  private mixed $items;
+//  private mixed $payments;
+
   public function getActivitylogOptions(): LogOptions
   {
-    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
+    $admin = auth()->user() ?? Admin::query()->where('mobile', '09368917169')->first();
 
     return LogOptions::defaults()
       ->logAll()
@@ -33,18 +37,18 @@ class Purchase extends Model
 
         $eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
-        $messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
+        $messageBase = " ادمین با شناسه{$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate $eventTime";
         $supplierName = $this->supplier->name;
 
         switch ($eventName) {
           case 'created':
-            $message = "{$messageBase} یک خرید جدید از {$supplierName} را ثبت کرد.";
+            $message = "$messageBase یک خرید جدید از $supplierName را ثبت کرد.";
             break;
           case 'updated':
-            $message = "{$messageBase} خرید با شناسه عددی {$this->id} را ویرایش کرد.";
+            $message = "$messageBase خرید با شناسه عددی {$this->attributes['id']} را ویرایش کرد.";
             break;
           case 'deleted':
-            $message = "{$messageBase} خرید با شناسه {$this->id} که از تامین کننده با نام {$supplierName} ثبت شده بود را حذف کرد.";
+            $message = "$messageBase خرید با شناسه {$this->attributes['id']} که از تامین کننده با نام $supplierName ثبت شده بود را حذف کرد.";
             break;
         }
 
@@ -92,7 +96,7 @@ class Purchase extends Model
   {
     return $this->getTotalPurchaseAmount() - $this->attributes['discount'];
   }
-  
+
   public function getTotalPaymentAmount(): int
   {
     return $this->payments->where('status', 1)->sum('amount');

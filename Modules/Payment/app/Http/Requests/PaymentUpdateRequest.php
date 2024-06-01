@@ -3,6 +3,7 @@
 namespace Modules\Payment\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
 
 class PaymentUpdateRequest extends FormRequest
@@ -27,8 +28,11 @@ class PaymentUpdateRequest extends FormRequest
 		];
 	}
 
-	public function passedValidation()
-	{
+  /**
+   * @throws ValidationException
+   */
+  public function passedValidation(): void
+  {
 		$payment = $this->route('payment');
 		$purchase = $payment->purchase;
 
@@ -40,29 +44,28 @@ class PaymentUpdateRequest extends FormRequest
 		$status = $this->input('status');
 
 		if ($status == 1 && $this->input('amount') > $remainingAmount + $payment->amount) {
-			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.');
+			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
 		}
-
-		if ($type == 'cheque') {
+    if ($type == 'cheque') {
 
 			if ($this->isNotFilled('due_date')) {
-				throw Helpers::makeWebValidationException('تاریخ موعد چک را مشخص کنید.');
+				throw Helpers::makeWebValidationException('تاریخ موعد چک را مشخص کنید.', 'due_date');
 			} elseif ($this->filled('payment_date') && $status == 0) {
-				throw Helpers::makeWebValidationException('وضعیت چک درحالی که تاریخ پرداخت دارد نمی تواند غیرفعال باشد.');
+				throw Helpers::makeWebValidationException('وضعیت چک درحالی که تاریخ پرداخت دارد نمی تواند غیرفعال باشد.', 'status');
 			}
 		} elseif ($type == 'cash') {
 
 			if ($this->isNotFilled('payment_date')) {
-				throw Helpers::makeWebValidationException('تاریخ پرداخت را مشخص کنید.');
+				throw Helpers::makeWebValidationException('تاریخ پرداخت را مشخص کنید.', 'payment_date');
 			} elseif ($status == 0) {
-				throw Helpers::makeWebValidationException('وضعیت پرداخت نقدی باید فعال باشد.');
+				throw Helpers::makeWebValidationException('وضعیت پرداخت نقدی باید فعال باشد.', 'status');
 			}
 		} elseif ($type == 'installment') {
 
 			if ($this->isNotFilled('due_date')) {
-				throw Helpers::makeWebValidationException('تاریخ موعد قسط را مشخص کنید.');
+				throw Helpers::makeWebValidationException('تاریخ موعد قسط را مشخص کنید.', 'due_date');
 			} elseif ($status == 1 && $this->isNotFilled('payment_date')) {
-				throw Helpers::makeWebValidationException('قسطی که وضعیت وضعیت آن فعال است باید تاریخ پرداختش مشخص شود.');
+				throw Helpers::makeWebValidationException('قسطی که وضعیت آن فعال است باید تاریخ پرداختش مشخص شود.', 'payment_date');
 			}
 		}
 	}

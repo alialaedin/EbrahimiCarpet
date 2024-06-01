@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application as App;
+use Illuminate\Http\RedirectResponse;
 use Modules\Payment\Http\Requests\PaymentStoreRequest;
 use Modules\Payment\Http\Requests\PaymentUpdateRequest;
 use Modules\Payment\Models\Payment;
@@ -15,8 +20,8 @@ use Modules\Purchase\Models\Purchase;
 class PaymentController extends Controller implements HasMiddleware
 {
 
-	public static function middleware()
-	{
+	public static function middleware(): array
+  {
 		return [
 			new Middleware('can:view payments', ['index']),
 			new Middleware('can:create payments', ['create', 'store']),
@@ -25,23 +30,24 @@ class PaymentController extends Controller implements HasMiddleware
 		];
 	}
 
-	public function index(Purchase $purchase)
-	{
-		$payments = Payment::query()
-			->where('purchase_id', $purchase->id)
-			->latest('id')
-			->get();
+	public function index(Purchase $purchase): View|Application|Factory|App
+  {
+		$payments = Payment::query()->where('purchase_id', $purchase->id)->get();
 
-		return view('payment::index', compact('payments', 'purchase'));
+    $cashPayments = $payments->where('type', '=','cash');
+    $installmentPayments = $payments->where('type', '=','installment');
+    $chequePayments = $payments->where('type', '=','cheque');
+
+		return view('payment::index', compact(['purchase', 'installmentPayments', 'cashPayments', 'chequePayments']));
 	}
 
-	public function create(Purchase $purchase)
-	{
+	public function create(Purchase $purchase): View|Application|Factory|App
+  {
 		return view('payment::create', compact('purchase'));
 	}
 
-	public function store(PaymentStoreRequest $request)
-	{
+	public function store(PaymentStoreRequest $request): RedirectResponse
+  {
 		$inputs = $this->getFormInputs($request);
 
 		if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -55,13 +61,13 @@ class PaymentController extends Controller implements HasMiddleware
 		return to_route('admin.purchases.payments.index', $purchase);
 	}
 
-	public function edit(Payment $payment)
-	{
+	public function edit(Payment $payment): View|Application|Factory|App
+  {
 		return view('payment::edit', compact('payment'));
 	}
 
-	public function update(PaymentUpdateRequest $request, Payment $payment)
-	{
+	public function update(PaymentUpdateRequest $request, Payment $payment): RedirectResponse
+  {
 		$inputs = $this->getFormInputs($request);
 
 		if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -77,16 +83,16 @@ class PaymentController extends Controller implements HasMiddleware
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Payment $payment)
-	{
+	public function destroy(Payment $payment): RedirectResponse
+  {
 		$payment->delete();
 		toastr()->success("پرداختی با موفقیت حذف شد.");
 
 		return redirect()->back();
 	}
 
-	public function destroyImage(Payment $payment)
-	{
+	public function destroyImage(Payment $payment): RedirectResponse
+  {
 		Storage::disk('public')->delete($payment->image);
 		$payment->image = null;
 		$payment->save();
@@ -95,8 +101,8 @@ class PaymentController extends Controller implements HasMiddleware
 		return redirect()->back();
 	}
 
-	private function getFormInputs(Request $request)
-	{
+	private function getFormInputs(Request $request): array
+  {
 		return [
 			'amount' => $request->input('amount'),
 			'status' => $request->input('status'),
