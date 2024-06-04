@@ -1,8 +1,8 @@
 @font-face {
-  font-family: Shabnam;
-  src: url("Vazir-Bold-FD-WOL.woff");
+  font-family: Vazir;
+  src: url("./vazir-font-v29.1.0/Farsi-Digits/Vazir-Medium-FD.ttf");
 }
 
 body {
-  font-family: Shabnam !important;
+  font-family: Vazir, sans-serif !important;
 }

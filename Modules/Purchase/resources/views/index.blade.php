@@ -11,17 +11,15 @@
         @endcan
     	</div>
 
-      @include('purchase::_filter-form')
+      @include('purchase::includes._filter-form')
 
       <div class="card">
 
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">لیست خرید ها</p>
-            <span class="fs-15 ">({{ $purchasesCount }})</span>
-          </div>
+        <div class="card-header border-0">
+          <p class="card-title ml-2">لیست خرید ها</p>
+          <span class="fs-15">({{ $purchasesCount }})</span>
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -29,7 +27,7 @@
                 <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
                   <thead class="thead-light">
                     <tr>
-                      <th class="text-center">شناسه</th>
+                      <th class="text-center">ردیف</th>
                       <th class="text-center">نام تامین کننده</th>
                       <th class="text-center">شماره موبایل</th>
                       <th class="text-center">مبلغ خرید (تومان)</th>
@@ -42,7 +40,7 @@
                   <tbody>
                     @forelse ($purchases as $purchase)
                       <tr>
-                        <td class="text-center">{{ $purchase->id }}</td>
+                        <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                         <td class="text-center">
                           <a href="{{ route('admin.suppliers.show', $purchase->supplier) }}" target="_blank">
                             {{ $purchase->supplier->name }}
@@ -61,10 +59,10 @@
                         <td class="text-center">{{ verta($purchase->purchased_at)->formatDate() }}</td>
                         <td class="text-center">
                           @can('view payments')
-                            <a 
-                              href="{{ route('admin.purchases.payments.index', $purchase) }}" 
+                            <a
+                              href="{{ route('admin.purchases.payments.index', $purchase) }}"
                               class="btn btn-success btn-icon btn-sm"
-                              data-toggle="tooltip" 
+                              data-toggle="tooltip"
                               data-original-title="پرداختی ها">
                               <i class="fa fa-money" ></i>
                             </a>

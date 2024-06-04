@@ -3,6 +3,8 @@
 namespace Modules\Purchase\Http\Requests\Admin\PurchaseItem;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
 
 class PurchaseItemStoreRequest extends FormRequest
@@ -19,14 +21,22 @@ class PurchaseItemStoreRequest extends FormRequest
 	{
 		return [
 			'purchase_id' => ['required', 'integer', 'exists:purchases,id'],
-			'product_id' => ['required', 'integer', 'exists:products,id'],
+			'product_id' => [
+        'required',
+        'integer',
+        Rule::exists('products', 'id'),
+        Rule::unique('purchase_items', 'product_id')
+          ->where('purchase_id', $this->input('purchase_id'))],
 			'quantity' => ['required', 'integer', 'min:1'],
 			'discount' => ['nullable', 'integer', 'min:1000'],
 			'price' => ['required', 'integer', 'min:1000'],
 		];
 	}
 
-	public function passedValidation()
+  /**
+   * @throws ValidationException
+   */
+  public function passedValidation()
 	{
 		if ($this->filled('discount')) {
 			if ($this->input('discount') > $this->input('price')) {

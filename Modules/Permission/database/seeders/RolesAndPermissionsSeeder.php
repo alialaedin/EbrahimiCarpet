@@ -37,11 +37,11 @@ class RolesAndPermissionsSeeder extends Seeder
 			// 'create admins' => 'ایجاد ادمین ها',
 			// 'edit admins' => 'ویرایش ادمین ها',
 			// 'delete admins' => 'حذف ادمین ها',
-			//roles NEW
-			'view roles' => 'مشاهده نقش ها',
-			'create roles' => 'ایجاد نقش ها',
-			'edit roles' => 'ویرایش نقش ها',
-			'delete roles' => 'حذف نقش ها',
+			//roles
+//			'view roles' => 'مشاهده نقش ها',
+//			'create roles' => 'ایجاد نقش ها',
+//			'edit roles' => 'ویرایش نقش ها',
+//			'delete roles' => 'حذف نقش ها',
 			//customers
 			'view customers' => 'مشاهده مشتری ها',
 			'create customers' => 'ایجاد مشتری ها',

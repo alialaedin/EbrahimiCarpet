@@ -70,15 +70,17 @@
 
 							@if ($product->image)
 								<div class="col-md-6">
-									<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
-										<i class="fa fa-trash-o"></i>
-									</button>
-									<br>
-									<figure class="figure">
-										<a target="blank" href="{{ Storage::url($product->image) }}">
-											<img src="{{ Storage::url($product->image) }}" class="img-thumbnail" width="50" height="50" />
-										</a>
-									</figure>
+									<div class="form-group">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                    <br>
+                    <figure class="figure">
+                      <a target="blank" href="{{ Storage::url($product->image) }}">
+                        <img src="{{ Storage::url($product->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 36px;" />
+                      </a>
+                    </figure>
+                  </div>
 								</div>
 							@endif
 

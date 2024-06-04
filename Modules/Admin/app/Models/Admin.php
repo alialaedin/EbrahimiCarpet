@@ -12,68 +12,70 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-	use HasFactory, HasRoles, LogsActivity;
+  use HasFactory, HasRoles, LogsActivity;
 
-	protected $fillable = [
-		'name',
-		'mobile',
-		'status',
-		'password',
-	];
+  protected $fillable = [
+    'name',
+    'mobile',
+    'status',
+    'password',
+  ];
 
-	protected $hidden = [
-		'password',
-		'remember_token',
-	];
+  protected $hidden = [
+    'password',
+    'remember_token',
+  ];
 
-	protected function casts(): array
-	{
-		return [
-			'password' => 'hashed',
-		];
-	}
+  protected function casts(): array
+  {
+    return [
+      'password' => 'hashed',
+    ];
+  }
 
-	protected static function newFactory(): AdminFactory
-	{
-		return AdminFactory::new();
-	}
+  protected static function newFactory(): AdminFactory
+  {
+    return AdminFactory::new();
+  }
 
-	public function getActivitylogOptions(): LogOptions
-	{
-		$events = [
-			'created' => 'ایجاد کرد',
-			'updated' => 'ویرایش کرد',
-			'deleted' => 'حذف کرد',
-		];
+  public function getActivitylogOptions(): LogOptions
+  {
+    return LogOptions::defaults()
+      ->logAll()
+      ->setDescriptionForEvent(function (string $eventName) {
 
-		return LogOptions::defaults()
-			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($events) {
-				$model = $this;
-				$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-				$createdDate = verta($model->created_at)->format('Y/m/d');
-				$message = "ادمین با شناسه {$admin->id} ({$admin->name}) در تاریخ {$createdDate} ";
+        $eventDate = verta()->format('Y/m/d');
+        $eventTime = verta()->formatTime();
 
-				if (array_key_exists($eventName, $events)) {
-					$action = $events[$eventName];
-					$message .= "ادمین با شناسه {$model->id} ({$model->name}) را {$action}.";
-				}
+        $baseMessage = "در تاریخ $eventDate, ساعت $eventTime ادمین با نام {$this->attributes['name']} توسط مدیر سایت ";
 
-				return $message;
-			});
-	}
+        switch ($eventName) {
+          case 'created':
+            $message = "$baseMessage ساخته شد.";
+            break;
+          case 'updated':
+            $message = "$baseMessage ویرایش شد.";
+            break;
+          case 'deleted':
+            $message = "$baseMessage حذف شد.";
+            break;
+        }
 
-	// Functions
-	public function getRoleLabel()
-	{
-		$thisRoleName = $this->getRoleNames()->first();
-		$role = Role::findByName($thisRoleName);
+        return $message;
+      });
+  }
 
-		return $role->label;
-	}
+  // Functions
+  public function getRoleLabel()
+  {
+    $thisRoleName = $this->getRoleNames()->first();
+    $role = Role::findByName($thisRoleName);
 
-	public function getRoleName()
-	{
-		return $this->getRoleNames()->first();
-	}
+    return $role->label;
+  }
+
+  public function getRoleName()
+  {
+    return $this->getRoleNames()->first();
+  }
 }

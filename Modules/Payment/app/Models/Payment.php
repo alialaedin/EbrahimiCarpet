@@ -48,7 +48,7 @@ class Payment extends Model
 
         switch ($eventName) {
           case 'created':
-            $message = "$messageBase یک پرداختی جدید از نوع $payType برای خرید با شناسه $purchaseI. ثبت کرد ";
+            $message = "$messageBase یک پرداختی جدید از نوع $payType برای خرید با شناسه $purchaseId. ثبت کرد ";
             break;
           case 'updated':
             $message = "$messageBase پرداخت از نوع $payType با مبلغ $amount تومان که متعلق به خرید با شناسه $purchaseId بود را ویرایش کرد.";

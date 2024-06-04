@@ -23,10 +23,6 @@ class Purchase extends Model
     'discount'
   ];
 
-//  private mixed $supplier;
-//  private mixed $items;
-//  private mixed $payments;
-
   public function getActivitylogOptions(): LogOptions
   {
     $admin = auth()->user() ?? Admin::query()->where('mobile', '09368917169')->first();

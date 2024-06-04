@@ -14,33 +14,33 @@
       <div class="card">
 
         <div class="card-header border-0">
-          <p class="card-title" style="font-weight: bolder;">جستجو پیشرفته</p>
+          <p class="card-title">جستجوی پیشرفته</p>
         </div>
 
         <div class="card-body">
           <div class="row">
             <form action="{{ route("admin.suppliers.index") }}" class="col-12">
               <div class="row">
-      
+
                 <div class="col-xl-4 col-md-6 col-12">
                   <div class="form-group">
-                    <label class="font-weight-bold">نام و نام خانوادگی :</label>
-                    <input type="text" name="full_name" class="form-control" value="{{ request('full_name') }}">
+                    <label for="name">نام و نام خانوادگی :</label>
+                    <input type="text" id="name" name="full_name" class="form-control" value="{{ request('full_name') }}">
                   </div>
                 </div>
 
                 <div class="col-xl-4 col-md-6 col-12">
                   <div class="form-group">
-                    <label class="font-weight-bold">تلفن همراه :</label>
-                    <input type="text" name="mobile" class="form-control" value="{{ request('mobile') }}">
+                    <label for="mobile">تلفن همراه :</label>
+                    <input type="text" id="mobile" name="mobile" class="form-control" value="{{ request('mobile') }}">
                   </div>
                 </div>
 
                 <div class="col-xl-4 col-md-6 col-12">
                   <div class="form-group">
-                    <label class="font-weight-bold">وضعیت :</label>
-                    <select name="status" class="form-control">
-                      <option value="all">همه</option>
+                    <label for="status">وضعیت :</label>
+                    <select name="status" id="status" class="form-control">
+                      <option value="">همه</option>
                       <option value="1" @selected(request("status") == "1")>فعال</option>
                       <option value="0" @selected(request("status") == "0")>غیر فعال</option>
                     </select>
@@ -50,7 +50,7 @@
               </div>
 
               <x-core::filter-buttons table="suppliers"/>
-              
+
             </form>
           </div>
         </div>
@@ -58,13 +58,11 @@
 
       <div class="card">
 
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">لیست تامین کنندگان</p>
-            <span class="fs-15 ">({{ $totalSuppliers }})</span>
-          </div>
+        <div class="card-header border-0">
+          <p class="card-title ml-2">لیست تامین کنندگان</p>
+          <span class="fs-15">({{ $totalSuppliers }})</span>
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -72,7 +70,7 @@
                 <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
                   <thead class="thead-light">
                     <tr>
-                      <th class="text-center border-top">شناسه</th>
+                      <th class="text-center border-top">ردیف</th>
                       <th class="text-center border-top">نام و نام خانوادگی</th>
                       <th class="text-center border-top">شماره موبایل</th>
                       <th class="text-center border-top">وضعیت</th>
@@ -83,15 +81,15 @@
                   <tbody>
                     @forelse ($suppliers as $supplier)
                       <tr>
-                        <td class="text-center">{{ $supplier->id }}</td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ $supplier->name }}</td>
                         <td class="text-center">{{ $supplier->mobile }}</td>
                         <td class="text-center">
-                          <x-core::badge 
-                            type="{{ $supplier->status ? 'success' : 'danger' }}" 
-                            text="{{ $supplier->status ? 'فعال' : 'غیر فعال' }}" 
+                          <x-core::badge
+                            type="{{ $supplier->status ? 'success' : 'danger' }}"
+                            text="{{ $supplier->status ? 'فعال' : 'غیر فعال' }}"
                           />
-                        <td class="text-center">{{ verta($supplier->created_at)->format('Y/m/d') }}</td>
+                        <td class="text-center">{{ verta($supplier->created_at)->formatDate() }}</td>
                         <td class="text-center">
 
                           @can('view suppliers')
@@ -122,26 +120,26 @@
 @endsection
 @section('scripts')
 
-  <script>   
+  <script>
     $('#from_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#from_deployment_date',        
+      targetDateSelector: '#from_deployment_date',
       targetTextSelector: '#from_deployment_date_show',
-      englishNumber: false,        
+      englishNumber: false,
       toDate:true,
-      enableTimePicker: false,        
+      enableTimePicker: false,
       dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
+      textFormat: 'yyyy-MM-dd',
       groupId: 'rangeSelector1',
     });
 
     $('#to_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#to_deployment_date',        
+      targetDateSelector: '#to_deployment_date',
       targetTextSelector: '#to_deployment_date_show',
-      englishNumber: false,        
+      englishNumber: false,
       toDate:true,
-      enableTimePicker: false,        
+      enableTimePicker: false,
       dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',        
+      textFormat: 'yyyy-MM-dd',
       groupId: 'rangeSelector1',
     });
   </script>

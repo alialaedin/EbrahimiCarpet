@@ -13,13 +13,11 @@
 
       <div class="card">
 
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">لیست ادمین ها</p>
-            <span class="fs-15 ">({{ $adminsCount }})</span>
-          </div>
+        <div class="card-header border-0">
+          <p class="card-title ml-2">لیست ادمین ها</p>
+          <span class="fs-15 ">({{ $adminsCount }})</span>
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -46,12 +44,12 @@
                         <td class="text-center">{{ $admin->mobile }}</td>
                         <td class="text-center">{{ $admin->getRoleLabel() }}</td>
                         <td class="text-center">
-                          <x-core::badge 
-                            type="{{ $admin->status ? 'success' : 'danger' }}" 
-                            text="{{ $admin->status ? 'فعال' : 'غیر فعال' }}" 
+                          <x-core::badge
+                            type="{{ $admin->status ? 'success' : 'danger' }}"
+                            text="{{ $admin->status ? 'فعال' : 'غیر فعال' }}"
                           />
                         </td>
-                        <td class="text-center">{{ verta($admin->created_at) }}</td>
+                        <td class="text-center">{{ verta($admin->created_at)->formatDate() }}</td>
                         <td class="text-center">
                           @can('view admins')
                             <x-core::show-button route="admin.admins.show" :model="$admin"/>

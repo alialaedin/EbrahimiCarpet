@@ -4,7 +4,6 @@ namespace Modules\Purchase\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Core\Traits\BreadCrumb;
@@ -120,8 +119,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchase->load([
 			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
 			'items' => fn ($query) => $query->latest('id'),
-			'items.product' => fn ($query) => $query->select('id', 'category_id', 'title'),
-			'items.product.category' => fn ($query) => $query->select('id', 'title'),
+			'items.product' => fn ($query) => $query->select('id', 'category_id', 'title', 'image'),
 		]);
 		$products = $this->getProducts();
 		$categories = $this->getCategories();

@@ -12,7 +12,7 @@
 			<div class="card">
 
 				<div class="card-header">
-					<h3 class="card-title">ویرایش تامین کننده</h3>
+					<p class="card-title">ویرایش تامین کننده</h3>
 				</div>
 
 				<div class="card-body">

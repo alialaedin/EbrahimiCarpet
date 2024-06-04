@@ -4,13 +4,17 @@
 
   <div class="col-12">
     <div class="col-xl-12 col-md-12 col-lg-12">
+
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
       </div>
+
       <div class="card">
+
 				<div class="card-header">
-					<h3 class="card-title">ثبت دسته بندی جدید</h3>
+					<p class="card-title">ثبت دسته بندی جدید</p>
 				</div>
+
 				<div class="card-body">
 					<form action="{{ route('admin.categories.store') }}" method="post" class="save">
 						@csrf

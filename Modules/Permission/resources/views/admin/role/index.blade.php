@@ -15,11 +15,11 @@
 
         <div class="card-header border-0 justify-content-between ">
           <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">لیست نقش ها</p>
+            <p class="card-title ml-2">لیست نقش ها</p>
             <span class="fs-15 ">({{ $rolesCount }})</span>
           </div>
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -27,7 +27,7 @@
                 <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
                   <thead class="thead-light">
                     <tr>
-                      <th class="text-center border-top">شناسه</th>
+                      <th class="text-center border-top">ردیف</th>
                       <th class="text-center border-top">نام</th>
                       <th class="text-center border-top">نام قابل مشاهده</th>
                       <th class="text-center border-top">تاریخ ثبت</th>
@@ -37,7 +37,7 @@
                   <tbody>
                     @forelse ($roles as $role)
                       <tr>
-                        <td class="text-center">{{ $role->id }}</td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ $role->name }}</td>
                         <td class="text-center">{{ $role->label }}</td>
                         <td class="text-center">{{ verta($role->created_at) }}</td>
@@ -45,25 +45,25 @@
                           <div class="d-flex justify-content-center">
 
                             @can('edit roles')
-                              <a 
-                                href="{{route("admin.roles.edit", $role)}}" 
-                                class="action-btns1 bg-warning mx-1" 
+                              <a
+                                href="{{route("admin.roles.edit", $role)}}"
+                                class="action-btns1 bg-warning mx-1"
                                 @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
                                 <i class="fe fe-edit text-white py-1"></i>
                               </a>
                             @endcan
 
                             @can('delete roles')
-                              <button 
-                                onclick="confirmDelete('delete-{{ $role->id }}')" 
-                                class="action-btns1 bg-danger mx-1" 
+                              <button
+                                onclick="confirmDelete('delete-{{ $role->id }}')"
+                                class="action-btns1 bg-danger mx-1"
                                 @disabled($role->name == 'super_admin')>
                                 <i class="fe fe-trash-2 text-white py-1"></i>
                               </button>
-                              <form 
-                                action="{{ route("admin.roles.destroy", $role) }}" 
-                                method="POST" 
-                                id="delete-{{ $role->id }}" 
+                              <form
+                                action="{{ route("admin.roles.destroy", $role) }}"
+                                method="POST"
+                                id="delete-{{ $role->id }}"
                                 style="display: none">
                                 @csrf
                                 @method('DELETE')

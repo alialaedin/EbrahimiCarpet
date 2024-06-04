@@ -5,15 +5,24 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
 
 			<div class="page-header">
-        <x-core::breadcrumb :items="$breadcrumbItems" />
+
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{{ route('admin.dashboard') }}">
+              <i class="fe fe-life-buoy ml-1"></i> داشبورد
+            </a>
+          </li>
+          <li class="breadcrumb-item">لیست انبار</li>
+        </ol>
+
     	</div>
 
       <div class="card">
 
         <div class="card-header border-0">
-          <p class="card-title font-weight-bold">لیست انبار</p>
+          <p class="card-title">لیست انبار</p>
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -21,20 +30,20 @@
                 <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
                   <thead class="thead-light">
                     <tr>
-                      <th class="text-center">شناسه</th>
+                      <th class="text-center">ردیف</th>
                       <th class="text-center">عنوان محصول</th>
                       <th class="text-center">تصویر محصول</th>
-                      <th class="text-center">موجودی</th>
+                      <th class="text-center">موجودی (تعداد)</th>
                       <th class="text-center">تاریخ ثبت</th>
-                      <th class="text-center">لیست تراکنش ها</th>
+                      <th class="text-center">تراکنش ها</th>
                     </tr>
                   </thead>
                   <tbody>
                     @forelse ($stores as $store)
                       <tr>
-                        <td class="text-center">{{ $store->id }}</td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">
-                          <a href="{{ route('admin.products.show', $store->product) }}" target="_blank">
+                          <a href="{{ route('admin.products.show', $store->product) }}">
                             {{ $store->product->title }}
                           </a>
                         </td>
@@ -42,7 +51,7 @@
                           @if ($store->product->image)
                             <figure class="figure my-2">
                               <a target="_blank" href="{{ Storage::url($store->product->image) }}">
-                                <img src="{{ Storage::url($store->product->image) }}" class="img-thumbnail" width="50" style="max-height: 32.5px;" />
+                                <img src="{{ Storage::url($store->product->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
                               </a>
                             </figure>
                           @else
@@ -55,7 +64,6 @@
                           @can('view stores')
                             <x-core::show-button route="admin.stores.show" :model="$store"/>
                           @endcan
-                          
                         </td>
                       </tr>
                       @empty

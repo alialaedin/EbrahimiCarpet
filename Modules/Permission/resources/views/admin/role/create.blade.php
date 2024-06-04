@@ -9,7 +9,7 @@
     	</div>
 			<div class="card">
 				<div class="card-header">
-					<h3 class="card-title">ثبت نقش جدید</h3>
+					<p class="card-title">ثبت نقش جدید</p>
 				</div>
 				<div class="card-body">
 					<form action="{{ route('admin.roles.store') }}" method="post" class="save">

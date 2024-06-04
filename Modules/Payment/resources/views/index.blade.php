@@ -48,21 +48,21 @@
 
             <div class="col-lg-4 col-md-6 col-12">
               <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold text-muted ml-1">مبلغ خرید :</span>
+                <span class="fs-16 font-weight-bold ml-1">مبلغ خرید :</span>
                 <span class="fs-14 mr-1"> {{ number_format($totalAmount) }} تومان</span>
               </div>
             </div>
 
             <div class="col-lg-4 col-md-6 col-12">
               <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold text-muted ml-1">مبلغ پرداخت شده :</span>
+                <span class="fs-16 font-weight-bold ml-1">مبلغ پرداخت شده :</span>
                 <span class="fs-14 mr-1"> {{ number_format($paymentAmount) }} تومان</span>
               </div>
             </div>
 
             <div class="col-lg-4 col-md-6 col-12">
               <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold text-muted ml-1">مبلغ باقی مانده :</span>
+                <span class="fs-16 font-weight-bold ml-1">مبلغ باقی مانده :</span>
                 <span class="fs-14 mr-1"> {{ number_format($remainingAmount) }} تومان</span>
               </div>
             </div>
@@ -73,12 +73,9 @@
       </div>
 
 			<div class="card">
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">پرداختی های نقدی</p>
-            <span class="fs-15 ">({{ $cashPayments->count() }})</span>
-          </div>
-
+        <div class="card-header border-0">
+          <p class="card-title ml-2">پرداختی های نقدی</p>
+          <span class="fs-15 ">({{ $cashPayments->count() }})</span>
         </div>
 
         <div class="card-body">
@@ -152,12 +149,9 @@
       </div>
 
       <div class="card">
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">اقساط</p>
-            <span class="fs-15 ">({{ $installmentPayments->count() }})</span>
-          </div>
-
+        <div class="card-header border-0">
+          <p class="card-title ml-2">اقساط</p>
+          <span class="fs-15">({{ $installmentPayments->count() }})</span>
         </div>
 
         <div class="card-body">
@@ -244,12 +238,9 @@
       </div>
 
       <div class="card">
-        <div class="card-header border-0 justify-content-between ">
-          <div class="d-flex">
-            <p class="card-title ml-2" style="font-weight: bolder;">چک ها</p>
-            <span class="fs-15 ">({{ $chequePayments->count() }})</span>
-          </div>
-
+        <div class="card-header border-0">
+          <p class="card-title ml-2">چک ها</p>
+          <span class="fs-15">({{ $chequePayments->count() }})</span>
         </div>
 
         <div class="card-body">

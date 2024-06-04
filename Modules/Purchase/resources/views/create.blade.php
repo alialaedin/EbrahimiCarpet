@@ -23,8 +23,8 @@
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
-									<label class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
-									<select name="supplier_id" class="form-control">
+									<label for="supplier_id" class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
+									<select name="supplier_id" id="supplier_id" class="form-control">
 										<option value="" class="text-muted">-- تامین کننده را انخاب کنید --</option>
 										@foreach ($suppliers as $supplier)
 											<option value="{{ $supplier->id }}" @selected(old("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
@@ -43,8 +43,8 @@
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
-									<label class="control-label"> تخفیف کلی (تومان): </label>
-									<input type="text" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}">
+									<label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
+									<input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}">
 								</div>
 							</div>
 
@@ -84,11 +84,11 @@
 	<script>
 		$(document).ready(function() {
 
-			var index = 0;
+      let index = 0;
 
-    	$("#addPurchaseItemButton").on('click', function() {
+      $("#addPurchaseItemButton").on('click', function() {
 
-				var newPurchaseItemInputs = $(`
+        const newPurchaseItemInputs = $(`
 					<div class="row">
 						<div class="col-12 bg-light mb-2 py-2 d-flex justify-content-between align-items-center">
 							<span style="font-size: 18px;">آیتم جدید </span>
@@ -98,37 +98,37 @@
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="form-group">
-								<label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-								<select name="products[${index + 1}][id]" class="form-control">
+								<label for="products[${index + 1}][id]" class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
+								<select name="products[${index + 1}][id]" id="products[${index + 1}][id]" class="form-control">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
                       <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title }}</option>
-                        @endforeach
+                                      @foreach ($category->products as $product)
+                      <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title }}</option>
+                                      @endforeach
                       </optgroup>
-                    @endif
+                   @endif
                   @endforeach
                 </select>
+              </div>
+             </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="products[${index + 1}][quantity]" class="control-label">تعداد:<span class="text-danger">&starf;</span></label>
+                <input type="number" id="products[${index + 1}][quantity]" class="form-control" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('products[${index + 1}][quantity]') }}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="form-group">
-								<label class="control-label">تعداد:<span class="text-danger">&starf;</span></label>
-								<input type="number" class="form-control" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('products[${index + 1}][quantity]') }}">
+								<label for="products[${index + 1}][price]" class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
+								<input type="text" id="products[${index + 1}][price]" class="form-control comma" name="products[${index + 1}][price]" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('products[${index + 1}][price]') }}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="form-group">
-								<label class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
-								<input type="text" class="form-control comma" name="products[${index + 1}][price]" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('products[${index + 1}][price]') }}">
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6">
-							<div class="form-group">
-								<label class="control-label">تخفیف (تومان): </label>
-								<input type="text" class="form-control comma" name="products[${index + 1}][discount]" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
+								<label for="products[${index + 1}][discount]" class="control-label">تخفیف (تومان): </label>
+								<input type="text" id="products[${index + 1}][discount]" class="form-control comma" name="products[${index + 1}][discount]" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
 							</div>
 						</div>
 					</div>

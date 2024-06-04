@@ -4,51 +4,58 @@
 
   <div class="col-12">
     <div class="col-xl-12 col-md-12 col-lg-12">
+
       <div class="page-header">
         <x-core::breadcrumb :items="$breadcrumbItems" />
     	</div>
+
 			<div class="card">
+
 				<div class="card-header">
-					<h3 class="card-title">ویرایش مشتری</h3>
+					<p class="card-title">ویرایش مشتری</p>
 				</div>
+
 				<div class="card-body">
+
 					<form action="{{ route('admin.customers.update', $customer) }}" method="post" class="save">
+
 						@csrf
             @method('PATCH')
+
 						<div class="row">
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $customer->name) }}" required autofocus>
+									<input type="text" id="name" class="form-control" name="name" placeholder="نام و نام خانوادگی را وارد کنید" value="{{ old('name', $customer->name) }}" required autofocus>
 									<x-core::show-validation-error name="name" />
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
-									<label for="label" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $customer->mobile) }}" required>
+									<label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
+									<input type="text" id="mobile" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile', $customer->mobile) }}" required>
 									<x-core::show-validation-error name="mpbile" />
 								</div>
 							</div>
 
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
-									<label for="label" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
-									<input type="text" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone', $customer->telephone) }}" required>
+									<label for="telephone" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
+									<input type="text" id="telephone" class="form-control" name="telephone" placeholder="تلفن ثابت را وارد کنید" value="{{ old('telephone', $customer->telephone) }}" required>
 									<x-core::show-validation-error name="telephone" />
 								</div>
 							</div>
 
 							<div class="col-12">
 								<div class="form-group">
-									<label class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
-									<textarea name="address" class="form-control" rows="3">{{ old('address', $customer->address) }}</textarea>
+									<label for="address" class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
+									<textarea name="address" id="address" class="form-control" rows="3" placeholder="محل سکونت مشتری را وارد کنید">{{ old('address', $customer->address) }}</textarea>
 									<x-core::show-validation-error name="address" />
 								</div>
 							</div>
-							
+
 							<div class="col-12">
 								<div class="form-group">
 									<label for="label" class="control-label"> وضعیت: </label>

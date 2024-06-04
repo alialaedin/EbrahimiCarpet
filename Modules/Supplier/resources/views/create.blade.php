@@ -12,7 +12,7 @@
 			<div class="card">
 
 				<div class="card-header">
-					<h3 class="card-title">ثبت تامین کننده جدید</h3>
+					<p class="card-title">ثبت تامین کننده جدید</p>
 				</div>
 
 				<div class="card-body">

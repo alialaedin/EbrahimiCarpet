@@ -13,6 +13,7 @@ use Modules\Product\Http\Requests\Admin\Product\ProductStoreRequest;
 use Modules\Product\Http\Requests\Admin\Product\ProductUpdateRequest;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
+use Modules\Store\Models\Store;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -32,7 +33,11 @@ class ProductController extends Controller implements HasMiddleware
 
 	private function getParentCategories()
 	{
-		return Category::query()->select('id', 'title')->whereNull('parent_id')->with('children:id,title,parent_id')->get();
+		return Category::query()
+      ->select('id', 'title')
+      ->whereNull('parent_id')
+      ->with('children:id,title,parent_id')
+      ->get();
 	}
 
 	public function index()
@@ -43,7 +48,7 @@ class ProductController extends Controller implements HasMiddleware
 		$hasDiscount = request('has_discount');
 
 		$products = Product::query()
-			->select('id', 'title', 'category_id', 'status', 'discount', 'price', 'created_at')
+			->select('id', 'title', 'category_id', 'status', 'discount', 'price', 'image', 'created_at')
 			->with(['category' => fn ($query) => $query->select('id', 'title')])
 			->when($title, fn (Builder $query) => $query->where('title', 'like', "%{$title}%"))
 			->when($categoryId, fn (Builder $query) => $query->where('category_id', $categoryId))
@@ -96,6 +101,11 @@ class ProductController extends Controller implements HasMiddleware
 		}
 
 		$product = Product::query()->create($inputs);
+    Store::query()->create([
+      'product_id' => $product->id,
+      'balance' => 0
+    ]);
+
 		toastr()->success("محصول جدید با نام {$product->title} با موفقیت ساخته شد.");
 
 		return to_route('admin.products.index');
