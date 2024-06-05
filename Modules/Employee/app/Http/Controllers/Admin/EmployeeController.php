@@ -18,11 +18,6 @@ use Modules\Employee\Models\Employee;
 
 class EmployeeController extends Controller implements HasMiddleware
 {
-  use BreadCrumb;
-
-  public const MODEL = 'کارمند';
-  public const TABLE = 'employees';
-
   public static function middleware(): array
   {
     return [
@@ -51,24 +46,18 @@ class EmployeeController extends Controller implements HasMiddleware
       ->withQueryString();
 
     $totalEmployees = $employees->total();
-    $breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-    return view('employee::index', compact('employees', 'totalEmployees', 'breadcrumbItems'));
+    return view('employee::index', compact('employees', 'totalEmployees'));
   }
 
   public function show(Employee $employee): View|Application|Factory|App
   {
     return 'Employee Show';
-
-    $breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
-
-    return view('employee::show', compact('employee', 'breadcrumbItems'));
+    return view('employee::show', compact('employee'));
   }
 
   public function create(): View|Application|Factory|App
   {
-    $breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
-
     return view('employee::create', compact('breadcrumbItems'));
   }
 
@@ -82,9 +71,7 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function edit(Employee $employee): View|Application|Factory
   {
-    $breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
-
-    return view('employee::edit', compact('employee', 'breadcrumbItems'));
+    return view('employee::edit', compact('employee'));
   }
 
   public function update(EmployeeUpdateRequest $request, Employee $employee): RedirectResponse

@@ -13,10 +13,6 @@ use Modules\Customer\Models\Customer;
 
 class CustomerController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'مشتری';
-	public const TABLE = 'customers';
-
 	public static function middleware()
 	{
 		return [
@@ -44,9 +40,8 @@ class CustomerController extends Controller implements HasMiddleware
 			->withQueryString();
 
 		$customersCount = $customers->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems'));
+		return view('customer::index', compact('customers', 'customersCount'));
 	}
 
 	public function show(Customer $customer)
@@ -56,8 +51,6 @@ class CustomerController extends Controller implements HasMiddleware
 
 	public function create()
 	{
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
-
 		return view('customer::create', compact('breadcrumbItems'));
 	}
 
@@ -71,9 +64,7 @@ class CustomerController extends Controller implements HasMiddleware
 
 	public function edit(Customer $customer)
 	{
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
-
-		return view('customer::edit', compact('customer', 'breadcrumbItems'));
+		return view('customer::edit', compact('customer'));
 	}
 
 	public function update(CustomerUpdateRequest $request, Customer $customer)

@@ -6,17 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
 use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
 
 class SupplierController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'تامین کننده';
-	public const TABLE = 'suppliers';
-
 	public static function middleware()
 	{
 		return [
@@ -43,9 +38,8 @@ class SupplierController extends Controller implements HasMiddleware
 			->withQueryString();
 
 		$totalSuppliers =  $suppliers->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('supplier::index', compact('suppliers', 'totalSuppliers', 'breadcrumbItems'));
+		return view('supplier::index', compact('suppliers', 'totalSuppliers'));
 	}
 
 	public function show(Supplier $supplier)
@@ -53,13 +47,11 @@ class SupplierController extends Controller implements HasMiddleware
     return 'Supplier Show';
 		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
-		return view('supplier::show', compact('supplier', 'breadcrumbItems'));
+		return view('supplier::show', compact('supplier'));
 	}
 
 	public function create()
 	{
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
-
 		return view('supplier::create', compact('breadcrumbItems'));
 	}
 
@@ -73,9 +65,7 @@ class SupplierController extends Controller implements HasMiddleware
 
 	public function edit(Supplier $supplier)
 	{
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
-
-		return view('supplier::edit', compact('supplier', 'breadcrumbItems'));
+		return view('supplier::edit', compact('supplier'));
 	}
 
 	public function update(SupplierUpdateRequest $request, Supplier $supplier)

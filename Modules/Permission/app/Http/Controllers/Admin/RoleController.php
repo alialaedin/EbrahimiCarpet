@@ -9,7 +9,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Permission\Http\Requests\RoleStoreRequest;
 use Modules\Permission\Http\Requests\RoleUpdateRequest;
 use Modules\Permission\Models\Role;
@@ -17,10 +16,6 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'نقش';
-	public const TABLE = 'roles';
-
 	public static function middleware()
 	{
 		return [
@@ -45,18 +40,16 @@ class RoleController extends Controller implements HasMiddleware
 			->select(['id', 'name', 'label', 'created_at'])
 			->paginate();
 
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 		$rolesCount = $roles->total();
 
-		return view('permission::admin.role.index', compact('roles', 'breadcrumbItems', 'rolesCount'));
+		return view('permission::admin.role.index', compact('roles', 'rolesCount'));
 	}
 
 	public function create(): Renderable
 	{
 		$permissions = $this->permissions();
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('permission::admin.role.create', compact('permissions', 'breadcrumbItems'));
+		return view('permission::admin.role.create', compact('permissions'));
 	}
 
 	public function store(RoleStoreRequest $request): RedirectResponse
@@ -82,9 +75,8 @@ class RoleController extends Controller implements HasMiddleware
 	public function edit(Role $role): Renderable
 	{
 		$permissions = $this->permissions();
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('permission::admin.role.edit', compact('permissions', 'role', 'breadcrumbItems'));
+		return view('permission::admin.role.edit', compact('permissions', 'role'));
 	}
 
 	public function update(RoleUpdateRequest $request, Role $role): RedirectResponse

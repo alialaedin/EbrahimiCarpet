@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Product\Http\Requests\Admin\Category\CategoryStoreRequest;
 use Modules\Product\Http\Requests\Admin\Category\CategoryUpdateRequest;
 use Modules\Product\Models\Category;
@@ -15,10 +14,6 @@ use function Flasher\Toastr\Prime\toastr;
 
 class CategoryController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'دسته بندی';
-	public const TABLE = 'categories';
-
 	public static function middleware()
 	{
 		return [
@@ -57,9 +52,8 @@ class CategoryController extends Controller implements HasMiddleware
 
 		$parentCategories = Category::query()->select('id', 'title')->whereNull('parent_id')->get();
 		$categoriesCount = $categories->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('product::category.index', compact('categories', 'categoriesCount', 'parentCategories', 'breadcrumbItems'));
+		return view('product::category.index', compact('categories', 'categoriesCount', 'parentCategories'));
 	}
 
 	public function create()
@@ -68,9 +62,8 @@ class CategoryController extends Controller implements HasMiddleware
 			->select('id', 'title')
 			->whereNull('parent_id')
 			->get();
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('product::category.create', compact('parentCategories', 'breadcrumbItems'));
+		return view('product::category.create', compact('parentCategories'));
 	}
 
 	public function store(CategoryStoreRequest $request)
@@ -88,9 +81,8 @@ class CategoryController extends Controller implements HasMiddleware
 			->whereNull('parent_id')
 			->whereNot('id', $category->id)
 			->get();
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('product::category.edit', compact('category', 'parentCategories', 'breadcrumbItems'));
+		return view('product::category.edit', compact('category', 'parentCategories'));
 	}
 
 	public function update(CategoryUpdateRequest $request, Category $category)

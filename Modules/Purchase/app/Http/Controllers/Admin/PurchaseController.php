@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
@@ -20,10 +19,6 @@ use Modules\Supplier\Models\Supplier;
 
 class PurchaseController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'خرید';
-	public const TABLE = 'purchases';
-
 	public static function middleware()
 	{
 		return [
@@ -63,18 +58,16 @@ class PurchaseController extends Controller implements HasMiddleware
 
 		$suppliers = $this->getSuppliers();
 		$purchasesCount = $purchases->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('purchase::purchase.index', compact('purchases', 'suppliers', 'purchasesCount', 'breadcrumbItems'));
+		return view('purchase::purchase.index', compact('purchases', 'suppliers', 'purchasesCount'));
 	}
 
 	public function create()
 	{
 		$suppliers = $this->getSuppliers();
 		$categories = $this->getCategories();
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('purchase::purchase.create', compact('suppliers', 'categories', 'breadcrumbItems'));
+		return view('purchase::purchase.create', compact('suppliers', 'categories'));
 	}
 
 	public function store(PurchaseStoreRequest $request)
@@ -132,9 +125,8 @@ class PurchaseController extends Controller implements HasMiddleware
 	public function edit(Purchase $purchase)
 	{
 		$suppliers = $this->getSuppliers();
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('purchase::purchase.edit', compact('purchase', 'suppliers', 'breadcrumbItems'));
+		return view('purchase::purchase.edit', compact('purchase', 'suppliers'));
 	}
 
 	public function update(PurchaseUpdateRequest $request, Purchase $purchase)

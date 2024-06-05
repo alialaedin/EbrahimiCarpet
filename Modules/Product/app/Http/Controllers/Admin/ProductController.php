@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Product\Http\Requests\Admin\Product\ProductStoreRequest;
 use Modules\Product\Http\Requests\Admin\Product\ProductUpdateRequest;
 use Modules\Product\Models\Category;
@@ -17,10 +16,6 @@ use Modules\Store\Models\Store;
 
 class ProductController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-	public const MODEL = 'محصول';
-	public const TABLE = 'products';
-
 	public static function middleware()
 	{
 		return [
@@ -68,9 +63,8 @@ class ProductController extends Controller implements HasMiddleware
 
 		$categories = Category::select('id', 'title')->get();
 		$productsCount = $products->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('product::product.index', compact('products', 'productsCount', 'categories', 'breadcrumbItems'));
+		return view('product::product.index', compact('products', 'productsCount', 'categories'));
 	}
 
 	public function show(Product $product)
@@ -79,17 +73,15 @@ class ProductController extends Controller implements HasMiddleware
 			'category',
 			'category.parent'
 		]);
-		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
-		return view('product::product.show', compact('product', 'breadcrumbItems'));
+		return view('product::product.show', compact('product'));
 	}
 
 	public function create()
 	{
 		$parentCategories = $this->getParentCategories();
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('product::product.create', compact('parentCategories', 'breadcrumbItems'));
+		return view('product::product.create', compact('parentCategories'));
 	}
 
 	public function store(ProductStoreRequest $request)
@@ -114,9 +106,8 @@ class ProductController extends Controller implements HasMiddleware
 	public function edit(Product $product)
 	{
 		$parentCategories = $this->getParentCategories();
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('product::product.edit', compact('product', 'parentCategories', 'breadcrumbItems'));
+		return view('product::product.edit', compact('product', 'parentCategories'));
 	}
 
 	public function update(ProductUpdateRequest $request, Product $product)

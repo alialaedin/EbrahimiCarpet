@@ -20,11 +20,6 @@ use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller implements HasMiddleware
 {
-	use BreadCrumb;
-
-	public const MODEL = 'ادمین';
-	public const TABLE = 'admins';
-
 	public static function middleware(): array
   {
 		return [
@@ -43,9 +38,8 @@ class AdminController extends Controller implements HasMiddleware
 			->paginate(15);
 
 		$adminsCount = $admins->total();
-		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('admin::index', compact('admins', 'adminsCount', 'breadcrumbItems'));
+		return view('admin::index', compact('admins', 'adminsCount'));
 	}
 
 	public function show(Admin $admin): View|Application|Factory|App
@@ -57,17 +51,15 @@ class AdminController extends Controller implements HasMiddleware
 			->paginate(15);
 
 		$totalActivity = $activities->total();
-		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
-		return view('admin::show', compact('admin', 'activities', 'totalActivity', 'breadcrumbItems'));
+		return view('admin::show', compact('admin', 'activities', 'totalActivity'));
 	}
 
 	public function create(): View|Application|Factory|App
   {
 		$roles = Role::query()->select('id', 'name', 'label')->whereNot('name', 'super_admin')->get();
-		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('admin::create', compact('roles', 'breadcrumbItems'));
+		return view('admin::create', compact('roles'));
 	}
 
 	public function store(AdminStoreRequest $request): RedirectResponse
@@ -82,9 +74,8 @@ class AdminController extends Controller implements HasMiddleware
 	public function edit(Admin $admin): View|Application|Factory|App
   {
 		$roles = Role::query()->select('id', 'name', 'label')->whereNot('name', 'super_admin')->get();
-		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('admin::edit', compact('admin', 'roles', 'breadcrumbItems'));
+		return view('admin::edit', compact('admin', 'roles'));
 	}
 
 	public function update(AdminUpdateRequest $request, Admin $admin): RedirectResponse
