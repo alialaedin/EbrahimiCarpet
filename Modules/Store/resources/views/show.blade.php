@@ -2,72 +2,54 @@
 
 @section('content')
   <div class="col-12">
-    <div class="col-xl-12 col-md-12 col-lg-12">
-
-      <div class="page-header">
-
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="{{ route('admin.dashboard') }}">
-              <i class="fe fe-life-buoy ml-1"></i> داشبورد
-            </a>
-          </li>
-          <li class="breadcrumb-item active">
-            <a href="{{ route('admin.stores.index') }}">لیست انبار</a>
-          </li>
-          <li class="breadcrumb-item">لیست تراکنش ها</li>
-        </ol>
-
-        <x-core::return-to-previous-page-button />
-
-      </div>
-
-      <div class="row">
-        <div class="card">
-
-          <div class="card-header border-0">
-            <p class="card-title">مشخصات محصول</p>
-          </div>
-
-          <div class="card-body">
-            <div class="row">
-
-              <div class="col-xl-3 col-md-6 col-12">
-                <div class="d-flex align-items-center my-1">
-                  <span class="fs-16 font-weight-bold ml-1">شناسه محصول :</span>
-                  <span class="fs-14 mr-1"> {{ $store->product->id }} </span>
-                </div>
+    <div class="page-header">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.dashboard') }}">
+            <i class="fe fe-life-buoy ml-1"></i> داشبورد
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.stores.index') }}">لیست انبار</a>
+        </li>
+        <li class="breadcrumb-item active">لیست تراکنش ها</li>
+      </ol>
+    </div>
+    <div class="row">
+      <div class="card">
+        <div class="card-header border-0">
+          <p class="card-title">مشخصات محصول</p>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-3 col-md-6 col-12">
+              <div class="d-flex align-items-center my-1">
+                <span class="fs-16 font-weight-bold ml-1">شناسه محصول :</span>
+                <span class="fs-14 mr-1"> {{ $store->product->id }} </span>
               </div>
-
-              <div class="col-xl-3 col-md-6 col-12">
-                <div class="d-flex align-items-center my-1">
-                  <span class="fs-16 font-weight-bold ml-1">نام محصول :</span>
-                  <a href="{{ route('admin.products.show', $store->product) }}" class="fs-14 mr-1"> {{ $store->product->title }} </a>
-                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-12">
+              <div class="d-flex align-items-center my-1">
+                <span class="fs-16 font-weight-bold ml-1">نام محصول :</span>
+                <a href="{{ route('admin.products.show', $store->product) }}" class="fs-14 mr-1"> {{ $store->product->title }} </a>
               </div>
-
-              <div class="col-xl-3 col-md-6 col-12">
-                <div class="d-flex align-items-center my-1">
-                  <span class="fs-16 font-weight-bold ml-1">نام دسته بندی :</span>
-                  <span class="fs-14 mr-1"> {{ $store->product->category->title }} </span>
-                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-12">
+              <div class="d-flex align-items-center my-1">
+                <span class="fs-16 font-weight-bold ml-1">نام دسته بندی :</span>
+                <span class="fs-14 mr-1"> {{ $store->product->category->title }} </span>
               </div>
-
-              <div class="col-xl-3 col-md-6 col-12">
-                <div class="d-flex align-items-center my-1">
-                  <span class="fs-16 font-weight-bold ml-1">موجودی (تعداد) :</span>
-                  <span class="fs-14 mr-1"> {{ $store->balance }} </span>
-                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 col-12">
+              <div class="d-flex align-items-center my-1">
+                <span class="fs-16 font-weight-bold ml-1">موجودی (تعداد) :</span>
+                <span class="fs-14 mr-1"> {{ $store->balance }} </span>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
-
       <div class="card">
-
         <div class="card-header border-0">
           <p class="card-title">لیست تراکنش ها</p>
         </div>
