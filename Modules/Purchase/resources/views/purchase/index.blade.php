@@ -11,7 +11,7 @@
         @endcan
     	</div>
 
-      @include('purchase::includes._filter-form')
+      @include('purchase::purchase.includes._filter-form')
 
       <div class="card">
 

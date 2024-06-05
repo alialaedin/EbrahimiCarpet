@@ -6,16 +6,19 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
       <div class="page-header">
 
-        <ol class="breadcrumb">
+        <ol class="breadcrumb align-items-center">
           <li class="breadcrumb-item">
             <a href="{{ route('admin.dashboard') }}">
               <i class="fe fe-life-buoy ml-1"></i> داشبورد
             </a>
           </li>
-          <li class="breadcrumb-item active">
+          <li class="breadcrumb-item mb-1">
             <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
           </li>
-          <li class="breadcrumb-item">
+          <li class="breadcrumb-item mb-1">
+            <a href="{{ route('admin.purchases.show', $purchase) }}">جزئیات خرید</a>
+          </li>
+          <li class="breadcrumb-item mb-1 active">
             <a>پرداختی ها</a>
           </li>
         </ol>
@@ -122,9 +125,7 @@
                           </button>
 
                           @can('edit payments')
-                            <button class="btn btn-sm btn-icon btn-warning" data-target="#editCashPaymentModal{{$payment->id}}" data-toggle="modal">
-                              <i class="fa fa-pencil" data-toggle="tooltip" data-original-title="ویرایش"></i>
-                            </button>
+                            <x-core::edit-button route="admin.purchases.payments.edit" :model="$payment"/>
                           @endcan
 
                           @can('delete payments')
@@ -176,13 +177,7 @@
                       <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ number_format($payment->amount) }}</td>
-                        <td class="text-center">
-                          @if ($payment->payment_date)
-                            {{ verta($payment->payment_date)->formatDate() }}
-                          @else
-                            <span class="text-danger">پرداخت نشده</span>
-                          @endif
-                        </td>
+                        <td class="text-center">{{ $payment->getPaymentDate() }}</td>
                         <td class="text-center m-0 p-0">
                           @if ($payment->image)
                             <figure class="figure my-2">
@@ -265,13 +260,7 @@
                       <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ number_format($payment->amount) }}</td>
-                        <td class="text-center">
-                          @if ($payment->payment_date)
-                            {{ verta($payment->payment_date)->formatDate() }}
-                          @else
-                            <span class="text-danger">پرداخت نشده</span>
-                          @endif
-                        </td>
+                        <td class="text-center">{{ $payment->getPaymentDate() }}</td>
                         <td class="text-center m-0 p-0">
                           @if ($payment->image)
                             <figure class="figure my-2">

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Core\Traits\BreadCrumb;
+use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseStoreRequest;
@@ -64,7 +65,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchasesCount = $purchases->total();
 		$breadcrumbItems = $this->breadcrumbItems('index', static::TABLE, static::MODEL);
 
-		return view('purchase::index', compact('purchases', 'suppliers', 'purchasesCount', 'breadcrumbItems'));
+		return view('purchase::purchase.index', compact('purchases', 'suppliers', 'purchasesCount', 'breadcrumbItems'));
 	}
 
 	public function create()
@@ -73,7 +74,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$categories = $this->getCategories();
 		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);
 
-		return view('purchase::create', compact('suppliers', 'categories', 'breadcrumbItems'));
+		return view('purchase::purchase.create', compact('suppliers', 'categories', 'breadcrumbItems'));
 	}
 
 	public function store(PurchaseStoreRequest $request)
@@ -119,13 +120,13 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchase->load([
 			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
 			'items' => fn ($query) => $query->latest('id'),
-			'items.product' => fn ($query) => $query->select('id', 'category_id', 'title', 'image'),
+			'items.product' => fn ($query) => $query->select('id', 'title', 'image'),
 		]);
+		$payments = Payment::query()->where('purchase_id', $purchase->id)->latest('id')->take(3)->get();
 		$products = $this->getProducts();
 		$categories = $this->getCategories();
-		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
-		return view('purchase::show', compact('purchase', 'categories', 'breadcrumbItems'));
+		return view('purchase::purchase.show', compact('purchase', 'categories', 'payments'));
 	}
 
 	public function edit(Purchase $purchase)
@@ -133,7 +134,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$suppliers = $this->getSuppliers();
 		$breadcrumbItems = $this->breadcrumbItems('edit', static::TABLE, static::MODEL);
 
-		return view('purchase::edit', compact('purchase', 'suppliers', 'breadcrumbItems'));
+		return view('purchase::purchase.edit', compact('purchase', 'suppliers', 'breadcrumbItems'));
 	}
 
 	public function update(PurchaseUpdateRequest $request, Purchase $purchase)

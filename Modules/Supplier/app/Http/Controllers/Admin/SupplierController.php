@@ -50,7 +50,7 @@ class SupplierController extends Controller implements HasMiddleware
 
 	public function show(Supplier $supplier)
 	{
-    return 'Employee Show';
+    return 'Supplier Show';
 		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
 		return view('supplier::show', compact('supplier', 'breadcrumbItems'));

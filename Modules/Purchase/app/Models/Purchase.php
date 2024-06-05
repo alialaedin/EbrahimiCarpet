@@ -53,13 +53,13 @@ class Purchase extends Model
   }
 
   protected static function booted(): void
-	{
-		static::deleting(function (Purchase $purchase) {
-			if ($purchase->payments()->exists()) {
+  {
+    static::deleting(function (Purchase $purchase) {
+      if ($purchase->payments()->exists()) {
         throw new ModelCannotBeDeletedException('برای این خرید پرداختی صورت گرفته و قابل حذف نمی باشد.');
       }
-		});
-	}
+    });
+  }
 
   // Relations
   public function supplier(): BelongsTo
@@ -72,7 +72,7 @@ class Purchase extends Model
     return $this->hasMany(PurchaseItem::class, 'purchase_id');
   }
 
-  public function payments():HasMany
+  public function payments(): HasMany
   {
     return $this->hasMany(Payment::class);
   }
@@ -95,6 +95,6 @@ class Purchase extends Model
 
   public function getTotalPaymentAmount(): int
   {
-    return $this->payments->where('status', 1)->sum('amount');
+    return $this->payments->where('status', 1)->whereNotNull('payment_date')->sum('amount');
   }
 }

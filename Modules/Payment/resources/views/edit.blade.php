@@ -6,19 +6,22 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
       <div class="page-header">
 
-        <ol class="breadcrumb">
+        <ol class="breadcrumb align-items-center">
           <li class="breadcrumb-item">
             <a href="{{ route('admin.dashboard') }}">
-              <i class="fe fe-life-buoy ml-1"></i> داشبورد
+              <i class="fe fe-home ml-1"></i> داشبورد
             </a>
           </li>
-          <li class="breadcrumb-item active">
+          <li class="breadcrumb-item mb-1">
             <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
           </li>
-          <li class="breadcrumb-item active">
+          <li class="breadcrumb-item mb-1">
+            <a href="{{ route('admin.purchases.show', $payment->purchase) }}">جزئیات خرید</a>
+          </li>
+          <li class="breadcrumb-item mb-1">
             <a href="{{ route('admin.purchases.payments.index', $payment->purchase) }}">پرداختی ها</a>
           </li>
-          <li class="breadcrumb-item active">
+          <li class="breadcrumb-item mb-1 active">
             <a>ویرایش پرداختی</a>
           </li>
         </ol>
