@@ -2,8 +2,15 @@
 @section('content')
   <div class="col-12">
     <div class="page-header">
-      <x-core::breadcrumb :items="$breadcrumbItems"/>
-      @can('create products')
+      <ol class="breadcrumb align-items-center">
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.dashboard') }}">
+            <i class="fe fe-home ml-1"></i> داشبورد
+          </a>
+        </li>
+        <li class="breadcrumb-item active">لیست محصولات</li>
+      </ol> 
+      @can('create  products')
         <x-core::register-button route="admin.products.create" title="ثبت محصول جدید"/>
       @endcan
     </div>

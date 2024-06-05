@@ -5,7 +5,17 @@
 	<div class="col-12">
     <div class="col-xl-12 col-md-12 col-lg-12">
       <div class="page-header">
-        <x-core::breadcrumb :items="$breadcrumbItems" />
+				<ol class="breadcrumb align-items-center">
+					<li class="breadcrumb-item">
+						<a href="{{ route('admin.dashboard') }}">
+							<i class="fe fe-home ml-1"></i> داشبورد
+						</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{ route('admin.roles.index') }}">لیست نقش ها</a>
+					</li>
+					<li class="breadcrumb-item active">ویرایش نقش</li>
+				</ol>
     	</div>
 			<div class="card">
 				<div class="card-header">

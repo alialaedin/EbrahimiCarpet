@@ -2,7 +2,17 @@
 @section('content')
   <div class="col-12">
     <div class="page-header">
-      <x-core::breadcrumb :items="$breadcrumbItems" />
+			<ol class="breadcrumb align-items-center">
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.dashboard') }}">
+            <i class="fe fe-home ml-1"></i> داشبورد
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.customers.index') }}">لیست مشتری ها</a>
+        </li>
+        <li class="breadcrumb-item active">ویرایش مشتری</li>
+      </ol>
     </div>
 		<div class="card">
 			<div class="card-header">

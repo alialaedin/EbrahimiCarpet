@@ -3,10 +3,10 @@
 @section('content')
   <div class="col-12">
     <div class="page-header">
-      <ol class="breadcrumb">
+      <ol class="breadcrumb align-items-center">
         <li class="breadcrumb-item">
           <a href="{{ route('admin.dashboard') }}">
-            <i class="fe fe-life-buoy ml-1"></i> داشبورد
+            <i class="fe fe-home ml-1"></i> داشبورد
           </a>
         </li>
         <li class="breadcrumb-item">

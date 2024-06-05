@@ -5,16 +5,16 @@
       <ol class="breadcrumb align-items-center">
         <li class="breadcrumb-item">
           <a href="{{ route('admin.dashboard') }}">
-            <i class="fe fe-home"></i> داشبورد
+            <i class="fe fe-home ml-1"></i> داشبورد
           </a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.show', $purchase) }}">جزئیات خرید</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item active">
           <a>پرداختی ها</a>
         </li>
       </ol>
@@ -114,7 +114,7 @@
                       </td>
                     </tr>
                     @empty
-                      <x-core::data-not-found-alert :colspan="5"/>
+                      <x-core::data-not-found-alert :colspan="6"/>
                   @endforelse
                   <tr>
                     <td class="text-center" colspan="1">جمع کل</td>

@@ -3,21 +3,21 @@
   <div class="col-12">
     <div class="page-header">
       <ol class="breadcrumb align-items-center">
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.dashboard') }}">
             <i class="fe fe-home ml-1"></i> داشبورد
           </a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.show', $purchase) }}">جزئیات خرید</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.payments.index', $purchase) }}">پرداختی ها</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item active">
           <a>ثبت پرداختی جدید</a>
         </li>
       </ol>

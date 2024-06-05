@@ -58,6 +58,8 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function show(Employee $employee): View|Application|Factory|App
   {
+    return 'Employee Show';
+
     $breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
 
     return view('employee::show', compact('employee', 'breadcrumbItems'));

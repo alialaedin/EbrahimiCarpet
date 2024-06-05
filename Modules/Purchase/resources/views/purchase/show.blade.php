@@ -1,7 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
   <div class="col-12">
-
     <div class="page-header">
       <ol class="breadcrumb align-items-center">
         <li class="breadcrumb-item">
@@ -9,10 +8,10 @@
             <i class="fe fe-home ml-1"></i> داشبورد
           </a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item active">
           <a>جزئیات خرید</a>
         </li>
       </ol>

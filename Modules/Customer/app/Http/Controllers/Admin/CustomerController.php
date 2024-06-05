@@ -49,6 +49,11 @@ class CustomerController extends Controller implements HasMiddleware
 		return view('customer::index', compact('customers', 'customersCount', 'breadcrumbItems'));
 	}
 
+	public function show(Customer $customer)
+	{
+		return 'Customer Show';
+	}
+
 	public function create()
 	{
 		$breadcrumbItems = $this->breadcrumbItems('create', static::TABLE, static::MODEL);

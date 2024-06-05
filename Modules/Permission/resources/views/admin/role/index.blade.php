@@ -5,7 +5,14 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
 
 			<div class="page-header">
-        <x-core::breadcrumb :items="$breadcrumbItems" />
+        <ol class="breadcrumb align-items-center">
+          <li class="breadcrumb-item">
+            <a href="{{ route('admin.dashboard') }}">
+              <i class="fe fe-home ml-1"></i> داشبورد
+            </a>
+          </li>
+          <li class="breadcrumb-item">لیست نقش ها</li>
+        </ol>
         @can('create roles')
           <x-core::register-button route="admin.roles.create" title="ثبت نقش جدید"/>
         @endcan
@@ -46,7 +53,7 @@
 
                             @can('edit roles')
                               <a
-                                href="{{route("admin.roles.edit", $role)}}"
+                                href="{{route('admin.roles.edit', $role)}}"
                                 class="action-btns1 bg-warning mx-1"
                                 @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
                                 <i class="fe fe-edit text-white py-1"></i>
@@ -61,7 +68,7 @@
                                 <i class="fe fe-trash-2 text-white py-1"></i>
                               </button>
                               <form
-                                action="{{ route("admin.roles.destroy", $role) }}"
+                                action="{{ route('admin.roles.destroy', $role) }}"
                                 method="POST"
                                 id="delete-{{ $role->id }}"
                                 style="display: none">

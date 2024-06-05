@@ -8,16 +8,16 @@
             <i class="fe fe-home ml-1"></i> داشبورد
           </a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.show', $payment->purchase) }}">جزئیات خرید</a>
         </li>
-        <li class="breadcrumb-item mb-1">
+        <li class="breadcrumb-item">
           <a href="{{ route('admin.purchases.payments.index', $payment->purchase) }}">پرداختی ها</a>
         </li>
-        <li class="breadcrumb-item mb-1 active">
+        <li class="breadcrumb-item active">
           <a>ویرایش پرداختی</a>
         </li>
       </ol>

@@ -3,7 +3,17 @@
   <div class="col-12">
 
     <div class="page-header">
-      <x-core::breadcrumb :items="$breadcrumbItems" />
+      <ol class="breadcrumb align-items-center">
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.dashboard') }}">
+            <i class="fe fe-home ml-1"></i> داشبورد
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{{ route('admin.suppliers.index') }}">لیست تامین کنندگان</a>
+        </li>
+        <li class="breadcrumb-item active">نمایش تامین کننده</li>
+      </ol>
     </div>
 
     <div class="row">
