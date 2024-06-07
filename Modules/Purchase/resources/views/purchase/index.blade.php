@@ -17,8 +17,13 @@
     @include('purchase::includes._filter-form')
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست خرید ها</p>
-        <span class="fs-15">({{ $purchasesCount }})</span>
+        <p class="card-title ml-2">لیست خرید ها <span class="fs-15">({{ $purchasesCount }})</span></p>
+        
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -58,15 +63,6 @@
                       <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount() - $purchase->discount) }}</td>
                       <td class="text-center">{{ verta($purchase->purchased_at)->formatDate() }}</td>
                       <td class="text-center">
-                        @can('view payments')
-                          <a
-                            href="{{ route('admin.purchases.payments.index', $purchase) }}"
-                            class="btn btn-success btn-icon btn-sm"
-                            data-toggle="tooltip"
-                            data-original-title="پرداختی ها">
-                            <i class="fa fa-money" ></i>
-                          </a>
-                        @endcan
                         @can('view purchases')
                           <x-core::show-button route="admin.purchases.show" :model="$purchase"/>
                         @endcan

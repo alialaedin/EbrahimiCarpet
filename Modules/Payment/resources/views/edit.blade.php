@@ -9,13 +9,13 @@
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
+          <a href="{{ route('admin.suppliers.index') }}">لیست تامین کنندگان</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.show', $payment->purchase) }}">جزئیات خرید</a>
+          <a href="{{ route('admin.suppliers.show', $payment->supplier) }}">نمایش تامین کننده</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.payments.index', $payment->purchase) }}">پرداختی ها</a>
+          <a href="{{ route('admin.payments.index', $payment->supplier) }}">پرداختی ها</a>
         </li>
         <li class="breadcrumb-item active">
           <a>ویرایش پرداختی</a>
@@ -27,7 +27,7 @@
 				<p class="card-title">ویرایش پرداختی</p>
 			</div>
 			<div class="card-body">
-				<form action="{{ route('admin.purchases.payments.update', $payment) }}" method="post" class="save" enctype="multipart/form-data">
+				<form action="{{ route('admin.payments.update', $payment) }}" method="post" class="save" enctype="multipart/form-data">
           @csrf
           @method('PATCH')
           <div class="row">
@@ -120,7 +120,7 @@
         </form>
         @if ($payment->image)
           <form
-            action="{{ route('admin.purchases.payments.image.destroy', $payment) }}"
+            action="{{ route('admin.payments.image.destroy', $payment) }}"
             id="delete-image-{{$payment->id}}"
             method="POST"
             style="display: none;">

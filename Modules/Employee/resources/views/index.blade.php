@@ -56,8 +56,12 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست پرسنل</p>
-        <span class="fs-15 ">({{ $totalEmployees }})</span>
+        <p class="card-title ml-2">لیست پرسنل <span class="fs-15 ">({{ $totalEmployees }})</span></p>
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">

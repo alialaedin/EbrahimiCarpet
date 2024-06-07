@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Modules\Payment\Models\Payment;
 use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
 use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
@@ -44,15 +45,22 @@ class SupplierController extends Controller implements HasMiddleware
 
 	public function show(Supplier $supplier)
 	{
-    return 'Supplier Show';
-		$breadcrumbItems = $this->breadcrumbItems('show', static::TABLE, static::MODEL);
+		$numberOfPurchases = $supplier->purchases->count();
+		$numberOfPayments = $supplier->payments->count();
 
-		return view('supplier::show', compact('supplier'));
+		$payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
+
+		return view('supplier::show', compact(
+			'supplier',
+			'numberOfPurchases',
+			'numberOfPayments',
+			'payments',
+		));
 	}
 
 	public function create()
 	{
-		return view('supplier::create', compact('breadcrumbItems'));
+		return view('supplier::create');
 	}
 
 	public function store(SupplierStoreRequest $request)

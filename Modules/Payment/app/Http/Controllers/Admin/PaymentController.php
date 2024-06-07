@@ -16,6 +16,7 @@ use Modules\Payment\Http\Requests\PaymentStoreRequest;
 use Modules\Payment\Http\Requests\PaymentUpdateRequest;
 use Modules\Payment\Models\Payment;
 use Modules\Purchase\Models\Purchase;
+use Modules\Supplier\Models\Supplier;
 
 class PaymentController extends Controller implements HasMiddleware
 {
@@ -30,20 +31,20 @@ class PaymentController extends Controller implements HasMiddleware
 		];
 	}
 
-	public function index(Purchase $purchase): View|Application|Factory|App
+	public function index(Supplier $supplier): View|Application|Factory|App
   {
-		$payments = Payment::query()->where('purchase_id', $purchase->id)->get();
+		$payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
 
     $cashPayments = $payments->where('type', '=','cash');
     $installmentPayments = $payments->where('type', '=','installment');
     $chequePayments = $payments->where('type', '=','cheque');
 
-		return view('payment::index', compact(['purchase', 'installmentPayments', 'cashPayments', 'chequePayments']));
+		return view('payment::index', compact(['supplier', 'installmentPayments', 'cashPayments', 'chequePayments']));
 	}
 
-	public function create(Purchase $purchase): View|Application|Factory|App
+	public function create(Supplier $supplier): View|Application|Factory|App
   {
-		return view('payment::create', compact('purchase'));
+		return view('payment::create', compact('supplier'));
 	}
 
 	public function store(PaymentStoreRequest $request): RedirectResponse
@@ -54,11 +55,11 @@ class PaymentController extends Controller implements HasMiddleware
 			$inputs['image'] = $request->file('image')->store('images/payments', 'public');
 		}
 
-		$purchase = $request->input('purchase');
-		$purchase->payments()->create($inputs);
+		$supplier = $request->input('supplier');
+		$supplier->payments()->create($inputs);
 		toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
-		return to_route('admin.purchases.payments.index', $purchase);
+		return to_route('admin.payments.index', $supplier);
 	}
 
 	public function edit(Payment $payment): View|Application|Factory|App
@@ -80,7 +81,7 @@ class PaymentController extends Controller implements HasMiddleware
 		$payment->update($inputs);
 		toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
-		return redirect()->back()->withInput();
+		return to_route('admin.payments.index', $payment->supplier);
 	}
 
 	public function destroy(Payment $payment): RedirectResponse

@@ -115,11 +115,10 @@ class PurchaseController extends Controller implements HasMiddleware
 			'items' => fn ($query) => $query->latest('id'),
 			'items.product' => fn ($query) => $query->select('id', 'title', 'image'),
 		]);
-		$payments = Payment::query()->where('purchase_id', $purchase->id)->latest('id')->take(3)->get();
 		$products = $this->getProducts();
 		$categories = $this->getCategories();
 
-		return view('purchase::purchase.show', compact('purchase', 'categories', 'payments'));
+		return view('purchase::purchase.show', compact('purchase', 'categories'));
 	}
 
 	public function edit(Purchase $purchase)
@@ -147,7 +146,7 @@ class PurchaseController extends Controller implements HasMiddleware
 
 	private function getSuppliers()
 	{
-		return Supplier::query()
+		return Supplier::active()
 			->select('id', 'name', 'mobile')
 			->orderByDesc('name')
 			->get();

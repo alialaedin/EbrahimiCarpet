@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Models\Admin;
-use Modules\Purchase\Models\Purchase;
+use Modules\Supplier\Models\Supplier;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -21,7 +21,7 @@ class Payment extends Model
 	];
 
 	protected $fillable = [
-		'purchase_id',
+		'supplier_id',
 		'amount',
 		'type',
 		'image',
@@ -41,20 +41,20 @@ class Payment extends Model
 
         $eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
-        $messageBase = " ادمین با شناسه{$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate ساعت $eventTime";
+        $messageBase = "ادمین با شناسه {$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate ساعت $eventTime";
 				$payType = $this->getType();
-        $purchaseId = $this->attributes['purchase_id'];
-        $amount = $this->attributes['amount'];
+        $supplierName = $this->supplier->name;
+        $amount = number_format($this->attributes['amount']);
 
         switch ($eventName) {
           case 'created':
-            $message = "$messageBase یک پرداختی جدید از نوع $payType برای خرید با شناسه $purchaseId. ثبت کرد ";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان برای تامین کننده با نام $supplierName ثبت کرد ";
             break;
           case 'updated':
-            $message = "$messageBase پرداخت از نوع $payType با مبلغ $amount تومان که متعلق به خرید با شناسه $purchaseId بود را ویرایش کرد.";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان که متعلق به تامین کننده با نام $supplierName بود را ویرایش کرد.";
             break;
           case 'deleted':
-            $message = "$messageBase پرداخت از نوع $payType با مبلغ $amount تومان که متعلق به خرید با شناسه $purchaseId بود را حذف کرد.";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان که متعلق به تامین کننده با نام $supplierName بود را حذف کرد.";
             break;
         }
 
@@ -63,9 +63,9 @@ class Payment extends Model
   }
 
 	// Relations
-	public function purchase(): BelongsTo
+	public function supplier(): BelongsTo
   {
-    return $this->belongsTo(Purchase::class);
+    return $this->belongsTo(Supplier::class);
   }
 
 	// Functions
@@ -77,6 +77,7 @@ class Payment extends Model
   public function getPaymentDate()
   {
     $paymentDate =  $this->attributes['payment_date'];
+    
     return $paymentDate ? verta($paymentDate)->formatDate() : '-';
   }
 }

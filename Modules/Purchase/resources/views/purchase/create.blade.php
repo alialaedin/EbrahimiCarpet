@@ -17,10 +17,10 @@
 		<div class="card">
 			<div class="card-header justify-content-between">
 				<p class="card-title">ثبت خرید جدید</p>
-				<button id="addPurchaseItemButton" class="btn btn-indigo">
+				{{-- <button id="addPurchaseItemButton" class="btn btn-indigo">
 					<span>افزودن آیتم جدید</span>
 					<i class="fa fa-plus-square mr-1"></i>
-				</button>
+				</button> --}}
 			</div>
 			<div class="card-body">
 				<form action="{{ route('admin.purchases.store') }}" method="post" class="save">
@@ -52,13 +52,19 @@
 						</div>
 					</div>
 					<div  id="contentArea"></div>
+
 					<div class="row">
 						<div class="col">
 							<div class="text-center">
-								<button class="btn btn-pink" type="submit">ثبت و ذخیره</button>
+
+								<button id="submitButton" style="display: none;" class="btn btn-pink" type="submit">ثبت و ذخیره</button>
+
+								<button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
+
 							</div>
 						</div>
 					</div>
+
 				</form>
 			</div>
     </div>
@@ -118,7 +124,7 @@
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
-							<div class="form-group">
+							<div class="form-group">	
 								<label for="products[${index + 1}][price]" class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
 								<input type="text" id="products[${index + 1}][price]" class="form-control comma" name="products[${index + 1}][price]" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('products[${index + 1}][price]') }}">
 							</div>

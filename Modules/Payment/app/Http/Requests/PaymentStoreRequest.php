@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
 use Modules\Purchase\Models\Purchase;
+use Modules\Supplier\Models\Supplier;
 
 class PaymentStoreRequest extends FormRequest
 {
@@ -19,7 +20,7 @@ class PaymentStoreRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'purchase_id' => ['required', 'integer', 'exists:purchases,id'],
+			'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
 			'amount' => ['required', 'integer', 'min:1000'],
 			'type' => ['required', 'string', 'in:cash,cheque,installment'],
 			'payment_date' => ['nullable', 'date'],
@@ -35,16 +36,12 @@ class PaymentStoreRequest extends FormRequest
 	 */
 	public function passedValidation(): void
 	{
-		$purchase = Purchase::query()->findOrFail($this->input('purchase_id'));
-
-		$totalAmountWithDiscount = $purchase->getTotalAmountWithDiscount();
-		$totalPaymentAmount = $purchase->getTotalPaymentAmount();
-		$remainingAmount = $totalAmountWithDiscount - $totalPaymentAmount;
+		$supplier = Supplier::query()->findOrFail($this->input('supplier_id'));
 
 		$type = $this->input('type');
 		$status = $this->input('status');
 
-		if ($status == 1 && $this->input('amount') > $remainingAmount) {
+		if ($this->filled('payment_date') && $this->input('amount') > $supplier->gerRemainingAmount()) {
 
 			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
 		}
@@ -73,7 +70,7 @@ class PaymentStoreRequest extends FormRequest
 		}
 
 		$this->merge([
-			'purchase' => $purchase
+			'supplier' => $supplier
 		]);
 	}
 

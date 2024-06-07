@@ -34,16 +34,12 @@ class PaymentUpdateRequest extends FormRequest
   public function passedValidation(): void
   {
 		$payment = $this->route('payment');
-		$purchase = $payment->purchase;
-
-		$totalAmountWithDiscount = $purchase->getTotalAmountWithDiscount();
-		$totalPaymentAmount = $purchase->getTotalPaymentAmount();
-		$remainingAmount = $totalAmountWithDiscount - $totalPaymentAmount;
+		$supplier = $payment->supplier;
 
 		$type = $this->input('type');
 		$status = $this->input('status');
 
-		if ($status == 1 && $this->input('amount') > $remainingAmount + $payment->amount) {
+		if ($this->filled('payment_date') && $this->input('amount') > $supplier->gerRemainingAmount() + $payment->amount) {
 			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
 		}
     if ($type == 'cheque') {

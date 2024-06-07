@@ -1,7 +1,9 @@
 @extends('admin.layouts.master')
 @section('content')
   <div class="col-12">
+
 		<div class="page-header">
+
       <ol class="breadcrumb align-items-center">
         <li class="breadcrumb-item">
           <a href="{{ route('admin.dashboard') }}">
@@ -10,36 +12,48 @@
         </li>
         <li class="breadcrumb-item active">لیست مشتری ها</li>
       </ol>
+
       @can('create customers')
         <x-core::register-button route="admin.customers.create" title="ثبت مشتری جدید"/>
       @endcan
+
     </div>
+
     <div class="card">
+
       <div class="card-header border-0">
         <p class="card-title">جستجوی پیشرفته</p>
       </div>
+
       <div class="card-body">
+
         <div class="row">
+
           <form action="{{ route("admin.customers.index") }}" class="col-12">
+
             <div class="row">
+
               <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
                 <div class="form-group">
                   <label for="name">نام و نام خانوادگی :</label>
                   <input type="text" id="name" name="full_name" class="form-control" value="{{ request('full_name') }}">
                 </div>
               </div>
+
               <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
                 <div class="form-group">
                   <label for="telephone">تلفن ثابت :</label>
                   <input type="text" id="telephone" name="telephone" class="form-control" value="{{ request('telephone') }}">
                 </div>
               </div>
+
               <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
                 <div class="form-group">
                   <label for="mobile">تلفن همراه :</label>
                   <input type="text" id="mobile" name="mobile" class="form-control" value="{{ request('mobile') }}">
                 </div>
               </div>
+
               <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
                 <div class="form-group">
                   <label for="status">وضعیت :</label>
@@ -50,22 +64,40 @@
                   </select>
                 </div>
               </div>
+
             </div>
+
             <x-core::filter-buttons table="customers"/>
+
           </form>
+
         </div>
+
       </div>
+
     </div>
+
     <div class="card">
+      
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست مشتری ها</p>
-        <span class="fs-15">({{ $customersCount }})</span>
+
+        <p class="card-title ml-2">لیست مشتری ها  <span class="fs-15">({{ $customersCount }})</span></p>
+
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
+
       </div>
+
       <div class="card-body">
+
         <div class="table-responsive">
-          <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
               <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+                
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center border-top">ردیف</th>
@@ -77,6 +109,7 @@
                     <th class="text-center border-top">عملیات</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   @forelse ($customers as $customer)
                     <tr>
@@ -107,8 +140,11 @@
 											<x-core::data-not-found-alert :colspan="7"/>
                   @endforelse
                 </tbody>
+
               </table>
+
               {{ $customers->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              
             </div>
           </div>
         </div>

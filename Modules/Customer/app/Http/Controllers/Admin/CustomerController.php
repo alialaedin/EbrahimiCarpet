@@ -51,7 +51,7 @@ class CustomerController extends Controller implements HasMiddleware
 
 	public function create()
 	{
-		return view('customer::create', compact('breadcrumbItems'));
+		return view('customer::create');
 	}
 
 	public function store(CustomerStoreRequest $request)

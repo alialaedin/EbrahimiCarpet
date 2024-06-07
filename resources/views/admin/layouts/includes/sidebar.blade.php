@@ -1,19 +1,9 @@
 <aside class="app-sidebar">
   <div class="app-sidebar__logo">
-    <a class="header-brand">
-      {{-- <img width="200" height="50" src="{{ Storage::url($logo) }}" class="header-brand-img dark-logo" alt="Dayonelogo"> --}}
-    </a>
+    <span class="text-light">مدیریت فرش ابراهیمی</span>
   </div>
   <div class="app-sidebar3">
-    <div class="app-sidebar__user active">
-      <div class="dropdown user-pro-body text-center">
-        <div class="user-pic">
-          {{-- <img src="{{ Storage::url($prof) }}" class="avatar-xxl rounded-circle mb-1"> --}}
-        </div>
-        <div class="user-info">
-        </div>
-      </div>
-    </div>
+    
     <ul class="side-menu">
 
       <li class="slide">

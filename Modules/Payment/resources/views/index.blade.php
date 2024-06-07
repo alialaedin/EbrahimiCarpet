@@ -9,17 +9,17 @@
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
+          <a href="{{ route('admin.suppliers.index') }}">لیست تامین کنندگان</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.show', $purchase) }}">جزئیات خرید</a>
+          <a href="{{ route('admin.suppliers.show', $supplier) }}">نمایش تامین کننده</a>
         </li>
         <li class="breadcrumb-item active">
           <a>پرداختی ها</a>
         </li>
       </ol>
       @can('create payments')
-        <a href="{{ route('admin.purchases.payments.create', $purchase) }}" class="btn btn-indigo">
+        <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-indigo">
           ثبت پرداختی جدید
           <i class="fa fa-plus font-weight-bolder"></i>
         </a>
@@ -34,13 +34,13 @@
       <div class="card-body">
         <div class="row">
           @php
-            $totalAmount = $purchase->getTotalAmountWithDiscount();
-            $paymentAmount = $purchase->getTotalPaymentAmount();
+            $totalAmount = $supplier->calcTotalPurchaseAmount();
+            $paymentAmount = $supplier->calcTotalPaymentAmount();
             $remainingAmount = $totalAmount - $paymentAmount;
           @endphp
           <div class="col-lg-4 col-md-6 col-12">
             <div class="d-flex align-items-center my-1">
-              <span class="fs-16 font-weight-bold ml-1">مبلغ خرید :</span>
+              <span class="fs-16 font-weight-bold ml-1">مبلغ کل خرید ها :</span>
               <span class="fs-14 mr-1"> {{ number_format($totalAmount) }} تومان</span>
             </div>
           </div>
@@ -59,10 +59,16 @@
         </div>
       </div>
     </div>
+
 		<div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">پرداختی های نقدی</p>
-        <span class="fs-15 ">({{ $cashPayments->count() }})</span>
+        <p class="card-title ml-2">پرداختی های نقدی <span class="fs-15 ">({{ $cashPayments->count() }})</span></p>
+        
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -106,10 +112,10 @@
                           <i class="fa fa-book" ></i>
                         </button>
                         @can('edit payments')
-                          <x-core::edit-button route="admin.purchases.payments.edit" :model="$payment"/>
+                          <x-core::edit-button route="admin.payments.edit" :model="$payment"/>
                         @endcan
                         @can('delete payments')
-                          <x-core::delete-button route="admin.purchases.payments.destroy" :model="$payment"/>
+                          <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
                         @endcan
                       </td>
                     </tr>
@@ -129,8 +135,13 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">اقساط</p>
-        <span class="fs-15">({{ $installmentPayments->count() }})</span>
+        <p class="card-title ml-2">اقساط <span class="fs-15">({{ $installmentPayments->count() }})</span></p>
+        
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -183,10 +194,10 @@
                           <i class="fa fa-book" ></i>
                         </button>
                         @can('edit payments')
-                          <x-core::edit-button route="admin.purchases.payments.edit" :model="$payment"/>
+                          <x-core::edit-button route="admin.payments.edit" :model="$payment"/>
                         @endcan
                         @can('delete payments')
-                          <x-core::delete-button route="admin.purchases.payments.destroy" :model="$payment"/>
+                          <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
                         @endcan
                       </td>
                     </tr>
@@ -206,8 +217,13 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">چک ها</p>
-        <span class="fs-15">({{ $chequePayments->count() }})</span>
+        <p class="card-title ml-2">چک ها <span class="fs-15">({{ $chequePayments->count() }})</span></p>
+        
+        <div class="card-options">
+          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -260,10 +276,10 @@
                           <i class="fa fa-book" ></i>
                         </button>
                         @can('edit payments')
-                          <x-core::edit-button route="admin.purchases.payments.edit" :model="$payment"/>
+                          <x-core::edit-button route="admin.payments.edit" :model="$payment"/>
                         @endcan
                         @can('delete payments')
-                          <x-core::delete-button route="admin.purchases.payments.destroy" :model="$payment"/>
+                          <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
                         @endcan
                       </td>
                     </tr>
@@ -281,6 +297,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 
   @include('payment::_show-description-modal')

@@ -84,8 +84,13 @@
 
           <div class="card-header border-0 justify-content-between ">
             <div class="d-flex">
-              <p class="card-title ml-2">اقلام خرید</p>
-              <span class="fs-15 ">({{ $purchase->items->count() }})</span>
+              <p class="card-title ml-2">اقلام خرید <span class="fs-15 ">({{ $purchase->items->count() }})</span></p>
+              
+              <div class="card-options">
+                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+                <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+              </div>
             </div>
             <button class="btn btn-indigo" data-target="#createPurchaseItemModal" data-toggle="modal">
               افزودن قلم جدید
@@ -166,70 +171,8 @@
           </div>
       </div>
 
-      <div class="card">
-
-        <div class="card-header border-0 justify-content-between ">
-          <p class="card-title ml-2">آخرین پرداختی ها</p>
-          <a class="btn btn-outline-info" href="{{ route('admin.purchases.payments.index', $purchase) }}">تمامی پرداختی ها</a>
-        </div>
-
-        <div class="card-body">
-          <div class="table-responsive">
-            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-              <div class="row">
-                <table class="table table-vcenter text-nowrap table-bordered border-bottom">
-                  <thead class="thead-light">
-                    <tr>
-                      <th class="text-center border-top">ردیف</th>
-                      <th class="text-center border-top">نوع پراخت</th>
-                      <th class="text-center border-top">مبلغ (تومان)</th>
-                      <th class="text-center border-top">تاریخ پرداخت</th>
-                      <th class="text-center border-top">عکس رسید</th>
-                      <th class="text-center border-top">تاریخ سررسید</th>
-                      <th class="text-center border-top">وضعیت</th>
-                      <th class="text-center border-top">تاریخ ثبت</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @forelse ($payments as $payment)
-                      <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td class="text-center">{{ $payment->getType() }}</td>
-                        <td class="text-center">{{ number_format($payment->amount) }}</td>
-                        <td class="text-center">{{ $payment->getPaymentDate() }}</td>
-                        <td class="text-center m-0 p-0">
-                          @if ($payment->image)
-                            <figure class="figure my-2">
-                              <a target="_blank" href="{{ Storage::url($payment->image) }}">
-                                <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
-                              </a>
-                            </figure>
-                          @else
-                            <span> - </span>
-                          @endif
-                        </td>
-                        <td class="text-center">{{ verta($payment->due_date)->formatDate() }}</td>
-                        <td class="text-center">
-                          <x-core::badge
-                            type="{{ $payment->status ? 'success' : 'danger' }}"
-                            text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
-                          />
-                        </td>
-                        <td class="text-center">{{ verta($payment->created_at)->formatDate() }}</td>
-                      </tr>
-                      @empty
-                        <x-core::data-not-found-alert :colspan="8"/>
-                    @endforelse
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
     </div>
       
-    </div>
-
   </div>
 
   @include('purchase::includes._create-purchase-item-modal')

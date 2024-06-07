@@ -9,13 +9,13 @@
           </a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
+          <a href="{{ route('admin.suppliers.index') }}">لیست تامین کنندگان</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.show', $purchase) }}">جزئیات خرید</a>
+          <a href="{{ route('admin.suppliers.show', $supplier) }}">نمایش تامین کننده</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.payments.index', $purchase) }}">پرداختی ها</a>
+          <a href="{{ route('admin.payments.index', $supplier) }}">پرداختی ها</a>
         </li>
         <li class="breadcrumb-item active">
           <a>ثبت پرداختی جدید</a>
@@ -23,13 +23,13 @@
       </ol>
     </div>
 		<div class="card">
-			<div class="card-header border-0 justify-content-between">
+			<div class="card-header border-0">
 				<p class="card-title">ثبت پرداختی جدید</p>
 			</div>
 			<div class="card-body">
-				<form action="{{ route('admin.purchases.payments.store') }}" method="post" class="save" enctype="multipart/form-data">
+				<form action="{{ route('admin.payments.store') }}" method="post" class="save" enctype="multipart/form-data">
           @csrf
-          <input type="hidden" name="purchase_id" value="{{ $purchase->id }}">
+          <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">

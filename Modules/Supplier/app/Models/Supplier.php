@@ -2,10 +2,12 @@
 
 namespace Modules\Supplier\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Admin\Models\Admin;
+use Modules\Payment\Models\Payment;
 use Modules\Purchase\Models\Purchase;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -50,8 +52,43 @@ class Supplier extends Model
 			});
 	}
 
+	// Functions
+	public function calcTotalPurchaseAmount() 
+	{
+		$totalAmount = 0;
+
+		foreach ($this->purchases as $purchase) {
+			$totalAmount += $purchase->getTotalAmountWithDiscount();
+		}
+
+		return $totalAmount;
+	}
+
+	// Functions
+	public function calcTotalPaymentAmount() 
+	{
+		return $this->payments->whereNotNull('payment_date')->sum('amount');
+	}
+
+	public function gerRemainingAmount() 
+	{
+		return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
+	}
+
+	// Query Scope
+	public static function scopeActive(Builder $query)
+	{
+	  $query->where('status', 1);
+	}
+
+	// Relations
 	public function purchases(): HasMany
 	{
 		return $this->hasMany(Purchase::class);
+	}
+
+	public function payments(): HasMany
+	{
+		return $this->hasMany(Payment::class);
 	}
 }

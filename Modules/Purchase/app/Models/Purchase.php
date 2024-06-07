@@ -33,7 +33,7 @@ class Purchase extends Model
 
         $eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
-        $messageBase = " ادمین با شناسه{$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate $eventTime";
+        $messageBase = "ادمین با شناسه {$admin->attributes['id']}, {$admin->attributes['name']}, در تاریخ $eventDate ساعت $eventTime";
         $supplierName = $this->supplier->name;
 
         switch ($eventName) {

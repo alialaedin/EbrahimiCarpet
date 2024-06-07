@@ -3,8 +3,8 @@
 namespace Modules\Admin\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Admin\Database\Factories\AdminFactory;
+use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-  use HasFactory, HasRoles, LogsActivity;
+  use HasRoles, LogsActivity;
 
   protected $fillable = [
     'name',
@@ -31,11 +31,6 @@ class Admin extends Authenticatable
     return [
       'password' => 'hashed',
     ];
-  }
-
-  protected static function newFactory(): AdminFactory
-  {
-    return AdminFactory::new();
   }
 
   public function getActivitylogOptions(): LogOptions
@@ -77,5 +72,19 @@ class Admin extends Authenticatable
   public function getRoleName()
   {
     return $this->getRoleNames()->first();
+  }
+
+  public function isDeletable(): bool
+  {
+    return ($this->getRoleName() !== Role::SUPER_ADMIN);
+  }
+
+  public static function booted(): void
+  {
+    static::deleting(function (Admin $admin) {
+      if (!$admin->isDeletable()) {
+        throw new ModelCannotBeDeletedException('این ادمین قابل حذف نمی باشد!');
+      }
+    });
   }
 }
