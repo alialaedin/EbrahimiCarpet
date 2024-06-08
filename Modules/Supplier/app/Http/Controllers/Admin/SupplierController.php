@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Payment\Models\Payment;
+use Modules\Purchase\Models\Purchase;
 use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
 use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
@@ -48,13 +49,15 @@ class SupplierController extends Controller implements HasMiddleware
 		$numberOfPurchases = $supplier->purchases->count();
 		$numberOfPayments = $supplier->payments->count();
 
-		$payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
+		$payments = $supplier->payments()->latest('id')->take(5)->get();
+		$purchases = $supplier->purchases()->latest('id')->take(5)->get();
 
 		return view('supplier::show', compact(
 			'supplier',
 			'numberOfPurchases',
 			'numberOfPayments',
 			'payments',
+      'purchases'
 		));
 	}
 

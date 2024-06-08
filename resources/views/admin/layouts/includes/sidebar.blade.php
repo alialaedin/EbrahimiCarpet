@@ -1,9 +1,13 @@
 <aside class="app-sidebar">
-  <div class="app-sidebar__logo">
-    <span class="text-light">مدیریت فرش ابراهیمی</span>
+  <div class="app-sidebar__user">
+    <div class="dropdown user-pro-body text-center">
+      <div class="user-info">
+        <span class="text-light fs-18">مدیریت فرش ابراهیمی</span>
+      </div>
+    </div>
   </div>
-  <div class="app-sidebar3">
-    
+  <div class="app-sidebar3 mt-0">
+
     <ul class="side-menu">
 
       <li class="slide">

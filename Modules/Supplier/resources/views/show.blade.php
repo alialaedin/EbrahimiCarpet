@@ -67,7 +67,7 @@
 
           <div class="d-flex align-items-center">
             <p class="card-title ml-1">خرید ها <span class="fs-15 ">({{ $numberOfPurchases }})</span></p>
-            
+
             <div class="card-options">
               <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
               <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -75,10 +75,16 @@
             </div>
           </div>
 
-          <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo">
-            ثبت خرید جدید
-            <i class="fa fa-plus font-weight-bolder"></i>
-          </a>
+          <div>
+            <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo">
+              مشاهده همه خرید ها
+              <i class="fa fa-plus font-weight-bolder"></i>
+            </a>
+            <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo">
+              ثبت خرید جدید
+              <i class="fa fa-plus font-weight-bolder"></i>
+            </a>
+          </div>
 
         </div>
         <div class="card-body">
@@ -98,13 +104,13 @@
                   </thead>
 
                   @php
-                    $totalPurchaseAount = 0;
-                    $totalDiscountAount = 0;
-                    $totalPurchaseWithDiscountAount = 0;
+                    $totalPurchaseAmount = 0;
+                    $totalDiscountAmount = 0;
+                    $totalPurchaseWithDiscountAmount = 0;
                   @endphp
 
                   <tbody>
-                    @forelse ($supplier->purchases as $purchase)
+                    @forelse ($purchases as $purchase)
                       <tr>
                         <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
@@ -113,8 +119,8 @@
                         <td class="text-center">{{ verta($purchase->purchased_at)->formatDate() }}</td>
                         <td class="text-center">
                           @can('view purchases')
-                            <a 
-                              href="{{route('admin.purchases.show', $purchase)}}" 
+                            <a
+                              href="{{route('admin.purchases.show', $purchase)}}"
                               class="btn btn-sm btn-cyan">
                               جزئیات خرید
                             </a>
@@ -123,21 +129,21 @@
                       </tr>
 
                       @php
-                        $totalPurchaseAount += $purchase->getTotalPurchaseAmount();
-                        $totalDiscountAount += $purchase->discount;
-                        $totalPurchaseWithDiscountAount += $purchase->getTotalAmountWithDiscount();
+                        $totalPurchaseAmount += $purchase->getTotalPurchaseAmount();
+                        $totalDiscountAmount += $purchase->discount;
+                        $totalPurchaseWithDiscountAmount += $purchase->getTotalAmountWithDiscount();
                       @endphp
 
                       @empty
                         <x-core::data-not-found-alert :colspan="7"/>
                     @endforelse
+                    <tr>
+                      <td class="text-center" colspan="1">جمع کل</td>
+                      <td class="text-center" colspan="1">{{ number_format($totalPurchaseAmount) }}</td>
+                      <td class="text-center" colspan="1">{{ number_format($totalDiscountAmount) }}</td>
+                      <td class="text-center" colspan="1">{{ number_format($totalPurchaseWithDiscountAmount) }}</td>
+                    </tr>
                   </tbody>
-                  <tr>
-                    <td class="text-center" colspan="1">جمع کل</td>
-                    <td class="text-center" colspan="1">{{ number_format($totalPurchaseAount) }}</td>
-                    <td class="text-center" colspan="1">{{ number_format($totalDiscountAount) }}</td>
-                    <td class="text-center" colspan="1">{{ number_format($totalPurchaseWithDiscountAount) }}</td>
-                  </tr>
                 </table>
               </div>
             </div>
@@ -150,7 +156,7 @@
 
           <div class="d-flex align-items-center">
             <p class="card-title ml-2">پرداختی ها <span class="fs-15">({{ $numberOfPayments }})</span></p>
-            
+
             <div class="card-options">
               <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
               <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>

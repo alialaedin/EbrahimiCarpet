@@ -4,12 +4,13 @@ namespace Modules\Purchase\Http\Requests\Admin\Purchase;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
 
 class PurchaseStoreRequest extends FormRequest
 {
-	public function prepareForValidation()
-	{
+	public function prepareForValidation(): void
+  {
 		$this->merge([
 			'discount' => !is_null($this->input('discount')) ? str_replace(',', '', $this->input('discount')) : null,
 		]);
@@ -29,8 +30,11 @@ class PurchaseStoreRequest extends FormRequest
 		];
 	}
 
-	public function passedValidation()
-	{
+  /**
+   * @throws ValidationException
+   */
+  public function passedValidation(): void
+  {
 		if ($this->input('purchased_at') > Carbon::now()) {
 			throw Helpers::makeWebValidationException('تاریخ خرید نمی تواند از تاریخ امروز بزرگ تر باشد.');
 		}
