@@ -106,10 +106,10 @@
                 <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
                   <thead class="thead-light">
                     <tr>
-                      <th class="text-center border-top">ردیف</th>
-                      <th class="text-center border-top">توضیحات</th>
-                      <th class="text-center border-top">تاریخ</th>
-                      <th class="text-center border-top">ساعت</th>
+                      <th class="text-center">ردیف</th>
+                      <th class="text-center">توضیحات</th>
+                      <th class="text-center">تاریخ</th>
+                      <th class="text-center">ساعت</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -121,7 +121,7 @@
                         <td class="text-center">{{ verta($activity->created_at)->formatTime() }}</td>
                       </tr>
                       @empty
-                        <x-core::data-not-found-alert :colspan="2"/>
+                        <x-core::data-not-found-alert :colspan="4"/>
                     @endforelse
                   </tbody>
                 </table>

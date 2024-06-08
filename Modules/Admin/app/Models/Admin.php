@@ -3,7 +3,6 @@
 namespace Modules\Admin\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Admin\Database\Factories\AdminFactory;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\LogOptions;
@@ -38,25 +37,7 @@ class Admin extends Authenticatable
     return LogOptions::defaults()
       ->logAll()
       ->setDescriptionForEvent(function (string $eventName) {
-
-        $eventDate = verta()->format('Y/m/d');
-        $eventTime = verta()->formatTime();
-
-        $baseMessage = "در تاریخ $eventDate, ساعت $eventTime ادمین با نام {$this->attributes['name']} توسط مدیر سایت ";
-
-        switch ($eventName) {
-          case 'created':
-            $message = "$baseMessage ساخته شد.";
-            break;
-          case 'updated':
-            $message = "$baseMessage ویرایش شد.";
-            break;
-          case 'deleted':
-            $message = "$baseMessage حذف شد.";
-            break;
-        }
-
-        return $message;
+        return "ادمین با نام $this->name و شناسه $this->id را " . config('core.events.' . $eventName);
       });
   }
 
