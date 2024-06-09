@@ -46,7 +46,7 @@ class Product extends Model
 		return LogOptions::defaults()
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($admin) {
-				
+
 				$eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
 				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
@@ -78,7 +78,7 @@ class Product extends Model
 	{
 		return $this->hasOne(Store::class);
 	}
-	
+
 	public function purchaseItems(): HasMany
 	{
 		return $this->hasMany(PurchaseItem::class);
@@ -103,4 +103,10 @@ class Product extends Model
 
 		return $price;
 	}
+
+  public function getCategoryUnitType()
+  {
+    return $this->category->getUnitType();
+  }
+
 }

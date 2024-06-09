@@ -108,43 +108,43 @@ class PurchaseController extends Controller implements HasMiddleware
 		return to_route('admin.purchases.index');
 	}
 
-	public function show(Purchase $purchase)
-	{
+	public function show(Purchase $purchase): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$purchase->load([
 			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
 			'items' => fn ($query) => $query->latest('id'),
-			'items.product' => fn ($query) => $query->select('id', 'title', 'image'),
+			'items.product' => fn ($query) => $query->select('id', 'title', 'image', 'category_id'),
+			'items.product.category' => fn ($query) => $query->select('id', 'unit_type')
 		]);
-		$products = $this->getProducts();
 		$categories = $this->getCategories();
 
 		return view('purchase::purchase.show', compact('purchase', 'categories'));
 	}
 
-	public function edit(Purchase $purchase)
-	{
+	public function edit(Purchase $purchase): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$suppliers = $this->getSuppliers();
 
 		return view('purchase::purchase.edit', compact('purchase', 'suppliers'));
 	}
 
-	public function update(PurchaseUpdateRequest $request, Purchase $purchase)
-	{
+	public function update(PurchaseUpdateRequest $request, Purchase $purchase): \Illuminate\Http\RedirectResponse
+  {
 		$purchase->update($request->validated());
 		toastr()->success("خرید با موفقیت بروزرسانی شد.");
 
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Purchase $purchase)
-	{
+	public function destroy(Purchase $purchase): \Illuminate\Http\RedirectResponse
+  {
 		$purchase->delete();
 		toastr()->success("خرید با موفقیت حذف شد.");
 
 		return redirect()->back();
 	}
 
-	private function getSuppliers()
+	private function getSuppliers():\Illuminate\Database\Eloquent\Collection|array
 	{
 		return Supplier::active()
 			->select('id', 'name', 'mobile')
@@ -152,8 +152,8 @@ class PurchaseController extends Controller implements HasMiddleware
 			->get();
 	}
 
-	private function getCategories()
-	{
+	private function getCategories(): \Illuminate\Database\Eloquent\Collection|array
+  {
 		return Category::query()
 			->select('id', 'parent_id', 'title')
 			->where('status', 1)
@@ -161,8 +161,8 @@ class PurchaseController extends Controller implements HasMiddleware
 			->get();
 	}
 
-	private function getProducts()
-	{
+	private function getProducts(): \Illuminate\Database\Eloquent\Collection|array
+  {
 		return Product::query()
 			->select('id', 'title', 'status')
 			->where('status', 1)

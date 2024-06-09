@@ -23,14 +23,14 @@ class Supplier extends Model
 		'status'
 	];
 
-	public function getActivitylogOptions(): LogOptions
+  public function getActivitylogOptions(): LogOptions
 	{
     $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($admin) {
-				
+
 				$eventDate = verta()->format('Y/m/d');
         $eventTime = verta()->formatTime();
 				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
@@ -53,7 +53,7 @@ class Supplier extends Model
 	}
 
 	// Functions
-	public function calcTotalPurchaseAmount() 
+	public function calcTotalPurchaseAmount()
 	{
 		$totalAmount = 0;
 
@@ -65,12 +65,12 @@ class Supplier extends Model
 	}
 
 	// Functions
-	public function calcTotalPaymentAmount() 
+	public function calcTotalPaymentAmount()
 	{
 		return $this->payments->whereNotNull('payment_date')->sum('amount');
 	}
 
-	public function gerRemainingAmount() 
+	public function getRemainingAmount()
 	{
 		return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
 	}

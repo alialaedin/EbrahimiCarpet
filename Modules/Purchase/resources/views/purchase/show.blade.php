@@ -23,6 +23,11 @@
 
           <div class="card-header border-0">
             <p class="card-title ml-2">اطلاعات خرید</p>
+            <div class="card-options">
+              <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+              <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+              <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+            </div>
           </div>
 
           <div class="card-body">
@@ -85,7 +90,7 @@
           <div class="card-header border-0 justify-content-between ">
             <div class="d-flex">
               <p class="card-title ml-2">اقلام خرید <span class="fs-15 ">({{ $purchase->items->count() }})</span></p>
-              
+
               <div class="card-options">
                 <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
                 <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -108,6 +113,7 @@
                         <th class="text-center border-top">ردیف</th>
                         <th class="text-center border-top">نام محصول</th>
                         <th class="text-center border-top">تصویر</th>
+                        <th class="text-center border-top">نوع واحد</th>
                         <th class="text-center border-top">تعداد</th>
                         <th class="text-center border-top">قیمت (تومان)</th>
                         <th class="text-center border-top">تخفیف (تومان)</th>
@@ -128,11 +134,11 @@
                             @if ($item->product->image)
                               <figure class="figure my-2">
                                 <a target="_blank" href="{{ Storage::url($item->product->image) }}">
-                                  <img 
-                                    src="{{ Storage::url($item->product->image) }}" 
-                                    class="img-thumbnail" 
+                                  <img
+                                    src="{{ Storage::url($item->product->image) }}"
+                                    class="img-thumbnail"
                                     alt="image"
-                                    width="50" 
+                                    width="50"
                                     style="max-height: 32px;"
                                   />
                                 </a>
@@ -141,6 +147,7 @@
                               <span> - </span>
                             @endif
                           </td>
+                          <td class="text-center">{{ $item->product->category->getUnitType() }}</td>
                           <td class="text-center">{{ $item->quantity }}</td>
                           <td class="text-center">{{ number_format($item->price) }}</td>
                           <td class="text-center">{{ number_format($item->discount) }}</td>
@@ -172,7 +179,7 @@
       </div>
 
     </div>
-      
+
   </div>
 
   @include('purchase::includes._create-purchase-item-modal')

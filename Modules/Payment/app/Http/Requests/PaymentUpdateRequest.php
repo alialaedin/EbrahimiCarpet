@@ -39,7 +39,7 @@ class PaymentUpdateRequest extends FormRequest
 		$type = $this->input('type');
 		$status = $this->input('status');
 
-		if ($this->filled('payment_date') && $this->input('amount') > $supplier->gerRemainingAmount() + $payment->amount) {
+		if ($this->filled('payment_date') && $this->input('amount') > $supplier->getRemainingAmount() + $payment->amount) {
 			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
 		}
     if ($type == 'cheque') {

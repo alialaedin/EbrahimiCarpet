@@ -18,49 +18,115 @@
       </ol>
     </div>
 
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="card overflow-hidden">
-          <div class="card-header border-0">
-            <p class="card-title">اطلاعات تامین کننده</p>
+      <div class="card">
+
+        <div class="card-header border-0">
+          <p class="card-title">اطلاعات تامین کننده</p>
+          <div class="card-options">
+            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
           </div>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>کد : </strong>{{ $supplier->id }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>نام و نام خانوادگی : </strong>{{ $supplier->name }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>شماره موبایل : </strong>{{ $supplier->mobile }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <strong>وضعیت : </strong>
+              @if ($supplier->status)
+                <span class="text-success">فعال</span>
+              @else
+                <span class="text-danger">غیر فعال</span>
+              @endif
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>تعداد خرید ها : </strong>{{ number_format($numberOfPurchases) }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>تعداد پرداختی ها : </strong>{{ number_format($numberOfPayments) }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>تاریخ ثبت : </strong>{{ verta($supplier->created_at)->format('d-m-Y') }}</span>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+              <span><strong>محل سکونت : </strong>{{ $supplier->address }}</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    <div class="row">
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
           <div class="card-body">
-            <ul class="list-group">
-              <li class="list-group-item"><strong class="ml-1">نام و نام خانوادگی: </strong> {{ $supplier->name }} </li>
-              <li class="list-group-item"><strong class="ml-1">شماره موبایل: </strong> {{ $supplier->mobile }} </li>
-              <li class="list-group-item"><strong class="ml-1">محل سکونت: </strong> {{ $supplier->address }} </li>
-              <li class="list-group-item">
-                <strong class="ml-1">وضعیت: </strong>
-                @if ($supplier->status)
-                  <span class="text-success">فعال</span>
-                @else
-                  <span class="text-danger">غیر فعال</span>
-                @endif
-              </li>
-              <li class="list-group-item"><strong class="ml-1">تاریخ ثبت: </strong> {{ verta($supplier->created_at)->format('d-m-Y') }} </li>
-            </ul>
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-info-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
-        <div class="card overflow-hidden">
-          <div class="card-header border-0">
-            <p class="card-title">اطلاعات خرید</p>
-          </div>
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
           <div class="card-body">
-            <ul class="list-group">
-              <li class="list-group-item"><strong class="ml-1">تعداد خرید ها: </strong> {{ $numberOfPurchases }} </li>
-              <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها: </strong> {{ $numberOfPayments }} </li>
-              <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید: </strong> {{ number_format($supplier->calcTotalPurchaseAmount()) }} تومان</li>
-              <li class="list-group-item"><strong class="ml-1">مبلغ پرداختی: </strong> {{ number_format($supplier->calcTotalPaymentAmount()) }} تومان</li>
-              <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده: </strong> {{ number_format($supplier->gerRemainingAmount()) }} تومان</li>
-            </ul>
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> جمع پرداختی ها (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-danger-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-success-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
 
       <div class="card">
         <div class="card-header border-0 justify-content-between">
@@ -74,18 +140,9 @@
               <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
             </div>
           </div>
-
-          <div>
-            <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo">
-              مشاهده همه خرید ها
-              <i class="fa fa-plus font-weight-bolder"></i>
-            </a>
-            <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo">
-              ثبت خرید جدید
-              <i class="fa fa-plus font-weight-bolder"></i>
-            </a>
-          </div>
-
+          @can('create purchases')
+            <x-core::register-button route="admin.purchases.create" title="ثبت خرید جدید"/>
+          @endcan
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -102,13 +159,6 @@
                       <th class="text-center">عملیات</th>
                     </tr>
                   </thead>
-
-                  @php
-                    $totalPurchaseAmount = 0;
-                    $totalDiscountAmount = 0;
-                    $totalPurchaseWithDiscountAmount = 0;
-                  @endphp
-
                   <tbody>
                     @forelse ($purchases as $purchase)
                       <tr>
@@ -127,22 +177,9 @@
                           @endcan
                         </td>
                       </tr>
-
-                      @php
-                        $totalPurchaseAmount += $purchase->getTotalPurchaseAmount();
-                        $totalDiscountAmount += $purchase->discount;
-                        $totalPurchaseWithDiscountAmount += $purchase->getTotalAmountWithDiscount();
-                      @endphp
-
                       @empty
                         <x-core::data-not-found-alert :colspan="7"/>
                     @endforelse
-                    <tr>
-                      <td class="text-center" colspan="1">جمع کل</td>
-                      <td class="text-center" colspan="1">{{ number_format($totalPurchaseAmount) }}</td>
-                      <td class="text-center" colspan="1">{{ number_format($totalDiscountAmount) }}</td>
-                      <td class="text-center" colspan="1">{{ number_format($totalPurchaseWithDiscountAmount) }}</td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -156,19 +193,18 @@
 
           <div class="d-flex align-items-center">
             <p class="card-title ml-2">پرداختی ها <span class="fs-15">({{ $numberOfPayments }})</span></p>
-
             <div class="card-options">
               <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
               <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
               <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
             </div>
           </div>
-
-          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-indigo">
-            ثبت پرداختی جدید
-            <i class="fa fa-plus font-weight-bolder"></i>
-          </a>
-
+          @can('create purchases')
+            <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-indigo">
+              ثبت پرداختی جدید
+              <i class="fa fa-plus font-weight-bolder"></i>
+            </a>
+          @endcan
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -225,7 +261,6 @@
         </div>
       </div>
 
-    </div>
   </div>
 
   @include('payment::_show-description-modal')

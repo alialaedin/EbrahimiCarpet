@@ -25,35 +25,61 @@
         </a>
       @endcan
     </div>
-    <div class="card">
-      <div class="card-header border-0 justify-content-between ">
-        <div class="d-flex">
-          <p class="card-title ml-2" style="font-weight: bolder;">اطلاعات پراخت</p>
+
+    <div class="row">
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-info-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="row">
-          @php
-            $totalAmount = $supplier->calcTotalPurchaseAmount();
-            $paymentAmount = $supplier->calcTotalPaymentAmount();
-            $remainingAmount = $totalAmount - $paymentAmount;
-          @endphp
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="d-flex align-items-center my-1">
-              <span class="fs-16 font-weight-bold ml-1">مبلغ کل خرید ها :</span>
-              <span class="fs-14 mr-1"> {{ number_format($totalAmount) }} تومان</span>
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-danger-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="d-flex align-items-center my-1">
-              <span class="fs-16 font-weight-bold ml-1">مبلغ پرداخت شده :</span>
-              <span class="fs-14 mr-1"> {{ number_format($paymentAmount) }} تومان</span>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="d-flex align-items-center my-1">
-              <span class="fs-16 font-weight-bold ml-1">مبلغ باقی مانده :</span>
-              <span class="fs-14 mr-1"> {{ number_format($remainingAmount) }} تومان</span>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-9">
+                <div class="mt-0 text-right">
+                  <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (تومان) : </span>
+                  <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="icon1 bg-success-transparent my-auto float-left">
+                  <i class="fa fa-money"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -63,7 +89,7 @@
 		<div class="card">
       <div class="card-header border-0">
         <p class="card-title ml-2">پرداختی های نقدی <span class="fs-15 ">({{ $cashPayments->count() }})</span></p>
-        
+
         <div class="card-options">
           <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
           <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -136,7 +162,7 @@
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title ml-2">اقساط <span class="fs-15">({{ $installmentPayments->count() }})</span></p>
-        
+
         <div class="card-options">
           <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
           <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -218,7 +244,7 @@
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title ml-2">چک ها <span class="fs-15">({{ $chequePayments->count() }})</span></p>
-        
+
         <div class="card-options">
           <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
           <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -297,7 +323,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
 
   @include('payment::_show-description-modal')

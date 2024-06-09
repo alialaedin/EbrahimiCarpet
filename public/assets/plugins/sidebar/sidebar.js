@@ -127,17 +127,17 @@
       })
     }
   });
-   
+
    $(document).on('click', '.sidebar-remove', function(event) {
 	   event.preventDefault();
-		$('.sidebar').removeClass('sidebar-open');	   
+		$('.sidebar').removeClass('sidebar-open');
 	});
-	
-	
-	// ______________ PerfectScrollbar	
-	const ps8 = new PerfectScrollbar('.sidebar-right', {
-	  useBothWheelAxes:true,
-	  suppressScrollX:true,
-	});
-  
+
+
+	// ______________ PerfectScrollbar
+	// const ps8 = new PerfectScrollbar('.sidebar-right', {
+	//   useBothWheelAxes:true,
+	//   suppressScrollX:true,
+	// });
+
 }(jQuery);

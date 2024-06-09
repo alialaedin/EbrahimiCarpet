@@ -41,7 +41,7 @@ class PaymentStoreRequest extends FormRequest
 		$type = $this->input('type');
 		$status = $this->input('status');
 
-		if ($this->filled('payment_date') && $this->input('amount') > $supplier->gerRemainingAmount()) {
+		if ($this->filled('payment_date') && $this->input('amount') > $supplier->getRemainingAmount()) {
 
 			throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
 		}
