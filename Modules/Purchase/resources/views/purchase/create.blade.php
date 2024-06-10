@@ -202,9 +202,9 @@
 								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][discount]" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
 							</div>
 						</div>
-						<div class="col-1">
-						  <button class="btn btn-danger align-self-end deleteRowButton" type="button">
-  						 <i class="fa fa-trash-o" data-toggle="tooltip" data-original-title="حذف"></i>
+						<div class="col-1 text-left">
+						  <button class="btn btn-danger mt-1 deleteRowButton" type="button">
+  						  <i class="fa fa-trash-o" data-toggle="tooltip" data-original-title="حذف"></i>
 							</button>
 						</div>
 					</div>

@@ -5,7 +5,9 @@ namespace Modules\Admin\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Modules\Core\Helpers\Helpers;
 use Modules\Core\Rules\IranMobile;
+use Modules\Permission\Models\Role;
 
 class AdminUpdateRequest extends FormRequest
 {
@@ -19,6 +21,17 @@ class AdminUpdateRequest extends FormRequest
 			'password' => ['nullable', 'string', Password::min(6), 'confirmed'],
 			'status' => ['nullable', 'in:1']
 		];
+	}
+
+	public function passedValidation()
+	{
+		$superAdminRole = Role::SUPER_ADMIN;
+		$oldRoleName = $this->route('admin')->getRoleName();
+		$newRoleName = $this->input('role');
+
+		if ($oldRoleName == $superAdminRole && $newRoleName != $superAdminRole) {
+			throw Helpers::makeWebValidationException('نقش ادمینی که مدیر ارشد است نمی تواند عوض شود!', 'role');
+		}
 	}
 
 	public function authorize(): bool

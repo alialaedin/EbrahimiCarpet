@@ -2,19 +2,19 @@
 
 namespace Modules\Product\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Core\Models\BaseModel;
 use Modules\Purchase\Models\PurchaseItem;
 use Modules\Store\Models\Store;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Product extends Model
+class Product extends BaseModel
 {
 	use HasFactory, LogsActivity;
 
@@ -30,10 +30,10 @@ class Product extends Model
 
 	protected static function booted(): void
 	{
-		static::deleting(function (Category $category) {
-			if ($category->store()->exists()) {
+		static::deleting(function (Product $product) {
+			if ($product->store->balance > 0) {
 				throw new ModelCannotBeDeletedException('از این محصول در انبار موجود است و قابل حذف نمی باشد.');
-			} elseif ($category->purchaseItems()->exists()) {
+			} elseif ($product->purchaseItems()->exists()) {
 				throw new ModelCannotBeDeletedException('ازین محصول خریدی ثبت شده است و قابل حذف نمی باشد.');
 			}
 		});
@@ -103,10 +103,4 @@ class Product extends Model
 
 		return $price;
 	}
-
-  public function getCategoryUnitType()
-  {
-    return $this->category->getUnitType();
-  }
-
 }

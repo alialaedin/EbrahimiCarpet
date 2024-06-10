@@ -56,8 +56,8 @@
 							<div class="form-group">
 								<label for="password" class="control-label"> کلمه عبور: <span class="text-danger">&starf;</span></label>
 								<input type="password" id="password" class="form-control" name="password" placeholder="کلمه عبور را وارد کنید">
+								<x-core::show-validation-error name="password" />
 							</div>
-							<x-core::show-validation-error name="password" />
 						</div>
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">

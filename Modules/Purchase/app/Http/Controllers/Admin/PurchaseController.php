@@ -3,10 +3,13 @@
 namespace Modules\Purchase\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseStoreRequest;
@@ -19,7 +22,7 @@ use Modules\Supplier\Models\Supplier;
 
 class PurchaseController extends Controller implements HasMiddleware
 {
-	public static function middleware()
+	public static function middleware(): array
 	{
 		return [
 			new Middleware('can:view purchases', ['index']),
@@ -30,7 +33,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		];
 	}
 
-	public function index()
+	public function index(): View
 	{
 		$supplierId = request('supplier_id');
 		$hasDiscount = request('has_discount');
@@ -62,7 +65,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return view('purchase::purchase.index', compact('purchases', 'suppliers', 'purchasesCount'));
 	}
 
-	public function create()
+	public function create(): View
 	{
 		$suppliers = $this->getSuppliers();
 		$categories = $this->getCategories();
@@ -70,7 +73,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return view('purchase::purchase.create', compact('suppliers', 'categories'));
 	}
 
-	public function store(PurchaseStoreRequest $request)
+	public function store(PurchaseStoreRequest $request): RedirectResponse
 	{
 		$purchase = Purchase::create($request->only('supplier_id', 'purchased_at', 'discount'));
 
@@ -108,7 +111,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return to_route('admin.purchases.index');
 	}
 
-	public function show(Purchase $purchase): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+	public function show(Purchase $purchase): View|Application
   {
 		$purchase->load([
 			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
@@ -121,14 +124,14 @@ class PurchaseController extends Controller implements HasMiddleware
 		return view('purchase::purchase.show', compact('purchase', 'categories'));
 	}
 
-	public function edit(Purchase $purchase): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+	public function edit(Purchase $purchase): View|Application
   {
 		$suppliers = $this->getSuppliers();
 
 		return view('purchase::purchase.edit', compact('purchase', 'suppliers'));
 	}
 
-	public function update(PurchaseUpdateRequest $request, Purchase $purchase): \Illuminate\Http\RedirectResponse
+	public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
   {
 		$purchase->update($request->validated());
 		toastr()->success("خرید با موفقیت بروزرسانی شد.");
@@ -136,7 +139,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Purchase $purchase): \Illuminate\Http\RedirectResponse
+	public function destroy(Purchase $purchase): RedirectResponse
   {
 		$purchase->delete();
 		toastr()->success("خرید با موفقیت حذف شد.");
@@ -144,7 +147,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return redirect()->back();
 	}
 
-	private function getSuppliers():\Illuminate\Database\Eloquent\Collection|array
+	private function getSuppliers(): Collection|array
 	{
 		return Supplier::active()
 			->select('id', 'name', 'mobile')
@@ -152,7 +155,7 @@ class PurchaseController extends Controller implements HasMiddleware
 			->get();
 	}
 
-	private function getCategories(): \Illuminate\Database\Eloquent\Collection|array
+	private function getCategories(): Collection|array
   {
 		return Category::query()
 			->select('id', 'parent_id', 'title')
@@ -161,11 +164,4 @@ class PurchaseController extends Controller implements HasMiddleware
 			->get();
 	}
 
-	private function getProducts(): \Illuminate\Database\Eloquent\Collection|array
-  {
-		return Product::query()
-			->select('id', 'title', 'status')
-			->where('status', 1)
-			->get();
-	}
 }

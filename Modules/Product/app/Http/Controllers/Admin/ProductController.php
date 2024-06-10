@@ -4,6 +4,7 @@ namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -16,7 +17,7 @@ use Modules\Store\Models\Store;
 
 class ProductController extends Controller implements HasMiddleware
 {
-	public static function middleware()
+	public static function middleware(): array
 	{
 		return [
 			new Middleware('can:view products', ['index', 'show']),
@@ -26,7 +27,7 @@ class ProductController extends Controller implements HasMiddleware
 		];
 	}
 
-	private function getParentCategories()
+	private function getParentCategories(): array|Collection
 	{
 		return Category::query()
       ->select('id', 'title')
@@ -69,10 +70,7 @@ class ProductController extends Controller implements HasMiddleware
 
 	public function show(Product $product)
 	{
-		$product->load([
-			'category',
-			'category.parent'
-		]);
+		$product->load('category.parent');
 
 		return view('product::product.show', compact('product'));
 	}
@@ -129,10 +127,12 @@ class ProductController extends Controller implements HasMiddleware
 
 	public function destroy(Product $product)
 	{
+		$product->delete();
+
 		if ($product->image) {
 			Storage::disk('public')->delete($product->image);
 		}
-		$product->delete();
+		
 		toastr()->success("محصول با نام {$product->title} با موفقیت حذف شد.");
 
 		return redirect()->back();
