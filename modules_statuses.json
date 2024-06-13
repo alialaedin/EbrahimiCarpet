@@ -9,5 +9,6 @@
     "Purchase": true,
     "Store": true,
     "Payment": true,
-    "Employee": true
+    "Employee": true,
+    "Sale": true
 }

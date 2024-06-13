@@ -16,7 +16,7 @@
       <div class="card-header border-0">
 
         <p class="card-title ml-2">لیست ادمین ها <span class="fs-15 ">({{ $adminsCount }})</span></p>
-        
+
 
         <div class="card-options">
           <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
@@ -27,9 +27,9 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center border-top">ردیف</th>

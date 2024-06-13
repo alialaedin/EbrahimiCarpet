@@ -12,7 +12,7 @@ use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
 use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
 
-class SupplierController extends Controller implements HasMiddleware
+class   SupplierController extends Controller implements HasMiddleware
 {
 	public static function middleware()
 	{

@@ -56,13 +56,11 @@ class PurchaseItem extends Model
 		static::deleting(function (PurchaseItem $purchaseItem) {
 			if ($purchaseItem->purchase()->payments()->exists()) {
 				throw new ModelCannotBeDeletedException('برای این خرید پرداختی ثبت شده و آیتم های آن قابل حذف نمی باشد.');
-			} elseif ($purchaseItem->product->store->balance < $purchaseItem->quantit) {
+			} elseif ($purchaseItem->product->store->balance < $purchaseItem->quantity) {
 				throw new ModelCannotBeDeletedException('موجودی انبار کمتر از تعداد محصول این آیتم است و قابل حذف نمی باشد.');
 			}
 
-			$store = $purchaseItem->product->store;
-			$store->balance -= $purchaseItem->quantity;
-			$store->save();
+			$this->decrementProductStore();
 		});
 	}
 
@@ -89,4 +87,18 @@ class PurchaseItem extends Model
 	{
 		return $this->getPriceWithDiscount() * $this->attributes['quantity'];
 	}
+
+  private function decrementProductStore(): void
+  {
+    $store = $this->product->store;
+    $purchase = $this->purchase;
+
+    $store->decrement('balance', $this->attributes['quantity']);
+    $purchase->transactions()->create([
+      'store_id' => $store->id,
+      'type' => 'decrement',
+      'quantity' => $this->attributes['quantity']
+    ]);
+  }
+
 }

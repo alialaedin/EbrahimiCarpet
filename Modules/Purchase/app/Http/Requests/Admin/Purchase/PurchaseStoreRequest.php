@@ -11,9 +11,21 @@ class PurchaseStoreRequest extends FormRequest
 {
 	public function prepareForValidation(): void
   {
-		$this->merge([
-			'discount' => !is_null($this->input('discount')) ? str_replace(',', '', $this->input('discount')) : null,
-		]);
+    $products = [];
+    foreach ($this->input('products') as $index => $product) {
+      $products[] = [
+        'id' => $product['id'],
+        'quantity' => $product['quantity'],
+        'price' => str_replace(',', '', $product['price']),
+        'discount' => $this->filled('products.' . $index . '.discount') ? str_replace(',', '', $product['discount']) : null,
+      ];
+    }
+
+    $this->merge([
+      'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
+      'products' => $products
+    ]);
+
 	}
 
 	public function rules(): array

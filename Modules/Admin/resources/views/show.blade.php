@@ -25,7 +25,7 @@
         <div class="card-header border-0">
           <p class="card-title ml-2">مشخصات ادمین</p>
         </div>
-        
+
         <div class="card-body">
 
           <div class="row">
@@ -90,7 +90,7 @@
         <div class="card-header border-0">
 
           <p class="card-title ml-2">لیست فعالیت ها <span class="fs-15">({{ $totalActivity }})</span></p>
-          
+
           <div class="card-options">
             <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
             <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -98,7 +98,7 @@
           </div>
 
         </div>
-        
+
         <div class="card-body">
           <div class="table-responsive">
             <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -116,7 +116,7 @@
                     @forelse ($activities as $activity)
                       <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td class="text-start">{{ $activity->description }}</td>
+                        <td class="text-center">{{ $activity->description }}</td>
                         <td class="text-center">{{ verta($activity->created_at)->formatDate() }}</td>
                         <td class="text-center">{{ verta($activity->created_at)->formatTime() }}</td>
                       </tr>

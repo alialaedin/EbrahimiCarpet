@@ -25,22 +25,16 @@ class PurchaseItemController extends Controller implements HasMiddleware
 
 	public function store(PurchaseItemStoreRequest $request)
 	{
-		PurchaseItem::create($request->validated());
+		$purchaseItem = PurchaseItem::create($request->validated());
 
 		$product = Product::findOrFail($request->input('product_id'));
-		$store = $product->store()->exists() ? $product->store : Store::create([
-			'product_id' => $product->id,
-			'balance' => 0
-		]);
-		$store->balance += $request->input('quantity');
-		$store->save();
+    $product->store->increment('balance', $request->input('quantity'));
 
-		StoreTransaction::create([
-			'store_id' => $store->id,
-			'purchase_id' => $request->input('purchase_id'),
-			'type' => 'increment',
-			'quantity' => $request->input('quantity'),
-		]);
+    $purchaseItem->purchase->transactions()->create([
+      'store_id' => $product->store->id,
+      'type' => 'increment',
+      'quantity' => $request->input('quantity'),
+    ]);
 
 		toastr()->success('آیتم جدید با موفقیت ثبت شد');
 
@@ -60,12 +54,11 @@ class PurchaseItemController extends Controller implements HasMiddleware
 		$type = $balance < 0 ? 'decrement' : 'increment';
 		$quantity = abs($balance);
 
-		StoreTransaction::create([
-			'store_id' => $store->id,
-			'purchase_id' => $purchaseItem->purchase_id,
-			'type' => $type,
-			'quantity' => $quantity
-		]);
+    $purchaseItem->purchase->transactions()->create([
+      'store_id' => $store->id,
+      'type' => $type,
+      'quantity' => $quantity
+    ]);
 
 		toastr()->success('آیتم مورد نظر با موفقیت بروزرسانی شد');
 

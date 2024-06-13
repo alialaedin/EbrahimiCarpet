@@ -15,22 +15,31 @@
           <a>جزئیات خرید</a>
         </li>
       </ol>
+
+      <div class="d-flex align-items-center flex-wrap text-nowrap">
+        @can('edit purchases')
+          <a href="{{ route('admin.purchases.edit', $purchase) }}" class="btn btn-warning mx-1">
+            ویرایش خرید
+            <i class="fa fa-pencil"></i>
+          </a>
+        @endcan
+        @can('create purchase_items')
+          <button class="btn btn-indigo mx-1" data-target="#createPurchaseItemModal" data-toggle="modal">
+            افزودن قلم جدید
+            <i class="fa fa-plus font-weight-bolder"></i>
+          </button>
+        @endcan
+      </div>
+
     </div>
 
     <div class="card">
         <div class="card-header border-0">
           <p class="card-title ml-2">اطلاعات خرید</p>
-          <div class="card-options">
-            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-          </div>
+          <x-core::card-options/>
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-              <span><strong>شناسه خرید : </strong>{{ $purchase->id }}</span>
-            </div>
             <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
               <span><strong>تامین کننده : </strong><a href="{{ route('admin.suppliers.show', $purchase->supplier) }}" class="fs-14 mr-1"> {{ $purchase->supplier->name }} </a></span>
             </div>
@@ -38,13 +47,16 @@
               <span><strong>شماره موبایل : </strong>{{ $purchase->supplier->mobile }}</span>
             </div>
             <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
+              <span><strong>تاریخ خرید : </strong>{{ verta($purchase->purchased_at)->format('Y/m/d') }}</span>
+            </div>
+            <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
               <span><strong>قیمت کل خرید : </strong>{{ number_format($purchase->getTotalPurchaseAmount()) }} تومان</span>
             </div>
             <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-              <span><strong>تخفیف کل خرید : </strong>{{ number_format($purchase->discount) }}</span>
+              <span><strong>تخفیف کل خرید : </strong>{{ number_format($purchase->discount) }} تومان</span>
             </div>
             <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-              <span><strong>تاریخ خرید : </strong>{{ verta($purchase->purchased_at)->format('Y/m/d') }}</span>
+              <span><strong>قیمت با تخفیف : </strong>{{ number_format($purchase->getTotalPurchaseAmount() - $purchase->discount) }} تومان</span>
             </div>
           </div>
         </div>
@@ -53,16 +65,8 @@
         <div class="card-header border-0 justify-content-between ">
           <div class="d-flex">
             <p class="card-title ml-2">اقلام خرید <span class="fs-15 ">({{ $purchase->items->count() }})</span></p>
-            <div class="card-options">
-              <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-              <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-              <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-            </div>
+            <x-core::card-options/>
           </div>
-          <button class="btn btn-indigo" data-target="#createPurchaseItemModal" data-toggle="modal">
-            افزودن قلم جدید
-            <i class="fa fa-plus font-weight-bolder"></i>
-          </button>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -79,6 +83,7 @@
                       <th class="text-center border-top">قیمت (تومان)</th>
                       <th class="text-center border-top">تخفیف (تومان)</th>
                       <th class="text-center border-top">قیمت با تخفیف (تومان)</th>
+                      <th class="text-center border-top">قیمت کل (تومان)</th>
                       <th class="text-center border-top">عملیات</th>
                     </tr>
                   </thead>
@@ -113,6 +118,7 @@
                         <td class="text-center">{{ number_format($item->price) }}</td>
                         <td class="text-center">{{ number_format($item->discount) }}</td>
                         <td class="text-center">{{ number_format($item->getPriceWithDiscount()) }}</td>
+                        <td class="text-center">{{ number_format($item->getTotalItemPrice()) }}</td>
                         <td class="text-center">
                           @can('edit purchase_items')
                             <button
@@ -129,7 +135,7 @@
                         </td>
                       </tr>
                       @empty
-                        <x-core::data-not-found-alert :colspan="8"/>
+                        <x-core::data-not-found-alert :colspan="9"/>
                     @endforelse
                   </tbody>
                 </table>

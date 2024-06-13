@@ -16,10 +16,10 @@
     </div>
 		<div class="card">
 			<div class="card-header">
-				<p class="card-title">ویرایش تامین کننده</h3>
+				<p class="card-title">ویرایش تامین کننده</p>
 			</div>
 			<div class="card-body">
-				<form action="{{ route('admin.employees.update', $supplier) }}" method="post" class="save">
+				<form action="{{ route('admin.suppliers.update', $supplier) }}" method="post" class="save">
 					@csrf
           @method('PATCH')
 					<div class="row">

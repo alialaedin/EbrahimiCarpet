@@ -5,7 +5,7 @@ namespace Modules\Core\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class CreateSubmitButton extends Component
+class StoreButton extends Component
 {
     /**
      * Create a new component instance.
@@ -20,6 +20,6 @@ class CreateSubmitButton extends Component
      */
     public function render(): View|string
     {
-        return view('core::components.createsubmitbutton');
+        return view('core::components.store-button');
     }
 }

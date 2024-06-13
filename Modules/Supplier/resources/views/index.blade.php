@@ -17,11 +17,7 @@
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title">جستجوی پیشرفته</p>
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <X-core::card-options/>
       </div>
       <div class="card-body">
         <div class="row">
@@ -57,19 +53,14 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست تامین کنندگان <span class="fs-15">({{ $totalSuppliers }})</span></p>
-
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <p class="card-title">لیست تامین کنندگان <span class="fs-15">({{ $totalSuppliers }})</span></p>
+        <X-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center border-top">ردیف</th>
@@ -93,6 +84,7 @@
                         />
                       <td class="text-center">{{ verta($supplier->created_at)->formatDate() }}</td>
                       <td class="text-center">
+
                         @can('view payments')
                           <a
                             href="{{ route('admin.payments.index', $supplier) }}"
@@ -102,15 +94,38 @@
                             <i class="fa fa-money" ></i>
                           </a>
                         @endcan
+
                         @can('view suppliers')
                           <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
                         @endcan
+
                         @can('edit suppliers')
                           <x-core::edit-button route="admin.suppliers.edit" :model="$supplier"/>
                         @endcan
+
                         @can('delete suppliers')
-                          <x-core::delete-button route="admin.suppliers.destroy" :model="$supplier"/>
+
+                            <button
+                              onclick="confirmDelete('delete-{{ $supplier->id }}')"
+                              class="btn btn-sm btn-icon btn-danger"
+                              data-toggle="tooltip"
+                              data-original-title="حذف"
+                              @disabled($supplier->purchases->isNotEmpty())>
+                              <i class="fa fa-trash-o"></i>
+                            </button>
+
+                            <form
+                              action="{{ route('admin.suppliers.destroy', $supplier) }}"
+                              method="POST"
+                              id="delete-{{ $supplier->id }}"
+                              style="display: none">
+                              @csrf
+                              @method('DELETE')
+                            </form>
+
+{{--                          <x-core::delete-button route="admin.suppliers.destroy" :model="$supplier"/>--}}
                         @endcan
+
                       </td>
                     </tr>
                     @empty
@@ -118,7 +133,7 @@
                   @endforelse
                 </tbody>
               </table>
-              {{ $suppliers->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              {{ $suppliers->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ class Admin extends Authenticatable
     return LogOptions::defaults()
       ->logAll()
       ->setDescriptionForEvent(function (string $eventName) {
-        return "ادمین با نام $this->name و شناسه $this->id را " . config('core.events.' . $eventName);
+        return "ادمین با شناسه عددی $this->name با نام $this->id را " . config('core.events.' . $eventName);
       });
   }
 

@@ -50,7 +50,7 @@ class EmployeeController extends Controller implements HasMiddleware
     return view('employee::index', compact('employees', 'totalEmployees'));
   }
 
-  public function show(Employee $employee): View|Application|Factory|App
+  public function show(Employee $employee)
   {
     return 'Employee Show';
     return view('employee::show', compact('employee'));
@@ -58,7 +58,7 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function create(): View|Application|Factory|App
   {
-    return view('employee::create', compact('breadcrumbItems'));
+    return view('employee::create');
   }
 
   public function store(EmployeeStoreRequest $request): RedirectResponse

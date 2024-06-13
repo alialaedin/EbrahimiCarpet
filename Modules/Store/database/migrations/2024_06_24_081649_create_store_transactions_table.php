@@ -16,7 +16,7 @@ return new class extends Migration
 		Schema::create('store_transactions', function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Store::class)->constrained()->cascadeOnDelete();
-			$table->foreignIdFor(Purchase::class)->constrained()->cascadeOnDelete();
+      $table->morphs('transactionable');
 			$table->enum('type', ['increment', 'decrement']);
 			$table->unsignedBigInteger('quantity');
 			$table->text('description')->nullable();

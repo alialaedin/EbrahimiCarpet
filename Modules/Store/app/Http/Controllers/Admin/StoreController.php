@@ -24,7 +24,10 @@ class StoreController extends Controller implements HasMiddleware
   {
     $stores = Store::query()
 			->select('id', 'product_id', 'balance', 'created_at')
-			->with('product:id,title,image')
+			->with([
+        'product:id,title,image,category_id',
+        'product.category:id,unit_type',
+      ])
 			->latest('id')
 			->paginate();
 
@@ -37,7 +40,7 @@ class StoreController extends Controller implements HasMiddleware
 
     $transactions = StoreTransaction::query()
       ->where('store_id', $store->id)
-      ->with('purchase.supplier')
+      ->with('transactionable')
       ->latest('id')
       ->paginate(15);
 

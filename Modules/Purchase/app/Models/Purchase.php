@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Payment\Models\Payment;
+use Modules\Sale\Models\Sale;
+use Modules\Store\Models\StoreTransaction;
 use Modules\Supplier\Models\Supplier;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -52,12 +55,10 @@ class Purchase extends Model
       });
   }
 
-  protected static function booted(): void
+  public static function booted(): void
   {
     static::deleting(function (Purchase $purchase) {
-      if ($purchase->payments()->exists()) {
-        throw new ModelCannotBeDeletedException('برای این خرید پرداختی صورت گرفته و قابل حذف نمی باشد.');
-      }
+      $purchase->transactions()->delete();
     });
   }
 
@@ -75,6 +76,11 @@ class Purchase extends Model
   public function payments(): HasMany
   {
     return $this->hasMany(Payment::class);
+  }
+
+  public function transactions(): MorphMany
+  {
+    return $this->morphMany(StoreTransaction::class, 'transactionable');
   }
 
   // Functions

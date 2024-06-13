@@ -82,6 +82,21 @@ class RolesAndPermissionsSeeder extends Seeder
 			'create payments' => 'ایجاد پرداختی ها',
 			'edit payments' => 'ویرایش پرداختی ها',
 			'delete payments' => 'حذف پرداختی ها',
+      //sales
+			'view sales' => 'مشاهده فروش ها',
+			'create sales' => 'ایجاد فروش ها',
+			'edit sales' => 'ویرایش فروش ها',
+			'delete sales' => 'حذف فروش ها',
+			//sale_items
+			'view sale_items' => 'مشاهده اقلام فروش',
+			'create sale_items' => 'ایجاد اقلام فروش',
+			'edit sale_items' => 'ویرایش اقلام فروش',
+			'delete sale_items' => 'حذف اقلام فروش',
+			//sale_payments
+			'view sale_payments' => 'مشاهده پرداختی های مشتری',
+			'create sale_payments' => 'ایجاد پرداختی های مشتری',
+			'edit sale_payments' => 'ویرایش پرداختی های مشتری',
+			'delete sale_payments' => 'حذف پرداختی های مشتری',
 			//stores
 			'view stores' => 'مشاهده انبار',
 			'create stores' => 'ایجاد انبار',

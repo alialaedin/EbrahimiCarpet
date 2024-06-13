@@ -30,25 +30,7 @@ class Supplier extends Model
 		return LogOptions::defaults()
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($admin) {
-
-				$eventDate = verta()->format('Y/m/d');
-        $eventTime = verta()->formatTime();
-				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
-				$supplierName = $this->name;
-
-				switch ($eventName) {
-          case 'created':
-            $message = "{$messageBase} یک تامین کننده جدید با نام {$supplierName} را ثبت کرد.";
-            break;
-          case 'updated':
-            $message = "{$messageBase} تامین کننده با نام {$supplierName} را ویرایش کرد.";
-            break;
-          case 'deleted':
-            $message = "{$messageBase} تامین کننده با نام {$supplierName} را حذف کرد.";
-            break;
-        }
-
-				return $message;
+        return "تامین کننده با شناسه عددی $this->id با نام $this->name را " . config('core.events.' . $eventName);
 			});
 	}
 
@@ -74,6 +56,16 @@ class Supplier extends Model
 	{
 		return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
 	}
+
+  public function countPurchases()
+  {
+    return $this->purchases->count();
+  }
+
+  public function countPayments()
+  {
+    return $this->payments->count();
+  }
 
 	// Query Scope
 	public static function scopeActive(Builder $query)

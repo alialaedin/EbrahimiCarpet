@@ -68,11 +68,14 @@
       <li class="slide">
         <a class="side-menu__item" data-toggle="slide" href="#">
           <i class="fe fe-shopping-cart sidemenu_icon"></i>
-          <span class="side-menu__label">مدیریت سفارشات</span><i class="angle fa fa-angle-left"></i>
+          <span class="side-menu__label">مدیریت فروش ها</span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">
           @can('view purchases')
             <li><a href="{{route("admin.purchases.index")}}" class="slide-item">خرید ها</a></li>
+          @endcan
+          @can('view sales')
+            <li><a href="{{route("admin.sales.index")}}" class="slide-item">فروش ها</a></li>
           @endcan
         </ul>
       </li>

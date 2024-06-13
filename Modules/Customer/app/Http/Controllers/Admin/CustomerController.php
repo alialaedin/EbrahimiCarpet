@@ -45,7 +45,19 @@ class CustomerController extends Controller implements HasMiddleware
 
 	public function show(Customer $customer)
 	{
-		return 'Customer Show';
+    $salesCount = $customer->countSales();
+    $salePaymentsCount = $customer->countPayments();
+
+    $salePayments = $customer->payments()->latest('id')->take(5)->get();
+    $sales = $customer->sales()->latest('id')->take(5)->get();
+
+    return view('customer::show', compact([
+      'customer',
+      'salesCount',
+      'salePaymentsCount',
+      'salePayments',
+      'sales'
+    ]));
 	}
 
 	public function create()

@@ -30,7 +30,8 @@
                     <th class="text-center">ردیف</th>
                     <th class="text-center">عنوان محصول</th>
                     <th class="text-center">تصویر محصول</th>
-                    <th class="text-center">موجودی (تعداد)</th>
+                    <th class="text-center">نوع واحد</th>
+                    <th class="text-center">موجودی</th>
                     <th class="text-center">تاریخ ثبت</th>
                     <th class="text-center">تراکنش ها</th>
                   </tr>
@@ -55,6 +56,7 @@
                           <span> - </span>
                         @endif
                       </td>
+                      <td class="text-center">{{ $store->product->category->getUnitType() }}</td>
                       <td class="text-center">{{ $store->balance }}</td>
                       <td class="text-center">{{ verta($store->created_at)->formatDate() }}</td>
                       <td class="text-center">

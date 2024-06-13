@@ -5,7 +5,7 @@ namespace Modules\Core\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class EditSubmitButton extends Component
+class UpdateButton extends Component
 {
     /**
      * Create a new component instance.
@@ -20,6 +20,6 @@ class EditSubmitButton extends Component
      */
     public function render(): View|string
     {
-        return view('core::components.editsubmitbutton');
+        return view('core::components.update-button');
     }
 }

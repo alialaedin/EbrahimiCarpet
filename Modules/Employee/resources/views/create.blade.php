@@ -11,7 +11,7 @@
         <li class="breadcrumb-item">
           <a href="{{ route('admin.employees.index') }}">لیست کارمندان</a>
         </li>
-        <li class="breadcrumb-item active">ویرایش کارمند</li>
+        <li class="breadcrumb-item active">ثبت کارمند جدید</li>
       </ol>
     </div>
 		<div class="card">

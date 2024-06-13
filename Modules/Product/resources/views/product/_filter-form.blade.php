@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="card-header border-0">
-    <p class="card-title" style="font-weight: bolder;">جستجو پیشرفته</p>
+    <p class="card-title">جستجوی پیشرفته</p>
     <div class="card-options">
       <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
       <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>

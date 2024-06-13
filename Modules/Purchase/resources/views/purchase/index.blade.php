@@ -9,7 +9,7 @@
           </a>
         </li>
         <li class="breadcrumb-item active">لیست خرید ها</li>
-      </ol> 
+      </ol>
       @can('create purchases')
         <x-core::register-button route="admin.purchases.create" title="ثبت خرید جدید"/>
       @endcan
@@ -18,7 +18,7 @@
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title ml-2">لیست خرید ها <span class="fs-15">({{ $purchasesCount }})</span></p>
-        
+
         <div class="card-options">
           <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
           <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
@@ -75,11 +75,11 @@
                       </td>
                     </tr>
                     @empty
-											<x-core::data-not-found-alert :colspan="7"/>
+											<x-core::data-not-found-alert :colspan="8"/>
                   @endforelse
                 </tbody>
               </table>
-              {{ $purchases->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              {{ $purchases->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </div>
           </div>
         </div>

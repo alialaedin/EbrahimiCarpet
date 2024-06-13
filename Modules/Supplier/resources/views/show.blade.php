@@ -3,6 +3,7 @@
   <div class="col-12">
 
     <div class="page-header">
+
       <ol class="breadcrumb align-items-center">
         <li class="breadcrumb-item">
           <a href="{{ route('admin.dashboard') }}">
@@ -16,16 +17,41 @@
           <a>نمایش تامین کننده</a>
         </li>
       </ol>
+
+      <div class="d-flex align-items-center flex-wrap text-nowrap">
+        @can('edit suppliers')
+          <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning mx-1">
+            ویرایش تامین کننده
+            <i class="fa fa-pencil"></i>
+          </a>
+        @endcan
+        @can('create purchases')
+          <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo mx-1">
+            ثبت خرید جدید
+            <i class="fa fa-plus"></i>
+          </a>
+        @endcan
+        @can('view payments')
+          <a href="{{ route('admin.payments.index', $supplier) }}" class="btn btn-flickr mx-1">
+            مشاهده همه پرداختی ها
+            <i class="fa fa-eye"></i>
+          </a>
+        @endcan
+        @can('create payments')
+          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-youtube mx-1">
+             ثبت پرداختی جدید
+            <i class="fa fa-plus"></i>
+          </a>
+        @endcan
+
+      </div>
+
     </div>
 
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title">اطلاعات تامین کننده</p>
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="row">
@@ -62,82 +88,12 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-info-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> جمع پرداختی ها (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-danger-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-success-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    @include('supplier::purchase-statistics')
 
     <div class="card">
       <div class="card-header border-0 justify-content-between">
-
-        <div class="d-flex align-items-center">
-          <p class="card-title ml-1">خرید ها <span class="fs-15 ">({{ $numberOfPurchases }})</span></p>
-
-          <div class="card-options">
-            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-          </div>
-        </div>
-        @can('create purchases')
-          <x-core::register-button route="admin.purchases.create" title="ثبت خرید جدید"/>
-        @endcan
+        <p class="card-title ml-1">خرید ها <span class="fs-15 ">({{ $numberOfPurchases }})</span></p>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -173,7 +129,7 @@
                       </td>
                     </tr>
                     @empty
-                      <x-core::data-not-found-alert :colspan="7"/>
+                      <x-core::data-not-found-alert :colspan="6"/>
                   @endforelse
                 </tbody>
               </table>
@@ -185,20 +141,8 @@
 
     <div class="card">
       <div class="card-header border-0 justify-content-between">
-        <div class="d-flex align-items-center">
-          <p class="card-title ml-2">پرداختی ها <span class="fs-15">({{ $numberOfPayments }})</span></p>
-          <div class="card-options">
-            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-          </div>
-        </div>
-        @can('create purchases')
-          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-indigo">
-            ثبت پرداختی جدید
-            <i class="fa fa-plus font-weight-bolder"></i>
-          </a>
-        @endcan
+        <p class="card-title ml-2">پرداختی ها <span class="fs-15">({{ $numberOfPayments }})</span></p>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -254,19 +198,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
-  @include('payment::_show-description-modal')
-
-@endsection
-
-@section('scripts')
-  <script>
-    function showPaymentDescriptionModal (description) {
-      let modal = $('#showDescriptionModal');
-      modal.find('#description').text(description ?? '-');
-      modal.modal('show');
-    }
-  </script>
 @endsection

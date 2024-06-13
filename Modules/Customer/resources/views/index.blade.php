@@ -130,15 +130,48 @@
                       </td>
                       <td class="text-center">{{ verta($customer->created_at)->formatDate() }}</td>
                       <td class="text-center">
+
+                        @can('view sale_payments')
+                          <a
+                            href="{{ route('admin.sale-payments.index', $customer) }}"
+                            class="btn btn-success btn-icon btn-sm"
+                            data-toggle="tooltip"
+                            data-original-title="پرداختی ها">
+                            <i class="fa fa-money"></i>
+                          </a>
+                        @endcan
+
                         @can('view customers')
                           <x-core::show-button route="admin.customers.show" :model="$customer"/>
                         @endcan
+
                         @can('edit customers')
                           <x-core::edit-button route="admin.customers.edit" :model="$customer"/>
                         @endcan
+
                         @can('delete customers')
-                          <x-core::delete-button route="admin.customers.destroy" :model="$customer"/>
+
+                            <button
+                              onclick="confirmDelete('delete-{{ $customer->id }}')"
+                              class="btn btn-sm btn-icon btn-danger"
+                              data-toggle="tooltip"
+                              data-original-title="حذف"
+                              @disabled($customer->sales->isNotEmpty())>
+                              <i class="fa fa-trash-o"></i>
+                            </button>
+
+                            <form
+                              action="{{ route('admin.customers.destroy', $customer) }}"
+                              method="POST"
+                              id="delete-{{ $customer->id }}"
+                              style="display: none">
+                              @csrf
+                              @method('DELETE')
+                            </form>
+
+{{--                          <x-core::delete-button route="admin.customers.destroy" :model="$customer"/>--}}
                         @endcan
+
                       </td>
                     </tr>
                     @empty

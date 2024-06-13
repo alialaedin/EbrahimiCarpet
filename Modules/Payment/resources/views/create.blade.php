@@ -22,9 +22,48 @@
         </li>
       </ol>
     </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card overflow-hidden">
+          <div class="card-header border-0">
+            <p class="card-title">اطلاعات تامین کننده</p>
+            <x-core::card-options/>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item"><strong class="ml-1">کد : </strong> {{ $supplier->id }} </li>
+              <li class="list-group-item"><strong class="ml-1">نام و نام خانوادگی : </strong> {{ $supplier->name }} </li>
+              <li class="list-group-item"><strong class="ml-1">شماره موبایل : </strong> {{ $supplier->mobile }} </li>
+              <li class="list-group-item"><strong class="ml-1">تاریخ ثبت : </strong> {{ verta($supplier->created_at)->format('Y/m/d H:i') }} </li>
+              <li class="list-group-item"><strong class="ml-1">آدرس : </strong> {{ $supplier->address }} </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card overflow-hidden">
+          <div class="card-header border-0">
+            <p class="card-title">اطلاعات خرید</p>
+            <x-core::card-options/>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item"><strong class="ml-1">تعداد خرید ها : </strong> {{ $supplier->countPurchases() }} </li>
+              <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها : </strong> {{ $supplier->countPayments() }} </li>
+              <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید : </strong> {{ number_format($supplier->calcTotalPurchaseAmount()) }} تومان</li>
+              <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->calcTotalPaymentAmount()) }} تومان</li>
+              <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->getRemainingAmount()) }} تومان </li>
+            </ul>
+          </div>  
+        </div>
+      </div>
+    </div>
+
 		<div class="card">
 			<div class="card-header border-0">
 				<p class="card-title">ثبت پرداختی جدید</p>
+        <x-core::card-options/>
 			</div>
 			<div class="card-body">
 				<form action="{{ route('admin.payments.store') }}" method="post" class="save" enctype="multipart/form-data">

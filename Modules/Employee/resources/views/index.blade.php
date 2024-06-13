@@ -110,7 +110,7 @@
                   @endforelse
                 </tbody>
               </table>
-              {{ $employees->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              {{ $employees->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </div>
           </div>
         </div>

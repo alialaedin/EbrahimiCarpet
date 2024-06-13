@@ -16,8 +16,6 @@ use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseStoreRequest;
 use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseUpdateRequest;
 use Modules\Purchase\Models\Purchase;
 use Modules\Purchase\Models\PurchaseItem;
-use Modules\Store\Models\Store;
-use Modules\Store\Models\StoreTransaction;
 use Modules\Supplier\Models\Supplier;
 
 class PurchaseController extends Controller implements HasMiddleware
@@ -88,23 +86,14 @@ class PurchaseController extends Controller implements HasMiddleware
 				'price' => $product['price']
 			]);
 
-			if ($thisProduct->store()->exists()) {
-				$thisProduct->store->balance += $product['quantity'];
-				$thisProduct->store->save();
-			} else {
-				Store::create([
-					'product_id' => $product['id'],
-					'balance' => $product['quantity']
-				]);
-			}
+      $thisProduct->store->increment('balance', $product['quantity']);
 
-			StoreTransaction::create([
-				'store_id' => $thisProduct->store->id,
-				'purchase_id' => $purchase->id,
-				'type' => 'increment',
-				'quantity' => $product['quantity'],
-				'descrption' => null
-			]);
+      $purchase->transactions()->create([
+        'store_id' => $thisProduct->store->id,
+        'type' => 'increment',
+        'quantity' => $product['quantity'],
+      ]);
+
 		}
 		toastr()->success("خرید جدید از {$purchase->supplier->name} ثبت شد.");
 

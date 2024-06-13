@@ -26,65 +26,47 @@
       @endcan
     </div>
 
-    <div class="row">
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-info-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="card">
+      <div class="card-header border-0">
+        <p class="card-title">اطلاعات تامین کننده</p>
+        <x-core::card-options/>
       </div>
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-danger-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>کد : </strong>{{ $supplier->id }}</span>
           </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (تومان) : </span>
-                  <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-success-transparent my-auto float-left">
-                  <i class="fa fa-money"></i>
-                </div>
-              </div>
-            </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>نام و نام خانوادگی : </strong>{{ $supplier->name }}</span>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>شماره موبایل : </strong>{{ $supplier->mobile }}</span>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <strong>وضعیت : </strong>
+            @if ($supplier->status)
+              <span class="text-success">فعال</span>
+            @else
+              <span class="text-danger">غیر فعال</span>
+            @endif
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>تعداد خرید ها : </strong>{{ number_format($supplier->countPurchases()) }}</span>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>تعداد پرداختی ها : </strong>{{ number_format($supplier->countPayments()) }}</span>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>تاریخ ثبت : </strong>{{ verta($supplier->created_at)->format('d-m-Y') }}</span>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+            <span><strong>محل سکونت : </strong>{{ $supplier->address }}</span>
           </div>
         </div>
       </div>
     </div>
+
+    @include('supplier::purchase-statistics')
 
 		<div class="card">
       <div class="card-header border-0">
