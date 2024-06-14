@@ -64,6 +64,14 @@
                       <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
                       <td class="text-center">{{ verta($sale->sold_at)->formatDate() }}</td>
                       <td class="text-center">
+                        <a
+                          href="{{ route('admin.sales.invoice.show', $sale) }}"
+                          target="_blank"
+                          class="btn btn-sm btn-success btn-icon text-white p-0"
+                          data-toggle="tooltip"
+                          data-original-title="فاکتور">
+                          <i class="fe fe-printer" style="margin: 1px 0; padding: 0 6px;"></i>
+                        </a>
                         @can('view sales')
                           <x-core::show-button route="admin.sales.show" :model="$sale"/>
                         @endcan

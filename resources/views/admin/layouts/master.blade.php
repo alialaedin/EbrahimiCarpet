@@ -41,7 +41,7 @@
 			@include("admin.layouts.includes.footer")
 
 		</div>
-		<a href="#top" id="back-to-top"><span class="feather feather-chevrons-up"></span></a>
+		<a href="#" id="back-to-top"><span class="feather feather-chevrons-up"></span></a>
 
 		@include("admin.layouts.includes.scripts")
 

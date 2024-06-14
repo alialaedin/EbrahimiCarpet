@@ -12,6 +12,11 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
   Route::resource('/sale-items', SaleItemController::class)->only('store', 'update', 'destroy');
   Route::resource('/sales', SaleController::class);
 
+  Route::prefix('/sales/{sale}/invoice')->name('sales.invoice.')->group(function () {
+    Route::get('/', [SaleController::class, 'showInvoice'])->name('show');
+    Route::post('/', [SaleController::class, 'printInvoice'])->name('print');
+  });
+
   Route::name('sale-payments.')->prefix('/sale-payments')->group(function() {
     Route::get('/{customer}', [SalePaymentController::class, 'index'])->name('index');
     Route::get('/create/{customer}', [SalePaymentController::class, 'create'])->name('create');

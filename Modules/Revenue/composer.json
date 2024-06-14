@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/revenue",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Revenue\\": "app/",
+            "Modules\\Revenue\\Database\\Factories\\": "database/factories/",
+            "Modules\\Revenue\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Revenue\\Tests\\": "tests/"
+        }
+    }
+}

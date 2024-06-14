@@ -129,9 +129,19 @@ class SaleController extends Controller implements HasMiddleware
     return redirect()->back();
   }
 
+  public function showInvoice(Sale $sale): View
+  {
+    $sale->load([
+      'items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
+      'items.product' => fn ($query) => $query->select(['id', 'title', 'category_id']),
+      'items.product.category' => fn ($query) => $query->select(['id', 'title', 'unit_type']),
+    ]);
+
+    return view('sale::invoice.show', compact('sale'));
+  }
+
   public function getProductStore(Request $request): JsonResponse
   {
-
     $product = Product::query()
       ->with('store:id,product_id,balance')
       ->find($request->input('product_id'));

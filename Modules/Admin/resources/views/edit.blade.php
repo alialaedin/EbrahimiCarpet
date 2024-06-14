@@ -41,7 +41,7 @@
 							<div class="form-group">
 								<label for="role" class="control-label"> انتخاب نقش: <span class="text-danger">&starf;</span></label>
                 <select id="role" name="role" class="form-control">
-                  <option class="text-muted"> -- نقش را انتخاب کنید -- </option>
+                  <option class="text-muted"> نقش را انتخاب کنید </option>
                   @if ($admin->getRoleName() == 'super_admin')
                     <option value="super_admin" selected> مدیر ارشد </option>
                   @endif

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\App\Traits;
+namespace Modules\Core\Traits;
 
 use Illuminate\Support\Facades\Cache;
 
@@ -21,10 +21,8 @@ trait HasCache
 			}
 		}
 	}
-	
-	
 
-	private static function forgetAll(array $cacheKeys): void
+	private function forgetAll(array $cacheKeys): void
 	{
 		foreach ($cacheKeys as $cacheKey) {
 			if (Cache::has($cacheKey)) {
@@ -33,11 +31,9 @@ trait HasCache
 		}
 	}
 
-	protected static function clearAllCaches(array $keys): void
-	{
-		static::saved(fn ($keys) => static::forgetAll($keys));
-		static::created(fn ($keys) => static::forgetAll($keys));
-		static::updated(fn ($keys) => static::forgetAll($keys));
-		static::deleted(fn ($keys) => static::forgetAll($keys));
-	}
+//	protected static function clearAllCaches(Model $model, array $keys): void
+//	{
+//		static::saved(fn ($model) => static::forgetAll($keys));
+//		static::deleted(fn ($keys) => static::forgetAll($keys));
+//	}
 }

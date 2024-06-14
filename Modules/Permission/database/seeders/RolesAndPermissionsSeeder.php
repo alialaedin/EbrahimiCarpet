@@ -97,6 +97,26 @@ class RolesAndPermissionsSeeder extends Seeder
 			'create sale_payments' => 'ایجاد پرداختی های مشتری',
 			'edit sale_payments' => 'ویرایش پرداختی های مشتری',
 			'delete sale_payments' => 'حذف پرداختی های مشتری',
+      //headlines
+			'view headlines' => 'مشاهده سرفصل ها',
+			'create headlines' => 'ایجاد سرفصل ها',
+			'edit headlines' => 'ویرایش سرفصل ها',
+			'delete headlines' => 'حذف سرفصل ها',
+      //revenues
+			'view revenues' => 'مشاهده درامد ها',
+			'create revenues' => 'ایجاد درامد ها',
+			'edit revenues' => 'ویرایش درامد ها',
+			'delete revenues' => 'حذف درامد ها',
+      //costs
+			'view expenses ' => 'مشاهده هزینه ها',
+			'create expenses ' => 'ایجاد هزینه ها',
+			'edit expenses ' => 'ویرایش هزینه ها',
+			'delete expenses ' => 'حذف هزینه ها',
+      //salaries
+			'view salaries' => 'مشاهده حقوق ها',
+			'create salaries' => 'ایجاد حقوق ها',
+			'edit salaries' => 'ویرایش حقوق ها',
+			'delete salaries' => 'حذف حقوق ها',
 			//stores
 			'view stores' => 'مشاهده انبار',
 			'create stores' => 'ایجاد انبار',

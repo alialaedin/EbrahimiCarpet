@@ -164,7 +164,7 @@
 
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-1">فروش ها <span class="fs-15 ">({{ $salesCount }})</span></p>
+        <p class="card-title">فروش ها <span class="fs-15 ">({{ $salesCount }})</span></p>
         <x-core::card-options/>
       </div>
       <div class="card-body">
@@ -236,7 +236,7 @@
                 <tbody>
                   @forelse ($salePayments as $payment)
                     <tr>
-                      <td class="text-center">{{ $loop->iteration }}</td>
+                      <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                       <td class="text-center">{{ $payment->getType() }}</td>
                       <td class="text-center">{{ number_format($payment->amount) }}</td>
                       <td class="text-center">{{ $payment->getPaymentDate() }}</td>

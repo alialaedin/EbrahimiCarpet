@@ -26,7 +26,7 @@ class CustomerController extends Controller implements HasMiddleware
 		$fullName = request('full_name');
 		$telephone = request('telephone');
 		$mobile = request('mobile');
-		$status = request('status') !== 'all' ? request('status') : null;
+		$status = request('status');
 
 		$customers = Customer::query()
 			->select('id', 'name', 'mobile', 'telephone', 'status', 'created_at')

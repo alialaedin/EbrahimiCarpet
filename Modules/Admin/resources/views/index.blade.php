@@ -14,16 +14,8 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-
-        <p class="card-title ml-2">لیست ادمین ها <span class="fs-15 ">({{ $adminsCount }})</span></p>
-
-
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
-
+        <p class="card-title">لیست ادمین ها <span class="fs-15 ">({{ $adminsCount }})</span></p>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -65,7 +57,23 @@
                           <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
                         @endcan
                         @can('delete admins')
-                          <x-core::delete-button route="admin.admins.destroy" :model="$admin"/>
+
+                            <button
+                              onclick="confirmDelete('delete-{{ $admin->id }}')"
+                              class="btn btn-sm btn-icon btn-danger text-"
+                              data-toggle="tooltip"
+                              data-original-title="حذف"
+                              @disabled($admin->getRoleName() == 'super_admin')>
+                              <i class="fa fa-trash-o"></i>
+                            </button>
+                            <form
+                              action="{{ route("admin.admins.destroy", $admin) }}"
+                              method="POST"
+                              id="delete-{{ $admin->id }}"
+                              style="display: none">
+                              @csrf
+                              @method('DELETE')
+                            </form>
                         @endcan
                       </td>
                     </tr>
@@ -74,7 +82,7 @@
                   @endforelse
                 </tbody>
               </table>
-              {{ $admins->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+              {{ $admins->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </div>
           </div>
         </div>

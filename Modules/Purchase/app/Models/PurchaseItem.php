@@ -60,7 +60,7 @@ class PurchaseItem extends Model
 				throw new ModelCannotBeDeletedException('موجودی انبار کمتر از تعداد محصول این آیتم است و قابل حذف نمی باشد.');
 			}
 
-			$this->decrementProductStore();
+			$purchaseItem->decrementProductStore();
 		});
 	}
 

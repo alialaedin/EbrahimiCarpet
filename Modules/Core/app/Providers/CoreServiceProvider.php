@@ -52,7 +52,21 @@ class CoreServiceProvider extends ServiceProvider
         // });
     }
 
-    /**
+  protected function registerBladeDirectives(): void
+  {
+    Blade::directive('numberFmt', function (string $expression) {
+      return "<?php echo number_format($expression) ?>";
+    });
+    Blade::directive('jalaliDate', function (string $expression) {
+      return "<?php echo verta($expression)->format('Y/m/d H:i') ?>";
+    });
+    Blade::directive('jalaliDateForHumans', function (string $expression) {
+      return "<?php echo verta(now())->diffDays($expression) > 7 ? verta($expression)->format('Y/m/d H:i') : verta($expression)->formatDifference() ?>";
+    });
+  }
+
+
+  /**
      * Register translations.
      */
     public function registerTranslations(): void

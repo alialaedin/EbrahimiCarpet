@@ -10,5 +10,7 @@
     "Store": true,
     "Payment": true,
     "Employee": true,
-    "Sale": true
+    "Sale": true,
+    "Headline": true,
+    "Revenue": true
 }

@@ -61,7 +61,7 @@
           <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
             <span><strong>تاریخ ثبت : </strong>{{ verta($customer->created_at)->format('d-m-Y') }}</span>
           </div>
-          <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+          <div class="col-xl-8 col-lg-6 col-12 fs-17 my-1">
             <span><strong>محل سکونت : </strong>{{ $customer->address }}</span>
           </div>
         </div>
