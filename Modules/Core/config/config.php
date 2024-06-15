@@ -18,5 +18,10 @@ return [
   'headline_types' => [
     'revenue' => 'درامد',
     'expense' => 'هزینه'
+  ],
+
+  'accept_image_mimes' => [
+    'png',
+    'jpg'
   ]
 ];

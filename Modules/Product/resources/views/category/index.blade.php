@@ -9,7 +9,7 @@
           </a>
         </li>
         <li class="breadcrumb-item">لیست دسته بندی ها</li>
-      </ol> 
+      </ol>
       @can('create categories')
         <x-core::register-button route="admin.categories.create" title="ثبت دسته بندی جدید"/>
       @endcan
@@ -17,19 +17,14 @@
     @include('product::category._filter-form')
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست دسته بندی ها <span class="fs-15 ">({{ $categoriesCount }})</span></p>
-        
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <p class="card-title">لیست دسته بندی ها ({{ $categoriesCount }})</p>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                 <tr>
                   <th class="text-center border-top">ردیف</th>

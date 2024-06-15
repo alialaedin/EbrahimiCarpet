@@ -18,12 +18,8 @@
 
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title">لیست نقش ها <span class="fs-15 ">({{ $rolesCount }})</span></p>
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <p class="card-title">لیست نقش ها ({{ $rolesCount }})</p>
+        <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -45,7 +41,7 @@
                       <td class="text-center">{{ $loop->iteration }}</td>
                       <td class="text-center">{{ $role->name }}</td>
                       <td class="text-center">{{ $role->label }}</td>
-                      <td class="text-center">{{ verta($role->created_at) }}</td>
+                      <td class="text-center">{{ verta($role->created_at)->format('Y/m/d H:i') }}</td>
                       <td class="text-center">
                         <a
                           href="{{route('admin.roles.edit', $role)}}"
@@ -55,22 +51,9 @@
                           @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
                           <i class="fa fa-pencil"></i>
                         </a>
-                        <button
-                          onclick="confirmDelete('delete-{{ $role->id }}')"
-                          class="btn btn-sm btn-icon btn-danger"
-                          data-toggle="tooltip"
-                          data-original-title="حذف"
-                          @disabled($role->name == 'super_admin')>
-                          <i class="fa fa-trash-o"></i>
-                        </button>
-                        <form
-                          action="{{ route('admin.roles.destroy', $role) }}"z
-                          method="POST"
-                          id="delete-{{ $role->id }}"
-                          style="display: none">
-                          @csrf
-                          @method('DELETE')
-                        </form>
+
+                        <x-core::delete-button route="admin.roles.destroy" :model="$role" disabled="{{ !$role->isDeletable() }}"/>
+
                       </td>
                     </tr>
                   @empty

@@ -41,6 +41,15 @@ class Admin extends Authenticatable
       });
   }
 
+  public static function booted(): void
+  {
+    static::deleting(function (Admin $admin) {
+      if (!$admin->isDeletable()) {
+        throw new ModelCannotBeDeletedException('این ادمین قابل حذف نمی باشد!');
+      }
+    });
+  }
+
   // Functions
   public function getRoleLabel()
   {
@@ -60,12 +69,14 @@ class Admin extends Authenticatable
     return ($this->getRoleName() !== Role::SUPER_ADMIN);
   }
 
-  public static function booted(): void
+  public function getStatusBadgeType()
   {
-    static::deleting(function (Admin $admin) {
-      if (!$admin->isDeletable()) {
-        throw new ModelCannotBeDeletedException('این ادمین قابل حذف نمی باشد!');
-      }
-    });
+    return $this->attributes['status'] ? 'success' : 'danger';
   }
+
+  public function getStatus()
+  {
+    return $this->attributes['status'] ? 'فعال' : 'غیر فعال';
+  }
+
 }

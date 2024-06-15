@@ -37,6 +37,8 @@ class Customer extends Model
     static::deleting(function (Customer $customer) {
       if ($customer->sales->isNotEmpty()) {
         throw new ModelCannotBeDeletedException('این کاربر دارای فروش است و قابل حذف نمی باشد.');
+      }elseif ($customer->sales->isNotEmpty()) {
+        throw new ModelCannotBeDeletedException('این کاربر دارای پرداختی است و قابل حذف نمی باشد.');
       }
     });
   }
@@ -71,6 +73,21 @@ class Customer extends Model
   public function countPayments()
   {
     return $this->payments->count();
+  }
+
+  public function isDeletable(): bool
+  {
+    return $this->sales->isEmpty() && $this->payments->isEmpty();
+  }
+
+  public function getStatusBadgeType()
+  {
+    return $this->attributes['status'] ? 'success' : 'danger';
+  }
+
+  public function getStatus()
+  {
+    return $this->attributes['status'] ? 'فعال' : 'غیر فعال';
   }
 
   // Relations

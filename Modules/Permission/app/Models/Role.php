@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role as SpatieRole;
 class Role extends SpatieRole
 {
 	use LogsActivity;
-	const SUPER_ADMIN = 'super_admin';
+	public const SUPER_ADMIN = 'super_admin';
 
 	protected $fillable = [
 		'name',
@@ -22,7 +22,7 @@ class Role extends SpatieRole
 	public function getActivitylogOptions(): LogOptions
 	{
     $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-		
+
 		return LogOptions::defaults()
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($admin) {

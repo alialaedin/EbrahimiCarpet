@@ -89,7 +89,7 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center border-top">ردیف</th>
@@ -111,11 +111,11 @@
                       <td class="text-center">{{ $customer->telephone }}</td>
                       <td class="text-center">
                         <x-core::badge
-                          type="{{ $customer->status ? 'success' : 'danger' }}"
-                          text="{{ $customer->status ? 'فعال' : 'غیر فعال' }}"
+                          type="{{ $customer->getStatusBadgeType() }}"
+                          text="{{ $customer->getStatus() }}"
                         />
                       </td>
-                      <td class="text-center">{{ verta($customer->created_at)->formatDate() }}</td>
+                      <td class="text-center">{{ verta($customer->created_at)->format('Y/m/d H:i') }}</td>
                       <td class="text-center">
 
                         @can('view sale_payments')
@@ -137,25 +137,11 @@
                         @endcan
 
                         @can('delete customers')
-
-                            <button
-                              onclick="confirmDelete('delete-{{ $customer->id }}')"
-                              class="btn btn-sm btn-icon btn-danger"
-                              data-toggle="tooltip"
-                              data-original-title="حذف"
-                              @disabled($customer->sales->isNotEmpty())>
-                              <i class="fa fa-trash-o"></i>
-                            </button>
-
-                            <form
-                              action="{{ route('admin.customers.destroy', $customer) }}"
-                              method="POST"
-                              id="delete-{{ $customer->id }}"
-                              style="display: none">
-                              @csrf
-                              @method('DELETE')
-                            </form>
-
+                          <x-core::delete-button
+                            route="admin.customers.destroy"
+                            :model="$customer"
+                            disabled="{{ !$customer->isDeletable() }}"
+                          />
                         @endcan
 
                       </td>

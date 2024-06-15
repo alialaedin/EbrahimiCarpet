@@ -14,14 +14,14 @@
     </div>
     <div class="card">
       <div class="card-header border-0">
-        <p class="card-title">لیست ادمین ها <span class="fs-15 ">({{ $adminsCount }})</span></p>
+        <p class="card-title">لیست ادمین ها ({{ $adminsCount }})</p>
         <x-core::card-options/>
       </div>
       <div class="card-body">
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter table-striped  text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center border-top">ردیف</th>
@@ -37,18 +37,18 @@
                 <tbody>
                   @forelse ($admins as $admin)
                     <tr>
-                      <td class="text-center">{{ $loop->iteration }}</td>
+                      <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                       <td class="text-center">{{ $admin->name }}</td>
                       <td class="text-center">{{ $admin->id }}</td>
                       <td class="text-center">{{ $admin->mobile }}</td>
                       <td class="text-center">{{ $admin->getRoleLabel() }}</td>
                       <td class="text-center">
                         <x-core::badge
-                          type="{{ $admin->status ? 'success' : 'danger' }}"
-                          text="{{ $admin->status ? 'فعال' : 'غیر فعال' }}"
+                          type="{{ $admin->getStatusBadgeType() }}"
+                          text="{{ $admin->getStatus() }}"
                         />
                       </td>
-                      <td class="text-center">{{ verta($admin->created_at)->formatDate() }}</td>
+                      <td class="text-center">{{ verta($admin->created_at)->format('Y/m/d H:i') }}</td>
                       <td class="text-center">
                         @can('view admins')
                           <x-core::show-button route="admin.admins.show" :model="$admin"/>
@@ -57,23 +57,11 @@
                           <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
                         @endcan
                         @can('delete admins')
-
-                            <button
-                              onclick="confirmDelete('delete-{{ $admin->id }}')"
-                              class="btn btn-sm btn-icon btn-danger text-"
-                              data-toggle="tooltip"
-                              data-original-title="حذف"
-                              @disabled($admin->getRoleName() == 'super_admin')>
-                              <i class="fa fa-trash-o"></i>
-                            </button>
-                            <form
-                              action="{{ route("admin.admins.destroy", $admin) }}"
-                              method="POST"
-                              id="delete-{{ $admin->id }}"
-                              style="display: none">
-                              @csrf
-                              @method('DELETE')
-                            </form>
+                          <x-core::delete-button
+                            route="admin.admins.destroy"
+                            :model="$admin"
+                            disabled="{{ !$admin->isDeletable() }}"
+                          />
                         @endcan
                       </td>
                     </tr>

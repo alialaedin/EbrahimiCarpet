@@ -96,15 +96,15 @@
             @can('view headlines')
               <li><a href="{{route("admin.headlines.index")}}" class="slide-item">سرفصل ها</a></li>
             @endcan
-            {{-- @can('view revenues')
-              <li><a href="{{route("admin.revenues.index")}}" class="slide-item">درامد ها</a></li>
-            @endcan
             @can('view expenses')
               <li><a href="{{route("admin.expenses.index")}}" class="slide-item">هزینه ها</a></li>
             @endcan
+            @can('view revenues')
+              <li><a href="{{route("admin.revenues.index")}}" class="slide-item">درامد ها</a></li>
+            @endcan
             @can('view salaries')
               <li><a href="{{route("admin.salaries.index")}}" class="slide-item">حقوق ها</a></li>
-            @endcan --}}
+            @endcan
           </ul>
         </li>
       @endcanany
