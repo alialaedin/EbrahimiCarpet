@@ -84,7 +84,7 @@
                       <td class="text-center">{{ $employee->mobile }}</td>
                       <td class="text-center">{{ $employee->national_code }}</td>
                       <td class="text-center">{{ number_format($employee->salary) }}</td>
-                      <td class="text-center">{{ verta($employee->employmented_at)->formatDate() }}</td>
+                      <td class="text-center"> @jalaliDate($employee->employmented_at) </td>
                       <td class="text-center">
                         @can('view employees')
                           <x-core::show-button route="admin.employees.show" :model="$employee"/>
@@ -93,24 +93,7 @@
                           <x-core::edit-button route="admin.employees.edit" :model="$employee"/>
                         @endcan
                         @can('delete employees')
-
-                          <button
-                            onclick="confirmDelete('delete-{{ $employee->id }}')"
-                            class="btn btn-sm btn-icon btn-danger"
-                            data-toggle="tooltip"
-                            data-original-title="حذف"
-                            @disabled(!$employee->isDeletable())>
-                            <i class="fa fa-trash-o"></i>
-                          </button>
-                          <form
-                            action="{{ route('admin.employees.destroy', $employee) }}"
-                            method="POST"
-                            id="delete-{{ $employee->id }}"
-                            style="display: none">
-                            @csrf
-                            @method('DELETE')
-                          </form>
-
+                          <x-core::delete-button route="admin.employees.destroy" :model="$employee" disabled="{{ !$employee->isDeletable() }}"/>
                         @endcan
                       </td>
                     </tr>

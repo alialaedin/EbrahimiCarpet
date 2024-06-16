@@ -34,28 +34,28 @@
 
             <div class="row">
 
-              <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+              <div class="col-12 col-md-6 col-xl-3">
                 <div class="form-group">
                   <label for="name">نام و نام خانوادگی :</label>
                   <input type="text" id="name" name="full_name" class="form-control" value="{{ request('full_name') }}">
                 </div>
               </div>
 
-              <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+              <div class="col-12 col-md-6 col-xl-3">
                 <div class="form-group">
                   <label for="telephone">تلفن ثابت :</label>
                   <input type="text" id="telephone" name="telephone" class="form-control" value="{{ request('telephone') }}">
                 </div>
               </div>
 
-              <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+              <div class="col-12 col-md-6 col-xl-3">
                 <div class="form-group">
                   <label for="mobile">تلفن همراه :</label>
                   <input type="text" id="mobile" name="mobile" class="form-control" value="{{ request('mobile') }}">
                 </div>
               </div>
 
-              <div class="col-12 col-md-6 col-xl-3 col-xxl-2">
+              <div class="col-12 col-md-6 col-xl-3">
                 <div class="form-group">
                   <label for="status">وضعیت :</label>
                   <select name="status" id="status" class="form-control">
@@ -81,7 +81,7 @@
     <div class="card">
 
       <div class="card-header border-0">
-        <p class="card-title">لیست مشتری ها  <span class="fs-15">({{ $customersCount }})</span></p>
+        <p class="card-title">لیست مشتری ها  ({{ $customersCount }})</p>
         <x-core::card-options/>
       </div>
 
@@ -92,13 +92,13 @@
               <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
-                    <th class="text-center border-top">ردیف</th>
-                    <th class="text-center border-top">نام و نام خانوادگی</th>
-                    <th class="text-center border-top">شماره موبایل</th>
-                    <th class="text-center border-top">تلفن ثابت</th>
-                    <th class="text-center border-top">وضعیت</th>
-                    <th class="text-center border-top">تاریخ ثبت</th>
-                    <th class="text-center border-top">عملیات</th>
+                    <th class="text-center">ردیف</th>
+                    <th class="text-center">نام و نام خانوادگی</th>
+                    <th class="text-center">شماره موبایل</th>
+                    <th class="text-center">تلفن ثابت</th>
+                    <th class="text-center">وضعیت</th>
+                    <th class="text-center">تاریخ ثبت</th>
+                    <th class="text-center">عملیات</th>
                   </tr>
                 </thead>
 
@@ -115,7 +115,7 @@
                           text="{{ $customer->getStatus() }}"
                         />
                       </td>
-                      <td class="text-center">{{ verta($customer->created_at)->format('Y/m/d H:i') }}</td>
+                      <td class="text-center">@jalaliDate($customer->created_at)</td>
                       <td class="text-center">
 
                         @can('view sale_payments')
@@ -137,11 +137,7 @@
                         @endcan
 
                         @can('delete customers')
-                          <x-core::delete-button
-                            route="admin.customers.destroy"
-                            :model="$customer"
-                            disabled="{{ !$customer->isDeletable() }}"
-                          />
+                          <x-core::delete-button route="admin.customers.destroy" :model="$customer" disabled="{{ !$customer->isDeletable() }}"/>
                         @endcan
 
                       </td>

@@ -25,23 +25,23 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
-                    <th class="text-center border-top">ردیف</th>
-                    <th class="text-center border-top">نام</th>
-                    <th class="text-center border-top">نام قابل مشاهده</th>
-                    <th class="text-center border-top">تاریخ ثبت</th>
-                    <th class="text-center border-top">عملیات</th>
+                    <th class="text-center">ردیف</th>
+                    <th class="text-center">نام</th>
+                    <th class="text-center">نام قابل مشاهده</th>
+                    <th class="text-center">تاریخ ثبت</th>
+                    <th class="text-center">عملیات</th>
                   </tr>
                 </thead>
                 <tbody>
                   @forelse ($roles as $role)
                     <tr>
-                      <td class="text-center">{{ $loop->iteration }}</td>
+                      <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                       <td class="text-center">{{ $role->name }}</td>
                       <td class="text-center">{{ $role->label }}</td>
-                      <td class="text-center">{{ verta($role->created_at)->format('Y/m/d H:i') }}</td>
+                      <td class="text-center">@jalaliDate($role->created_at)</td>
                       <td class="text-center">
                         <a
                           href="{{route('admin.roles.edit', $role)}}"

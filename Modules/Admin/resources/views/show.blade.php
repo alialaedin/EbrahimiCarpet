@@ -23,56 +23,41 @@
       <div class="card">
 
         <div class="card-header border-0">
-          <p class="card-title ml-2">مشخصات ادمین</p>
+          <p class="card-title">مشخصات ادمین</p>
         </div>
 
         <div class="card-body">
 
           <div class="row">
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">شناسه کاربر :</span>
-                <span class="fs-14 mr-1"> {{ $admin->id }} </span>
-              </div>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span><strong>شناسه کاربر : </strong> {{ $admin->id }}</span>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">نام و نام خانوادگی :</span>
-                <span class="fs-14 mr-1"> {{ $admin->name }} </span>
-              </div>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span><strong>نام و نام خانوادگی : </strong> {{ $admin->name }}</span>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">شماره موبایل :</span>
-                <span class="fs-14 mr-1"> {{ $admin->mobile }} </span>
-              </div>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span><strong>شماره موبایل : </strong> {{ $admin->mobile }}</span>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">نقش :</span>
-                <span class="fs-14 mr-1"> {{ $admin->getRoleLabel() }} </span>
-              </div>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span><strong>نقش : </strong> {{ $admin->getRoleLabel() }}</span>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">وضعیت :</span>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span>
+                <strong>وضعیت : </strong>
                 <x-core::badge
                   type="{{ $admin->status ? 'success' : 'danger' }}"
                   text="{{ $admin->status ? 'فعال' : 'غیر فعال' }}"
                 />
-              </div>
+              </span>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تاریخ ثبت :</span>
-                <span class="fs-14 mr-1"> {{ verta($admin->created_at)->format('Y/m/d') }} </span>
-              </div>
+            <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
+              <span><strong>تاریخ ثبت : </strong> @jalaliDate($admin->created_at) </span>
             </div>
 
           </div>

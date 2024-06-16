@@ -16,13 +16,15 @@
     </div>
 		<div class="card">
 			<div class="card-header">
-				<p class="card-title">ویرایش ادمین</p>
+				<p class="card-title">ویرایش ادمین - کد {{ $admin->id }}</p>
+        <x-core::card-options/>
 			</div>
 			<div class="card-body">
 				<form action="{{ route('admin.admins.update', $admin) }}" method="post" class="save">
 					@csrf
           @method('PATCH')
 					<div class="row">
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
@@ -30,6 +32,7 @@
 								<x-core::show-validation-error name="name" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
@@ -37,6 +40,7 @@
                 <x-core::show-validation-error name="mobile" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="role" class="control-label"> انتخاب نقش: <span class="text-danger">&starf;</span></label>
@@ -52,6 +56,7 @@
 								<x-core::show-validation-error name="role" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="password" class="control-label"> کلمه عبور: <span class="text-danger">&starf;</span></label>
@@ -59,6 +64,7 @@
 								<x-core::show-validation-error name="password" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="password_confirmation" class="control-label"> تکرار کلمه عبور: <span class="text-danger">&starf;</span></label>
@@ -66,6 +72,7 @@
 								<x-core::show-validation-error name="password_confirmation" />
 							</div>
 						</div>
+
 						<div class="col-12">
 							<div class="form-group">
 								<label for="status" class="control-label"> وضعیت: </label>
@@ -76,8 +83,11 @@
 								<x-core::show-validation-error name="status" />
               </div>
 						</div>
+
 					</div>
+
 					<x-core::update-button/>
+
 				</form>
 			</div>
     </div>

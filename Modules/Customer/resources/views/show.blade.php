@@ -20,27 +20,44 @@
 
       <div class="d-flex align-items-center flex-wrap text-nowrap">
         @can('edit customers')
-          <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-warning mx-1">
+          <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-warning mx-1" >
             ویرایش مشتری
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-pencil mr-1"></i>
           </a>
+        @endcan
+        @can('delete customers')
+            <button
+              onclick="confirmDelete('delete-{{ $customer->id }}')"
+              class="btn btn-danger mx-1"
+              @disabled(!$customer->isDeletable())>
+              حذف مشتری
+              <i class="fa fa-trash-o mr-1"></i>
+            </button>
+            <form
+              action="{{ route('admin.customers.destroy', $customer) }}"
+              method="POST"
+              id="delete-{{ $customer->id }}"
+              style="display: none">
+              @csrf
+              @method('DELETE')
+            </form>
         @endcan
         @can('create sales')
           <a href="{{ route('admin.sales.create') }}" class="btn btn-indigo mx-1">
             ثبت فروش جدید
-            <i class="fa fa-plus"></i>
+            <i class="fa fa-plus mr-1"></i>
           </a>
         @endcan
         @can('view sale_salePayments')
           <a href="{{ route('admin.sale-payments.index', $customer) }}" class="btn btn-flickr mx-1">
             مشاهده همه پرداختی ها
-            <i class="fa fa-eye"></i>
+            <i class="fa fa-eye mr-1"></i>
           </a>
         @endcan
         @can('create sale_salePayments')
-          <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-youtube mx-1">
+          <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-lime mx-1">
             ثبت پرداختی جدید
-            <i class="fa fa-plus"></i>
+            <i class="fa fa-plus mr-1"></i>
           </a>
         @endcan
       </div>

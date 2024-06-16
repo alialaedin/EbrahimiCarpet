@@ -35,7 +35,7 @@
 
     <div class="card">
         <div class="card-header border-0">
-          <p class="card-title ml-2">اطلاعات خرید</p>
+          <p class="card-title">اطلاعات خرید</p>
           <x-core::card-options/>
         </div>
         <div class="card-body">

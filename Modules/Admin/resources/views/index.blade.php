@@ -21,17 +21,17 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter table-striped  text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                   <tr>
-                    <th class="text-center border-top">ردیف</th>
-                    <th class="text-center border-top">نام و نام خانوادگی</th>
-                    <th class="text-center border-top">شناسه</th>
-                    <th class="text-center border-top">شماره موبایل</th>
-                    <th class="text-center border-top">نقش</th>
-                    <th class="text-center border-top">وضعیت</th>
-                    <th class="text-center border-top">تاریخ ثبت</th>
-                    <th class="text-center border-top">عملیات</th>
+                    <th class="text-center">ردیف</th>
+                    <th class="text-center">نام و نام خانوادگی</th>
+                    <th class="text-center">شناسه</th>
+                    <th class="text-center">شماره موبایل</th>
+                    <th class="text-center">نقش</th>
+                    <th class="text-center">وضعیت</th>
+                    <th class="text-center">تاریخ ثبت</th>
+                    <th class="text-center">عملیات</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,7 @@
                           text="{{ $admin->getStatus() }}"
                         />
                       </td>
-                      <td class="text-center">{{ verta($admin->created_at)->format('Y/m/d H:i') }}</td>
+                      <td class="text-center"> @jalaliDate($admin->created_at)</td>
                       <td class="text-center">
                         @can('view admins')
                           <x-core::show-button route="admin.admins.show" :model="$admin"/>
@@ -57,16 +57,12 @@
                           <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
                         @endcan
                         @can('delete admins')
-                          <x-core::delete-button
-                            route="admin.admins.destroy"
-                            :model="$admin"
-                            disabled="{{ !$admin->isDeletable() }}"
-                          />
+                          <x-core::delete-button route="admin.admins.destroy" :model="$admin" disabled="{{ !$admin->isDeletable() }}"/>
                         @endcan
                       </td>
                     </tr>
                     @empty
-											<x-core::data-not-found-alert :colspan="6"/>
+											<x-core::data-not-found-alert :colspan="8"/>
                   @endforelse
                 </tbody>
               </table>

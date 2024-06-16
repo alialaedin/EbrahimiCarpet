@@ -18,7 +18,7 @@
         @can('edit employees')
           <a href="{{ route('admin.employees.edit', $employee) }}" class="btn btn-warning mx-1">
             ویرایش کارمند
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-pencil mr-1"></i>
           </a>
         @endcan
         @can('delete employees')
@@ -29,7 +29,7 @@
             data-original-title="حذف"
             @disabled(!$employee->isDeletable())>
             حذف کارمند
-            <i class="fa fa-trash-o"></i>
+            <i class="fa fa-trash-o mr-1"></i>
           </button>
           <form
             action="{{ route('admin.employees.destroy', $employee) }}"
@@ -42,7 +42,7 @@
         @endcan
         @can('create salaries')
           <button class="btn btn-indigo mx-1" data-target="#createSalaryModal" data-toggle="modal">
-            پرداخت حقوق <i class="fa fa-plus"></i>
+            پرداخت حقوق <i class="fa fa-plus mr-1"></i>
           </button>
         @endcan
       </div>
@@ -60,27 +60,27 @@
           <div class="card-body">
             <ul class="list-group">
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>کد : </strong> {{ $employee->id }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>نام و نام خانوادگی : </strong> {{ $employee->name }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>شماره موبایل : </strong> {{ $employee->mobile }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>تلفن ثابت : </strong>{{ $employee->telephone }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>کد ملی : </strong>{{ $employee->national_code }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>محل سکونت : </strong>{{ $employee->address }}
               </li>
 
@@ -98,27 +98,27 @@
           <div class="card-body">
             <ul class="list-group">
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>شماره کارت : </strong> {{ $employee->card_number }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>شماره شبا : </strong> {{ $employee->sheba_number }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>نام بانک : </strong> {{ $employee->bank_name }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>حقوق پایه : </strong>{{ number_format($employee->salary) . ' تومان' }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>تاریخ استخدام : </strong>{{ verta($employee->employmented_at)->format('Y/m/d H:i') }}
               </li>
 
-              <li class="list-group-item fs-15">
+              <li class="list-group-item fs-16">
                 <strong>تاریخ ثبت : </strong>{{ verta($employee->created_at)->format('Y/m/d H:i') }}
               </li>
 

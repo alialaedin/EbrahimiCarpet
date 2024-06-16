@@ -17,11 +17,13 @@
 		<div class="card">
 			<div class="card-header">
 				<p class="card-title">ثبت مشتری جدید</p>
+        <x-core::card-options/>
 			</div>
 			<div class="card-body">
 				<form action="{{ route('admin.customers.store') }}" method="post" class="save">
 					@csrf
 					<div class="row">
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="name" class="control-label"> نام و نام خانوادگی: <span class="text-danger">&starf;</span></label>
@@ -29,13 +31,15 @@
 								<x-core::show-validation-error name="name" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
 								<input type="text" id="mobile" class="form-control" name="mobile" placeholder="شماره موبایل را وارد کنید" value="{{ old('mobile') }}" required>
-								<x-core::show-validation-error name="mpbile" />
+								<x-core::show-validation-error name="mobile" />
 							</div>
 						</div>
+
 						<div class="col-lg-4 col-md-6">
 							<div class="form-group">
 								<label for="telephone" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
@@ -43,6 +47,7 @@
 								<x-core::show-validation-error name="telephone" />
 							</div>
 						</div>
+
 						<div class="col-12">
 							<div class="form-group">
 								<label for="address" class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
@@ -50,6 +55,7 @@
 								<x-core::show-validation-error name="address" />
 							</div>
 						</div>
+
 						<div class="col-12">
 							<div class="form-group">
 								<label for="status" class="control-label"> وضعیت: </label>
@@ -60,14 +66,11 @@
 								<x-core::show-validation-error name="status" />
               </div>
 						</div>
+
 					</div>
-					<div class="row">
-						<div class="col">
-							<div class="text-center">
-								<button class="btn btn-pink" type="submit">ثبت و ذخیره</button>
-							</div>
-						</div>
-					</div>
+
+					<x-core::store-button/>
+
 				</form>
 			</div>
     </div>
