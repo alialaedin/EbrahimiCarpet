@@ -5,6 +5,7 @@ namespace Modules\Sale\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Modules\Product\Models\Product;
 use Modules\Sale\Http\Requests\Admin\SaleItem\SaleItemUpdateRequest;
 use Modules\Sale\Http\Requests\Admin\SaleItem\SaleItemStoreRequest;
@@ -42,26 +43,22 @@ class SaleItemController extends Controller implements HasMiddleware
 
   public function update(SaleItemUpdateRequest $request, SaleItem $saleItem)
   {
+    $diff = (int) $request->input('quantity') - (int) $saleItem->quantity;
+
     $saleItem->update($request->only('quantity'));
 
-    $balance = $request->input('quantity') - $saleItem->quantity;
+    $type = $diff < 0 ? 'increment' : 'decrement';
 
-    $type = $balance < 0 ? 'increment' : 'decrement';
+    $diff = abs($diff);
 
-    $store = Store::query()->where('product_id', $saleItem->product_id)->first();
-    $store->update([
-      'balance' => $store->balance - $balance
-    ]);
+    $store = $saleItem->product->store;
 
-    $quantity = abs($balance);
-
-//    $store = $saleItem->product->store;
-//    $store->{$type}('balance', $quantity);
+    $store->{$type}('balance', $diff);
 
     $saleItem->sale->transactions()->create([
       'store_id' => $store->id,
       'type' => $type,
-      'quantity' => $quantity
+      'quantity' => $diff
     ]);
 
     toastr()->success('آیتم مورد نظر با موفقیت بروزرسانی شد');

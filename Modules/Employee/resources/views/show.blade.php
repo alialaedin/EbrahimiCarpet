@@ -13,196 +13,188 @@
         </li>
         <li class="breadcrumb-item active">نمایش کارمند</li>
       </ol>
+
+      <div class="d-flex align-items-center flex-wrap text-nowrap">
+        @can('edit employees')
+          <a href="{{ route('admin.employees.edit', $employee) }}" class="btn btn-warning mx-1">
+            ویرایش کارمند
+            <i class="fa fa-pencil"></i>
+          </a>
+        @endcan
+        @can('delete employees')
+          <button
+            onclick="confirmDelete('delete-{{ $employee->id }}')"
+            class="btn btn-danger mx-1"
+            data-toggle="tooltip"
+            data-original-title="حذف"
+            @disabled(!$employee->isDeletable())>
+            حذف کارمند
+            <i class="fa fa-trash-o"></i>
+          </button>
+          <form
+            action="{{ route('admin.employees.destroy', $employee) }}"
+            method="POST"
+            id="delete-{{ $employee->id }}"
+            style="display: none">
+            @csrf
+            @method('DELETE')
+          </form>
+        @endcan
+        @can('create salaries')
+          <button class="btn btn-indigo mx-1" data-target="#createSalaryModal" data-toggle="modal">
+            پرداخت حقوق <i class="fa fa-plus"></i>
+          </button>
+        @endcan
+      </div>
+
     </div>
+
     <div class="row">
-      <div class="card">
-        <div class="card-header border-0">
-          <p class="card-title">مشخصات کارمند</p>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">شناسه کارمند :</span>
-                <span class="fs-14 mr-1"> {{ $employee->id }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">نام و نام خانوادگی :</span>
-                <span class="fs-14 mr-1"> {{ $employee->name }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">میزان حقوق :</span>
-                <span class="fs-14 mr-1"> {{ number_format($employee->salary) }} تومان </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">کد ملی :</span>
-                <span class="fs-14 mr-1"> {{ $employee->national_code }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تلفن همراه :</span>
-                <span class="fs-14 mr-1"> {{ $employee->mobile }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تلفن ثابت :</span>
-                <span class="fs-14 mr-1"> {{ $employee->telephone }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">شماره کارت :</span>
-                <span class="fs-14 mr-1"> {{ $employee->card_number }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">شماره شبا :</span>
-                <span class="fs-14 mr-1"> {{ $employee->sheba_number }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">نام بانک :</span>
-                <span class="fs-14 mr-1"> {{ $employee->bank_name }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تاریخ استخدام :</span>
-                <span class="fs-14 mr-1"> {{ verta($employee->employmented_at)->formatDate()}} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تاریخ ثبت :</span>
-                <span class="fs-14 mr-1"> {{ verta($employee->created_at)->formatDate() }} </span>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-12">
-              <div class="d-flex align-items-center my-1">
-                <span class="fs-16 font-weight-bold ml-1">تاریخ آخرین ویرایش :</span>
-                <span class="fs-14 mr-1"> {{ verta($employee->updated_at)->formatDate() }} </span>
-              </div>
-            </div>
+
+      <div class="col-md-6">
+        <div class="card overflow-hidden">
+          <div class="card-header border-0">
+            <p class="card-title">مشخصات کارمند</p>
+            <x-core::card-options/>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+
+              <li class="list-group-item fs-15">
+                <strong>کد : </strong> {{ $employee->id }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>نام و نام خانوادگی : </strong> {{ $employee->name }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>شماره موبایل : </strong> {{ $employee->mobile }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>تلفن ثابت : </strong>{{ $employee->telephone }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>کد ملی : </strong>{{ $employee->national_code }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>محل سکونت : </strong>{{ $employee->address }}
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-4 col-md-6 col-12">
-        <div class="card">
+
+      <div class="col-md-6">
+        <div class="card overflow-hidden">
           <div class="card-header border-0">
             <p class="card-title">اطلاعات پایه</p>
+            <x-core::card-options/>
           </div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">شناسه :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->id }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">تاریخ ثبت :</span>
-                  <span class="fs-14 mr-1"> {{ verta($employee->created_at)->format('Y/m/d') }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">تاریخ استخدام :</span>
-                  <span class="fs-14 mr-1"> {{ verta($employee->employmented_at)->format('Y/m/d') }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">تاریخ ویرایش :</span>
-                  <span class="fs-14 mr-1"> {{ verta($employee->updated_at)->format('Y/m/d') }} </span>
-                </div>
-              </div>
-            </div>
+            <ul class="list-group">
+
+              <li class="list-group-item fs-15">
+                <strong>شماره کارت : </strong> {{ $employee->card_number }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>شماره شبا : </strong> {{ $employee->sheba_number }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>نام بانک : </strong> {{ $employee->bank_name }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>حقوق پایه : </strong>{{ number_format($employee->salary) . ' تومان' }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>تاریخ استخدام : </strong>{{ verta($employee->employmented_at)->format('Y/m/d H:i') }}
+              </li>
+
+              <li class="list-group-item fs-15">
+                <strong>تاریخ ثبت : </strong>{{ verta($employee->created_at)->format('Y/m/d H:i') }}
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 col-12">
-        <div class="card">
-          <div class="card-header border-0">
-            <p class="card-title">اطلاعات شخص</p>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">نام و نام خانوادگی :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->name }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">کد ملی :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->natioal_code ?? '-' }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">تلفن همراه :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->mobile }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">تلفن ثابت :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->telephone }} </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="card-header border-0">
+        <p class="card-title">لیست حقوق های پرداخت شده به کارمند</p>
+        <x-core::card-options/>
       </div>
-      <div class="col-lg-4 col-md-6 col-12">
-        <div class="card">
-          <div class="card-header border-0">
-            <p class="card-title ml-2">اطلاعات بانکی</p>
-          </div>
-          <div class="card-body">
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">میزان حقوق (تومان) :</span>
-                  <span class="fs-14 mr-1"> {{ number_format($employee->salary) }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">شماره کارت :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->card_number }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">شماره شبا :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->sheba_number ?? '-' }} </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center my-1">
-                  <span class="fs-16 font-weight-bold">نام بانک :</span>
-                  <span class="fs-14 mr-1"> {{ $employee->bank_name }} </span>
-                </div>
-              </div>
+              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+                <thead class="thead-light">
+                  <tr>
+                    <th class="text-center">ردیف</th>
+                    <th class="text-center">مبلغ (تومان)</th>
+                    <th class="text-center">اضافه کاری (ساعت)</th>
+                    <th class="text-center">تاریخ پرداخت</th>
+                    <th class="text-center">عکس رسید</th>
+                    <th class="text-center">تاریخ ثبت</th>
+                    <th class="text-center">عملیات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse ($employee->salaries as $salary)
+                    <tr>
+                      <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                      <td class="text-center">{{ number_format($salary->amount) }}</td>
+                      <td class="text-center">{{ $salary->overtime ?? 0 }}</td>
+                      <td class="text-center">{{ verta($salary->payment_date)->format('Y/m/d H:i') }}</td>
+                      <td class="text-center m-0 p-0">
+                        @if ($salary->receipt_image)
+                          <figure class="figure my-2">
+                            <a target="_blank" href="{{ Storage::url($salary->receipt_image) }}">
+                              <img src="{{ Storage::url($salary->receipt_image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
+                            </a>
+                          </figure>
+                        @else
+                          <span> - </span>
+                        @endif
+                      </td>
+                      <td class="text-center">{{ verta($salary->created_at)->format('Y/m/d H:i') }}</td>
+                      <td class="text-center">
+                        @can('view salaries')
+                          <x-core::show-button route="admin.salaries.show" :model="$salary"/>
+                        @endcan
+                        @can('edit salaries')
+                          <x-core::edit-button route="admin.salaries.edit" :model="$salary"/>
+                        @endcan
+                        @can('delete salaries')
+                          <x-core::delete-button route="admin.salaries.destroy" :model="$salary"/>
+                        @endcan
+                      </td>
+                    </tr>
+                  @empty
+                    <x-core::data-not-found-alert :colspan="8"/>
+                  @endforelse
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  @include('employee::includes.create-salary-modal')
+
 @endsection

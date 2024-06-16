@@ -9,27 +9,26 @@
           </a>
         </li>
         <li class="breadcrumb-item active">لیست محصولات</li>
-      </ol> 
-      @can('create  products')
+      </ol>
+      @can('create products')
         <x-core::register-button route="admin.products.create" title="ثبت محصول جدید"/>
       @endcan
     </div>
+
     @include('product::product._filter-form')
+
     <div class="card">
+
       <div class="card-header border-0">
-        <p class="card-title ml-2">لیست محصولات <span class="fs-15 ">({{ $productsCount }})</span></p>
-        
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-          <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-          <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-        </div>
+        <p class="card-title">لیست محصولات ({{ $productsCount }})</p>
+        <x-core::card-options/>
       </div>
+
       <div class="card-body">
         <div class="table-responsive">
-          <div id="hr-table-wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="hr-table">
+              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
                 <thead class="thead-light">
                 <tr>
                   <th class="text-center">ردیف</th>

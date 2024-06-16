@@ -11,7 +11,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Foundation\Application as App;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Employee\Http\Requests\Admin\EmployeeStoreRequest;
 use Modules\Employee\Http\Requests\Admin\EmployeeUpdateRequest;
 use Modules\Employee\Models\Employee;
@@ -52,7 +51,12 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function show(Employee $employee)
   {
-    return 'Employee Show';
+    $employee->load([
+      'salaries' => function($query) {
+        $query->select('id', 'employee_id', 'amount', 'overtime', 'payment_date', 'receipt_image');
+      }
+    ]);
+
     return view('employee::show', compact('employee'));
   }
 
@@ -63,8 +67,7 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function store(EmployeeStoreRequest $request): RedirectResponse
   {
-    $employee = Employee::query()->create($request->validated());
-    toastr()->success("کارمند جدید به نام {$employee->name} با موفقیت ساخته شد.");
+    Employee::query()->create($request->validated());
 
     return to_route('admin.employees.index');
   }
@@ -77,7 +80,6 @@ class EmployeeController extends Controller implements HasMiddleware
   public function update(EmployeeUpdateRequest $request, Employee $employee): RedirectResponse
   {
     $employee->update($request->validated());
-    toastr()->success("کارمند با نام {$employee->name} با موفقیت ویرایش شد.");
 
     return redirect()->back()->withInput();
   }
@@ -85,7 +87,6 @@ class EmployeeController extends Controller implements HasMiddleware
   public function destroy(Employee $employee): RedirectResponse
   {
     $employee->delete();
-    toastr()->success("کارمند با نام {$employee->name} با موفقیت حذف شد.");
 
     return redirect()->back();
   }

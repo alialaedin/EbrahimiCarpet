@@ -79,10 +79,12 @@ class SaleController extends Controller implements HasMiddleware
         'price' => $product['price']
       ]);
 
-      $thisProduct->store->decrement('balance', $product['quantity']);
+      $store = $thisProduct->store;
+
+      $store->decrement('balance', $product['quantity']);
 
       $sale->transactions()->create([
-        'store_id' => $thisProduct->store->id,
+        'store_id' => $store->id,
         'type' => 'decrement',
         'quantity' => $product['quantity'],
       ]);

@@ -19,7 +19,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="type" class="control-label">نوع :<span class="text-danger">&starf;</span></label>
                   <select name="type" id="type" class="form-control">
@@ -31,7 +31,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
                   <select name="status" id="status" class="form-control">

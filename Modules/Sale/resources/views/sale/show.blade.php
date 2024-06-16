@@ -20,13 +20,13 @@
         @can('edit sales')
           <a href="{{ route('admin.sales.edit', $sale) }}" class="btn btn-warning mx-1">
             ویرایش فروش
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-pencil mr-1"></i>
           </a>
         @endcan
         @can('create sale_items')
-          <button class="btn btn-indigo" data-target="#createSaleItemModal" data-toggle="modal">
+          <button class="btn btn-indigo mx-1" data-target="#createSaleItemModal" data-toggle="modal">
             افزودن قلم جدید
-            <i class="fa fa-plus font-weight-bolder"></i>
+            <i class="fa fa-plus mr-1"></i>
           </button>
         @endcan
       </div>

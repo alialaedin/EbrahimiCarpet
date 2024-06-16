@@ -43,16 +43,16 @@ class PurchaseItemController extends Controller implements HasMiddleware
 
 	public function update(PurchaseItemUpdateRequest $request, PurchaseItem $purchaseItem)
 	{
+		$diff = $request->input('quantity') - $purchaseItem->quantity;
+
 		$purchaseItem->update($request->only(['quantity', 'price', 'discount']));
 
-		$balance = $request->input('quantity') - $purchaseItem->quantity;
-
 		$store = $purchaseItem->product->store;
-		$store->balance += $balance;
+		$store->balance += $diff;
 		$store->save();
 
-		$type = $balance < 0 ? 'decrement' : 'increment';
-		$quantity = abs($balance);
+		$type = $diff < 0 ? 'decrement' : 'increment';
+		$quantity = abs($diff);
 
     $purchaseItem->purchase->transactions()->create([
       'store_id' => $store->id,
