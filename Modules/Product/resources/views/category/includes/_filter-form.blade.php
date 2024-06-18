@@ -1,26 +1,18 @@
 <div class="card">
-
   <div class="card-header border-0">
     <p class="card-title">جستجو پیشرفته</p>
-    <div class="card-options">
-      <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-      <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-      <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-    </div>
+    <x-core::card-options/>
   </div>
-
   <div class="card-body">
     <div class="row">
       <form action="{{ route("admin.categories.index") }}" class="col-12">
         <div class="row">
-
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="title">عنوان :</label>
               <input type="text" id="title" name="title" class="form-control" value="{{ request('title') }}">
             </div>
           </div>
-
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="parent_id">انتخاب والد :</label>
@@ -33,7 +25,6 @@
               </select>
             </div>
           </div>
-
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="unit_type">نوع واحد :</label>
@@ -44,7 +35,6 @@
               </select>
             </div>
           </div>
-
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="status">وضعیت :</label>
@@ -55,11 +45,8 @@
               </select>
             </div>
           </div>
-
         </div>
-
         <x-core::filter-buttons table="categories"/>
-
       </form>
     </div>
   </div>

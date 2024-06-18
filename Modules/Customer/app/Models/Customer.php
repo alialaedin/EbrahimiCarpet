@@ -36,9 +36,9 @@ class Customer extends Model
   {
     static::deleting(function (Customer $customer) {
       if ($customer->sales->isNotEmpty()) {
-        throw new ModelCannotBeDeletedException('این کاربر دارای فروش است و قابل حذف نمی باشد.');
-      }elseif ($customer->sales->isNotEmpty()) {
-        throw new ModelCannotBeDeletedException('این کاربر دارای پرداختی است و قابل حذف نمی باشد.');
+        throw new ModelCannotBeDeletedException('این مشتری دارای فروش است و قابل حذف نمی باشد.');
+      }elseif ($customer->payments->isNotEmpty()) {
+        throw new ModelCannotBeDeletedException('این مشتری دارای پرداختی است و قابل حذف نمی باشد.');
       }
     });
   }

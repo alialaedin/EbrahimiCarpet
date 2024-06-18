@@ -23,5 +23,15 @@ return [
   'accept_image_mimes' => [
     'png',
     'jpg'
+  ],
+
+  'category_unit_types' => [
+    'meter' => 'متر',
+    'number' => 'عدد'
+  ],
+
+  'bool_statuses' => [
+    '1' => 'فعال',
+    '0' => 'غیر فعال'
   ]
 ];

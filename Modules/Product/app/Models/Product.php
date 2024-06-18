@@ -10,6 +10,7 @@ use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Purchase\Models\PurchaseItem;
+use Modules\Sale\Models\SaleItem;
 use Modules\Store\Models\Store;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -68,22 +69,6 @@ class Product extends BaseModel
 			});
 	}
 
-	// Relations
-	public function category(): BelongsTo
-	{
-		return $this->belongsTo(Category::class);
-	}
-
-	public function store(): HasOne
-	{
-		return $this->hasOne(Store::class);
-	}
-
-	public function purchaseItems(): HasMany
-	{
-		return $this->hasMany(PurchaseItem::class);
-	}
-
 	// Functions
 	public function getDiscount()
 	{
@@ -103,4 +88,30 @@ class Product extends BaseModel
 
 		return $price;
 	}
+
+  public function isDeletable(): bool
+  {
+    return $this->store->balance == 0 && $this->purchaseItems->isEmpty() && $this->saleItems->isEmpty();
+  }
+
+  // Relations
+  public function category(): BelongsTo
+  {
+    return $this->belongsTo(Category::class);
+  }
+
+  public function store(): HasOne
+  {
+    return $this->hasOne(Store::class);
+  }
+
+  public function purchaseItems(): HasMany
+  {
+    return $this->hasMany(PurchaseItem::class);
+  }
+
+  public function saleItems(): HasMany
+  {
+    return $this->hasMany(SaleItem::class);
+  }
 }

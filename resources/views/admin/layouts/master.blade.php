@@ -26,16 +26,19 @@
 			<div class="page-main">
 
 				@include("admin.layouts.includes.sidebar")
+				@include("admin.layouts.includes.header")
 
-				<div class="app-content main-content">
-					<div class="side-app d-flex justify-content-center">
+				<div class="app-content px-5 py-1">
 
-						@include("admin.layouts.includes.header")
+          @if($errors->any())
+            @php
+              toastr()->error('خطا در انجام عملیات!');
+            @endphp
+          @endif
 
-						@yield("content")
+          @yield("content")
 
-					</div>
-				</div>
+        </div>
 			</div>
 
 			@include("admin.layouts.includes.footer")

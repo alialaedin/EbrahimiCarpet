@@ -2,11 +2,7 @@
 
   <div class="card-header border-0">
     <p class="card-title">جستجو پیشرفته</p>
-    <div class="card-options">
-      <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-      <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-      <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-    </div>
+    <x-core::card-options/>
   </div>
 
   <div class="card-body">
@@ -63,29 +59,6 @@
 </div>
 
 @section('scripts')
-
-  <script>
-    $('#from_purchased_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#from_purchased_date',
-      targetTextSelector: '#from_purchased_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-
-    $('#to_purchased_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#to_purchased_date',
-      targetTextSelector: '#to_purchased_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-  </script>
-
+  <x-core::date-input-script textInputId="from_purchased_date_show" dateInputId="from_purchased_date"/>
+  <x-core::date-input-script textInputId="to_purchased_date_show" dateInputId="to_purchased_date"/>
 @endsection

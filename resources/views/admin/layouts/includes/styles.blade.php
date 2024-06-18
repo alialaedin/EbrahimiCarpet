@@ -1,6 +1,10 @@
 <link href="{{asset('assets/images/brand/favicon.ico')}}" rel="icon" type="image/x-icon"/>
 <!-- font -->
 <link href="{{asset('assets/font/font.css')}}" rel="stylesheet"/>
+<!-- Sweet-alert css -->
+<link href="{{ asset('assets/plugins/sweet-alert/sweetalert.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/plugins/sweet-alert/jquery.sweet-modal.min.css')}}" rel="stylesheet" >
+
 <!-- Bootstrap css -->
 <link href="{{asset('assets/plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet" />
 <!-- Style css -->
@@ -15,7 +19,7 @@
 <link href="{{asset('assets/plugins/p-scrollbar/p-scrollbar.css')}}" rel="stylesheet" />
 <!---Icons css-->
 <link href="{{asset('assets/css-rtl/icons.css')}}" rel="stylesheet" />
-<!---Sidebar css--> 
+<!---Sidebar css-->
 <link href="{{asset('assets/plugins/sidebar/sidebar.css')}}" rel="stylesheet" />
 <!-- Select2 css -->
 <link href="{{asset('assets/plugins/select2/select2.min.css')}}" rel="stylesheet" />

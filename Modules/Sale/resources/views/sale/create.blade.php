@@ -1,102 +1,71 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="col-12">
-    <div class="page-header">
-			<ol class="breadcrumb align-items-center">
-        <li class="breadcrumb-item">
-          <a href="{{ route('admin.dashboard') }}">
-            <i class="fe fe-home ml-1"></i> داشبورد
-          </a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="{{ route('admin.sales.index') }}">لیست فروش ها</a>
-        </li>
-        <li class="breadcrumb-item active">ثبت فروش جدید</li>
-      </ol>
+  <div class="page-header">
+    <ol class="breadcrumb align-items-center">
+      <li class="breadcrumb-item">
+        <a href="{{ route('admin.dashboard') }}">
+          <i class="fe fe-home ml-1"></i> داشبورد
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('admin.sales.index') }}">لیست فروش ها</a>
+      </li>
+      <li class="breadcrumb-item active">ثبت فروش جدید</li>
+    </ol>
+  </div>
+  <div class="card">
+    <div class="card-header justify-content-between">
+      <p class="card-title">ثبت فروش جدید</p>
+      <button id="addSaleItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button>
     </div>
-
-    @if($errors->any())
-      @php
-        toastr()->error('خطا در ثبت فروش!');
-      @endphp
-    @endif
-
-		<div class="card">
-			<div class="card-header justify-content-between">
-				<p class="card-title">ثبت فروش جدید</p>
-        <button id="addSaleItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button>
-			</div>
-			<div class="card-body">
-				<form action="{{ route('admin.sales.store') }}" method="post" class="save">
-					@csrf
-					<div class="row">
-
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="customer_id" class="control-label">انتخاب مشتری :<span class="text-danger">&starf;</span></label>
-								<select name="customer_id" id="customer_id" class="form-control" required>
-									<option value="" class="text-muted">-- مشتری را انخاب کنید --</option>
-									@foreach ($customers as $customer)
-										<option value="{{ $customer->id }}" @selected(old("customer_id") == $customer->id)>{{ $customer->name .' - '. $customer->mobile }}</option>
-									@endforeach
-								</select>
-                <x-core::show-validation-error name="customer_id" />
-							</div>
-						</div>
-
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="sold_date_show" class="control-label">تاریخ فروش :<span class="text-danger">&starf;</span></label>
-								<input class="form-control fc-datepicker" id="sold_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
-								<input name="sold_at" id="sold_date" type="hidden" value="{{ old("sold_at") }}" required/>
-							</div>
-              <x-core::show-validation-error name="sold_at" />
-						</div>
-
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-								<input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
-                <x-core::show-validation-error name="discount" />
-							</div>
-						</div>
-					</div>
-
-					<div  id="contentArea"></div>
-
-					<div class="row">
-						<div class="col">
-							<div class="text-center">
-
-								<button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
-
-								<button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
-
-							</div>
-						</div>
-					</div>
-
-				</form>
-			</div>
+    <div class="card-body">
+      <form action="{{ route('admin.sales.store') }}" method="post" class="save">
+        @csrf
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="customer_id" class="control-label">انتخاب مشتری :<span class="text-danger">&starf;</span></label>
+              <select name="customer_id" id="customer_id" class="form-control" required>
+                <option value="" class="text-muted">-- مشتری را انخاب کنید --</option>
+                @foreach ($customers as $customer)
+                  <option value="{{ $customer->id }}" @selected(old("customer_id") == $customer->id)>{{ $customer->name .' - '. $customer->mobile }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="customer_id" />
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="sold_date_show" class="control-label">تاریخ فروش :<span class="text-danger">&starf;</span></label>
+              <input class="form-control fc-datepicker" id="sold_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
+              <input name="sold_at" id="sold_date" type="hidden" value="{{ old("sold_at") }}" required/>
+            </div>
+            <x-core::show-validation-error name="sold_at" />
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
+              <x-core::show-validation-error name="discount" />
+            </div>
+          </div>
+        </div>
+        <div  id="contentArea"></div>
+        <div class="row">
+          <div class="col">
+            <div class="text-center">
+              <button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
+              <button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 @endsection
 
 @section('scripts')
-
-	<script>
-		$('#sold_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#sold_date',
-      targetTextSelector: '#sold_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-	</script>
-
+  <x-core::date-input-script textInputId="sold_date_show" dateInputId="sold_date"/>
 	<script>
 
     function getProductStore(id) {
@@ -118,8 +87,6 @@
     }
 
 		$(document).ready(function() {
-
-
 
       let index = 0;
 

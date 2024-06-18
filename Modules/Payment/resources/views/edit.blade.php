@@ -36,9 +36,9 @@
                 <label for="type" class="control-label">نوع پرداخت: <span class="text-danger">&starf;</span></label>
                 <select name="type" id="type" class="form-control">
                   <option value="" class="text-muted">-- نوع پرداخت را انتخاب کنید --</option>
-                  <option value="cash" @selected(old('type', $payment->type) == 'cash')>وجه نقد</option>
-                  <option value="cheque" @selected(old('type', $payment->type) == 'cheque')>چک</option>
-                  <option value="installment" @selected(old('type', $payment->type) == 'installment')>قسط</option>
+                  @foreach(config('core.payment_types') as $name => $label)
+                    <option value="{{ $name }}" @selected(old('type', $payment->type) == $name)>{{ $label }}</option>
+                  @endforeach
                 </select>
                 <x-core::show-validation-error name="type" />
               </div>
@@ -46,7 +46,14 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="amount" class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
-                <input type="text" id="amount" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به تومان وارد کنید" value="{{ old('amount', number_format($payment->amount)) }}">
+                <input
+                  type="text"
+                  id="amount"
+                  class="form-control comma"
+                  name="amount"
+                  placeholder="مبلغ پرداختی را به تومان وارد کنید"
+                  value="{{ old('amount', number_format($payment->amount)) }}"
+                />
                 <x-core::show-validation-error name="amount" />
               </div>
             </div>
@@ -89,7 +96,13 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="description" class="control-label">توضیحات :</label>
-                <textarea name="description" id="description" class="form-control" rows="4"> {{ old('description', $payment->description) }} </textarea>
+                <textarea
+                  name="description"
+                  id="description"
+                  class="form-control"
+                  rows="4">
+                  {{ old('description', $payment->description) }}
+                </textarea>
                 <x-core::show-validation-error name="description" />
               </div>
             </div>
@@ -98,11 +111,23 @@
 								<label class="control-label"> انتخاب وضعیت:<span class="text-danger">&starf;</span></label>
                 <div class="custom-controls-stacked">
 									<label class="custom-control custom-radio">
-										<input type="radio" class="custom-control-input" name="status" value="1" @checked(old('status', $payment->status) == '1')>
+										<input
+                      type="radio"
+                      class="custom-control-input"
+                      name="status"
+                      value="1"
+                      @checked(old('status', $payment->status) == '1')
+                    />
 										<span class="custom-control-label">فعال</span>
 									</label>
 									<label class="custom-control custom-radio">
-										<input type="radio" class="custom-control-input" name="status" value="0" @checked(old('status', $payment->status) == '0')>
+										<input
+                      type="radio"
+                      class="custom-control-input"
+                      name="status"
+                      value="0"
+                      @checked(old('status', $payment->status) == '0')
+                    />
 										<span class="custom-control-label">غیر فعال</span>
 									</label>
 								</div>
@@ -128,29 +153,6 @@
 @endsection
 
 @section('scripts')
-  <script>
-
-    $('#payment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#payment_date_hidden',
-      targetTextSelector: '#payment_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-
-    $('#due_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#due_date_hidden',
-      targetTextSelector: '#due_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-
-  </script>
+  <x-core::date-input-script textInputId="payment_date_show" dateInputId="payment_date_hidden"/>
+  <x-core::date-input-script textInputId="due_date_show" dateInputId="due_date_hidden"/>
 @endsection

@@ -1,97 +1,72 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="col-12">
-    <div class="page-header">
-			<ol class="breadcrumb align-items-center">
-        <li class="breadcrumb-item">
-          <a href="{{ route('admin.dashboard') }}">
-            <i class="fe fe-home ml-1"></i> داشبورد
-          </a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="{{ route('admin.purchases.index') }}">لیست خرید</a>
-        </li>
-        <li class="breadcrumb-item active">ثبت خرید جدید</li>
-      </ol>
+  <div class="page-header">
+    <ol class="breadcrumb align-items-center">
+      <li class="breadcrumb-item">
+        <a href="{{ route('admin.dashboard') }}">
+          <i class="fe fe-home ml-1"></i> داشبورد
+        </a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('admin.purchases.index') }}">لیست خرید</a>
+      </li>
+      <li class="breadcrumb-item active">ثبت خرید جدید</li>
+    </ol>
+  </div>
+  <div class="card">
+    <div class="card-header justify-content-between">
+      <p class="card-title">ثبت خرید جدید</p>
+      <button id="addPurchaseItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button>
     </div>
-
-    @if($errors->any())
-      @php
-        toastr()->error('خطا در ثبت خرید!');
-      @endphp
-    @endif
-
-		<div class="card">
-			<div class="card-header justify-content-between">
-				<p class="card-title">ثبت خرید جدید</p>
-        <button id="addPurchaseItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button>
-			</div>
-			<div class="card-body">
-				<form action="{{ route('admin.purchases.store') }}" method="post" class="save">
-					@csrf
-					<div class="row">
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="supplier_id" class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
-								<select name="supplier_id" id="supplier_id" class="form-control" required>
-									<option value="" class="text-muted">-- تامین کننده را انخاب کنید --</option>
-									@foreach ($suppliers as $supplier)
-										<option value="{{ $supplier->id }}" @selected(old("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="purchased_date_show" class="control-label">تاریخ خرید :<span class="text-danger">&starf;</span></label>
-								<input class="form-control fc-datepicker" id="purchased_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
-								<input name="purchased_at" id="purchased_date" type="hidden" value="{{ old("purchased_at") }}" required/>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="form-group">
-								<label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-								<input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
-							</div>
-						</div>
-					</div>
-					<div  id="contentArea"></div>
-
-					<div class="row">
-						<div class="col">
-							<div class="text-center">
-
-								<button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
-
-								<button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
-
-							</div>
-						</div>
-					</div>
-
-				</form>
-			</div>
+    <div class="card-body">
+      <form action="{{ route('admin.purchases.store') }}" method="post" class="save">
+        @csrf
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="supplier_id" class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
+              <select name="supplier_id" id="supplier_id" class="form-control" required>
+                <option value="" class="text-muted">-- تامین کننده را انخاب کنید --</option>
+                @foreach ($suppliers as $supplier)
+                  <option value="{{ $supplier->id }}" @selected(old("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="purchased_date_show" class="control-label">تاریخ خرید :<span class="text-danger">&starf;</span></label>
+              <input class="form-control fc-datepicker" id="purchased_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
+              <input name="purchased_at" id="purchased_date" type="hidden" value="{{ old("purchased_at") }}" required/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
+            </div>
+          </div>
+        </div>
+        <div  id="contentArea"></div>
+        <div class="row">
+          <div class="col">
+            <div class="text-center">
+              <button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
+              <button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 @endsection
 
 @section('scripts')
-	<script>
-		$('#purchased_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#purchased_date',
-      targetTextSelector: '#purchased_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-	</script>
+
+  <x-core::date-input-script textInputId="purchased_date_show" dateInputId="purchased_date"/>
 
 	<script>
 		$(document).ready(function() {
-
       let index = 0;
 
       const addPurchaseItemButtonTop = $("#addPurchaseItemButtonTop");

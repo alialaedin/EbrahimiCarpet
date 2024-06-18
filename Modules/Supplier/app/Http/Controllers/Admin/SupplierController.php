@@ -3,19 +3,19 @@
 namespace Modules\Supplier\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Payment\Models\Payment;
-use Modules\Purchase\Models\Purchase;
 use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
 use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
 
 class   SupplierController extends Controller implements HasMiddleware
 {
-	public static function middleware()
-	{
+	public static function middleware(): array
+  {
 		return [
 			new Middleware('can:view suppliers', ['index', 'show']),
 			new Middleware('can:create suppliers', ['create', 'store']),
@@ -24,15 +24,15 @@ class   SupplierController extends Controller implements HasMiddleware
 		];
 	}
 
-	public function index()
-	{
+	public function index(): View
+  {
 		$name = request('name');
 		$mobile = request('mobile');
 		$status = request('status');
 
 		$suppliers = Supplier::query()
 			->select('id', 'name', 'mobile', 'status', 'created_at')
-			->when($name, fn (Builder $query) => $query->where('name', 'like', "%{$name}%"))
+			->when($name, fn (Builder $query) => $query->where('name', 'like', "%$name%"))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
 			->latest('id')
@@ -44,8 +44,8 @@ class   SupplierController extends Controller implements HasMiddleware
 		return view('supplier::index', compact('suppliers', 'totalSuppliers'));
 	}
 
-	public function show(Supplier $supplier)
-	{
+	public function show(Supplier $supplier): View
+  {
 		$numberOfPurchases = $supplier->purchases->count();
 		$numberOfPayments = $supplier->payments->count();
 
@@ -61,36 +61,36 @@ class   SupplierController extends Controller implements HasMiddleware
 		));
 	}
 
-	public function create()
-	{
+	public function create(): View
+  {
 		return view('supplier::create');
 	}
 
-	public function store(SupplierStoreRequest $request)
-	{
+	public function store(SupplierStoreRequest $request): RedirectResponse
+  {
 		$supplier = Supplier::create($request->validated());
-		toastr()->success("تامین کننده جدید به نام {$supplier->name} با موفقیت ساخته شد.");
+		toastr()->success("تامین کننده جدید به نام $supplier->name با موفقیت ساخته شد.");
 
 		return to_route('admin.suppliers.index');
 	}
 
-	public function edit(Supplier $supplier)
+	public function edit(Supplier $supplier): View
 	{
 		return view('supplier::edit', compact('supplier'));
 	}
 
-	public function update(SupplierUpdateRequest $request, Supplier $supplier)
-	{
+	public function update(SupplierUpdateRequest $request, Supplier $supplier): RedirectResponse
+  {
 		$supplier->update($request->validated());
-		toastr()->success("تامین کننده با نام {$supplier->name} با موفقیت ویرایش شد.");
+		toastr()->success("تامین کننده با نام $supplier->name با موفقیت ویرایش شد.");
 
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Supplier $supplier)
-	{
+	public function destroy(Supplier $supplier): RedirectResponse
+  {
 		$supplier->delete();
-		toastr()->success("تامین کننده با نام {$supplier->name} با موفقیت حذف شد.");
+		toastr()->success("تامین کننده با نام $supplier->name با موفقیت حذف شد.");
 
 		return redirect()->back();
 	}

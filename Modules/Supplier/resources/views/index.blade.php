@@ -1,170 +1,85 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="col-12">
-		<div class="page-header">
-      <ol class="breadcrumb align-items-center">
-        <li class="breadcrumb-item">
-          <a href="{{ route('admin.dashboard') }}">
-            <i class="fe fe-home ml-1"></i> داشبورد
-          </a>
-        </li>
-        <li class="breadcrumb-item active">لیست تامین کنندگان</li>
-      </ol>
-      @can('create suppliers')
-        <x-core::register-button route="admin.suppliers.create" title="ثبت تامین کننده جدید"/>
-      @endcan
+  <div class="page-header">
+    <ol class="breadcrumb align-items-center">
+      <li class="breadcrumb-item">
+        <a href="{{ route('admin.dashboard') }}">
+          <i class="fe fe-home ml-1"></i> داشبورد
+        </a>
+      </li>
+      <li class="breadcrumb-item active">لیست تامین کنندگان</li>
+    </ol>
+    @can('create suppliers')
+      <x-core::register-button route="admin.suppliers.create" title="ثبت تامین کننده جدید"/>
+    @endcan
+  </div>
+  @include('supplier::includes.filter-form')
+  <div class="card">
+    <div class="card-header border-0">
+      <p class="card-title">لیست تامین کنندگان ({{ $totalSuppliers }})</p>
+      <X-core::card-options/>
     </div>
-    <div class="card">
-      <div class="card-header border-0">
-        <p class="card-title">جستجوی پیشرفته</p>
-        <X-core::card-options/>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <form action="{{ route("admin.suppliers.index") }}" class="col-12">
-            <div class="row">
-              <div class="col-xl-4 col-md-6 col-12">
-                <div class="form-group">
-                  <label for="name">نام و نام خانوادگی :</label>
-                  <input type="text" id="name" name="full_name" class="form-control" value="{{ request('full_name') }}">
-                </div>
-              </div>
-              <div class="col-xl-4 col-md-6 col-12">
-                <div class="form-group">
-                  <label for="mobile">تلفن همراه :</label>
-                  <input type="text" id="mobile" name="mobile" class="form-control" value="{{ request('mobile') }}">
-                </div>
-              </div>
-              <div class="col-xl-4 col-md-6 col-12">
-                <div class="form-group">
-                  <label for="status">وضعیت :</label>
-                  <select name="status" id="status" class="form-control">
-                    <option value="">همه</option>
-                    <option value="1" @selected(request("status") == "1")>فعال</option>
-                    <option value="0" @selected(request("status") == "0")>غیر فعال</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <x-core::filter-buttons table="suppliers"/>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header border-0">
-        <p class="card-title">لیست تامین کنندگان <span class="fs-15">({{ $totalSuppliers }})</span></p>
-        <X-core::card-options/>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
-                <thead class="thead-light">
-                  <tr>
-                    <th class="text-center border-top">ردیف</th>
-                    <th class="text-center border-top">نام و نام خانوادگی</th>
-                    <th class="text-center border-top">شماره موبایل</th>
-                    <th class="text-center border-top">وضعیت</th>
-                    <th class="text-center border-top">تاریخ ثبت</th>
-                    <th class="text-center border-top">عملیات</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse ($suppliers as $supplier)
-                    <tr>
-                      <td class="text-center">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $supplier->name }}</td>
-                      <td class="text-center">{{ $supplier->mobile }}</td>
-                      <td class="text-center">
-                        <x-core::badge
-                          type="{{ $supplier->status ? 'success' : 'danger' }}"
-                          text="{{ $supplier->status ? 'فعال' : 'غیر فعال' }}"
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="row">
+            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+              <thead class="thead-light">
+              <tr>
+                <th class="text-center">ردیف</th>
+                <th class="text-center">نام و نام خانوادگی</th>
+                <th class="text-center">شماره موبایل</th>
+                <th class="text-center">وضعیت</th>
+                <th class="text-center">تاریخ ثبت</th>
+                <th class="text-center">عملیات</th>
+              </tr>
+              </thead>
+              <tbody>
+              @forelse ($suppliers as $supplier)
+                <tr>
+                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                  <td class="text-center">{{ $supplier->name }}</td>
+                  <td class="text-center">{{ $supplier->mobile }}</td>
+                  <td class="text-center">
+                    <x-core::badge
+                      type="{{ $supplier->status ? 'success' : 'danger' }}"
+                      text="{{ $supplier->status ? 'فعال' : 'غیر فعال' }}"
+                    />
+                  <td class="text-center"> @jalaliDate($supplier->created_at) </td>
+                  <td class="text-center">
+                    @can('view payments')
+                      <a
+                        href="{{ route('admin.payments.index', $supplier) }}"
+                        class="btn btn-success btn-icon btn-sm"
+                        data-toggle="tooltip"
+                        data-original-title="پرداختی ها">
+                        <i class="fa fa-money" ></i>
+                      </a>
+                    @endcan
+                    @can('view suppliers')
+                        <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
+                      @endcan
+                      @can('edit suppliers')
+                        <x-core::edit-button route="admin.suppliers.edit" :model="$supplier"/>
+                      @endcan
+                      @can('delete suppliers')
+                        <x-core::delete-button
+                          route="admin.suppliers.destroy"
+                          :model="$supplier"
+                          disabled="{{ !$supplier->isDeletable() }}"
                         />
-                      <td class="text-center">{{ verta($supplier->created_at)->formatDate() }}</td>
-                      <td class="text-center">
-
-                        @can('view payments')
-                          <a
-                            href="{{ route('admin.payments.index', $supplier) }}"
-                            class="btn btn-success btn-icon btn-sm"
-                            data-toggle="tooltip"
-                            data-original-title="پرداختی ها">
-                            <i class="fa fa-money" ></i>
-                          </a>
-                        @endcan
-
-                        @can('view suppliers')
-                          <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
-                        @endcan
-
-                        @can('edit suppliers')
-                          <x-core::edit-button route="admin.suppliers.edit" :model="$supplier"/>
-                        @endcan
-
-                        @can('delete suppliers')
-
-                            <button
-                              onclick="confirmDelete('delete-{{ $supplier->id }}')"
-                              class="btn btn-sm btn-icon btn-danger"
-                              data-toggle="tooltip"
-                              data-original-title="حذف"
-                              @disabled($supplier->purchases->isNotEmpty())>
-                              <i class="fa fa-trash-o"></i>
-                            </button>
-
-                            <form
-                              action="{{ route('admin.suppliers.destroy', $supplier) }}"
-                              method="POST"
-                              id="delete-{{ $supplier->id }}"
-                              style="display: none">
-                              @csrf
-                              @method('DELETE')
-                            </form>
-
-{{--                          <x-core::delete-button route="admin.suppliers.destroy" :model="$supplier"/>--}}
-                        @endcan
-
-                      </td>
-                    </tr>
-                    @empty
-											<x-core::data-not-found-alert :colspan="6"/>
-                  @endforelse
-                </tbody>
-              </table>
-              {{ $suppliers->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-            </div>
+                      @endcan
+                  </td>
+                </tr>
+              @empty
+                <x-core::data-not-found-alert :colspan="6"/>
+              @endforelse
+              </tbody>
+            </table>
+            {{ $suppliers->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
           </div>
         </div>
       </div>
     </div>
   </div>
-@endsection
-@section('scripts')
-
-  <script>
-    $('#from_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#from_deployment_date',
-      targetTextSelector: '#from_deployment_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-
-    $('#to_deployment_date_show').MdPersianDateTimePicker({
-      targetDateSelector: '#to_deployment_date',
-      targetTextSelector: '#to_deployment_date_show',
-      englishNumber: false,
-      toDate:true,
-      enableTimePicker: false,
-      dateFormat: 'yyyy-MM-dd',
-      textFormat: 'yyyy-MM-dd',
-      groupId: 'rangeSelector1',
-    });
-  </script>
-
 @endsection

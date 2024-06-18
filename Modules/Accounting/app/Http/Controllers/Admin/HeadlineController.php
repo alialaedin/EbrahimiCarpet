@@ -22,7 +22,7 @@ class HeadlineController extends Controller implements HasMiddleware
     ];
   }
 
-  public function index()
+  public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
   {
     $headlines = Cache::rememberForever('all_headlines', function () {
       return Headline::query()
@@ -37,21 +37,21 @@ class HeadlineController extends Controller implements HasMiddleware
     return view('accounting::headline.index', compact(['headlines', 'totalHeadlines']));
   }
 
-  public function store(HeadlineStoreRequest $request)
+  public function store(HeadlineStoreRequest $request): \Illuminate\Http\RedirectResponse
   {
     Headline::query()->create($request->validated());
 
     return to_route('admin.headlines.index');
   }
 
-  public function update(HeadlineUpdateRequest $request, Headline $headline)
+  public function update(HeadlineUpdateRequest $request, Headline $headline): \Illuminate\Http\RedirectResponse
   {
     $headline->update($request->validated());
 
     return to_route('admin.headlines.index');
   }
 
-  public function destroy(Headline $headline)
+  public function destroy(Headline $headline): \Illuminate\Http\RedirectResponse
   {
     $headline->delete();
 

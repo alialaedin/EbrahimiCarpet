@@ -3,7 +3,9 @@
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Product\Http\Requests\Admin\Category\CategoryStoreRequest;
@@ -18,13 +20,13 @@ class CategoryController extends Controller implements HasMiddleware
   {
 		return [
 			new Middleware('can:view categories', ['index']),
-			new Middleware('can:create categories', ['create', 'store']),
-			new Middleware('can:edit categories', ['edit', 'update']),
+			new Middleware('can:create categories', ['store']),
+			new Middleware('can:edit categories', ['update']),
 			new Middleware('can:delete categories', ['destroy']),
 		];
 	}
 
-	public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+	public function index(): View
   {
 		$title = request('title');
 		$parentId = request('parent_id');
@@ -47,26 +49,15 @@ class CategoryController extends Controller implements HasMiddleware
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
 			->with('parent:id,title')
 			->latest('id')
-			->paginate(15)
-			->withQueryString();
+			->get();
 
 		$parentCategories = Category::query()->select('id', 'title')->whereNull('parent_id')->get();
-		$categoriesCount = $categories->total();
+		$categoriesCount = $categories->count();
 
 		return view('product::category.index', compact('categories', 'categoriesCount', 'parentCategories'));
 	}
 
-	public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-  {
-		$parentCategories = Category::query()
-			->select('id', 'title')
-			->whereNull('parent_id')
-			->get();
-
-		return view('product::category.create', compact('parentCategories'));
-	}
-
-	public function store(CategoryStoreRequest $request): \Illuminate\Http\RedirectResponse
+	public function store(CategoryStoreRequest $request): RedirectResponse
   {
 		$category = Category::query()->create($request->validated());
 		toastr()->success("دسته بندی جدید به نام {$category->title} با موفقیت ساخته شد.");
@@ -74,18 +65,7 @@ class CategoryController extends Controller implements HasMiddleware
 		return to_route('admin.categories.index');
 	}
 
-	public function edit(Category $category): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-  {
-		$parentCategories = Category::query()
-			->select('id', 'title')
-			->whereNull('parent_id')
-			->whereNot('id', $category->id)
-			->get();
-
-		return view('product::category.edit', compact('category', 'parentCategories'));
-	}
-
-	public function update(CategoryUpdateRequest $request, Category $category): \Illuminate\Http\RedirectResponse
+	public function update(CategoryUpdateRequest $request, Category $category): RedirectResponse
   {
 		$category->update($request->validated());
 		toastr()->success("دسته بندی با نام {$category->title} با موفقیت بروزرسانی شد.");
@@ -93,7 +73,7 @@ class CategoryController extends Controller implements HasMiddleware
     return to_route('admin.categories.index');
 	}
 
-	public function destroy(Category $category): \Illuminate\Http\RedirectResponse
+	public function destroy(Category $category): RedirectResponse
   {
 		$category->delete();
 		toastr()->success("دسته بندی با نام {$category->title} با موفقیت حذف شد.");

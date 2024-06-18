@@ -62,30 +62,36 @@ class Category extends Model
 			});
 	}
 
-	// Relations
-	public function children(): HasMany
-	{
-		return $this->hasMany(Category::class, 'parent_id');
-	}
-
-	public function parent(): BelongsTo
-	{
-		return $this->belongsTo(Category::class, 'parent_id');
-	}
-
-	public function products(): HasMany
-	{
-		return $this->hasMany(Product::class);
-	}
-
 	// Functions
-	public function getParentTitle()
+	public function getParentTitle(): string
 	{
 		return $this->parent ? $this->parent->title : '-';
 	}
 
-	public function getUnitType()
+	public function getUnitType(): string
 	{
-		return $this->attributes['unit_type'] == 'meter' ? 'متر' : 'عدد';
+    return config('core.category_unit_types.' . $this->attributes['unit_type']);
 	}
+
+  public function isDeletable(): bool
+  {
+    return $this->children->isEmpty() && $this->products->isEmpty();
+  }
+
+  // Relations
+  public function children(): HasMany
+  {
+    return $this->hasMany(Category::class, 'parent_id');
+  }
+
+  public function parent(): BelongsTo
+  {
+    return $this->belongsTo(Category::class, 'parent_id');
+  }
+
+  public function products(): HasMany
+  {
+    return $this->hasMany(Product::class);
+  }
+
 }

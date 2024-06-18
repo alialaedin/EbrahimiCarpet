@@ -62,27 +62,6 @@ class Purchase extends Model
     });
   }
 
-  // Relations
-  public function supplier(): BelongsTo
-  {
-    return $this->belongsTo(Supplier::class);
-  }
-
-  public function items(): HasMany
-  {
-    return $this->hasMany(PurchaseItem::class, 'purchase_id');
-  }
-
-  public function payments(): HasMany
-  {
-    return $this->hasMany(Payment::class);
-  }
-
-  public function transactions(): MorphMany
-  {
-    return $this->morphMany(StoreTransaction::class, 'transactionable');
-  }
-
   // Functions
   public function getTotalPurchaseAmount(): int
   {
@@ -102,5 +81,21 @@ class Purchase extends Model
   public function getTotalPaymentAmount(): int
   {
     return $this->payments->where('status', 1)->whereNotNull('payment_date')->sum('amount');
+  }
+
+  // Relations
+  public function supplier(): BelongsTo
+  {
+    return $this->belongsTo(Supplier::class);
+  }
+
+  public function items(): HasMany
+  {
+    return $this->hasMany(PurchaseItem::class, 'purchase_id');
+  }
+
+  public function transactions(): MorphMany
+  {
+    return $this->morphMany(StoreTransaction::class, 'transactionable');
   }
 }

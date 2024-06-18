@@ -18,5 +18,5 @@ use Modules\Product\Http\Controllers\Admin\ProductController;
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 	Route::delete('/products/{product}/image', [ProductController::class, 'destroyImage'])->name('products.image.destroy');
 	Route::resource('/products', ProductController::class);
-	Route::resource('/categories', CategoryController::class);
+	Route::apiResource('/categories', CategoryController::class)->except('show');
 });

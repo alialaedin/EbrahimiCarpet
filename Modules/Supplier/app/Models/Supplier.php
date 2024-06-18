@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Admin\Models\Admin;
+use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Payment\Models\Payment;
 use Modules\Purchase\Models\Purchase;
 use Spatie\Activitylog\LogOptions;
@@ -25,17 +25,25 @@ class Supplier extends Model
 
   public function getActivitylogOptions(): LogOptions
 	{
-    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
-
 		return LogOptions::defaults()
 			->logAll()
-			->setDescriptionForEvent(function (string $eventName) use ($admin) {
+			->setDescriptionForEvent(function (string $eventName) {
         return "تامین کننده با شناسه عددی $this->id با نام $this->name را " . config('core.events.' . $eventName);
 			});
 	}
 
+  protected static function booted(): void
+  {
+    static::deleting(function (Supplier $supplier) {
+      if ($supplier->purchases->isNotEmpty()) {
+        throw new ModelCannotBeDeletedException('از این تامین کننده خریدی ثبت شده و قابل حذف نمی باشد.');
+      }elseif ($supplier->payments->isNotEmpty()) {
+        throw new ModelCannotBeDeletedException('برای این تامین کننده پرداختی ای ثبت شده و قابل حذف نمی باشد.');
+      }
+    });
+  }
 	// Functions
-	public function calcTotalPurchaseAmount()
+	public function calcTotalPurchaseAmount(): int
 	{
 		$totalAmount = 0;
 
@@ -47,30 +55,35 @@ class Supplier extends Model
 	}
 
 	// Functions
-	public function calcTotalPaymentAmount()
+	public function calcTotalPaymentAmount(): int|null
 	{
 		return $this->payments->whereNotNull('payment_date')->sum('amount');
 	}
 
-	public function getRemainingAmount()
+	public function getRemainingAmount(): int
 	{
 		return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
 	}
 
-  public function countPurchases()
+  public function countPurchases(): int
   {
     return $this->purchases->count();
   }
 
-  public function countPayments()
+  public function countPayments(): int
   {
     return $this->payments->count();
   }
 
+  public function isDeletable(): bool
+  {
+    return $this->payments->isEmpty() && $this->purchases->isEmpty();
+  }
+
 	// Query Scope
-	public static function scopeActive(Builder $query)
-	{
-	  $query->where('status', 1);
+	public static function scopeActive(Builder $query): Builder
+  {
+	  return $query->where('status', 1);
 	}
 
 	// Relations
