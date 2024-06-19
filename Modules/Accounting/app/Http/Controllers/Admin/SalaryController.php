@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Modules\Accounting\Http\Requests\Admin\Salary\SalaryStoreRequest;
 use Modules\Accounting\Http\Requests\Admin\Salary\SalaryUpdateRequest;
@@ -50,6 +49,15 @@ class SalaryController extends Controller implements HasMiddleware
     $employees = $this->getEmployees();
 
     return view('accounting::salary.index', compact(['salaries', 'totalSalaries', 'employees']));
+  }
+
+  public function show(Salary $salary): View
+  {
+    $salary->load([
+      'employee' => fn($query) => $query->select('id', 'name', 'mobile', 'telephone', 'national_code', 'address')
+    ]);
+
+    return view('accounting::salary.show', compact('salary'));
   }
 
   public function create(): View
@@ -92,7 +100,7 @@ class SalaryController extends Controller implements HasMiddleware
 
     $salary->update($inputs);
 
-    return to_route('admin.payments.index', $payment->supplier);
+    return to_route('admin.salaries.index');
   }
 
   public function destroyImage(Salary $salary): RedirectResponse

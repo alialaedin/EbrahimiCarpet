@@ -10,7 +10,7 @@
       <form action="{{ route("admin.purchases.index") }}" class="col-12">
         <div class="row">
 
-          <div class="col-12 col-md-6 col-xl-3">
+          <div class="col-12 col-md-6 col-xl-4">
             <div class="form-group">
               <label for="supplier_id">انتخاب تامین کننده :</label>
               <select name="supplier_id" id="supplier_id" class="form-control">
@@ -22,18 +22,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="form-group">
-              <label for="has_discount">انتخاب تخفیف :</label>
-              <select name="has_discount" id="has_discount" class="form-control">
-                <option value="">همه</option>
-                <option value="1" @selected(request("has_discount") == "1")>تخفیفدار</option>
-                <option value="0" @selected(request("has_discount") == "0")>بدون تخفیف</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-xl-3">
+          <div class="col-12 col-md-6 col-xl-4">
             <div class="form-group">
               <label for="from_purchased_date_show">خرید از تاریخ :</label>
               <input class="form-control fc-datepicker" id="from_purchased_date_show" type="text" autocomplete="off"/>
@@ -41,7 +30,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-xl-3">
+          <div class="col-12 col-md-6 col-xl-4">
             <div class="form-group">
               <label for="to_purchased_date_show">تا تاریخ :</label>
               <input class="form-control fc-datepicker" id="to_purchased_date_show" type="text" autocomplete="off"/>

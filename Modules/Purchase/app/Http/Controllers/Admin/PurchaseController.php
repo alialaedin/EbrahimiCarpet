@@ -34,7 +34,6 @@ class PurchaseController extends Controller implements HasMiddleware
 	public function index(): View
 	{
 		$supplierId = request('supplier_id');
-		$hasDiscount = request('has_discount');
 		$fromPurchasedAt = request('from_purchased_at');
 		$toPurchasedAt = request('to_purchased_at');
 
@@ -44,15 +43,6 @@ class PurchaseController extends Controller implements HasMiddleware
 			->when($supplierId, fn (Builder $query) => $query->where('supplier_id', $supplierId))
 			->when($fromPurchasedAt, fn (Builder $query) => $query->whereDate('purchased_at', '>=', $fromPurchasedAt))
 			->when($toPurchasedAt, fn (Builder $query) => $query->whereDate('purchased_at', '<=', $toPurchasedAt))
-			->when(isset($hasDiscount), function (Builder $query) use ($hasDiscount) {
-				return $query->where(function ($query) use ($hasDiscount) {
-					if ($hasDiscount == 1) {
-						$query->where('discount', '>', 0)->orWhereNotNull('discount');
-					} else {
-						$query->where('discount', '=', 0)->orWhereNull('discount');
-					}
-				});
-			})
 			->latest('id')
 			->paginate(15)
 			->withQueryString();

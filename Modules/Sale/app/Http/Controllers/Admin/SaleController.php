@@ -46,7 +46,7 @@ class SaleController extends Controller implements HasMiddleware
       ->when($fromSoldAt, fn (Builder $query) => $query->whereDate('sold_at', '>=', $fromSoldAt))
       ->when($toSoldAt, fn (Builder $query) => $query->whereDate('sold_at', '<=', $toSoldAt))
       ->latest('id')
-      ->paginate(15)
+      ->paginate()
       ->withQueryString();
 
     $customers = $this->getCustomers();

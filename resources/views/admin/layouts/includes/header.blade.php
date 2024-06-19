@@ -16,31 +16,22 @@
             <i class="feather feather-minimize fullscreen-button exit-fullscreen header-icons"></i>
           </a>
         </div>
-        <div class="dropdown header-notify">
+        <div>
           <a class="nav-link icon" data-toggle="sidebar-right" data-target=".sidebar-right">
             <i class="feather feather-bell header-icon"></i>
           </a>
         </div>
-        <div class="dropdown profile-dropdown">
-          <a href="#" class="nav-link pr-1 pl-0 leading-none" data-toggle="dropdown">
-            <span>
-              <img src="{{asset('assets/images/users/16.jpg')}}" alt="img" class="avatar avatar-md bradius">
-            </span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow animated">
-            <a class="dropdown-item d-flex">
-              <i class="feather feather-user ml-3 fs-16 my-auto"></i>
-              <div class="mt-1">پروفایل</div>
-            </a>
-            <button type="button" class="dropdown-item d-flex" data-toggle="modal" data-target="#changePassswordForm">
-              <i class="feather feather-edit-2 ml-3 fs-16 my-auto"></i>
-              <div class="mt-1">تغییر کلمه عبور</div>
-            </button>
-            <a class="dropdown-item d-flex">
-              <i class="feather feather-power ml-3 fs-16 my-auto"></i>
-              <div class="mt-1">خروج</div>
-            </a>
-          </div>
+        <div>
+          <button
+            onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+            class="nav-link icon border-0"
+            data-toggle="tooltip"
+            data-original-title="خروج">
+            <i class="feather feather-log-out header-icon"></i>
+          </button>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+          </form>
         </div>
       </div>
     </div>

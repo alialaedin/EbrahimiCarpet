@@ -3,6 +3,7 @@
 namespace Modules\Auth\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Http\Requests\Admin\LoginRequest;
@@ -10,8 +11,8 @@ use Modules\Auth\Http\Requests\Admin\LogoutRequest;
 
 class AuthController extends Controller
 {
-	public function showLoginForm()
-	{
+	public function showLoginForm(): View
+  {
 		return view("auth::admin.login");
 	}
 
@@ -30,6 +31,6 @@ class AuthController extends Controller
 	{
 		$request->session()->invalidate();
 		$request->session()->regenerateToken();
-		return redirect()->route("admin.login.form");
+		return redirect()->route("login.form");
 	}
 }

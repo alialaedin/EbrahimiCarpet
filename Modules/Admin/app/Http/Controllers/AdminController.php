@@ -92,10 +92,12 @@ class AdminController extends Controller implements HasMiddleware
 
 		$admin->update($inputs);
 
-		if ($admin->getRoleName() !== $request->input('role')) {
+		if ($request->filled('role') && $admin->getRoleName() !== $request->input('role')) {
 			$admin->syncRoles([$request->input('role')]);
+
+      return to_route('logout');
 		}
-		
+
 		toastr()->success("ادمین با نام $admin->name با موفقیت ویرایش شد.");
 
 		return redirect()->back()->withInput();

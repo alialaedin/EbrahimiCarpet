@@ -31,7 +31,7 @@
 		<link href="{{asset('assets/plugins/p-scrollbar/p-scrollbar.css')}}" rel="stylesheet" />
 	</head>
 
-	<body class="dark-mode">
+	<body>
 
 		<div class="page login-bg">
 			<div class="page-single">
@@ -42,7 +42,7 @@
 								<div class="col-md-7 col-lg-5">
 									<div class="card">
 										<div class="p-4 pt-6 text-center">
-											<h1 class="mb-2">ورود به پنل</h1>
+											<p class="mb-2 fs-24">ورود به پنل</p>
                       @if ($errors->any())
                         <div class="alert alert-danger ">
                           <span>اطلاعات وارد شده صحیح نمیباشد.</span>
@@ -52,18 +52,21 @@
 										<form class="card-body pt-3" id="login" action="{{route("login")}}" name="login" method="POST">
                       @csrf
 											<div class="form-group">
-												<label class="form-label">تلفن همراه</label>
-												<input name="mobile" class="form-control" placeholder="شماره همراه خود را وارد کنید" type="text">
+												<label for="mobile" class="form-label">تلفن همراه:</label>
+												<input id="mobile" name="mobile" class="form-control" placeholder="شماره همراه خود را وارد کنید" type="text">
 											</div>
 											<div class="form-group">
-												<label class="form-label">کلمه عبور</label>
-												<input name="password" class="form-control" placeholder="کلمه عبور خود را وارد کنید" type="password">
+												<label for="password" class="form-label">کلمه عبور:</label>
+												<input id="password" name="password" class="form-control" placeholder="کلمه عبور خود را وارد کنید" type="password">
 											</div>
+                      <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1">
+                          <span class="custom-control-label">مرا به خاطر بسپر</span>
+                        </label>
+                      </div>
 											<div class="submit">
 												<button class="btn btn-primary btn-block">ورود</button>
-											</div>
-											<div class="text-center mt-3">
-												<p class="mb-2"><a href="#">فراموشی کلمه عبور</a></p>
 											</div>
 										</form>
 									</div>
@@ -76,16 +79,16 @@
 		</div>
 
 		<!-- Jquery js-->
-		<script src="assets/plugins/jquery/jquery.min.js"></script>
+		<script src="{{ asset('assets/plugins/jquery/jquery.min.js')}}"></script>
 		<!-- Bootstrap4 js-->
-		<script src="assets/plugins/bootstrap/popper.min.js"></script>
-		<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="{{ asset('assets/plugins/bootstrap/popper.min.js')}}"></script>
+		<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
 		<!-- Select2 js -->
-		<script src="assets/plugins/select2/select2.full.min.js"></script>
+		<script src="{{ asset('assets/plugins/select2/select2.full.min.js')}}"></script>
 		<!-- P-scroll js-->
-		<script src="assets/plugins/p-scrollbar/p-scrollbar.js"></script>
+		<script src="{{ asset('assets/plugins/p-scrollbar/p-scrollbar.js')}}"></script>
 		<!-- Custom js-->
-		<script src="assets/js/custom.js"></script>
+		<script src="{{ asset('assets/js/custom.js')}}"></script>
 
 	</body>
 </html>

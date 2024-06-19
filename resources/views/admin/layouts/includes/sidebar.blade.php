@@ -89,7 +89,7 @@
       @canany(['view headlines', 'view revenues', 'view salaries', 'view costs'])
         <li class="slide">
           <a class="side-menu__item" data-toggle="slide" href="#">
-            <i class="fe fe-shopping-cart sidemenu_icon"></i>
+            <i class="fe fe-dollar-sign sidemenu_icon"></i>
             <span class="side-menu__label">مدیریت هزینه / درامد </span><i class="angle fa fa-angle-left"></i>
           </a>
           <ul class="slide-menu">

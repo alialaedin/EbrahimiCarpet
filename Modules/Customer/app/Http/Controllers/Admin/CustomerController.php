@@ -3,7 +3,9 @@
 namespace Modules\Customer\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Customer\Http\Requests\Admin\CustomerStoreRequest;
@@ -12,8 +14,8 @@ use Modules\Customer\Models\Customer;
 
 class CustomerController extends Controller implements HasMiddleware
 {
-	public static function middleware()
-	{
+	public static function middleware(): array
+  {
 		return [
 			new Middleware('can:view customers', ['index', 'show']),
 			new Middleware('can:create customers', ['create', 'store']),
@@ -21,7 +23,7 @@ class CustomerController extends Controller implements HasMiddleware
 			new Middleware('can:delete customers', ['destroy']),
 		];
 	}
-	public function index()
+	public function index(): View
 	{
 		$fullName = request('full_name');
 		$telephone = request('telephone');
@@ -43,8 +45,8 @@ class CustomerController extends Controller implements HasMiddleware
 		return view('customer::index', compact('customers', 'customersCount'));
 	}
 
-	public function show(Customer $customer)
-	{
+	public function show(Customer $customer): View
+  {
     $salesCount = $customer->countSales();
     $salePaymentsCount = $customer->countPayments();
 
@@ -60,37 +62,48 @@ class CustomerController extends Controller implements HasMiddleware
     ]));
 	}
 
-	public function create()
-	{
+	public function create(): View
+  {
 		return view('customer::create');
 	}
 
-	public function store(CustomerStoreRequest $request)
-	{
-		$customer = Customer::create($request->validated());
+	public function store(CustomerStoreRequest $request): RedirectResponse
+  {
+		$customer = Customer::query()->create($request->validated());
 		toastr()->success("مشتری جدید به نام {$customer->name} با موفقیت ساخته شد.");
 
 		return to_route('admin.customers.index');
 	}
 
-	public function edit(Customer $customer)
-	{
+	public function edit(Customer $customer): View
+  {
 		return view('customer::edit', compact('customer'));
 	}
 
-	public function update(CustomerUpdateRequest $request, Customer $customer)
-	{
+	public function update(CustomerUpdateRequest $request, Customer $customer): RedirectResponse
+  {
 		$customer->update($request->validated());
 		toastr()->success("مشتری با نام {$customer->name} با موفقیت ویرایش شد.");
 
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Customer $customer)
-	{
+	public function destroy(Customer $customer): RedirectResponse
+  {
 		$customer->delete();
 		toastr()->success("مشتری با نام {$customer->name} با موفقیت حذف شد.");
 
 		return redirect()->back();
 	}
+
+  public function showInvoice(Customer $customer)
+  {
+    $customer->load([
+      'items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
+      'items.product' => fn ($query) => $query->select(['id', 'title', 'category_id']),
+      'items.product.category' => fn ($query) => $query->select(['id', 'title', 'unit_type']),
+    ]);
+
+    return view('customer::invoice.show', compact('customer'));
+  }
 }

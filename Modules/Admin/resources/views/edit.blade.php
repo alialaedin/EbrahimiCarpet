@@ -40,15 +40,18 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="role" class="control-label"> انتخاب نقش: <span class="text-danger">&starf;</span></label>
-              <select id="role" name="role" class="form-control">
-                <option class="text-muted"> نقش را انتخاب کنید </option>
-                @if ($admin->getRoleName() == 'super_admin')
-                  <option value="super_admin" selected> مدیر ارشد </option>
-                @endif
-                @foreach ($roles as $role)
-                  <option value="{{ $role->name }}" @selected($role->name == $admin->getRoleName())> {{ $role->label }} </option>
-                @endforeach
-              </select>
+              @if($admin->getRoleName() == config('core.super_admin_role.name'))
+                <input readonly type="text" value="{{ config('core.super_admin_role.label') }}" class="form-control">
+                <span class="text-muted mt-4 fs-12" >
+                   {{ "نقش {$admin->getRoleName()} قابل ویرایش نمی باشد! " }}
+                </span>
+              @else
+                <select id="role" name="role" class="form-control">
+                  @foreach ($roles as $role)
+                    <option value="{{ $role->name }}" @selected($role->name == $admin->getRoleName())> {{ $role->label }} </option>
+                  @endforeach
+                </select>
+              @endif
               <x-core::show-validation-error name="role" />
             </div>
           </div>

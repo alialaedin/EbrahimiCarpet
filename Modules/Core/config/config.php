@@ -3,6 +3,11 @@
 return [
   'name' => 'Core',
 
+  'super_admin_role' => [
+    'name' => 'super_admin',
+    'label' => 'مدیر ارشد',
+  ],
+
   'events' => [
     'created' => 'ایجاد کرد',
     'updated' => 'ویرایش کرد',

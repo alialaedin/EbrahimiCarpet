@@ -11,6 +11,7 @@
       <x-core::register-button route="admin.sales.create" title="ثبت فروش جدید"/>
     @endcan
   </div>
+  @include('sale::sale.includes._filter-form')
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title"> لیست همه فروش ها ({{ $salesCount }}) </p>
@@ -51,7 +52,7 @@
                     <a
                       href="{{ route('admin.sales.invoice.show', $sale) }}"
                       target="_blank"
-                      class="btn btn-sm btn-success btn-icon text-white p-0"
+                      class="btn btn-sm btn-purple btn-icon text-white p-0"
                       data-toggle="tooltip"
                       data-original-title="فاکتور">
                       <i class="fe fe-printer" style="margin: 1px 0; padding: 0 6px;"></i>

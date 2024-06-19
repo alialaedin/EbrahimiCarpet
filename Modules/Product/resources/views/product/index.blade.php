@@ -81,7 +81,7 @@
               @endforelse
               </tbody>
             </table>
-            {{ $products->onEachSide(1)->links("vendor.pagination.bootstrap-4") }}
+            {{ $products->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
           </div>
         </div>
       </div>

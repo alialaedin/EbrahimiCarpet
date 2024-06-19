@@ -92,6 +92,14 @@
                     </td>
                     <td class="text-center">@jalaliDate($customer->created_at)</td>
                     <td class="text-center">
+                      <a
+{{--                        href="{{ route('admin.sales.invoice.show', $sale) }}"--}}
+{{--                        target="_blank"--}}
+                        class="btn btn-sm btn-purple btn-icon text-white p-0"
+                        data-toggle="tooltip"
+                        data-original-title="فاکتور">
+                        <i class="fe fe-printer" style="margin: 1px 0; padding: 0 6px;"></i>
+                      </a>
                       @can('view sale_payments')
                         <a
                           href="{{ route('admin.sale-payments.index', $customer) }}"

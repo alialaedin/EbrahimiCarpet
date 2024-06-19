@@ -16,7 +16,7 @@ use Modules\Auth\Http\Controllers\Admin\AuthController;
 
 Route::get('/', function () {
 	return view('auth::admin.login');
-});
+})->middleware('guest');
 
 Route::middleware('guest')->group(function () {
 	Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
