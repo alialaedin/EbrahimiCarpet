@@ -61,7 +61,7 @@
 											</div>
                       <div class="form-group">
                         <label class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1">
+                          <input type="checkbox" class="custom-control-input">
                           <span class="custom-control-label">مرا به خاطر بسپر</span>
                         </label>
                       </div>

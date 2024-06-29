@@ -18,15 +18,15 @@
       </li>
 
       @role('super_admin')
-        <li class="slide">
-          <a class="side-menu__item" data-toggle="slide" href="#">
-            <i class="fe fe-edit sidemenu_icon"></i>
-            <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
-          </a>
-          <ul class="slide-menu">
-            <li><a href="{{route("admin.roles.index")}}" class="slide-item">مدیریت نقش ها</a></li>
-          </ul>
-        </li>
+      <li class="slide">
+        <a class="side-menu__item" data-toggle="slide" href="#">
+          <i class="fe fe-edit sidemenu_icon"></i>
+          <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
+        </a>
+        <ul class="slide-menu">
+          <li><a href="{{route("admin.roles.index")}}" class="slide-item">مدیریت نقش ها</a></li>
+        </ul>
+      </li>
       @endrole
 
       @canany(['view customers', 'view employees', 'view suppliers'])
@@ -37,7 +37,7 @@
           </a>
           <ul class="slide-menu">
             @role('super_admin')
-              <li><a href="{{route("admin.admins.index")}}" class="slide-item">ادمین ها</a></li>
+            <li><a href="{{route("admin.admins.index")}}" class="slide-item">ادمین ها</a></li>
             @endrole
             @can('view customers')
               <li><a href="{{route("admin.customers.index")}}" class="slide-item">مشتری ها</a></li>
@@ -110,14 +110,26 @@
       @endcanany
 
       @role('super_admin')
-        <li class="slide">
-          <a class="side-menu__item" href="{{route("admin.stores.index")}}">
-            <i class="fe fe-database sidemenu_icon"></i>
-            <span class="side-menu__label">مدیریت انبار</span>
-          </a>
-        </li>
-      @endrole
+      <li class="slide">
+        <a class="side-menu__item" href="{{route("admin.stores.index")}}">
+          <i class="fe fe-database sidemenu_icon"></i>
+          <span class="side-menu__label">مدیریت انبار</span>
+        </a>
+      </li>
 
+      <li class="slide">
+        <a class="side-menu__item" data-toggle="slide" href="#">
+          <i class="fe fe-clipboard sidemenu_icon"></i>
+          <span class="side-menu__label">گزارشات </span><i class="angle fa fa-angle-left"></i>
+        </a>
+        <ul class="slide-menu">
+          <li><a href="{{ route('admin.reports.purchases-filter') }}" class="slide-item">گزارش خرید ها</a></li>
+          <li><a href="#" class="slide-item">گزارش فروش ها</a></li>
+          <li><a href="#" class="slide-item">گزارش بدهکاری مشتریان</a></li>
+          <li><a href="#" class="slide-item">گزارش های مالی</a></li>
+        </ul>
+      </li>
+      @endrole
 
     </ul>
   </div>

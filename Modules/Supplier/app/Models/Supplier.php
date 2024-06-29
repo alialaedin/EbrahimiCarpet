@@ -3,16 +3,16 @@
 namespace Modules\Supplier\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Core\Models\BaseModel;
 use Modules\Payment\Models\Payment;
 use Modules\Purchase\Models\Purchase;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Supplier extends Model
+class Supplier extends BaseModel
 {
 	use HasFactory, LogsActivity;
 
@@ -54,7 +54,6 @@ class Supplier extends Model
 		return $totalAmount;
 	}
 
-	// Functions
 	public function calcTotalPaymentAmount(): int|null
 	{
 		return $this->payments->whereNotNull('payment_date')->sum('amount');
@@ -79,12 +78,6 @@ class Supplier extends Model
   {
     return $this->payments->isEmpty() && $this->purchases->isEmpty();
   }
-
-	// Query Scope
-	public static function scopeActive(Builder $query): Builder
-  {
-	  return $query->where('status', 1);
-	}
 
 	// Relations
 	public function purchases(): HasMany

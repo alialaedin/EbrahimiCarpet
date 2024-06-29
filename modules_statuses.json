@@ -11,5 +11,6 @@
     "Payment": true,
     "Employee": true,
     "Sale": true,
-    "Accounting": true
+    "Accounting": true,
+    "Report": true
 }
