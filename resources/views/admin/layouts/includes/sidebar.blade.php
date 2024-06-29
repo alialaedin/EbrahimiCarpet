@@ -124,7 +124,7 @@
         </a>
         <ul class="slide-menu">
           <li><a href="{{ route('admin.reports.purchases-filter') }}" class="slide-item">گزارش خرید ها</a></li>
-          <li><a href="#" class="slide-item">گزارش فروش ها</a></li>
+          <li><a href="{{ route('admin.reports.sales-filter') }}" class="slide-item">گزارش فروش ها</a></li>
           <li><a href="#" class="slide-item">گزارش بدهکاری مشتریان</a></li>
           <li><a href="#" class="slide-item">گزارش های مالی</a></li>
         </ul>

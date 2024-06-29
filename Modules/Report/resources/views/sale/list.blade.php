@@ -7,8 +7,8 @@
           <i class="fe fe-home ml-1"></i> داشبورد
         </a>
       </li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.reports.purchases-filter') }}">فیلتر گزارش خرید</a></li>
-      <li class="breadcrumb-item active">خرید از {{ $supplier->name }}</li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.reports.sales-filter') }}">فیلتر گزارش فروش</a></li>
+      <li class="breadcrumb-item active">فروش به {{ $customer->name }}</li>
     </ol>
   </div>
   <div class="card">
@@ -16,11 +16,10 @@
       <div class="table-responsive">
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="row">
-
             <div class="col-12 d-flex align-items-center mb-5">
               <p class="col-3 text-center">
-                <span>گزارش خرید آقا / خانم</span>
-                <strong class="font-weight-bold">{{ $supplier->name }}</strong>
+                <span>گزارش فروش به آقا / خانم</span>
+                <strong class="font-weight-bold">{{ $customer->name }}</strong>
                 <span>از فرش فروشی ابراهیمی</span>
               </p>
               <figure class="figure my-2 col-6 text-center">
@@ -32,16 +31,15 @@
               </figure>
               <span class="col-3 text-center">{{ verta()->format('Y/m/d') }}</span>
             </div>
-
             <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">شناسه خرید</th>
-                <th class="text-center">مبلغ خرید (تومان)</th>
+                <th class="text-center">شناسه فروش</th>
+                <th class="text-center">مبلغ فروش (تومان)</th>
                 <th class="text-center">تخفیف کلی (تومان)</th>
-                <th class="text-center">مبلغ خرید با تخفیف (تومان)</th>
-                <th class="text-center">تاریخ خرید</th>
+                <th class="text-center">مبلغ فروش با تخفیف (تومان)</th>
+                <th class="text-center">تاریخ فروش</th>
                 <th class="text-center">تاریخ ثبت</th>
               </tr>
               </thead>
@@ -49,18 +47,18 @@
 
               @php $totalAmountWithDiscount = 0; @endphp
 
-              @forelse ($purchases as $purchase)
+              @forelse ($sales as $sale)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $purchase->id }}</td>
-                  <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
-                  <td class="text-center">{{ number_format($purchase->discount) }}</td>
-                  <td class="text-center">{{ number_format($purchase->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center"> @jalaliDate($purchase->purchased_at)</td>
-                  <td class="text-center"> @jalaliDate($purchase->created_at)</td>
+                  <td class="text-center font-weight-bold">{{ $sale->id }}</td>
+                  <td class="text-center">{{ number_format($sale->getTotalAmount()) }}</td>
+                  <td class="text-center">{{ number_format($sale->discount) }}</td>
+                  <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
+                  <td class="text-center"> @jalaliDate($sale->sold_at) </td>
+                  <td class="text-center"> @jalaliDate($sale->created_at)</td>
                 </tr>
 
-                @php $totalAmountWithDiscount += $purchase->getTotalAmountWithDiscount(); @endphp
+                @php $totalAmountWithDiscount += $sale->getTotalAmountWithDiscount(); @endphp
 
               @empty
                 <x-core::data-not-found-alert :colspan="7"/>

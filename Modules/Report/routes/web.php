@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Report\Http\Controllers\PurchaseReportController;
+use Modules\Report\Http\Controllers\SaleReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +20,10 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     // Purchases Report
     Route::get('/purchases', [PurchaseReportController::class, 'filter'])->name('purchases-filter');
     Route::post('/purchases', [PurchaseReportController::class, 'list'])->name('purchases-list');
+
+    // Sales Report
+    Route::get('/sales', [SaleReportController::class, 'filter'])->name('sales-filter');
+    Route::post('/sales', [SaleReportController::class, 'list'])->name('sales-list');
 
   });
 });
