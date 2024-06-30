@@ -19,9 +19,8 @@
 
             <div class="col-12 d-flex align-items-center mb-5">
               <p class="col-3 text-center">
-                <span>گزارش خرید آقا / خانم</span>
+                <span>گزارش خرید از آقا / خانم</span>
                 <strong class="font-weight-bold">{{ $supplier->name }}</strong>
-                <span>از فرش فروشی ابراهیمی</span>
               </p>
               <figure class="figure my-2 col-6 text-center">
                 <img

@@ -24,20 +24,20 @@ class Customer extends Model
   ];
 
   public function getActivitylogOptions(): LogOptions
-	{
-		return LogOptions::defaults()
-			->logAll()
-			->setDescriptionForEvent(function (string $eventName) {
+  {
+    return LogOptions::defaults()
+      ->logAll()
+      ->setDescriptionForEvent(function (string $eventName) {
         return "مشتری با شناسه عددی $this->id با نام $this->name را " . config('core.events.' . $eventName);
-			});
-	}
+      });
+  }
 
   protected static function booted(): void
   {
     static::deleting(function (Customer $customer) {
       if ($customer->sales->isNotEmpty()) {
         throw new ModelCannotBeDeletedException('این مشتری دارای فروش است و قابل حذف نمی باشد.');
-      }elseif ($customer->payments->isNotEmpty()) {
+      } elseif ($customer->payments->isNotEmpty()) {
         throw new ModelCannotBeDeletedException('این مشتری دارای پرداختی است و قابل حذف نمی باشد.');
       }
     });
@@ -57,7 +57,9 @@ class Customer extends Model
 
   public function calcTotalSalePaymentsAmount()
   {
-    return $this->payments->whereNotNull('payment_date')->sum('amount');
+    return $this->payments->filter(function ($payment) {
+      return $payment->status == 1 || $payment->due_date < $payment->payment_date;
+    })->sum('amount');
   }
 
   public function getRemainingAmount()
@@ -80,12 +82,12 @@ class Customer extends Model
     return $this->sales->isEmpty() && $this->payments->isEmpty();
   }
 
-  public function getStatusBadgeType()
+  public function getStatusBadgeType(): string
   {
     return $this->attributes['status'] ? 'success' : 'danger';
   }
 
-  public function getStatus()
+  public function getStatus(): string
   {
     return $this->attributes['status'] ? 'فعال' : 'غیر فعال';
   }
