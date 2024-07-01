@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Modules\Accounting\Models\Expense;
 use Modules\Accounting\Models\Revenue;
+use Modules\Accounting\Models\Salary;
 
 class AccountingReportController extends Controller
 {
@@ -28,6 +29,17 @@ class AccountingReportController extends Controller
       ->latest('id')
       ->get();
 
-    return view('report::accounting.revenue.index', compact('expenses'));
+    return view('report::accounting.expenses.index', compact('expenses'));
+  }
+
+  public function salaries(): View
+  {
+    $salaries = Salary::query()
+      ->select('id', 'employee_id', 'overtime', 'amount', 'payment_date', 'created_at')
+      ->with('employee:id,name,mobile,salary')
+      ->latest('id')
+      ->get();
+
+    return view('report::accounting.salaries.index', compact('salaries'));
   }
 }

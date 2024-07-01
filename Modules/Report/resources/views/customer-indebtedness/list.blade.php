@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
+  <div class="page-header d-print-none">
     <ol class="breadcrumb align-items-center">
       <li class="breadcrumb-item">
         <a href="{{ route('admin.dashboard') }}">
@@ -9,6 +9,9 @@
       </li>
       <li class="breadcrumb-item active">گزارش مالی مشتریان</li>
     </ol>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+      <x-core::print-button/>
+    </div>
   </div>
   <div class="card">
     <div class="card-body">
@@ -39,9 +42,7 @@
               @forelse ($customers as $customer)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">
-                    <a href="{{ route('admin.customers.show', $customer->id) }}">{{ $customer->name }}</a>
-                  </td>
+                  <td class="text-center">{{ $customer->name }}</td>
                   <td class="text-center">{{ $customer->mobile }}</td>
                   <td class="text-center">{{ $customer->telephone }}</td>
                   <td class="text-center">{{ number_format($customer->calcTotalSalesAmount()) }}</td>

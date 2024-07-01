@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
+  <div class="page-header d-print-none">
     <ol class="breadcrumb align-items-center">
       <li class="breadcrumb-item">
         <a href="{{ route('admin.dashboard') }}">
@@ -10,6 +10,9 @@
       <li class="breadcrumb-item"><a href="{{ route('admin.reports.purchases-filter') }}">فیلتر گزارش خرید</a></li>
       <li class="breadcrumb-item active">خرید از {{ $supplier->name }}</li>
     </ol>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+      <x-core::print-button/>
+    </div>
   </div>
   <div class="card">
     <div class="card-body">

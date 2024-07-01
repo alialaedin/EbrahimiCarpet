@@ -22,16 +22,6 @@
         align-items: center;
       }
 
-      #header::before {
-        content: '';
-        width: 20px;
-        height: 100%;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        background-color: #CBCACA;
-      }
-
       #header-text {
         font-weight: bold;
         font-size: 20px;
@@ -171,6 +161,10 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="row justify-content-center d-print-none" style="margin-top: 4%;">
+        <x-core::print-button title="صدور فاکتور فروش"/>
       </div>
 
     </div>

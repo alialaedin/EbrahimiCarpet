@@ -36,3 +36,9 @@
 <link href="{{asset('assets/PersianDateTimePicker-bs4/src/jquery.md.bootstrap.datetimepicker.style.css') }}" rel="stylesheet"/>
 <!-- Select2 css -->
 <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet" />
+
+<style>
+  @page {
+    margin-block: 0;
+  }
+</style>

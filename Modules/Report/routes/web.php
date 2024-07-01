@@ -27,6 +27,7 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 
     Route::get('/revenues', [AccountingReportController::class, 'revenues'])->name('revenues');
     Route::get('/expenses', [AccountingReportController::class, 'expenses'])->name('expenses');
+    Route::get('/salaries', [AccountingReportController::class, 'salaries'])->name('salaries');
 
     Route::get('/customer-indebtedness', [CustomerIndebtednessController::class, 'list'])->name('customer-indebtedness');
 

@@ -40,8 +40,8 @@ class EmployeeUpdateRequest extends FormRequest
 			'employmented_at' => ['required', 'date'],
 			'salary' => ['required', 'integer', 'min:1'],
 			'card_number' => ['required', 'digits:16', 'numeric', new IranianCardNumber],
-			'sheba_number' => ['nullable', 'numeric', new IranianShebaNumber],
-			'bank_name' => ['required', 'string', new IranianBankName]
+			'sheba_number' => ['nullable', 'numeric'],
+			'bank_name' => ['required', 'string']
 		];
 	}
 	public function authorize(): bool
