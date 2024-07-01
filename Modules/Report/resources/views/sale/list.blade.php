@@ -14,6 +14,9 @@
       <x-core::print-button/>
     </div>
   </div>
+  <div class="row justify-content-center d-none d-print-flex">
+    <p class="fs-22">گزارش فروش ها</p>
+  </div>
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">

@@ -16,6 +16,7 @@ return new class extends Migration
 			$table->id();
 			$table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
 			$table->unsignedBigInteger('balance');
+			$table->text('description')->nullable();
 			$table->timestamps();
 		});
 	}

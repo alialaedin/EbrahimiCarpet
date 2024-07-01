@@ -15,6 +15,9 @@ class Headline extends BaseModel
 {
   use LogsActivity, HasCache;
 
+  public const TYPE_REVENUE = 'revenue';
+  public const TYPE_EXPENSE = 'expense';
+
   protected $fillable = [
     'title',
     'type',
@@ -64,7 +67,7 @@ class Headline extends BaseModel
   }
 
   // Scope Queries
-  public static function scopeGetHeadlinesByType(Builder $query, HeadlineType $type)
+  public static function scopeGetHeadlinesByType(Builder $query, HeadlineType $type): \Illuminate\Database\Eloquent\Collection|array
   {
     return $query->select('id', 'title', 'status', 'type')
       ->where('status', 1)

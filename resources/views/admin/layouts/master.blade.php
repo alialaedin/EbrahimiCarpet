@@ -41,8 +41,6 @@
         </div>
 			</div>
 
-			@include("admin.layouts.includes.footer")
-
 		</div>
 		<a href="#" id="back-to-top"><span class="feather feather-chevrons-up"></span></a>
 

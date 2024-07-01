@@ -15,6 +15,9 @@ class Category extends Model
 {
 	use HasFactory, LogsActivity;
 
+  public const UNIT_TYPE_METER = 'meter';
+  public const UNIT_TYPE_NUMBER = 'number';
+
 	protected $fillable = [
 		'parent_id',
 		'title',

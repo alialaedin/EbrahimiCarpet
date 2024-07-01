@@ -39,6 +39,6 @@
 
 <style>
   @page {
-    margin-block: 0;
+    margin-block: 30px;
   }
 </style>
