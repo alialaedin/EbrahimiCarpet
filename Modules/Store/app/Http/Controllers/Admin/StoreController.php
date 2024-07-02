@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Validation\ValidationException;
+use Modules\Core\Helpers\Helpers;
 use Modules\Product\Models\Product;
 use Modules\Store\Models\Store;
 use Modules\Store\Models\StoreTransaction;
@@ -64,17 +66,24 @@ class StoreController extends Controller implements HasMiddleware
     return view('store::show', compact('transactions',  'store'));
   }
 
+  /**
+   * @throws ValidationException
+   */
   public function increase_decrease(Request $request): RedirectResponse
   {
-    $product = Product::query()
-      ->select(['id', 'title'])
-      ->with('store')
-      ->findOrFail($request->input('product_id'));
+    $storeId = $request->input('store_id');
+    $quantity = $request->input('quantity');
+    $type = $request->input('type');
 
-    if ($request->input('type') === 'increase'){
-      $product->store->increment($request->input('quantity'));
+    $store = Store::query()->findOrFail($storeId, ['id', 'balance']);
+
+    if ($type === 'increment'){
+      $store->increment($quantity);
     }else {
-      $product->store->decrement($request->input('quantity'));
+      if ($quantity > $store->balance) {
+        throw Helpers::makeWebValidationException('مقدار وارد شده از موجودی انبار بیشتر است.', 'quantity');
+      }
+      $store->decrement($quantity);
     }
 
     return redirect()->back();

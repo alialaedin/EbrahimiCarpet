@@ -11,26 +11,27 @@
           @method('PUT')
           <div class="row">
 
-            <input type="hidden" value="increment">
+            <input type="hidden" value="increment" name="type">
+            <input type="hidden" value="{{ $store->id }}" name="store_id">
 
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                <label for="product_id" class="control-label">عنوان محصول :</label>
-                <input type="text" id="product_id" class="form-control" name="product_id" value="{{ $store->product->title }}" readonly>
+                <label class="control-label">عنوان محصول :</label>
+                <input type="text" class="form-control" value="{{ $store->product->title }}" readonly>
               </div>
             </div>
 
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                <label for="unit_type" class="control-label">نوع واحد :</label>
-                <input type="text" id="unit_type" class="form-control" name="unit_type" value="{{ $store->product->category->getUnitType() }}" readonly>
+                <label class="control-label">نوع واحد :</label>
+                <input type="text" class="form-control" value="{{ $store->product->category->getUnitType() }}" readonly>
               </div>
             </div>
 
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                <label for="balance" class="control-label">موجودی فعلی :</label>
-                <input type="number" id="balance" class="form-control" name="balance" value="{{ $store->balance }}" readonly>
+                <label class="control-label">موجودی فعلی :</label>
+                <input type="number" class="form-control" value="{{ $store->balance }}" readonly>
               </div>
             </div>
 
