@@ -78,12 +78,12 @@ class StoreController extends Controller implements HasMiddleware
     $store = Store::query()->findOrFail($storeId, ['id', 'balance']);
 
     if ($type === 'increment'){
-      $store->increment($quantity);
+      $store->increment('balance', $quantity);
     }else {
       if ($quantity > $store->balance) {
         throw Helpers::makeWebValidationException('مقدار وارد شده از موجودی انبار بیشتر است.', 'quantity');
       }
-      $store->decrement($quantity);
+      $store->decrement('balance', $quantity);
     }
 
     return redirect()->back();
