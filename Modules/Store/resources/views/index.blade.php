@@ -69,11 +69,11 @@
 
         <div class="row">
 
-          <div class="col-12 col-md-6 col-xl-8">
+          <div class="col-12 col-md-6 col-xl-9">
             <button class="btn btn-primary btn-block" type="submit">جستجو <i class="fa fa-search"></i></button>
           </div>
 
-          <div class="col-12 col-md-6 col-xl-4">
+          <div class="col-12 col-md-6 col-xl-3">
             <a href="{{ route("admin.stores.index") }}" class="btn btn-danger btn-block">حذف همه فیلتر ها <i class="fa fa-close"></i></a>
           </div>
 

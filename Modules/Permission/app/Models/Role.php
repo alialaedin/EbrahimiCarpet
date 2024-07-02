@@ -50,14 +50,14 @@ class Role extends SpatieRole
 
 	public function isDeletable(): bool
 	{
-		return $this->attributes['name'] !== static::SUPER_ADMIN;
+		return !Admin::role($this->attributes['name'])->exists();
 	}
 
 	public static function booted(): void
 	{
 		static::deleting(function (Role $role) {
 			$superAdmin = static::SUPER_ADMIN;
-			if ($role->name === $superAdmin) {
+			if ($role->name === static::SUPER_ADMIN) {
 				throw new ModelCannotBeDeletedException("نقش {$superAdmin} قابل حذف نمی باشد.");
 			}
 			if ($role->admins()->exists()) {
@@ -66,8 +66,13 @@ class Role extends SpatieRole
 		});
 	}
 
-	public function admins()
-	{
-		return $this->belongsToMany(Admin::class, 'model_has_roles', 'model_id');
+	public function admins(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+  {
+		return $this->belongsToMany(
+      Admin::class,
+      'model_has_roles',
+      'model_id',
+      'role_id',
+    );
 	}
 }

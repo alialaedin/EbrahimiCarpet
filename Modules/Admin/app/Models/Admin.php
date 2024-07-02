@@ -53,8 +53,7 @@ class Admin extends Authenticatable
   // Functions
   public function getRoleLabel()
   {
-    $thisRoleName = $this->getRoleNames()->first();
-    $role = Role::findByName($thisRoleName);
+    $role = Role::findByName($this->getRoleName());
 
     return $role->label;
   }
@@ -66,7 +65,7 @@ class Admin extends Authenticatable
 
   public function isDeletable(): bool
   {
-    return ($this->getRoleName() !== Role::SUPER_ADMIN);
+    return $this->getRoleName() !== Role::SUPER_ADMIN;
   }
 
   public function getStatusBadgeType()

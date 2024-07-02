@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Models\Admin;
 use Modules\Permission\Http\Requests\RoleStoreRequest;
 use Modules\Permission\Http\Requests\RoleUpdateRequest;
 use Modules\Permission\Models\Role;

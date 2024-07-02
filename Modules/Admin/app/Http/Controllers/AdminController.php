@@ -14,7 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
-use Modules\Core\Traits\BreadCrumb;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\Models\Activity;
 
@@ -95,7 +94,7 @@ class AdminController extends Controller implements HasMiddleware
 		if ($request->filled('role') && $admin->getRoleName() !== $request->input('role')) {
 			$admin->syncRoles([$request->input('role')]);
 
-      return to_route('logout');
+//      return to_route('logout');
 		}
 
 		toastr()->success("ادمین با نام $admin->name با موفقیت ویرایش شد.");

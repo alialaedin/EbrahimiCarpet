@@ -28,7 +28,7 @@
 				@include("admin.layouts.includes.sidebar")
 				@include("admin.layouts.includes.header")
 
-				<div class="app-content px-5 py-1">
+				<div class="app-content py-1" style="padding-left: 50px; padding-right: 50px;">
 
           @if($errors->any())
             @php
