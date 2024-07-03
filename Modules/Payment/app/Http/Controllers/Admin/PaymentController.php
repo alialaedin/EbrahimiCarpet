@@ -31,7 +31,21 @@ class PaymentController extends Controller implements HasMiddleware
 		];
 	}
 
-	public function index(Supplier $supplier): View|Application|Factory|App
+  public function index(): View|Application|Factory|App
+  {
+    $payments = Payment::query()
+      ->select('id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status')
+      ->with('supplier:id,name')
+      ->latest('id')
+      ->paginate()
+      ->withQueryString();
+
+    $totalPayments = $payments->total();
+
+    return view('payment::index', compact(['payments', 'totalPayments']));
+  }
+
+	public function show(Supplier $supplier): View|Application|Factory|App
   {
 		$payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
 
@@ -39,7 +53,7 @@ class PaymentController extends Controller implements HasMiddleware
     $installmentPayments = $payments->where('type', '=','installment');
     $chequePayments = $payments->where('type', '=','cheque');
 
-		return view('payment::index', compact(['supplier', 'installmentPayments', 'cashPayments', 'chequePayments']));
+		return view('payment::show', compact(['supplier', 'installmentPayments', 'cashPayments', 'chequePayments']));
 	}
 
 	public function create(Supplier $supplier): View|Application|Factory|App

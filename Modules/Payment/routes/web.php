@@ -5,7 +5,9 @@ use Modules\Payment\Http\Controllers\Admin\PaymentController;
 
 Route::middleware('auth')->prefix('/admin/payments')->name('admin.payments.')->group(function () {
 
-	Route::get('/{supplier}', [PaymentController::class, 'index'])->name('index');
+  Route::get('/', [PaymentController::class, 'index'])->name('index');
+
+	Route::get('/{supplier}', [PaymentController::class, 'show'])->name('show');
 
 	Route::get('/create/{supplier}', [PaymentController::class, 'create'])->name('create');
 
@@ -18,5 +20,5 @@ Route::middleware('auth')->prefix('/admin/payments')->name('admin.payments.')->g
 	Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
 
 	Route::delete('/{payment}/image', [PaymentController::class, 'destroyImage'])->name('image.destroy');
-	
+
 });

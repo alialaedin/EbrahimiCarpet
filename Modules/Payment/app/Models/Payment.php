@@ -14,6 +14,10 @@ class Payment extends Model
 {
 	use HasFactory, LogsActivity;
 
+  public const TYPE_CASH = 'cash';
+  public const TYPE_INSTALLMENT = 'installment';
+  public const TYPE_CHEQUE = 'cheque';
+
 	private const TYPES = [
 		'cash' => 'نقد',
 		'installment' => 'قسط',
@@ -74,10 +78,4 @@ class Payment extends Model
 		return static::TYPES[$this->attributes['type']];
 	}
 
-  public function getPaymentDate()
-  {
-    $paymentDate =  $this->attributes['payment_date'];
-    
-    return $paymentDate ? verta($paymentDate)->formatDate() : '-';
-  }
 }

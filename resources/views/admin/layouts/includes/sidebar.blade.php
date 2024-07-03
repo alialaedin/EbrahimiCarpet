@@ -86,6 +86,23 @@
         </li>
       @endcanany
 
+      @canany(['view payments', 'view sale_payments'])
+        <li class="slide">
+          <a class="side-menu__item" data-toggle="slide" href="#">
+            <i class="fa fa-money sidemenu_icon"></i>
+            <span class="side-menu__label">مدیریت پرداختی ها</span><i class="angle fa fa-angle-left"></i>
+          </a>
+          <ul class="slide-menu">
+            @can('view payments')
+              <li><a href="{{route("admin.payments.index")}}" class="slide-item">پرداختی به تامین کننده</a></li>
+            @endcan
+            @can('view sale_payments')
+              <li><a class="slide-item">دریافتی از مشتری</a></li>
+            @endcan
+          </ul>
+        </li>
+      @endcanany
+
       @canany(['view headlines', 'view revenues', 'view salaries', 'view costs'])
         <li class="slide">
           <a class="side-menu__item" data-toggle="slide" href="#">
