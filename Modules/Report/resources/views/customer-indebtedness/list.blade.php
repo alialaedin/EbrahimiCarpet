@@ -38,8 +38,8 @@
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام و نام خانوادگی</th>
                 <th class="text-center">شماره موبایل</th>
-                <th class="text-center">تعداد خرید ها</th>
-                <th class="text-center">تعداد پرداختی ها</th>
+                <th class="text-center"><span class="d-print-none">تعداد</span> خرید ها</th>
+                <th class="text-center"><span class="d-print-none">تعداد</span> پرداختی ها</th>
                 <th class="text-center">مبلغ خرید (تومان)</th>
                 <th class="text-center">مبلغ پرداخت شده (تومان)</th>
                 <th class="text-center">مبلغ باقی مانده (تومان)</th>
