@@ -2,7 +2,10 @@
 
 namespace Modules\Admin\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Admin\Database\Factories\AdminFactory;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Permission\Models\Role;
 use Spatie\Activitylog\LogOptions;
@@ -11,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-  use HasRoles, LogsActivity;
+  use HasRoles, LogsActivity, HasFactory;
 
   protected $fillable = [
     'name',
@@ -25,11 +28,16 @@ class Admin extends Authenticatable
     'remember_token',
   ];
 
-  protected function casts(): array
+    protected function casts(): array
   {
     return [
       'password' => 'hashed',
     ];
+  }
+
+  protected static function newFactory(): Factory
+  {
+    return AdminFactory::new();
   }
 
   public function getActivitylogOptions(): LogOptions
