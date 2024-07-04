@@ -9,6 +9,7 @@ use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Payment\Models\Payment;
 use Modules\Purchase\Models\Purchase;
+use Modules\Supplier\Database\Factories\SupplierFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -22,6 +23,11 @@ class Supplier extends BaseModel
 		'address',
 		'status'
 	];
+
+  protected static function newFactory(): SupplierFactory
+  {
+    return SupplierFactory::new();
+  }
 
   public function getActivitylogOptions(): LogOptions
 	{
