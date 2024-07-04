@@ -241,7 +241,7 @@
                   <thead class="thead-light">
                   <tr>
                     <th class="text-center">ردیف</th>
-                    <th class="text-center">تامین کننده</th>
+                    <th class="text-center">مشتری</th>
                     <th class="text-center">تاریخ سررسید</th>
                     <th class="text-center">مبلغ (تومان)</th>
                   </tr>
@@ -250,7 +250,7 @@
                   @forelse ($receivedCheques as $cheque)
                     <tr>
                       <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $cheque->supplier->name }}</td>
+                      <td class="text-center">{{ $cheque->customer->name }}</td>
                       <td class="text-center"> @jalaliDate($admin->due_date)</td>
                       <td class="text-center">{{ number_format($cheque->amount) }}</td>
                     </tr>
