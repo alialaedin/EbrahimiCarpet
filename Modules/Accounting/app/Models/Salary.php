@@ -3,7 +3,9 @@
 namespace Modules\Accounting\Models;
 
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Accounting\Database\Factories\SalaryFactory;
 use Modules\Core\Models\BaseModel;
 use Modules\Core\Traits\HasCache;
 use Modules\Employee\Models\Employee;
@@ -12,7 +14,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Salary extends BaseModel
 {
-  use LogsActivity, HasCache;
+  use LogsActivity, HasCache, HasFactory;
 
   protected $fillable = [
     'employee_id',
@@ -27,6 +29,11 @@ class Salary extends BaseModel
   protected const CACHE_KEYS = [
     'all_headlines'
   ];
+
+  protected static function newFactory(): SalaryFactory
+  {
+    return SalaryFactory::new();
+  }
 
   // Log Activity
   public function getActivitylogOptions(): LogOptions
