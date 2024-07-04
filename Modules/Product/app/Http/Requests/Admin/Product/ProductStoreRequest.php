@@ -21,6 +21,7 @@ class ProductStoreRequest extends FormRequest
 			'category_id' => ['required', 'integer', 'exists:categories,id'],
 			'price' => ['required', 'integer', 'min:1000'],
 			'discount' => ['nullable', 'integer', 'min:1000'],
+			'initial_balance' => ['nullable', 'integer', 'min:1'],
 			'image' => ['nullable', 'image', 'mimes:png,jpg'],
 			'description' => ['nullable', 'string'],
 			'status' => ['required', 'boolean']

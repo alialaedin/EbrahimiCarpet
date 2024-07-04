@@ -36,8 +36,8 @@ class ProductController extends Controller implements HasMiddleware
       ->get();
 	}
 
-	public function index()
-	{
+	public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$categoryId = request('category_id');
 		$title = request('title');
 		$status = request('status');
@@ -68,22 +68,22 @@ class ProductController extends Controller implements HasMiddleware
 		return view('product::product.index', compact('products', 'productsCount', 'categories'));
 	}
 
-	public function show(Product $product)
-	{
+	public function show(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$product->load('category.parent');
 
 		return view('product::product.show', compact('product'));
 	}
 
-	public function create()
-	{
+	public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$parentCategories = $this->getParentCategories();
 
 		return view('product::product.create', compact('parentCategories'));
 	}
 
-	public function store(ProductStoreRequest $request)
-	{
+	public function store(ProductStoreRequest $request): \Illuminate\Http\RedirectResponse
+  {
 		$inputs = $this->getFormInputs($request);
 
 		if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -93,7 +93,7 @@ class ProductController extends Controller implements HasMiddleware
 		$product = Product::query()->create($inputs);
     Store::query()->create([
       'product_id' => $product->id,
-      'balance' => 0
+      'balance' => $request->input('initial_balance') ?? 0
     ]);
 
 		toastr()->success("محصول جدید با نام {$product->title} با موفقیت ساخته شد.");
@@ -132,7 +132,7 @@ class ProductController extends Controller implements HasMiddleware
 		if ($product->image) {
 			Storage::disk('public')->delete($product->image);
 		}
-		
+
 		toastr()->success("محصول با نام {$product->title} با موفقیت حذف شد.");
 
 		return redirect()->back();

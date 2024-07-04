@@ -60,6 +60,20 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label for="initial_balance" class="control-label"> موجودی اولیه (متر / عدد): </label>
+              <input
+                type="number"
+                id="initial_balance"
+                class="form-control"
+                name="initial_balance"
+                placeholder="موجودی اولیه را به تومان وارد کنید"
+                value="{{ old('initial_balance') }}"
+              />
+              <x-core::show-validation-error name="initial_balance" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
               <label for="image" class="control-label"> انتخاب عکس </label>
               <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
               <x-core::show-validation-error name="image" />
