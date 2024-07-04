@@ -9,7 +9,6 @@ use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Purchase\Models\Purchase;
-use Modules\Purchase\Models\PurchaseItem;
 use Modules\Sale\Models\Sale;
 use Modules\Sale\Models\SaleItem;
 use Modules\Sale\Models\SalePayment;
@@ -63,8 +62,8 @@ class DashboardController extends Controller
 
   private function thisMonthSalesAmount(): int
   {
-    $startDate = Carbon::now()->startOfMonth()->timezone(env('APP_TIMEZONE'));
-    $endDate = Carbon::now()->endOfMonth()->timezone(env('APP_TIMEZONE'));
+    $startDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->startOfMonth();
+    $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
 
     return Sale::query()
       ->selectRaw('SUM(sale_items.price * sale_items.quantity - sale_items.discount) - sales.discount AS total_sales')
