@@ -34,8 +34,10 @@ class Product extends BaseModel
 		static::deleting(function (Product $product) {
 			if ($product->store->balance > 0) {
 				throw new ModelCannotBeDeletedException('از این محصول در انبار موجود است و قابل حذف نمی باشد.');
-			} elseif ($product->purchaseItems()->exists()) {
+			} elseif ($product->purchaseItems->isNotEmpty()) {
 				throw new ModelCannotBeDeletedException('ازین محصول خریدی ثبت شده است و قابل حذف نمی باشد.');
+			}elseif ($product->saleItems->isNotEmpty()) {
+				throw new ModelCannotBeDeletedException('ازین محصول فروشی ثبت شده است و قابل حذف نمی باشد.');
 			}
 		});
 	}

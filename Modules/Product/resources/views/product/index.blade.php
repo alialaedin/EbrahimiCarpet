@@ -72,7 +72,11 @@
                       <x-core::edit-button route="admin.products.edit" :model="$product"/>
                     @endcan
                     @can('delete products')
-                      <x-core::delete-button route="admin.products.destroy" :model="$product"/>
+                      <x-core::delete-button
+                        route="admin.products.destroy"
+                        :model="$product"
+                        disabled="{{ !$product->isDeletable() }}"
+                      />
                     @endcan
                   </td>
                 </tr>
