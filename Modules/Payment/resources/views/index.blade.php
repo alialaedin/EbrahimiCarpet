@@ -14,6 +14,95 @@
   </div>
   <div class="card">
     <div class="card-header border-0">
+      <p class="card-title">جستجوی پیشرفته</p>
+      <x-core::card-options/>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <form action="{{ route("admin.payments.index") }}" class="col-12">
+          <div class="row">
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="form-group">
+                <label for="supplier_id">تامین کننده :</label>
+                <select name="supplier_id" id="supplier_id" class="form-control">
+                  <option value="" class="text-muted">انتخاب</option>
+                  @foreach ($suppliers as $supplier)
+                    <option
+                      value="{{ $supplier->id }}"
+                      @selected(request("supplier_id") == $supplier->id)>
+                      {{ $supplier->name }} - {{ $supplier->mobile }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="form-group">
+                <label for="type">نوع پرداخت :</label>
+                <select name="type" id="type" class="form-control">
+                  <option value="" class="text-muted">انتخاب</option>
+                  @foreach(config('payment.types') as $name => $label)
+                    <option
+                      value="{{ $name }}"
+                      @selected(request('type') == $name)>
+                      {{ $label }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="form-group">
+                <label for="status">وضعیت :</label>
+                <select name="status" id="status" class="form-control">
+                  <option value="" class="text-muted">انتخاب</option>
+                  <option value="1" @selected(request("status") == "1")>پرداخت شده</option>
+                  <option value="0" @selected(request("status") == "0")>پرداخت نشده</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 col-lg-6 col-xl-3">
+              <div class="form-group">
+                <label for="from_payment_date_show">پرداخت از تاریخ : <span class="text-danger">&starf;</span></label>
+                <input class="form-control fc-datepicker" id="from_payment_date_show" type="text" autocomplete="off"/>
+                <input name="from_payment_date" id="from_payment_date" type="hidden" value="{{ request("from_payment_date") }}"/>
+                <x-core::show-validation-error name="from_payment_date"/>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3">
+              <div class="form-group">
+                <label for="to_payment_date_show">تا تاریخ :</label>
+                <input class="form-control fc-datepicker" id="to_payment_date_show" type="text" autocomplete="off"/>
+                <input name="to_payment_date" id="to_payment_date" type="hidden" value="{{ request("to_payment_date") }}"/>
+                <x-core::show-validation-error name="to_payment_date"/>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3">
+              <div class="form-group">
+                <label for="from_due_date_show">سررسید از تاریخ : <span class="text-danger">&starf;</span></label>
+                <input class="form-control fc-datepicker" id="from_due_date_show" type="text" autocomplete="off" required/>
+                <input name="from_due_date" id="from_due_date" type="hidden" value="{{ request("from_due_date") }}"/>
+                <x-core::show-validation-error name="from_due_date"/>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3">
+              <div class="form-group">
+                <label for="to_due_date_show">تا تاریخ :</label>
+                <input class="form-control fc-datepicker" id="to_due_date_show" type="text" autocomplete="off"/>
+                <input name="to_due_date" id="to_due_date" type="hidden" value="{{ request("to_due_date") }}"/>
+                <x-core::show-validation-error name="to_due_date"/>
+              </div>
+            </div>
+          </div>
+          <x-core::filter-buttons table="payments"/>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header border-0">
       <p class="card-title">لیست تمام پرداختی ها ({{ $totalPayments }})</p>
       <x-core::card-options/>
     </div>
@@ -70,7 +159,7 @@
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
-                      text="{{ config('payment.statuses.' . $payment->type . $payment->status) }}"
+                      text="{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}"
                     />
                   </td>
                   <td class="text-center">
@@ -111,6 +200,12 @@
 @endsection
 
 @section('scripts')
+
+  <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
+  <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
+  <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
+  <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
+
   <script>
     function showPaymentDescriptionModal(description) {
       let modal = $('#showDescriptionModal');

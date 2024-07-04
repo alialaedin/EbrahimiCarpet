@@ -181,7 +181,13 @@
       <div class="card">
         <div class="card-header border-0 justify-content-between">
           <p class="card-title">چک های پرداختی ({{ $payableCheques->count() }})</p>
-          <a class="btn btn-outline-primary">مشاهده همه</a>
+          <button onclick="$('#chequePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+          <form
+            action="{{ route('admin.payments.index') }}"
+            id="chequePaymentsForm"
+            class="d-none">
+            <input type="hidden" name="type" value="cheque">
+          </form>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -219,7 +225,13 @@
       <div class="card">
         <div class="card-header border-0 justify-content-between">
           <p class="card-title">چک های دریافتی ({{ $receivedCheques->count() }})</p>
-          <a class="btn btn-outline-primary">مشاهده همه</a>
+          <button onclick="$('#chequeSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+          <form
+            action="{{ route('admin.sale-payments.index') }}"
+            id="chequeSalePaymentsForm"
+            class="d-none">
+            <input type="hidden" name="type" value="cheque">
+          </form>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -259,7 +271,13 @@
       <div class="card">
         <div class="card-header border-0 justify-content-between">
           <p class="card-title">اقساط دریافتی از مشتری ({{ $receivedInstallments->count() }})</p>
-          <a class="btn btn-outline-primary">مشاهده همه</a>
+          <button onclick="$('#installmentSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+          <form
+            action="{{ route('admin.sale-payments.index') }}"
+            id="installmentSalePaymentsForm"
+            class="d-none">
+            <input type="hidden" name="type" value="installment">
+          </form>
         </div>
         <div class="card-body">
           <div class="table-responsive">

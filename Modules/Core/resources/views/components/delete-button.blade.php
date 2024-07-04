@@ -1,6 +1,6 @@
 <button
   onclick="confirmDelete('delete-{{ $model->id }}')"
-  class="btn btn-sm btn-icon btn-danger text-"
+  class="btn btn-sm btn-icon btn-danger text-white"
   data-toggle="tooltip"
   data-original-title="حذف"
   @disabled($disabled)>

@@ -18,7 +18,8 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
   });
 
   Route::name('sale-payments.')->prefix('/sale-payments')->group(function() {
-    Route::get('/{customer}', [SalePaymentController::class, 'index'])->name('index');
+    Route::get('/', [SalePaymentController::class, 'index'])->name('index');
+    Route::get('/{customer}', [SalePaymentController::class, 'show'])->name('show');
     Route::get('/create/{customer}', [SalePaymentController::class, 'create'])->name('create');
     Route::post('/', [SalePaymentController::class, 'store'])->name('store');
     Route::get('/{sale_payment}/edit', [SalePaymentController::class, 'edit'])->name('edit');

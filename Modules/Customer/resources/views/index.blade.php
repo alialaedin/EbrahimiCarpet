@@ -102,7 +102,7 @@
                       </a>
                       @can('view sale_payments')
                         <a
-                          href="{{ route('admin.sale-payments.index', $customer) }}"
+                          href="{{ route('admin.sale-payments.show', $customer) }}"
                           class="btn btn-success btn-icon btn-sm"
                           data-toggle="tooltip"
                           data-original-title="پرداختی ها">

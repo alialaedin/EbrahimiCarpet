@@ -49,7 +49,7 @@
                   <td class="text-center">
                     @can('view payments')
                       <a
-                        href="{{ route('admin.payments.index', $supplier) }}"
+                        href="{{ route('admin.payments.show', $supplier) }}"
                         class="btn btn-success btn-icon btn-sm"
                         data-toggle="tooltip"
                         data-original-title="پرداختی ها">

@@ -3,6 +3,7 @@
 namespace Modules\Payment\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -33,16 +34,32 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function index(): View|Application|Factory|App
   {
+    $supplierId = \request('supplier_id');
+    $type = \request('type');
+    $status = \request('status');
+    $fromPaymentDate = \request('from_payment_date');
+    $toPaymentDate = \request('to_payment_date');
+    $fromDueDate = \request('from_due_date');
+    $toDueDate = \request('to_due_date');
+
     $payments = Payment::query()
       ->select('id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status')
+      ->when($supplierId, fn(Builder $query) => $query->where('supplier_id', $supplierId))
+      ->when($type, fn(Builder $query) => $query->where('type', $type))
+      ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
+      ->when($fromPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '>=', $fromPaymentDate))
+      ->when($toPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '<=', $toPaymentDate))
+      ->when($fromDueDate, fn(Builder $query) => $query->whereDate('due_date', '>=', $fromDueDate))
+      ->when($toDueDate, fn(Builder $query) => $query->whereDate('due_date', '<=', $toDueDate))
       ->with('supplier:id,name')
       ->latest('id')
       ->paginate()
       ->withQueryString();
 
     $totalPayments = $payments->total();
+    $suppliers = Supplier::all('id', 'name', 'mobile');
 
-    return view('payment::index', compact(['payments', 'totalPayments']));
+    return view('payment::index', compact(['payments', 'totalPayments', 'suppliers']));
   }
 
 	public function show(Supplier $supplier): View|Application|Factory|App
