@@ -85,7 +85,7 @@
           <div class="row">
             <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
               <thead class="thead-light">
-              <tr>
+              <tr class="fs-10">
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام کارمند</th>
                 <th class="text-center">شماره موبایل</th>
