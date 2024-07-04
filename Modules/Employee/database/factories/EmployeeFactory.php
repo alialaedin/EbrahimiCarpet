@@ -8,29 +8,41 @@ use Faker\Factory as FactoryFaker;
 
 class EmployeeFactory extends Factory
 {
-	/**
-	 * The name of the factory's corresponding model.
-	 */
-	protected $model = \Modules\Employee\Models\Employee::class;
+  /**
+   * The name of the factory's corresponding model.
+   */
+  protected $model = \Modules\Employee\Models\Employee::class;
 
-	/**
-	 * Define the model's default state.
-	 */
-	public function definition(): array
-	{
-		$faker = FactoryFaker::create();
+  protected const BANK_NAMES = [
+    'بانک تجارت',
+    'بانک صنعت و معدن',
+    'بانک کشاورزی',
+    'بانک توسعه صادرات ایران',
+    'بانک رفاه کارگران',
+    'بانک سپه',
+    'بانک صادرات ایران',
+    'بانک مرکزی',
+    'بانک مسکن ایران',
+    'بانک ملت ایران',
+    'بانک ملی ایران',
+    'پست بانک'
+  ];
 
-		return [
-			'name' => Faker::fullName(),
-			'mobile' => Faker::mobile(),
-			'telephone' => Faker::mobile(),
-			'address' => Faker::address(),
-			'national_code' => Faker::mellicode(),
-			'employmented_at' => $this->faker->date(),
-			'salary' => random_int(1000000, 100000000),
-			'card_number' => $this->faker->creditCardNumber(),
-			'sheba_number' => $faker->bankAccountNumber,
-			'bank_name' => Faker::word()
-		];
-	}
+  public function definition(): array
+  {
+    $faker = FactoryFaker::create();
+
+    return [
+      'name' => Faker::fullName(),
+      'mobile' => Faker::mobile(),
+      'telephone' => Faker::mobile(),
+      'address' => Faker::address(),
+      'national_code' => Faker::mellicode(),
+      'employmented_at' => $this->faker->date(),
+      'salary' => random_int(1000000, 100000000),
+      'card_number' => $this->faker->creditCardNumber(),
+      'sheba_number' => $faker->bankAccountNumber,
+      'bank_name' => collect(static::BANK_NAMES)->random()
+    ];
+  }
 }
