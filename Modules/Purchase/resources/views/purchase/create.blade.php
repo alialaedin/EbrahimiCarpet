@@ -25,7 +25,7 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="supplier_id" class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
-              <select name="supplier_id" id="supplier_id" class="form-control" required>
+              <select name="supplier_id" id="supplier_id" class="form-control select2" required>
                 <option value="" class="text-muted">-- تامین کننده را انخاب کنید --</option>
                 @foreach ($suppliers as $supplier)
                   <option value="{{ $supplier->id }}" @selected(old("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
