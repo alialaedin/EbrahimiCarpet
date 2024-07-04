@@ -66,8 +66,8 @@ class DashboardController extends Controller
     $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
 
     return Sale::query()
-      ->selectRaw('SUM(sale_items.price * sale_items.quantity - sale_items.discount) - sales.discount AS total_sales')
       ->join('sale_items', 'sales.id', '=', 'sale_items.sale_id')
+      ->selectRaw('SUM(sale_items.price * sale_items.quantity - sale_items.discount) - sales.discount AS total_sales')
       ->whereBetween('sales.sold_at', [$startDate, $endDate])
       ->groupBy('sales.id', 'sales.discount')
       ->get()
