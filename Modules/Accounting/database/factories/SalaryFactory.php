@@ -24,7 +24,7 @@ class SalaryFactory extends Factory
 
     return [
       'employee_id' => Employee::all()->random()->id,
-      'amount' => $faker->numberBetween(10000000, 1000000000),
+      'amount' => $faker->numberBetween(10000000, 100000000),
       'overtime' => $faker->numberBetween(0, 150),
       'payment_date' => $faker->dateTime(),
     ];
