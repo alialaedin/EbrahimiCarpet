@@ -162,11 +162,11 @@
             <tr>
               <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
               <td class="text-center">{{ $payment->getType() }}</td>
-              <td class="text-center">{{ number_format($payment->amount) }}</td>
               <td class="text-center">{{ $payment->getPaymentDate() }}</td>
               <td class="text-center"> @jalaliDate($payment->due_date) </td>
-              <td class="text-center">{{ config('payment.statuses.'.$payment->type.$payment->status) }}</td>
+              <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
               <td class="text-center"> @jalaliDate($payment->created_at) </td>
+              <td class="text-center">{{ number_format($payment->amount) }}</td>
             </tr>
 
             @php $totalPayments += $payment->amount; @endphp
