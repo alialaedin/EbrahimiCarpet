@@ -96,6 +96,7 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">عنوان محصول</th>
+                <th class="text-center">دسته بندی</th>
                 <th class="text-center">تصویر محصول</th>
                 <th class="text-center">نوع واحد</th>
                 <th class="text-center">موجودی</th>
@@ -107,6 +108,7 @@
               @forelse ($stores as $store)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                  <td class="text-center">{{ $store->product->category->title }}</td>
                   <td class="text-center">
                     <a href="{{ route('admin.products.show', $store->product) }}">
                       {{ $store->product->title }}
