@@ -90,7 +90,7 @@
         <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
           <span><strong>تاریخ ثبت : </strong> @jalaliDate($supplier->created_at) </span>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
+        <div class="col-xl-8 col-lg-6 col-12 fs-17 my-1">
           <span><strong>محل سکونت : </strong>{{ $supplier->address }}</span>
         </div>
       </div>

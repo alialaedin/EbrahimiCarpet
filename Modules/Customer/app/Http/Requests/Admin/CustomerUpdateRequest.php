@@ -13,8 +13,8 @@ class CustomerUpdateRequest extends FormRequest
 		return [
 			'name' => ['required', 'string', 'min:3', 'max:50'],
 			'mobile' => ['required', 'numeric',  Rule::unique('customers', 'mobile')->ignore($this->route('customer')), 'digits:11', new IranMobile()],
-			'telephone' => ['required', 'numeric', Rule::unique('customers', 'telephone')->ignore($this->route('customer')), 'digits:11'],
-			'address' => ['required', 'string'],
+			'telephone' => ['nullable', 'numeric', Rule::unique('customers', 'telephone')->ignore($this->route('customer')), 'digits:11'],
+			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1']
 		];
 	}

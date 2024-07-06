@@ -55,7 +55,7 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="telephone" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
+              <label for="telephone" class="control-label"> تلفن ثابت: </label>
               <input
                 type="text"
                 id="telephone"
@@ -69,14 +69,13 @@
           </div>
           <div class="col-12">
             <div class="form-group">
-              <label for="address" class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
+              <label for="address" class="control-label">آدرس:</label>
               <textarea
                 name="address"
                 id="address"
                 class="form-control"
                 rows="3"
-                placeholder="محل سکونت مشتری را وارد کنید"
-                required>
+                placeholder="آدرس مشتری را وارد کنید">
                 {{ old('address') }}
               </textarea>
               <x-core::show-validation-error name="address" />

@@ -25,7 +25,7 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="customer_id" class="control-label">انتخاب مشتری :<span class="text-danger">&starf;</span></label>
-              <select name="customer_id" id="customer_id" class="form-control" required>
+              <select name="customer_id" id="customer_id" class="form-control select2" required>
                 <option value="" class="text-muted">-- مشتری را انخاب کنید --</option>
                 @foreach ($customers as $customer)
                   <option value="{{ $customer->id }}" @selected(old("customer_id") == $customer->id)>{{ $customer->name .' - '. $customer->mobile }}</option>

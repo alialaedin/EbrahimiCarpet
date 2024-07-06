@@ -6,95 +6,119 @@
         <i class="fe fe-home ml-1"></i> داشبورد
       </li>
     </ol>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+      @can('create sales')
+        <a href="{{ route('admin.sales.create') }}" class="btn btn-youtube mx-1 my-md-1">
+          ثبت فاکتور فروش <i class="fa fa-plus mr-1"></i>
+        </a>
+      @endcan
+      @can('create purchases')
+        <a href="{{ route('admin.purchases.create') }}" class="btn btn-gray-dark mx-1 my-md-1">
+          ثبت فاکتور خرید <i class="fa fa-plus mr-1"></i>
+        </a>
+      @endcan
+      @can('create products')
+        <a href="{{ route('admin.products.create') }}" class="btn btn-rss mx-1 my-md-1">
+          ثبت محصول <i class="fa fa-plus mr-1"></i>
+        </a>
+      @endcan
+      @can('create customers')
+        <a href="{{ route('admin.customers.create') }}" class="btn btn-green mx-1 my-md-1">
+          ثبت مشتری <i class="fa fa-plus mr-1"></i>
+        </a>
+      @endcan
+      @can('create suppliers')
+        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-teal mx-1 my-md-1">
+          ثبت تامین کننده <i class="fa fa-plus mr-1"></i>
+        </a>
+      @endcan
+    </div>
   </div>
   <div class="row">
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <a href="{{ route('admin.categories.index') }}">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> دسته بندی ها : </span>
-                  <p class="mb-0 mt-1 text-info fs-20"> {{ $totalCategories }} </p>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-info-transparent my-auto float-left">
-                  <i class="fa fa-folder-open"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <a href="{{ route('admin.products.index') }}">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> محصولات : </span>
-                  <p class="mb-0 mt-1 text-danger fs-20"> {{ $totalProducts }} </p>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-danger-transparent my-auto float-left">
-                  <i class="fa fa-shopping-basket"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <a href="{{ route('admin.purchases.index') }}">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> خرید : </span>
-                  <p class="mb-0 mt-1 text-success fs-20"> {{ $totalPurchases }}  </p>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-success-transparent my-auto float-left">
-                  <i class="fa fa-shopping-cart"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <a href="{{ route('admin.sales.index') }}">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-9">
-                <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> فروش : </span>
-                  <p class="mb-0 mt-1 text-warning fs-20"> {{ $totalSales }}  </p>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="icon1 bg-warning-transparent my-auto float-left">
-                  <i class="fa fa-dollar"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
+{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
+{{--      <a href="{{ route('admin.categories.index') }}">--}}
+{{--        <div class="card">--}}
+{{--          <div class="card-body">--}}
+{{--            <div class="row">--}}
+{{--              <div class="col-9">--}}
+{{--                <div class="mt-0 text-right">--}}
+{{--                  <span class="fs-16 font-weight-semibold"> دسته بندی ها : </span>--}}
+{{--                  <p class="mb-0 mt-1 text-info fs-20"> {{ $totalCategories }} </p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="col-3">--}}
+{{--                <div class="icon1 bg-info-transparent my-auto float-left">--}}
+{{--                  <i class="fa fa-folder-open"></i>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--            </div>--}}
+{{--          </div>--}}
+{{--        </div>--}}
+{{--      </a>--}}
+{{--    </div>--}}
+{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
+{{--      <a href="{{ route('admin.products.index') }}">--}}
+{{--        <div class="card">--}}
+{{--          <div class="card-body">--}}
+{{--            <div class="row">--}}
+{{--              <div class="col-9">--}}
+{{--                <div class="mt-0 text-right">--}}
+{{--                  <span class="fs-16 font-weight-semibold"> محصولات : </span>--}}
+{{--                  <p class="mb-0 mt-1 text-danger fs-20"> {{ $totalProducts }} </p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="col-3">--}}
+{{--                <div class="icon1 bg-danger-transparent my-auto float-left">--}}
+{{--                  <i class="fa fa-shopping-basket"></i>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--            </div>--}}
+{{--          </div>--}}
+{{--        </div>--}}
+{{--      </a>--}}
+{{--    </div>--}}
+{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
+{{--      <a href="{{ route('admin.purchases.index') }}">--}}
+{{--        <div class="card">--}}
+{{--          <div class="card-body">--}}
+{{--            <div class="row">--}}
+{{--              <div class="col-9">--}}
+{{--                <div class="mt-0 text-right">--}}
+{{--                  <span class="fs-16 font-weight-semibold">فاکتور خرید : </span>--}}
+{{--                  <p class="mb-0 mt-1 text-success fs-20"> {{ $totalPurchases }}  </p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="col-3">--}}
+{{--                <div class="icon1 bg-success-transparent my-auto float-left">--}}
+{{--                  <i class="fa fa-shopping-cart"></i>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--            </div>--}}
+{{--          </div>--}}
+{{--        </div>--}}
+{{--      </a>--}}
+{{--    </div>--}}
+{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
+{{--      <a href="{{ route('admin.sales.index') }}">--}}
+{{--        <div class="card">--}}
+{{--          <div class="card-body">--}}
+{{--            <div class="row">--}}
+{{--              <div class="col-9">--}}
+{{--                <div class="mt-0 text-right">--}}
+{{--                  <span class="fs-16 font-weight-semibold">فاکتور فروش : </span>--}}
+{{--                  <p class="mb-0 mt-1 text-warning fs-20"> {{ $totalSales }}  </p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="col-3">--}}
+{{--                <div class="icon1 bg-warning-transparent my-auto float-left">--}}
+{{--                  <i class="fa fa-dollar"></i>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--            </div>--}}
+{{--          </div>--}}
+{{--        </div>--}}
+{{--      </a>--}}
+{{--    </div>--}}
 
     <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
@@ -103,12 +127,69 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> خرید های امروز : </span>
-                <p class="mb-0 mt-1 text-secondary fs-20"> {{ $todayPurchases }}  </p>
+                <p class="mb-0 mt-1 text-primary fs-20"> {{ $todayPurchaseCount }}  </p>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-secondary-transparent my-auto float-left">
+              <div class="icon1 bg-primary-transparent my-auto float-left">
                 <i class="fa fa-credit-card"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> اقلام خرید امروز : </span>
+                <p class="mb-0 mt-1 text-pink fs-20"> {{ number_format($todayPurchaseItems) }}  </p>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-pink-transparent my-auto float-left">
+                <i class="fa fa-tags"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> مبلغ خرید امروز : </span>
+                <p class="mb-0 mt-1 text-success fs-20"> {{ number_format($todayPurchaseAmount) }} ریال</p>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-success-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> مبلغ خرید ماه : </span>
+                <p class="mb-0 mt-1 text-warning fs-20"> {{ number_format($thisMonthPurchaseAmount) }} ریال</p>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-warning-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
               </div>
             </div>
           </div>
@@ -123,31 +204,30 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> فروش های امروز : </span>
-                <p class="mb-0 mt-1 text-purple fs-20"> {{ $todaySales }}  </p>
+                <p class="mb-0 mt-1 text-secondary fs-20"> {{ $todaySaleCount }}  </p>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-purple-transparent my-auto float-left">
-                <i class="fa fa-credit-card-alt"></i>
+              <div class="icon1 bg-secondary-transparent my-auto float-left">
+                <i class="fa fa-credit-card"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قلم فروش این ماه : </span>
-                <p class="mb-0 mt-1 text-pink fs-20"> {{ $totalItemsSalesThisMonth }}  </p>
+                <span class="fs-16 font-weight-semibold"> اقلام فروش امروز : </span>
+                <p class="mb-0 mt-1 text-danger fs-20"> {{ $todaySaleItems }}  </p>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-pink-transparent my-auto float-left">
+              <div class="icon1 bg-danger-transparent my-auto float-left">
                 <i class="fa fa-tags"></i>
               </div>
             </div>
@@ -155,19 +235,18 @@
         </div>
       </div>
     </div>
-
     <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ فروش این ماه : </span>
-                <p class="mb-0 mt-1 text-primary fs-20"> {{ number_format($totalAmountSalesThisMonth) }} (ریال)</p>
+                <span class="fs-16 font-weight-semibold"> مبلغ فروش امروز : </span>
+                <p class="mb-0 mt-1 text-purple fs-20"> {{ number_format($todaySaleAmount) }} ریال</p>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-primary-transparent my-auto float-left">
+              <div class="icon1 bg-purple-transparent my-auto float-left">
                 <i class="fa fa-money"></i>
               </div>
             </div>
@@ -175,7 +254,28 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> مبلغ فروش ماه : </span>
+                <p class="mb-0 mt-1 text-info fs-20"> {{ number_format($thisMonthSaleAmount) }} ریال</p>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-info-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
   <div class="row">
     <div class="col-xl-6">
       <div class="card">

@@ -26,7 +26,7 @@ class   SupplierController extends Controller implements HasMiddleware
 
 	public function index(): View
   {
-		$name = request('name');
+		$name = request('full_name');
 		$mobile = request('mobile');
 		$status = request('status');
 

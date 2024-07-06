@@ -16,15 +16,6 @@
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       <x-core::print-button title="صدور فاکتور"/>
-{{--      <a--}}
-{{--        class="btn btn-purple mx-1 text-white my-md-1"--}}
-{{--        style="padding: 4px 12px;"--}}
-{{--        href="{{ route('admin.sales.invoice.show', $sale) }}"--}}
-{{--        target="_blank"--}}
-{{--        >--}}
-{{--        صدور فاکتور--}}
-{{--        <i class="fe fe-printer mr-1"></i>--}}
-{{--      </a>--}}
       @can('edit customers')
         <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-warning mx-1 my-md-1">
           ویرایش مشتری
@@ -136,12 +127,12 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} </h3>
+                <span class="fs-16 font-weight-semibold"> جمع دریافتی ها (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} </h3>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-danger-transparent my-auto float-left">
+              <div class="icon1 bg-success-transparent my-auto float-left">
                 <i class="fa fa-money"></i>
               </div>
             </div>
@@ -156,11 +147,11 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($customer->getRemainingAmount()) }}  </h3>
+                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($customer->getRemainingAmount()) }}  </h3>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-success-transparent my-auto float-left">
+              <div class="icon1 bg-danger-transparent my-auto float-left">
                 <i class="fa fa-money"></i>
               </div>
             </div>
@@ -201,6 +192,7 @@
                     @can('view sales')
                       <a
                         href="{{route('admin.sales.show', $sale)}}"
+                        target="_blank"
                         class="btn btn-sm btn-cyan">
                         جزئیات فروش ها
                       </a>
