@@ -74,10 +74,8 @@
   </div>
   <div class="card">
     <div class="card-header border-0 ">
-      <div>
-        <p class="card-title">اقلام خرید ({{ $purchase->items->count() }})</p>
-        <x-core::card-options/>
-      </div>
+      <p class="card-title">اقلام خرید ({{ $purchase->items->count() }})</p>
+      <x-core::card-options/>
     </div>
     <div class="card-body">
       <div class="table-responsive">
