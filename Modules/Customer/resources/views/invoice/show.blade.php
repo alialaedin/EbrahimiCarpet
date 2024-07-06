@@ -68,7 +68,7 @@
       <div class=" d-flex justify-content-center">
         <p class="fs-17">
           فاکتور ارائه شده به
-          <strong> {{ config('customer.gender_prefix_to_print' . $customer->gender) .' '. $customer->name}} </strong>
+          <strong> {{ config('customer.gender_prefix_to_print.' . $customer->gender) .' '. $customer->name}} </strong>
           با شماره تماس <strong> {{ $customer->mobile }} </strong>
           به نشانی <strong> {{ $customer->address }} </strong>
         </p>
