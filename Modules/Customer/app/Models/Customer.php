@@ -15,12 +15,17 @@ class Customer extends Model
 {
   use HasFactory, LogsActivity;
 
+  public const GENDER_MALE = 'male';
+  public const GENDER_FEMALE = 'female';
+
   protected $fillable = [
     'name',
     'mobile',
     'telephone',
     'address',
-    'status'
+    'status',
+    'birthday',
+    'gender',
   ];
 
   public function getActivitylogOptions(): LogOptions

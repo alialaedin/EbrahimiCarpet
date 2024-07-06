@@ -5,6 +5,7 @@ namespace Modules\Customer\Http\Requests\Admin;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Rules\IranMobile;
+use Modules\Customer\Models\Customer;
 
 class CustomerUpdateRequest extends FormRequest
 {
@@ -15,7 +16,9 @@ class CustomerUpdateRequest extends FormRequest
 			'mobile' => ['required', 'numeric',  Rule::unique('customers', 'mobile')->ignore($this->route('customer')), 'digits:11', new IranMobile()],
 			'telephone' => ['nullable', 'numeric', Rule::unique('customers', 'telephone')->ignore($this->route('customer')), 'digits:11'],
 			'address' => ['nullable', 'string'],
-			'status' => ['nullable', 'in:1']
+			'status' => ['nullable', 'in:1'],
+      'gender' => ['required', 'string', Rule::in(Customer::GENDER_MALE,Customer::GENDER_FEMALE)],
+      'birthday' => ['required', 'date']
 		];
 	}
 

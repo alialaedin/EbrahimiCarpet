@@ -16,13 +16,13 @@ return new class extends Migration
 			$table->id();
 			$table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
 			$table->string('title')->unique();
+			$table->string('print_title');
 			$table->text('description')->nullable();
 			$table->unsignedBigInteger('price');
 			$table->boolean('status');
 			$table->string('image')->nullable();
 			$table->unsignedBigInteger('discount')->nullable();
 			$table->timestamps();
-			// image => media library
 		});
 	}
 

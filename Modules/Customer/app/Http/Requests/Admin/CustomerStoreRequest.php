@@ -3,7 +3,9 @@
 namespace Modules\Customer\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\Core\Rules\IranMobile;
+use Modules\Customer\Models\Customer;
 
 class CustomerStoreRequest extends FormRequest
 {
@@ -17,7 +19,9 @@ class CustomerStoreRequest extends FormRequest
 			'mobile' => ['required', 'numeric', 'unique:customers,mobile', 'digits:11', new IranMobile()],
 			'telephone' => ['nullable', 'numeric', 'unique:customers,telephone', 'digits:11'],
 			'address' => ['nullable', 'string'],
-			'status' => ['nullable', 'in:1']
+			'status' => ['nullable', 'in:1'],
+      'gender' => ['required', 'string'. Rule::in(Customer::GENDER_MALE.','.Customer::GENDER_FEMALE)],
+      'birthday' => ['required', 'date']
 		];
 	}
 

@@ -40,6 +40,18 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
+              <label for="gender" class="control-label"> جنسیت: <span class="text-danger">&starf;</span></label>
+              <select class="form-control" name="gender" id="gender">
+                <option value="" class="text-muted">انتخاب جنسیت</option>
+                @foreach(config('customer.genders') as $name => $label)
+                  <option value="{{ $name }}" @selected(request('gender') === $name)>{{ $label }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="gender" />
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
               <label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
               <input
                 type="text"
@@ -55,29 +67,37 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="telephone" class="control-label"> تلفن ثابت: </label>
+              <label for="telephone" class="control-label"> تلفن ثابت: <span class="text-danger">&starf;</span></label>
               <input
                 type="text"
                 id="telephone"
                 class="form-control"
                 name="telephone"
                 placeholder="تلفن ثابت را وارد کنید"
+                required
                 value="{{ old('telephone') }}"
               />
               <x-core::show-validation-error name="telephone" />
             </div>
           </div>
-          <div class="col-12">
+          <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="address" class="control-label">آدرس:</label>
-              <textarea
+              <label for="birthday_show" class="control-label">تاریخ تولد :<span class="text-danger">&starf;</span></label>
+              <input class="form-control fc-datepicker" id="birthday_show" type="text" autocomplete="off" placeholder="تاریخ تولد را انتخاب کنید" />
+              <input name="birthday" id="birthday" type="hidden" value="{{ old("birthday") }}" required/>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
+              <input
+                type="text"
                 name="address"
                 id="address"
                 class="form-control"
-                rows="3"
-                placeholder="آدرس مشتری را وارد کنید">
-                {{ old('address') }}
-              </textarea>
+                placeholder="آدرس مشتری را وارد کنید"
+                value="{{ old('address') }}"
+              />
               <x-core::show-validation-error name="address" />
             </div>
           </div>
@@ -96,4 +116,7 @@
       </form>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <x-core::date-input-script textInputId="birthday_show" dateInputId="birthday"/>
 @endsection

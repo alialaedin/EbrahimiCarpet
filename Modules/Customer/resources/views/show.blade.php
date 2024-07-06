@@ -66,39 +66,28 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>کد : </strong>{{ $customer->id }}</span>
+        <div class="col-lg-6 px-0">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>کد: </strong> {{ $customer->id }} </li>
+            <li class="list-group-item"><strong>نام و نام خانوادگی: </strong> {{ $customer->name }} </li>
+            <li class="list-group-item"><strong>جنسیت: </strong> {{ config('customer.genders.'.$customer->gender) }} </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $customer->mobile }} </li>
+            <li class="list-group-item"><strong>تلفن ثابت: </strong> {{ $customer->telephone }} </li>
+            <li class="list-group-item"><strong>تاریخ تولد: </strong> {{ verta($customer->birthday)->format('Y/m/d') }} </li>
+          </ul>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>نام و نام خانوادگی : </strong>{{ $customer->name }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>شماره موبایل : </strong>{{ $customer->mobile }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تلفن ثابت : </strong>{{ $customer->telephone }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <strong>وضعیت : </strong>
-          @if ($customer->status)
-            <span class="text-success">فعال</span>
-          @else
-            <span class="text-danger">غیر فعال</span>
-          @endif
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تاریخ ثبت : </strong> @jalaliDate($customer->created_at) </span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>محل سکونت : </strong>{{ $customer->address }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تعداد فروش ها : </strong>{{ number_format($salesCount) }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تعداد پرداختی ها : </strong>{{ number_format($salePaymentsCount) }}</span>
+        <div class="col-lg-6 px-0">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>وضعیت: </strong> {{ config('customer.statuses.'.$customer->status) }} </li>
+            <li class="list-group-item"><strong>تعداد فروش ها: </strong> {{ number_format($salesCount) }} </li>
+            <li class="list-group-item"><strong>تعداد پرداختی ها: </strong> {{ number_format($salePaymentsCount) }} </li>
+            <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($customer->created_at) </li>
+            <li class="list-group-item"><strong>تاریخ آخرین ویرایش: </strong> @jalaliDate($customer->updated_at) </li>
+            <li class="list-group-item"><strong>محل سکونت: </strong> {{ $customer->address }} </li>
+          </ul>
         </div>
       </div>
+
     </div>
   </div>
   <div class="row">

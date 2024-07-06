@@ -18,8 +18,8 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function() {
 
 	Route::resource('/customers', CustomerController::class);
 
-  Route::prefix('/customers/{customer}/invoice')->name('customers.invoice.')->group(function () {
-    Route::get('/', [CustomerController::class, 'showInvoice'])->name('show');
+  Route::prefix('/customers/{customer}/invoice')->name('customers.')->group(function () {
+    Route::get('/', [CustomerController::class, 'showInvoice'])->name('show-invoice');
   });
 
 });

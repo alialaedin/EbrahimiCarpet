@@ -38,6 +38,17 @@
 							<x-core::show-validation-error name="name" />
 						</div>
 					</div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="gender" class="control-label"> جنسیت: <span class="text-danger">&starf;</span></label>
+              <select class="form-control" name="gender" id="gender">
+                @foreach(config('customer.genders') as $name => $label)
+                  <option value="{{ $name }}" @selected(request('gender', $customer->gender) === $name)>{{ $label }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="gender" />
+            </div>
+          </div>
 					<div class="col-lg-4 col-md-6">
 						<div class="form-group">
 							<label for="mobile" class="control-label"> شماره موبایل: <span class="text-danger">&starf;</span></label>
@@ -67,17 +78,24 @@
 							<x-core::show-validation-error name="telephone" />
 						</div>
 					</div>
-					<div class="col-12">
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="birthday_show" class="control-label">تاریخ تولد :<span class="text-danger">&starf;</span></label>
+              <input class="form-control fc-datepicker" id="birthday_show" type="text" autocomplete="off" placeholder="تاریخ تولد را انتخاب کنید" />
+              <input name="birthday" id="birthday" type="hidden" value="{{ old("birthday", $customer->birthday) }}" required/>
+            </div>
+          </div>
+					<div class="col-lg-4 col-md-6">
 						<div class="form-group">
-							<label for="address" class="control-label">آدرس:</label>
-							<textarea
+              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
+              <input
+                type="text"
                 name="address"
                 id="address"
                 class="form-control"
-                rows="3"
-                placeholder="آدرس مشتری را وارد کنید">
-                {{ old('address', $customer->address) }}
-              </textarea>
+                placeholder="آدرس مشتری را وارد کنید"
+                value="{{ old('address', $customer->address) }}"
+              />
 							<x-core::show-validation-error name="address" />
 						</div>
 					</div>
@@ -102,4 +120,7 @@
 			</form>
 		</div>
   </div>
+@endsection
+@section('scripts')
+  <x-core::date-input-script textInputId="birthday_show" dateInputId="birthday"/>
 @endsection

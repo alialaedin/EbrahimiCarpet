@@ -31,7 +31,7 @@ class CustomerController extends Controller implements HasMiddleware
 		$status = request('status');
 
 		$customers = Customer::query()
-			->select('id', 'name', 'mobile', 'telephone', 'status', 'created_at')
+			->select('id', 'name', 'mobile', 'telephone', 'status', 'gender', 'birthday')
 			->when($fullName, fn (Builder $query) => $query->where('name', 'like', "%{$fullName}%"))
 			->when($telephone, fn (Builder $query) => $query->where('telephone', $telephone))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
@@ -96,7 +96,7 @@ class CustomerController extends Controller implements HasMiddleware
 		return redirect()->back();
 	}
 
-  public function showInvoice(Customer $customer)
+  public function showInvoice(Customer $customer): View
   {
     $customer->load([
       'items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
