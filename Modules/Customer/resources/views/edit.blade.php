@@ -61,7 +61,7 @@
                 value="{{ old('mobile', $customer->mobile) }}"
                 required
               />
-							<x-core::show-validation-error name="mpbile" />
+							<x-core::show-validation-error name="mobile" />
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-6">
