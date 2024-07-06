@@ -20,8 +20,11 @@
           <div>
             <input type="search" name="name" class="form-control header-search" placeholder="جستجو...">
             <button class="btn btn-primary">
-              <i class="fe fe-search"></i>
+              <i class="fa fa-search"></i>
             </button>
+            <a class="btn btn-danger" href="{{ route('admin.reports.customer-indebtedness') }}">
+              <i class="fa fa-close"></i>
+            </a>
           </div>
         </form>
       </div>
