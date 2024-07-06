@@ -102,7 +102,7 @@ class Helpers
 	public static function checkCart(Collection $carts): array
 	{
 		$notifications = [];
-		
+
 		foreach ($carts as $cart) {
 
 			$productBalance = $cart->product->store->balance;
@@ -120,7 +120,7 @@ class Helpers
 
 				if ($currentPrice != $newPrice) {
 					$cart->update(['price' => $newPrice]);
-					$notifications[] = "قیمت محصول {$cart->product->title} به {$newPrice} تومان تغییر پیدا کرده!";
+					$notifications[] = "قیمت محصول {$cart->product->title} به {$newPrice} ریال تغییر پیدا کرده!";
 				}
 			}
 		}

@@ -45,13 +45,13 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="amount" class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
+                <label for="amount" class="control-label">مبلغ پرداخت (ریال): <span class="text-danger">&starf;</span></label>
                 <input
                   type="text"
                   id="amount"
                   class="form-control comma"
                   name="amount"
-                  placeholder="مبلغ پرداختی را به تومان وارد کنید"
+                  placeholder="مبلغ پرداختی را به ریال وارد کنید"
                   value="{{ old('amount', number_format($payment->amount)) }}"
                 />
                 <x-core::show-validation-error name="amount" />

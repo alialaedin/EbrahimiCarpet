@@ -55,8 +55,8 @@
             <li class="list-group-item"><strong>عنوان: </strong> {{ $product->title }} </li>
             <li class="list-group-item"><strong>دسته بندی: </strong> {{ $product->category->title }} </li>
             <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->store->balance . ' ' . $product->category->getUnitType()}} </li>
-            <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} تومان </li>
-            <li class="list-group-item"><strong>مقدار تخفیف: </strong> {{ number_format($product->getDiscount()) }} تومان </li>
+            <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} ریال </li>
+            <li class="list-group-item"><strong>مقدار تخفیف: </strong> {{ number_format($product->getDiscount()) }} ریال </li>
             <li class="list-group-item">
               <strong>وضعیت: </strong>
               <x-core::badge

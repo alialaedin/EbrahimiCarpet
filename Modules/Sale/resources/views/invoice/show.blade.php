@@ -91,10 +91,10 @@
             <th class="text-center border-top">نام محصول</th>
             <th class="text-center border-top">نوع واحد</th>
             <th class="text-center border-top">تعداد</th>
-            <th class="text-center border-top">قیمت واحد (تومان)</th>
-            <th class="text-center border-top">تخفیف (تومان)</th>
-            <th class="text-center border-top">قیمت با تخفیف (تومان)</th>
-            <th class="text-center border-top">قیمت کل (تومان)</th>
+            <th class="text-center border-top">قیمت واحد (ریال)</th>
+            <th class="text-center border-top">تخفیف (ریال)</th>
+            <th class="text-center border-top">قیمت با تخفیف (ریال)</th>
+            <th class="text-center border-top">قیمت کل (ریال)</th>
           </tr>
           </thead>
           <tbody>

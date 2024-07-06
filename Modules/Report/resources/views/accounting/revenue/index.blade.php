@@ -91,7 +91,7 @@
                 <th class="text-center">عنوان</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">مبلغ پرداخت شده (تومان)</th>
+                <th class="text-center">مبلغ پرداخت شده (ریال)</th>
               </tr>
               </thead>
               <tbody>

@@ -92,8 +92,8 @@
                 <th class="text-center">اضافه کاری <span class="d-print-none">(ساعت)</span></th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">حقوق پایه (تومان)</th>
-                <th class="text-center">حقوق پرداخت شده (تومان)</th>
+                <th class="text-center">حقوق پایه (ریال)</th>
+                <th class="text-center">حقوق پرداخت شده (ریال)</th>
               </tr>
               </thead>
               <tbody>

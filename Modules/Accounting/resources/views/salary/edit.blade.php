@@ -31,7 +31,7 @@
           </div>
           <div class="col-xl-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="amount" class="control-label">مبلغ حقوق (تومان) :<span class="text-danger">&starf;</span></label>
+              <label for="amount" class="control-label">مبلغ حقوق (ریال) :<span class="text-danger">&starf;</span></label>
               <input type="text" name="amount" id="amount" placeholder="مبلغ حقوق را وارد کنید" class="form-control comma" value="{{ old('amount', number_format($salary->amount)) }}">
               <x-core::show-validation-error name="amount" />
             </div>

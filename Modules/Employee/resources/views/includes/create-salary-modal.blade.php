@@ -16,7 +16,7 @@
           <div class="row">
             <div class="col-lg-6 col-12">
               <div class="form-group">
-                <label for="amount" class="control-label">مبلغ حقوق (تومان) :<span class="text-danger">&starf;</span></label>
+                <label for="amount" class="control-label">مبلغ حقوق (ریال) :<span class="text-danger">&starf;</span></label>
                 <input
                   type="text"
                   name="amount"

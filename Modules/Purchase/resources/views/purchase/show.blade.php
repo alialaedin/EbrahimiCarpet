@@ -61,13 +61,13 @@
           <span><strong>تاریخ خرید : </strong>{{ verta($purchase->purchased_at)->format('Y/m/d') }}</span>
         </div>
         <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-          <span><strong>قیمت کل خرید : </strong>{{ number_format($purchase->getTotalPurchaseAmount()) }} تومان</span>
+          <span><strong>قیمت کل خرید : </strong>{{ number_format($purchase->getTotalPurchaseAmount()) }} ریال</span>
         </div>
         <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-          <span><strong>تخفیف کل خرید : </strong>{{ number_format($purchase->discount) }} تومان</span>
+          <span><strong>تخفیف کل خرید : </strong>{{ number_format($purchase->discount) }} ریال</span>
         </div>
         <div class="col-xl-4 col-md-6 col-12 fs-17 my-1">
-          <span><strong>قیمت با تخفیف : </strong>{{ number_format($purchase->getTotalPurchaseAmount() - $purchase->discount) }} تومان</span>
+          <span><strong>قیمت با تخفیف : </strong>{{ number_format($purchase->getTotalPurchaseAmount() - $purchase->discount) }} ریال</span>
         </div>
       </div>
     </div>
@@ -91,10 +91,10 @@
                 <th class="text-center border-top">تصویر</th>
                 <th class="text-center border-top">نوع واحد</th>
                 <th class="text-center border-top">تعداد</th>
-                <th class="text-center border-top">قیمت (تومان)</th>
-                <th class="text-center border-top">تخفیف (تومان)</th>
-                <th class="text-center border-top">قیمت با تخفیف (تومان)</th>
-                <th class="text-center border-top">قیمت کل (تومان)</th>
+                <th class="text-center border-top">قیمت (ریال)</th>
+                <th class="text-center border-top">تخفیف (ریال)</th>
+                <th class="text-center border-top">قیمت با تخفیف (ریال)</th>
+                <th class="text-center border-top">قیمت کل (ریال)</th>
                 <th class="text-center border-top">عملیات</th>
               </tr>
               </thead>

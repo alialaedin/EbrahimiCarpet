@@ -26,7 +26,7 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام پرسنل</th>
-                <th class="text-center">مبلغ (تومان)</th>
+                <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">اضافه کاری (ساعت)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>

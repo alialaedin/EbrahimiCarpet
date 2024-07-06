@@ -30,16 +30,16 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="price" class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
-                  <input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('price', number_format($item->price)) }}">
+                  <label for="price" class="control-label">قیمت (ریال):<span class="text-danger">&starf;</span></label>
+                  <input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت محصول را به ریال وارد کنید" value="{{ old('price', number_format($item->price)) }}">
                   <x-core::show-validation-error name="price" />
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="discount" class="control-label">تخفیف (تومان): </label>
-                  <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', $item->discount ? number_format($item->discount) : null) }}">
+                  <label for="discount" class="control-label">تخفیف (ریال): </label>
+                  <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', $item->discount ? number_format($item->discount) : null) }}">
                   <x-core::show-validation-error name="discount" />
                 </div>
               </div>

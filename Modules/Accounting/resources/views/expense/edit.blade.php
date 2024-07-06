@@ -48,7 +48,7 @@
           <div class="col-md-6 col-12">
             <div class="form-group">
               <label for="amount" class="control-label">مبلغ پرداخت شده (نومان) :<span class="text-danger">&starf;</span></label>
-              <input type="text" name="amount" id="amount" placeholder="مبلغ هزینه را به تومان  وارد کنید" class="form-control comma" value="{{ old('amount', number_format($expense->amount)) }}">
+              <input type="text" name="amount" id="amount" placeholder="مبلغ هزینه را به ریال  وارد کنید" class="form-control comma" value="{{ old('amount', number_format($expense->amount)) }}">
               <x-core::show-validation-error name="amount" />
             </div>
           </div>

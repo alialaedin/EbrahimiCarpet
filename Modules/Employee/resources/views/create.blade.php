@@ -59,7 +59,7 @@
           </div>
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="salary" class="control-label"> میزان حقوق (تومان): <span class="text-danger">&starf;</span></label>
+              <label for="salary" class="control-label"> میزان حقوق (ریال): <span class="text-danger">&starf;</span></label>
               <input type="text" id="salary" class="form-control comma" name="salary" placeholder="میزان حقوق را وارد کنید" value="{{ old('salary') }}" required>
               <x-core::show-validation-error name="salary" />
             </div>

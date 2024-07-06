@@ -55,7 +55,7 @@
         </a>
       @endcan
       @can('view sale_salePayments')
-        <a href="{{ route('admin.sale-payments.index', $customer) }}" class="btn btn-flickr mx-1 my-md-1">
+        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-flickr mx-1 my-md-1">
           مشاهده همه پرداختی ها
           <i class="fa fa-eye mr-1"></i>
         </a>
@@ -117,7 +117,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ کل فروش ها (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> مبلغ کل فروش ها (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($customer->calcTotalSalesAmount()) }} </h3>
               </div>
             </div>
@@ -136,7 +136,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} </h3>
               </div>
             </div>
@@ -155,7 +155,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($customer->getRemainingAmount()) }}  </h3>
               </div>
             </div>
@@ -182,9 +182,9 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ فروش (تومان)</th>
-                <th class="text-center">تخفیف کلی (تومان)</th>
-                <th class="text-center">مبلغ فروش با تخفیف (تومان)</th>
+                <th class="text-center">مبلغ فروش (ریال)</th>
+                <th class="text-center">تخفیف کلی (ریال)</th>
+                <th class="text-center">مبلغ فروش با تخفیف (ریال)</th>
                 <th class="text-center">تاریخ فروش</th>
                 <th class="text-center">عملیات</th>
               </tr>
@@ -231,7 +231,7 @@
                 <tr>
                   <th class="text-center border-top">ردیف</th>
                   <th class="text-center border-top">نوع پراخت</th>
-                  <th class="text-center border-top">مبلغ (تومان)</th>
+                  <th class="text-center border-top">مبلغ (ریال)</th>
                   <th class="text-center border-top">تاریخ پرداخت</th>
                   <th class="text-center border-top">عکس رسید</th>
                   <th class="text-center border-top">تاریخ سررسید</th>

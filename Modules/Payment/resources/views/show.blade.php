@@ -77,7 +77,7 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ پرداختی (تومان)</th>
+                <th class="text-center">مبلغ پرداختی (ریال)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>
                 <th class="text-center">تاریخ ثبت</th>
@@ -151,7 +151,7 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ (تومان)</th>
+                <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>
                 <th class="text-center">تاریخ سررسید</th>
@@ -228,7 +228,7 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ (تومان)</th>
+                <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>
                 <th class="text-center">تاریخ سررسید</th>

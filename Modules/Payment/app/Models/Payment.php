@@ -52,13 +52,13 @@ class Payment extends BaseModel
 
         switch ($eventName) {
           case 'created':
-            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان برای تامین کننده با نام $supplierName ثبت کرد ";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount ریال برای تامین کننده با نام $supplierName ثبت کرد ";
             break;
           case 'updated':
-            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان که متعلق به تامین کننده با نام $supplierName بود را ویرایش کرد.";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount ریال که متعلق به تامین کننده با نام $supplierName بود را ویرایش کرد.";
             break;
           case 'deleted':
-            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount تومان که متعلق به تامین کننده با نام $supplierName بود را حذف کرد.";
+            $message = "$messageBase پرداختی از نوع $payType با مبلغ $amount ریال که متعلق به تامین کننده با نام $supplierName بود را حذف کرد.";
             break;
         }
 

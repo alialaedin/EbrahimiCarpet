@@ -42,9 +42,9 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">شناسه فروش</th>
-                <th class="text-center">مبلغ فروش (تومان)</th>
-                <th class="text-center">تخفیف کلی (تومان)</th>
-                <th class="text-center">مبلغ فروش با تخفیف (تومان)</th>
+                <th class="text-center">مبلغ فروش (ریال)</th>
+                <th class="text-center">تخفیف کلی (ریال)</th>
+                <th class="text-center">مبلغ فروش با تخفیف (ریال)</th>
                 <th class="text-center">تاریخ فروش</th>
                 <th class="text-center">تاریخ ثبت</th>
               </tr>

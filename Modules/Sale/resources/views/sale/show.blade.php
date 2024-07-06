@@ -90,7 +90,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قیمت کل فروش (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> قیمت کل فروش (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($sale->getTotalAmount()) }} </h3>
               </div>
             </div>
@@ -109,7 +109,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> تخفیف کل فروش (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> تخفیف کل فروش (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($sale->discount) }} </h3>
               </div>
             </div>
@@ -128,7 +128,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قیمت کل با تخفیف (تومان) : </span>
+                <span class="fs-16 font-weight-semibold"> قیمت کل با تخفیف (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($sale->getTotalAmountWithDiscount()) }}  </h3>
               </div>
             </div>
@@ -159,10 +159,10 @@
                 <th class="text-center">تصویر</th>
                 <th class="text-center">نوع واحد</th>
                 <th class="text-center">تعداد</th>
-                <th class="text-center">قیمت واحد (تومان)</th>
-                <th class="text-center">تخفیف (تومان)</th>
-                <th class="text-center">قیمت با تخفیف (تومان)</th>
-                <th class="text-center">قیمت کل (تومان)</th>
+                <th class="text-center">قیمت واحد (ریال)</th>
+                <th class="text-center">تخفیف (ریال)</th>
+                <th class="text-center">قیمت با تخفیف (ریال)</th>
+                <th class="text-center">قیمت کل (ریال)</th>
                 <th class="text-center">عملیات</th>
               </tr>
               </thead>

@@ -49,9 +49,9 @@
           <ul class="list-group">
             <li class="list-group-item"><strong class="ml-1">تعداد خرید ها : </strong> {{ $supplier->countPurchases() }} </li>
             <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها : </strong> {{ $supplier->countPayments() }} </li>
-            <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید : </strong> {{ number_format($supplier->calcTotalPurchaseAmount()) }} تومان</li>
-            <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->calcTotalPaymentAmount()) }} تومان</li>
-            <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->getRemainingAmount()) }} تومان </li>
+            <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید : </strong> {{ number_format($supplier->calcTotalPurchaseAmount()) }} ریال</li>
+            <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->calcTotalPaymentAmount()) }} ریال</li>
+            <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->getRemainingAmount()) }} ریال </li>
           </ul>
         </div>
       </div>
@@ -81,13 +81,13 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="amount" class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
+              <label for="amount" class="control-label">مبلغ پرداخت (ریال): <span class="text-danger">&starf;</span></label>
               <input
                 type="text"
                 id="amount"
                 class="form-control comma"
                 name="amount"
-                placeholder="مبلغ پرداختی را به تومان وارد کنید"
+                placeholder="مبلغ پرداختی را به ریال وارد کنید"
                 value="{{ old('amount') }}"
               />
               <x-core::show-validation-error name="amount" />

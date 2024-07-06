@@ -44,8 +44,8 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
+              <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount') }}" min="1000">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>
@@ -141,14 +141,14 @@
 
 						<div class="col-2">
 							<div class="form-group">
-								<label class="control-label">قیمت واحد (تومان):</label>
+								<label class="control-label">قیمت واحد (ریال):</label>
 								<input type="text" class="form-control mt-1" id="product-${index + 1}-price" name="products[${index + 1}][price]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
 							</div>
 						</div>
 
 						<div class="col-2">
 							<div class="form-group">
-								<label class="control-label">تخفیف (تومان): </label>
+								<label class="control-label">تخفیف (ریال): </label>
 								<input type="text" class="form-control mt-1" id="product-${index + 1}-discount" name="products[${index + 1}][discount]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
 							</div>
 						</div>

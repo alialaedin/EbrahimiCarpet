@@ -30,8 +30,8 @@
                 <th class="text-center">عنوان</th>
                 <th class="text-center">تصویر</th>
                 <th class="text-center">دسته بندی</th>
-                <th class="text-center">قیمت (تومان)</th>
-                <th class="text-center">تخفیف (تومان)</th>
+                <th class="text-center">قیمت (ریال)</th>
+                <th class="text-center">تخفیف (ریال)</th>
                 <th class="text-center">وضعیت</th>
                 <th class="text-center">تاریخ ثبت</th>
                 <th class="text-center">عملیات</th>

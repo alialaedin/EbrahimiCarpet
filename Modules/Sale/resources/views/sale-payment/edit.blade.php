@@ -14,7 +14,7 @@
         <a href="{{ route('admin.customers.show', $salePayment->customer) }}">نمایش مشتری</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{ route('admin.sale-payments.index', $salePayment->customer) }}">پرداختی ها</a>
+        <a href="{{ route('admin.sale-payments.show', $salePayment->customer) }}">پرداختی ها</a>
       </li>
       <li class="breadcrumb-item active">
         <a>ویرایش پرداختی</a>
@@ -49,9 +49,9 @@
           <ul class="list-group">
             <li class="list-group-item"><strong>تعداد خرید ها : </strong> {{ $salePayment->customer->countSales() }} </li>
             <li class="list-group-item"><strong>تعداد پرداختی ها : </strong> {{ $salePayment->customer->countPayments() }} </li>
-            <li class="list-group-item"><strong>مبلغ کل خرید : </strong> {{ number_format($salePayment->customer->calcTotalSalesAmount()) }} تومان</li>
-            <li class="list-group-item"><strong>جمع پرداخت شده ها : </strong> {{ number_format($salePayment->customer->calcTotalSalePaymentsAmount()) }} تومان</li>
-            <li class="list-group-item"><strong>مبلغ باقی مانده : </strong> {{ number_format($salePayment->customer->getRemainingAmount()) }} تومان </li>
+            <li class="list-group-item"><strong>مبلغ کل خرید : </strong> {{ number_format($salePayment->customer->calcTotalSalesAmount()) }} ریال</li>
+            <li class="list-group-item"><strong>جمع پرداخت شده ها : </strong> {{ number_format($salePayment->customer->calcTotalSalePaymentsAmount()) }} ریال</li>
+            <li class="list-group-item"><strong>مبلغ باقی مانده : </strong> {{ number_format($salePayment->customer->getRemainingAmount()) }} ریال </li>
           </ul>
         </div>
       </div>
@@ -80,8 +80,8 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="amount" class="control-label">مبلغ پرداخت (تومان): <span class="text-danger">&starf;</span></label>
-              <input type="text" id="amount" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به تومان وارد کنید" value="{{ old('amount', number_format($salePayment->amount)) }}">
+              <label for="amount" class="control-label">مبلغ پرداخت (ریال): <span class="text-danger">&starf;</span></label>
+              <input type="text" id="amount" class="form-control comma" name="amount" placeholder="مبلغ پرداختی را به ریال وارد کنید" value="{{ old('amount', number_format($salePayment->amount)) }}">
               <x-core::show-validation-error name="amount" />
             </div>
           </div>

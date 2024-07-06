@@ -25,7 +25,7 @@ class SalePayment extends BaseModel
     return LogOptions::defaults()
       ->logAll()
       ->setDescriptionForEvent(function (string $eventName) {
-        return " پرداختی از نوع{$this->getType()} با مبلغ $this->amount تومان از {$this->customer->name} را " . config('core.events.' . $eventName);
+        return " پرداختی از نوع{$this->getType()} با مبلغ $this->amount ریال از {$this->customer->name} را " . config('core.events.' . $eventName);
       });
   }
 

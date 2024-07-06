@@ -46,14 +46,14 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="price" class="control-label">قیمت (تومان):</label>
+                <label for="price" class="control-label">قیمت (ریال):</label>
                 <input type="text" id="price" class="form-control" name="price" placeholder="ابتدا محصول را انتخاب کنید" value="{{ old('price') }}" readonly>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="discount" class="control-label">تخفیف (تومان): </label>
+                <label for="discount" class="control-label">تخفیف (ریال): </label>
                 <input type="text" id="discount" class="form-control" name="discount" placeholder="ابتدا محصول را انتخاب کنید" value="{{ old('discount') }}" readonly>
               </div>
             </div>

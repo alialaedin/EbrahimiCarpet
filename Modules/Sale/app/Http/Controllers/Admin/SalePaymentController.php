@@ -88,7 +88,7 @@ class SalePaymentController extends Controller implements HasMiddleware
     $customer->payments()->create($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
-    return to_route('admin.sale-payments.index', $customer);
+    return to_route('admin.sale-payments.show', $customer);
   }
 
   public function edit(SalePayment $salePayment): View
@@ -110,7 +110,7 @@ class SalePaymentController extends Controller implements HasMiddleware
     $salePayment->update($inputs);
     toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
-    return to_route('admin.sale-payments.index', $salePayment->customer);
+    return to_route('admin.sale-payments.show', $salePayment->customer);
   }
 
   public function destroy(SalePayment $salePayment): RedirectResponse

@@ -30,7 +30,7 @@
                 <th class="text-center">نام و نام خانوادگی</th>
                 <th class="text-center">شماره موبایل</th>
                 <th class="text-center">کد ملی</th>
-                <th class="text-center">میزان حقوق (تومان)</th>
+                <th class="text-center">میزان حقوق (ریال)</th>
                 <th class="text-center">تاریخ استخدام</th>
                 <th class="text-center">عملیات</th>
               </tr>

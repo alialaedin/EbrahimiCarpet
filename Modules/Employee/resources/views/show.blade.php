@@ -91,7 +91,7 @@
               <strong>نام بانک : </strong> {{ $employee->bank_name }}
             </li>
             <li class="list-group-item fs-16">
-              <strong>حقوق پایه : </strong>{{ number_format($employee->salary) . ' تومان' }}
+              <strong>حقوق پایه : </strong>{{ number_format($employee->salary) . ' ریال' }}
             </li>
             <li class="list-group-item fs-16">
               <strong>تاریخ استخدام : </strong> @jalaliDate($employee->employmented_at)
@@ -117,7 +117,7 @@
               <thead class="thead-light">
                 <tr>
                   <th class="text-center">ردیف</th>
-                  <th class="text-center">مبلغ (تومان)</th>
+                  <th class="text-center">مبلغ (ریال)</th>
                   <th class="text-center">اضافه کاری (ساعت)</th>
                   <th class="text-center">تاریخ پرداخت</th>
                   <th class="text-center">عکس رسید</th>

@@ -42,8 +42,8 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount') }}" min="1000">
+              <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount') }}" min="1000">
             </div>
           </div>
         </div>
@@ -116,14 +116,14 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<label class="control-label">قیمت (تومان):<span class="text-danger">&starf;</span></label>
-								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][price]" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('products[${index + 1}][price]') }}" required min="1000">
+								<label class="control-label">قیمت (ریال):<span class="text-danger">&starf;</span></label>
+								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][price]" placeholder="قیمت محصول را به ریال وارد کنید" value="{{ old('products[${index + 1}][price]') }}" required min="1000">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<label class="control-label">تخفیف (تومان): </label>
-								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][discount]" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
+								<label class="control-label">تخفیف (ریال): </label>
+								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][discount]" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
 							</div>
 						</div>
 
@@ -169,12 +169,12 @@
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][price]" placeholder="قیمت محصول را به تومان وارد کنید" value="{{ old('products[${index + 1}][price]') }}">
+								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][price]" placeholder="قیمت محصول را به ریال وارد کنید" value="{{ old('products[${index + 1}][price]') }}">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
-								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][discount]" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
+								<input type="text" class="form-control comma mt-1" name="products[${index + 1}][discount]" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('products[${index + 1}][discount]') }}">
 							</div>
 						</div>
 						<div class="col-1 text-left">

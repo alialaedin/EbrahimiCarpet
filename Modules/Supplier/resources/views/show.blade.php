@@ -110,9 +110,9 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ خرید (تومان)</th>
-                <th class="text-center">تخفیف کلی (تومان)</th>
-                <th class="text-center">مبلغ خرید با تخفیف (تومان)</th>
+                <th class="text-center">مبلغ خرید (ریال)</th>
+                <th class="text-center">تخفیف کلی (ریال)</th>
+                <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
                 <th class="text-center">تاریخ خرید</th>
                 <th class="text-center">عملیات</th>
               </tr>
@@ -159,7 +159,7 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نوع پراخت</th>
-                <th class="text-center">مبلغ (تومان)</th>
+                <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>
                 <th class="text-center">تاریخ سررسید</th>

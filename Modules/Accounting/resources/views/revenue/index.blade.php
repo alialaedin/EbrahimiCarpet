@@ -28,7 +28,7 @@
                 <th class="text-center">سرفصل</th>
                 <th class="text-center">عنوان</th>
                 <th class="text-center">کد</th>
-                <th class="text-center">مبلغ (تومان)</th>
+                <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">تاریخ ثبت</th>
                 <th class="text-center">عملیات</th>

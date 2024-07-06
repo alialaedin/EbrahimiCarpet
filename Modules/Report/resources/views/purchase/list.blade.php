@@ -43,9 +43,9 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">شناسه خرید</th>
-                <th class="text-center">مبلغ خرید (تومان)</th>
-                <th class="text-center">تخفیف کلی (تومان)</th>
-                <th class="text-center">مبلغ خرید با تخفیف (تومان)</th>
+                <th class="text-center">مبلغ خرید (ریال)</th>
+                <th class="text-center">تخفیف کلی (ریال)</th>
+                <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
                 <th class="text-center">تاریخ خرید</th>
                 <th class="text-center">تاریخ ثبت</th>
               </tr>

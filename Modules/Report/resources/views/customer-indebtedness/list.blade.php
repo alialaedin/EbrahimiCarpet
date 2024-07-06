@@ -40,9 +40,9 @@
                 <th class="text-center">شماره موبایل</th>
                 <th class="text-center"><span class="d-print-none">تعداد</span> خرید ها</th>
                 <th class="text-center"><span class="d-print-none">تعداد</span> پرداختی ها</th>
-                <th class="text-center">مبلغ خرید (تومان)</th>
-                <th class="text-center">مبلغ پرداخت شده (تومان)</th>
-                <th class="text-center">مبلغ باقی مانده (تومان)</th>
+                <th class="text-center">مبلغ خرید (ریال)</th>
+                <th class="text-center">مبلغ پرداخت شده (ریال)</th>
+                <th class="text-center">مبلغ باقی مانده (ریال)</th>
               </tr>
               </thead>
               <tbody>

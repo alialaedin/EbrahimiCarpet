@@ -48,8 +48,8 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', number_format($purchase->discount)) }}">
+              <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', number_format($purchase->discount)) }}">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>

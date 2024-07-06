@@ -15,7 +15,7 @@
   </div>
   <div class="card">
     <div class="card-header">
-      <p class="card-title">ویرایش فروش - کد {{ $sale->id }} - مبلغ فروش : {{ number_format($sale->getTotalAmountWithDiscount()) . ' تومان'}}</p>
+      <p class="card-title">ویرایش فروش - کد {{ $sale->id }} - مبلغ فروش : {{ number_format($sale->getTotalAmountWithDiscount()) . ' ریال'}}</p>
     </div>
     <div class="card-body">
       <form action="{{ route('admin.sales.update', $sale) }}" method="post" class="save">
@@ -38,8 +38,8 @@
           </div>
           <div class="col-xl-4 col-lg-6">
             <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف کلی (تومان): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به تومان وارد کنید" value="{{ old('discount', number_format($sale->discount)) }}">
+              <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', number_format($sale->discount)) }}">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>

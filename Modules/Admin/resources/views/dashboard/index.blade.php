@@ -163,7 +163,7 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> مبلغ فروش این ماه : </span>
-                <p class="mb-0 mt-1 text-primary fs-20"> {{ number_format($totalAmountSalesThisMonth) }} (تومان)</p>
+                <p class="mb-0 mt-1 text-primary fs-20"> {{ number_format($totalAmountSalesThisMonth) }} (ریال)</p>
               </div>
             </div>
             <div class="col-3">
@@ -199,7 +199,7 @@
                     <th class="text-center">ردیف</th>
                     <th class="text-center">تامین کننده</th>
                     <th class="text-center">تاریخ سررسید</th>
-                    <th class="text-center">مبلغ (تومان)</th>
+                    <th class="text-center">مبلغ (ریال)</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -243,7 +243,7 @@
                     <th class="text-center">ردیف</th>
                     <th class="text-center">مشتری</th>
                     <th class="text-center">تاریخ سررسید</th>
-                    <th class="text-center">مبلغ (تومان)</th>
+                    <th class="text-center">مبلغ (ریال)</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -289,7 +289,7 @@
                     <th class="text-center">ردیف</th>
                     <th class="text-center">نام مشتری</th>
                     <th class="text-center">شماره موبایل</th>
-                    <th class="text-center">مبلغ (تومان)</th>
+                    <th class="text-center">مبلغ (ریال)</th>
                     <th class="text-center">عکس رسید</th>
                     <th class="text-center">تاریخ سررسید</th>
                     <th class="text-center">تاریخ ثبت</th>

@@ -85,7 +85,7 @@
                 <strong>کد : </strong> {{ $salary->id }}
               </li>
               <li class="list-group-item fs-16">
-                <strong>حقوق پرداخت شده : </strong> {{ number_format($salary->amount) . ' تومان' }}
+                <strong>حقوق پرداخت شده : </strong> {{ number_format($salary->amount) . ' ریال' }}
               </li>
               <li class="list-group-item fs-16">
                 <strong>اضافه کاری : </strong> {{ $salary->overtime . ' ساعت'}}

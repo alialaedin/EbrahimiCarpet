@@ -115,7 +115,7 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">مشتری</th>
-                <th class="text-center">مبلغ پرداختی (تومان)</th>
+                <th class="text-center">مبلغ پرداختی (ریال)</th>
                 <th class="text-center">نوع پرداخت</th>
                 <th class="text-center">عکس رسید</th>
                 <th class="text-center">تاریخ سررسید</th>
