@@ -74,7 +74,7 @@
   </div>
   <div class="card">
     <div class="card-header border-0 ">
-      <div class="d-flex">
+      <div>
         <p class="card-title">اقلام خرید ({{ $purchase->items->count() }})</p>
         <x-core::card-options/>
       </div>
