@@ -156,7 +156,7 @@
             @foreach($customer->payments->where('type', '===', 'cash') as $payment)
               <tr>
                 <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center"> {{ verta($payment->payment_date)->format('Y/m/d') }} </td>
                 <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
                 <td class="text-center">{{ number_format($payment->amount) }}</td>
               </tr>
@@ -189,8 +189,8 @@
                 <td class="text-center">{{ $payment->cheque_serial }}</td>
                 <td class="text-center">{{ $payment->bank_name }}</td>
                 <td class="text-center">{{ $payment->cheque_holder }}</td>
-                <td class="text-center"> @jalaliDate($payment->due_date) </td>
-                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }} </td>
+                <td class="text-center"> {{ verta($payment->payment_date)->format('Y/m/d') }} </td>
                 <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
                 <td class="text-center">{{ number_format($payment->amount) }}</td>
               </tr>
@@ -217,8 +217,8 @@
             @foreach($customer->payments->where('type', '!==', 'installment') as $payment)
               <tr>
                 <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                <td class="text-center"> @jalaliDate($payment->due_date) </td>
-                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }} </td>
+                <td class="text-center"> {{ verta($payment->payment_date)->format('Y/m/d') }} </td>
                 <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
                 <td class="text-center">{{ number_format($payment->amount) }}</td>
               </tr>
