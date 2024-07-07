@@ -102,7 +102,7 @@ class CustomerController extends Controller implements HasMiddleware
       'payments' ,
       'sales' => fn ($query) => $query->select(['id', 'customer_id', 'discount']),
       'sales.items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
-      'sales.items.product' => fn ($query) => $query->select(['id', 'title', 'category_id']),
+      'sales.items.product' => fn ($query) => $query->select(['id', 'print_title', 'category_id']),
       'sales.items.product.category' => fn ($query) => $query->select(['id', 'title', 'unit_type']),
     ]);
 

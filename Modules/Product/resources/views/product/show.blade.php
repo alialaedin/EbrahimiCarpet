@@ -52,8 +52,8 @@
         <div>
           <ul class="list-group">
             <li class="list-group-item"><strong>کد: </strong> {{ $product->id }} </li>
-            <li class="list-group-item"><strong>عنوان: </strong> {{ $product->print_title }} </li>
-            <li class="list-group-item"><strong>عوان پرینت: </strong> {{ $product->title }} </li>
+            <li class="list-group-item"><strong>عنوان: </strong> {{ $product->title }} </li>
+            <li class="list-group-item"><strong>عوان پرینت: </strong> {{ $product->print_title }} </li>
             <li class="list-group-item"><strong>دسته بندی: </strong> {{ $product->category->title }} </li>
             <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->store->balance . ' ' . $product->category->getUnitType()}} </li>
             <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} ریال </li>

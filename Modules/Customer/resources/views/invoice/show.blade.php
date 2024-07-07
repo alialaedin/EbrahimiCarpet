@@ -104,7 +104,7 @@
               @foreach($sale->items as $item)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $counter }}</td>
-                  <td class="text-center">{{ $item->product->title }}</td>
+                  <td class="text-center">{{ $item->product->print_title }}</td>
                   <td class="text-center">{{ $item->product->category->getUnitType() }}</td>
                   <td class="text-center">{{ $item->quantity }}</td>
                   <td class="text-center">{{ number_format($item->price) }}</td>
