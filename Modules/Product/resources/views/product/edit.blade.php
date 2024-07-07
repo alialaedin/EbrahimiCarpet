@@ -31,6 +31,13 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label for="print_title" class="control-label"> عنوان (پرینت فاکتور مشتری): <span class="text-danger">&starf;</span></label>
+              <input type="text" id="print_title" class="form-control" name="print_title" placeholder="عنوان را به فارسی وارد کنید" value="{{ old('print_title', $product->print_title) }}" required autofocus>
+              <x-core::show-validation-error name="print_title" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
               <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
               <select name="category_id" id="category_id" class="form-control">
                 @foreach ($parentCategories as $category)<option value="{{ $category->id }}" class="text-muted" @selected(old('category_id', $product->category_id) == $category->id)>{{ $category->title }}</option>

@@ -19,6 +19,7 @@ class ProductUpdateRequest extends FormRequest
 	{
 		return [
 			'title' => ['required', 'string', 'min:3', 'max:100', Rule::unique('products', 'title')->ignore($this->route('product')->id)],
+			'print_title' => ['required', 'string', 'min:3', 'max:100', Rule::unique('products', 'print_title')->ignore($this->route('product')->id)],
 			'category_id' => ['required', 'integer', 'exists:categories,id'],
 			'price' => ['required', 'integer', 'min:1000'],
 			'discount' => ['nullable', 'integer', 'min:1000'],

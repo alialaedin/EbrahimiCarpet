@@ -12,10 +12,11 @@
             <div class="row">
 
               @if($payment->type === 'cash')
+                <input type="hidden" name="type" value="cash">
                 <div class="col-12">
                   <div class="form-group">
                     <label for="type" class="control-label">نوع پرداخت: <span class="text-danger">&starf;</span></label>
-                    <input class="form-control" type="text" value="{{ config('payment.types.'.$payment->type) }}" readonly>
+                    <input class="form-control" id="type" type="text" value="{{ config('payment.types.'.$payment->type) }}" readonly>
                   </div>
                 </div>
                 <div class="col-12">
@@ -41,6 +42,7 @@
                   </div>
                 </div>
               @elseif($payment->type === 'cheque')
+                <input type="hidden" name="type" value="cheque">
                 <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="amount" class="control-label">مبلغ چک (ریال): <span class="text-danger">&starf;</span></label>
@@ -141,6 +143,7 @@
                   </div>
                 </div>
               @elseif($payment->type === 'installment')
+                <input type="hidden" name="type" value="installment">
                 <div class="col-12">
                   <div class="form-group">
                     <label for="amount" class="control-label">مبلغ قسط: <span class="text-danger">&starf;</span></label>

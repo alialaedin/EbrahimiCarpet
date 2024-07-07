@@ -133,16 +133,7 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function update(SalePaymentUpdateRequest $request, SalePayment $salePayment): RedirectResponse
   {
-    $inputs = $this->getFormInputs($request);
-
-    if ($request->hasFile('image') && $request->file('image')->isValid()) {
-      if (!is_null($salePayment->image)) {
-        Storage::delete($salePayment->image);
-      }
-      $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
-    }
-
-    $salePayment->update($inputs);
+    $salePayment->update($request->validated());
     toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
     return to_route('admin.sale-payments.show', $salePayment->customer);

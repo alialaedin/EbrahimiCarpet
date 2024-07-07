@@ -44,7 +44,7 @@ class ProductController extends Controller implements HasMiddleware
 		$hasDiscount = request('has_discount');
 
 		$products = Product::query()
-			->select('id', 'title', 'category_id', 'status', 'discount', 'price', 'image', 'created_at')
+			->select('id', 'title', 'print_title', 'category_id', 'status', 'discount', 'price', 'image', 'created_at')
 			->with(['category' => fn ($query) => $query->select('id', 'title')])
 			->when($title, fn (Builder $query) => $query->where('title', 'like', "%{$title}%"))
 			->when($categoryId, fn (Builder $query) => $query->where('category_id', $categoryId))
@@ -62,7 +62,7 @@ class ProductController extends Controller implements HasMiddleware
 			->paginate(15)
 			->withQueryString();
 
-		$categories = Category::select('id', 'title')->get();
+		$categories = Category::all('id', 'title');
 		$productsCount = $products->total();
 
 		return view('product::product.index', compact('products', 'productsCount', 'categories'));
@@ -101,15 +101,15 @@ class ProductController extends Controller implements HasMiddleware
 		return to_route('admin.products.index');
 	}
 
-	public function edit(Product $product)
-	{
+	public function edit(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  {
 		$parentCategories = $this->getParentCategories();
 
 		return view('product::product.edit', compact('product', 'parentCategories'));
 	}
 
-	public function update(ProductUpdateRequest $request, Product $product)
-	{
+	public function update(ProductUpdateRequest $request, Product $product): \Illuminate\Http\RedirectResponse
+  {
 		$inputs = $this->getFormInputs($request);
 
 		if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -125,8 +125,8 @@ class ProductController extends Controller implements HasMiddleware
 		return redirect()->back()->withInput();
 	}
 
-	public function destroy(Product $product)
-	{
+	public function destroy(Product $product): \Illuminate\Http\RedirectResponse
+  {
 		$product->delete();
 
 		if ($product->image) {
@@ -138,8 +138,8 @@ class ProductController extends Controller implements HasMiddleware
 		return redirect()->back();
 	}
 
-	public function destroyImage(Product $product)
-	{
+	public function destroyImage(Product $product): \Illuminate\Http\RedirectResponse
+  {
 		Storage::disk('public')->delete($product->image);
 		$product->image = null;
 		$product->save();
@@ -148,10 +148,11 @@ class ProductController extends Controller implements HasMiddleware
 		return redirect()->back();
 	}
 
-	private function getFormInputs(Request $request)
-	{
+	private function getFormInputs(Request $request): array
+  {
 		return [
 			'title' => $request->input('title'),
+			'print_title' => $request->input('print_title'),
 			'category_id' => $request->input('category_id'),
 			'price' => $request->input('price'),
 			'discount' => $request->input('discount'),

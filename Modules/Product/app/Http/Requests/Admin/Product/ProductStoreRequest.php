@@ -18,6 +18,7 @@ class ProductStoreRequest extends FormRequest
 	{
 		return [
 			'title' => ['required', 'string', 'min:3', 'max:100', 'unique:products,title'],
+			'print_title' => ['required', 'string', 'min:3', 'max:100', 'unique:products,print_title'],
 			'category_id' => ['required', 'integer', 'exists:categories,id'],
 			'price' => ['required', 'integer', 'min:1000'],
 			'discount' => ['nullable', 'integer', 'min:1000'],
