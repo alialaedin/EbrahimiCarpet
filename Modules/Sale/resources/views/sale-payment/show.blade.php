@@ -90,11 +90,11 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> جمع پرداخت شده ها (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} </h3>
+                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} </h3>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-danger-transparent my-auto float-left">
+              <div class="icon1 bg-success-transparent my-auto float-left">
                 <i class="fa fa-money"></i>
               </div>
             </div>
@@ -109,11 +109,11 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($customer->getRemainingAmount()) }}  </h3>
+                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($customer->getRemainingAmount()) }}  </h3>
               </div>
             </div>
             <div class="col-3">
-              <div class="icon1 bg-success-transparent my-auto float-left">
+              <div class="icon1 bg-danger-transparent my-auto float-left">
                 <i class="fa fa-money"></i>
               </div>
             </div>
@@ -169,7 +169,12 @@
                       <i class="fa fa-book" ></i>
                     </button>
                     @can('edit sale_payments')
-                      <x-core::edit-button route="admin.sale-payments.edit" :model="$payment"/>
+                      <button
+                        data-target="#editSalePaymentModal-{{$payment->id}}"
+                        class="btn btn-sm btn-icon btn-warning text-white"
+                        data-toggle="modal">
+                        <i class="fa fa-pencil" ></i>
+                      </button>
                     @endcan
                     @can('delete sale_payments')
                       <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
@@ -246,7 +251,12 @@
                       <i class="fa fa-book" ></i>
                     </button>
                     @can('edit sale_payments')
-                      <x-core::edit-button route="admin.sale-payments.edit" :model="$payment"/>
+                      <button
+                        data-target="#editSalePaymentModal-{{$payment->id}}"
+                        class="btn btn-sm btn-icon btn-warning text-white"
+                        data-toggle="modal">
+                        <i class="fa fa-pencil" ></i>
+                      </button>
                     @endcan
                     @can('delete sale_payments')
                       <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
@@ -323,7 +333,12 @@
                       <i class="fa fa-book" ></i>
                     </button>
                     @can('edit sale_payments')
-                      <x-core::edit-button route="admin.sale-payments.edit" :model="$payment"/>
+                      <button
+                        data-target="#editSalePaymentModal-{{$payment->id}}"
+                        class="btn btn-sm btn-icon btn-warning text-white"
+                        data-toggle="modal">
+                        <i class="fa fa-pencil" ></i>
+                      </button>
                     @endcan
                     @can('delete sale_payments')
                       <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
@@ -345,9 +360,17 @@
     </div>
   </div>
   @include('payment::_show-description-modal')
+  @include('sale::sale-payment.edit-modal')
 @endsection
 
 @section('scripts')
+
+  <x-core::date-input-script textInputId="installment_payment_date_show" dateInputId="installment_payment_date_hidden"/>
+  <x-core::date-input-script textInputId="installment_due_date_show" dateInputId="installment_due_date_hidden"/>
+  <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/>
+  <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
+  <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
+
   <script>
     function showPaymentDescriptionModal (description) {
       let modal = $('#showDescriptionModal');

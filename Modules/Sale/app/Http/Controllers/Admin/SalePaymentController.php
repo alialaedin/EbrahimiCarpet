@@ -3,12 +3,14 @@
 namespace Modules\Sale\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Customer\Models\Customer;
 use Modules\Sale\Http\Requests\Admin\SalePayment\SalePaymentStoreRequest;
@@ -38,7 +40,6 @@ class SalePaymentController extends Controller implements HasMiddleware
     $toDueDate = \request('to_due_date');
 
     $payments = SalePayment::query()
-      ->select('id', 'customer_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status')
       ->when($customerId, fn(Builder $query) => $query->where('supplier_id', $customerId))
       ->when($type, fn(Builder $query) => $query->where('type', $type))
       ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
@@ -68,7 +69,7 @@ class SalePaymentController extends Controller implements HasMiddleware
     $installmentPayments = $salePayments->where('type', '=','installment');
     $chequePayments = $salePayments->where('type', '=','cheque');
 
-    return view('sale::sale-payment.show', compact(['customer', 'installmentPayments', 'cashPayments', 'chequePayments']));
+    return view('sale::sale-payment.show', compact(['customer', 'salePayments', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }
 
   public function create(Customer $customer): View
@@ -78,14 +79,48 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function store(SalePaymentStoreRequest $request): RedirectResponse
   {
-    $inputs = $this->getFormInputs($request);
+    $payType = $request->input('type');
+    $customer = $request->input('customer');
+    $inputs = [];
 
-    if ($request->hasFile('image') && $request->file('image')->isValid()) {
-      $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
+    if ($payType === SalePayment::TYPE_CASH) {
+      if ($request->hasFile('image') && $request->file('image')->isValid()) {
+        $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
+      }
+      $inputs['type'] = SalePayment::TYPE_CASH;
+      $inputs['customer_id'] = $customer->id;
+      $inputs['amount'] = $request->input('cash_amount');
+      $inputs['payment_date'] = $request->input('cash_payment_date');
     }
 
-    $customer = $request->input('customer');
-    $customer->payments()->create($inputs);
+    elseif ($payType === SalePayment::TYPE_CHEQUE) {
+      $inputs['type'] = SalePayment::TYPE_CHEQUE;
+      $inputs['customer_id'] = $customer->id;
+      $inputs['amount'] = $request->input('cheque_amount');
+      $inputs['cheque_serial'] = $request->input('cheque_serial');
+      $inputs['cheque_holder'] = $request->input('cheque_holder');
+      $inputs['bank_name'] = $request->input('bank_name');
+      $inputs['pay_to'] = $request->input('pay_to');
+      $inputs['payment_date'] = $request->input('cheque_payment_date');
+      $inputs['due_date'] = $request->input('cheque_due_date');
+      $inputs['is_mine'] = $request->input('is_mine');
+    }
+
+    elseif ($payType === SalePayment::TYPE_INSTALLMENT) {
+      $payDate = Carbon::parse($request->input('installment_start_date'));
+      for ($i = 1; $i <= $request->input('number_of_installments'); $i++) {
+
+        $inputs[] = [
+          'type' => SalePayment::TYPE_INSTALLMENT,
+          'customer_id' => $customer->id,
+          'amount' => $request->input('installment_amount'),
+          'due_date' => $payDate->copy()->toDateString()
+        ];
+
+        $payDate->addMonth();
+      }
+    }
+    DB::table('sale_payments')->insert($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
     return to_route('admin.sale-payments.show', $customer);
@@ -123,7 +158,7 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function destroyImage(SalePayment $salePayment): RedirectResponse
   {
-    Storage::disk('public')->delete($payment->image);
+    Storage::disk('public')->delete($salePayment->image);
     $salePayment->image = null;
     $salePayment->save();
     toastr()->success("عکس با موفقیت حذف شد.");
@@ -131,15 +166,4 @@ class SalePaymentController extends Controller implements HasMiddleware
     return redirect()->back();
   }
 
-  private function getFormInputs(Request $request): array
-  {
-    return [
-      'amount' => $request->input('amount'),
-      'status' => $request->input('status'),
-      'type' => $request->input('type'),
-      'payment_date' => $request->input('payment_date'),
-      'due_date' => $request->input('due_date'),
-      'description' => $request->input('description'),
-    ];
-  }
 }

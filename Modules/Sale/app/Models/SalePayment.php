@@ -9,11 +9,20 @@ use Spatie\Activitylog\LogOptions;
 
 class SalePayment extends BaseModel
 {
+  public const TYPE_CASH = 'cash';
+  public const TYPE_INSTALLMENT = 'installment';
+  public const TYPE_CHEQUE = 'cheque';
+
   protected $fillable = [
     'customer_id',
     'amount',
     'type',
     'image',
+    'cheque_serial',
+    'bank_name',
+    'cheque_holder',
+    'pay_to',
+    'is_mine',
     'payment_date',
     'due_date',
     'description',
