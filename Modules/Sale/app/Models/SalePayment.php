@@ -54,7 +54,7 @@ class SalePayment extends BaseModel
   {
     $paymentDate = $this->attributes['payment_date'];
 
-    return $paymentDate ? verta($paymentDate)->formatDate() : '-';
+    return $paymentDate ? verta($paymentDate)->format('Y/m/d') : '-';
   }
 
 }

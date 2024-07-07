@@ -1,6 +1,6 @@
 @foreach ($salePayments as $payment)
   <div class="modal fade" id="editSalePaymentModal-{{ $payment->id }}" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="margin-top: 15vh;">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
           <p class="modal-title" style="font-size: 20px;">ویرایش پرداختی - کد {{ $payment->id }}</p><button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>

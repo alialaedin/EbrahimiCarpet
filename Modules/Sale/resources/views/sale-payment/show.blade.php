@@ -184,10 +184,6 @@
               @empty
                 <x-core::data-not-found-alert :colspan="6"/>
               @endforelse
-              <tr>
-                <td class="text-center" colspan="1">جمع کل</td>
-                <td class="text-center" colspan="1"> {{ number_format($cashPayments->sum('amount')) }} </td>
-              </tr>
               </tbody>
             </table>
           </div>
@@ -266,10 +262,6 @@
               @empty
                 <x-core::data-not-found-alert :colspan="8"/>
               @endforelse
-              <tr>
-                <td class="text-center" colspan="1">جمع کل</td>
-                <td class="text-center" colspan="1"> {{ number_format($installmentPayments->sum('amount')) }} </td>
-              </tr>
               </tbody>
             </table>
           </div>
@@ -290,12 +282,16 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
+                <th class="text-center">سریال</th>
+                <th class="text-center">صاحب چک</th>
+                <th class="text-center">بانک</th>
+                <th class="text-center">در وجه</th>
+                <th class="text-center">مالک چک</th>
                 <th class="text-center">مبلغ (ریال)</th>
+                <th class="text-center">تاریخ سررسید</th>
                 <th class="text-center">تاریخ پرداخت</th>
                 <th class="text-center">عکس رسید</th>
-                <th class="text-center">تاریخ سررسید</th>
                 <th class="text-center">وضعیت</th>
-                <th class="text-center">تاریخ ثبت</th>
                 <th class="text-center">عملیات</th>
               </tr>
               </thead>
@@ -303,7 +299,13 @@
               @forelse ($chequePayments as $payment)
                 <tr>
                   <td class="text-center">{{ $loop->iteration }}</td>
+                  <td class="text-center">{{ $payment->cheque_serial }}</td>
+                  <td class="text-center">{{ $payment->cheque_holder }}</td>
+                  <td class="text-center">{{ $payment->bank_name }}</td>
+                  <td class="text-center">{{ $payment->pay_to }}</td>
+                  <td class="text-center">{{ $payment->is_mine }}</td>
                   <td class="text-center">{{ number_format($payment->amount) }}</td>
+                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }} </td>
                   <td class="text-center">{{ $payment->getPaymentDate() }}</td>
                   <td class="text-center m-0 p-0">
                     @if ($payment->image)
@@ -316,14 +318,12 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->due_date) </td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
                       text="{{ $payment->status ? 'پاس شده' : 'پاس نشده' }}"
                     />
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->created_at) </td>
                   <td class="text-center">
                     <button
                       class="btn btn-sm btn-icon btn-primary"
@@ -348,10 +348,6 @@
               @empty
                 <x-core::data-not-found-alert :colspan="8"/>
               @endforelse
-              <tr>
-                <td class="text-center" colspan="1">جمع کل</td>
-                <td class="text-center" colspan="1"> {{ number_format($chequePayments->sum('amount')) }} </td>
-              </tr>
               </tbody>
             </table>
           </div>
@@ -359,7 +355,7 @@
       </div>
     </div>
   </div>
-  @include('payment::_show-description-modal')
+  @include('sale::sale-payment._show-description-modal')
   @include('sale::sale-payment.edit-modal')
 @endsection
 
