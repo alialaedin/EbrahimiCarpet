@@ -72,7 +72,7 @@
         <div>
           <figure class="figure w-100 h-100 text-center m-0">
             <a target="blank" href="{{ Storage::url($product->image) }}">
-              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 480px;" alt="{{ $product->title }}"/>
+              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 470px;" alt="{{ $product->title }}"/>
             </a>
           </figure>
         </div>
