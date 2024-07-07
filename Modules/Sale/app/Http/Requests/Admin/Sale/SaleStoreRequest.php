@@ -4,6 +4,7 @@ namespace Modules\Sale\Http\Requests\Admin\Sale;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
 
@@ -35,6 +36,8 @@ class SaleStoreRequest extends FormRequest
     return [
       'customer_id' => ['required', 'integer', 'exists:customers,id'],
       'sold_at' => ['required', 'date'],
+      'employee_id' => ['required', 'integer', Rule::exists('employees', 'id')],
+      'discount_for' => ['nullable', 'string'],
       'discount' => ['nullable', 'integer', 'min:1000'],
       'products' => ['required', 'array'],
       'products.*.id' => ['required', 'integer', 'exists:products,id'],
@@ -49,6 +52,9 @@ class SaleStoreRequest extends FormRequest
   {
     if ($this->input('sold_at') > Carbon::now()) {
       throw Helpers::makeWebValidationException('تاریخ خرید نمی تواند از تاریخ امروز بزرگ تر باشد.', 'sold_at');
+    }
+    if ($this->filled('discount') && $this->isNotFilled('discount_for')) {
+      throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
     }
 
     foreach ($this->input('products') as $index => $product) {

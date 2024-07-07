@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Customer\Models\Customer;
+use Modules\Employee\Models\Employee;
 use Modules\Store\Models\StoreTransaction;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -19,7 +20,9 @@ class Sale extends BaseModel
   protected $fillable = [
     'customer_id',
     'sold_at',
-    'discount'
+    'discount',
+    'employee_id',
+    'discount_for'
   ];
 
   public function getActivitylogOptions(): LogOptions
@@ -60,6 +63,11 @@ class Sale extends BaseModel
   public function customer(): BelongsTo
   {
     return $this->belongsTo(Customer::class);
+  }
+
+  public function employee(): BelongsTo
+  {
+    return $this->belongsTo(Employee::class);
   }
 
   public function items(): HasMany

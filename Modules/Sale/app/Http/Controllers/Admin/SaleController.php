@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Customer\Models\Customer;
+use Modules\Employee\Models\Employee;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Sale\Http\Requests\Admin\Sale\SaleStoreRequest;
@@ -58,9 +59,10 @@ class SaleController extends Controller implements HasMiddleware
   public function create(): View
   {
     $customers = $this->getCustomers();
+    $employees = $this->getEmployees();
     $categories = $this->getCategories();
 
-    return view('sale::sale.create', compact(['customers', 'categories']));
+    return view('sale::sale.create', compact(['customers', 'categories', 'employees']));
   }
 
   public function store(SaleStoreRequest $request): RedirectResponse
@@ -111,8 +113,9 @@ class SaleController extends Controller implements HasMiddleware
   public function edit(Sale $sale): View|Application
   {
     $customers = $this->getCustomers();
+    $employees = $this->getEmployees();
 
-    return view('sale::sale.edit', compact(['customers', 'sale']));
+    return view('sale::sale.edit', compact(['customers', 'sale', 'employees']));
   }
 
   public function update(SaleUpdateRequest $request, Sale $sale): RedirectResponse
@@ -161,6 +164,14 @@ class SaleController extends Controller implements HasMiddleware
   {
     return Customer::query()
       ->where('status', 1)
+      ->select('id', 'name', 'mobile')
+      ->orderByDesc('name')
+      ->get();
+  }
+
+  private function getEmployees(): Collection|array
+  {
+    return Employee::query()
       ->select('id', 'name', 'mobile')
       ->orderByDesc('name')
       ->get();

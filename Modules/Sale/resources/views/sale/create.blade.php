@@ -36,6 +36,18 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
+              <label for="employee_id" class="control-label">پرسنل ارجاع :<span class="text-danger">&starf;</span></label>
+              <select name="employee_id" id="employee_id" class="form-control select2" required>
+                <option value="" class="text-muted">-- پرسنل را انخاب کنید --</option>
+                @foreach ($employees as $employee)
+                  <option value="{{ $employee->id }}" @selected(old("employee_id") == $employee->id)>{{ $employee->name .' - '. $employee->mobile }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="employee_id" />
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
               <label for="sold_date_show" class="control-label">تاریخ فروش :<span class="text-danger">&starf;</span></label>
               <input class="form-control fc-datepicker" id="sold_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
               <input name="sold_at" id="sold_date" type="hidden" value="{{ old("sold_at") }}" required/>
@@ -47,6 +59,13 @@
               <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
               <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount') }}" min="1000">
               <x-core::show-validation-error name="discount" />
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="form-group">
+              <label for="discount_for" class="control-label"> بابت تخفیف : </label>
+              <input type="text" id="discount_for" class="form-control" name="discount_for" placeholder="بابت تخفیف را وارد کنید" value="{{ old('discount_for') }}">
+              <x-core::show-validation-error name="discount_for" />
             </div>
           </div>
         </div>
