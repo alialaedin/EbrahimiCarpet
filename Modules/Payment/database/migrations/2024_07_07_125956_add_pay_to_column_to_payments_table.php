@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sale_payments', function (Blueprint $table) {
-          $table->boolean('is_mine')->nullable();
+        Schema::table('payments', function (Blueprint $table) {
+          $table->string('pay_to')->nullable();
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sale_payments', function (Blueprint $table) {
+        Schema::table('payments', function (Blueprint $table) {
 
         });
     }
