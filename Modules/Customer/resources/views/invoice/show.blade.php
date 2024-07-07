@@ -140,47 +140,93 @@
         </table>
       </div>
 
-      <div style="margin-top: 100px;">
-        <p class="d-block text-center fs-22 font-weight-bold">پرداختی ها نقد و چکی</p>
-        <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
-          <thead style="background-color: #EAEAEA">
-          <tr>
-            <th class="text-center border-top">ردیف</th>
-            <th class="text-center border-top">نوع پراخت</th>
-            <th class="text-center border-top">تاریخ پرداخت</th>
-            <th class="text-center border-top">تاریخ سررسید</th>
-            <th class="text-center border-top">وضعیت</th>
-            <th class="text-center border-top">تاریخ ثبت</th>
-            <th class="text-center border-top">مبلغ (ریال)</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          @php $totalPayments = 0; @endphp
-
-          @foreach($customer->payments->where('type', '!==', 'installment') as $payment)
+      @if($customer->payments->where('type', '===', 'cash')->isNotEmpty())
+        <div style="margin-top: 70px;">
+          <p class="d-block text-center fs-22 font-weight-bold">نقدی ها</p>
+          <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
+            <thead style="background-color: #EAEAEA">
             <tr>
-              <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-              <td class="text-center">{{ $payment->getType() }}</td>
-              <td class="text-center">{{ $payment->getPaymentDate() }}</td>
-              <td class="text-center"> @jalaliDate($payment->due_date) </td>
-              <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
-              <td class="text-center"> @jalaliDate($payment->created_at) </td>
-              <td class="text-center">{{ number_format($payment->amount) }}</td>
+              <th class="text-center border-top">ردیف</th>
+              <th class="text-center border-top">تاریخ پرداخت</th>
+              <th class="text-center border-top">وضعیت</th>
+              <th class="text-center border-top">مبلغ (ریال)</th>
             </tr>
+            </thead>
+            <tbody>
+            @foreach($customer->payments->where('type', '===', 'cash') as $payment)
+              <tr>
+                <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
+                <td class="text-center">{{ number_format($payment->amount) }}</td>
+              </tr>
+            @endforeach
+            </tbody>
+          </table>
+        </div>
+      @endif
 
-            @php $totalPayments += $payment->amount; @endphp
+      @if($customer->payments->where('type', '===', 'cheque')->isNotEmpty())
+        <div style="margin-top: 70px;">
+          <p class="d-block text-center fs-22 font-weight-bold">چک ها</p>
+          <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
+            <thead style="background-color: #EAEAEA">
+            <tr>
+              <th class="text-center border-top">ردیف</th>
+              <th class="text-center border-top">سریال چک</th>
+              <th class="text-center border-top">نام بانک</th>
+              <th class="text-center border-top">صاحب چک</th>
+              <th class="text-center border-top">موعد چک</th>
+              <th class="text-center border-top">تاریخ پرداخت</th>
+              <th class="text-center border-top">وضعیت</th>
+              <th class="text-center border-top">مبلغ (ریال)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($customer->payments->where('type', '===', 'cheque') as $payment)
+              <tr>
+                <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                <td class="text-center">{{ $payment->cheque_serial }}</td>
+                <td class="text-center">{{ $payment->bank_name }}</td>
+                <td class="text-center">{{ $payment->cheque_holder }}</td>
+                <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
+                <td class="text-center">{{ number_format($payment->amount) }}</td>
+              </tr>
+            @endforeach
+            </tbody>
+          </table>
+        </div>
+      @endif
 
-          @endforeach
-
-          <tr class="bg-light">
-            <td class="text-center fs-20 font-weight-bold" colspan="6"> جمع کل </td>
-            <td class="text-center fs-20" colspan="1"> {{ number_format($totalPayments) }} </td>
-          </tr>
-
-          </tbody>
-        </table>
-      </div>
+      @if($customer->payments->where('type', '===', 'installment')->isNotEmpty())
+        <div style="margin-top: 70px;">
+          <p class="d-block text-center fs-22 font-weight-bold">قسط ها</p>
+          <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
+            <thead style="background-color: #EAEAEA">
+            <tr>
+              <th class="text-center border-top">ردیف</th>
+              <th class="text-center border-top">تاریخ سررسید</th>
+              <th class="text-center border-top">تاریخ پرداخت</th>
+              <th class="text-center border-top">وضعیت</th>
+              <th class="text-center border-top">مبلغ (ریال)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($customer->payments->where('type', '!==', 'installment') as $payment)
+              <tr>
+                <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                <td class="text-center"> @jalaliDate($payment->payment_date) </td>
+                <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
+                <td class="text-center">{{ number_format($payment->amount) }}</td>
+              </tr>
+            @endforeach
+            </tbody>
+          </table>
+        </div>
+      @endif
 
       <div style="margin-top: 40px;">
 
