@@ -20,7 +20,7 @@ class SaleUpdateRequest extends FormRequest
   {
     return [
       'sold_at' => ['required', 'date'],
-      'discount' => ['nullable', 'integer', 'min:1000'],
+      'discount' => ['nullable', 'integer'],
       'employee_id' => ['required', 'integer', Rule::exists('employees', 'id')],
       'discount_for' => ['nullable', 'string'],
     ];
@@ -33,6 +33,9 @@ class SaleUpdateRequest extends FormRequest
   {
     if ($this->filled('discount') && $this->isNotFilled('discount_for')) {
       throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
+    }
+    if ($this->input('discount') > 0 && $this->input('discount') < 10000) {
+      throw Helpers::makeWebValidationException('تخفیف باید بیشتر از 10000 ریال باشذ!.', 'discount');
     }
   }
 
