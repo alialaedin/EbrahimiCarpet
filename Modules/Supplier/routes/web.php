@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Supplier\Http\Controllers\Admin\SupplierController;
+use Modules\Supplier\Http\Controllers\Admin\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,5 @@ use Modules\Supplier\Http\Controllers\Admin\SupplierController;
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::resource('/suppliers', SupplierController::class);
+    Route::apiResource('/accounts', AccountController::class);
 });

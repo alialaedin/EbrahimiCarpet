@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Modules\Supplier\Http\Requests\Admin\SupplierStoreRequest;
-use Modules\Supplier\Http\Requests\Admin\SupplierUpdateRequest;
+use Modules\Supplier\Http\Requests\Admin\Supplier\SupplierStoreRequest;
+use Modules\Supplier\Http\Requests\Admin\Supplier\SupplierUpdateRequest;
 use Modules\Supplier\Models\Supplier;
 
 class   SupplierController extends Controller implements HasMiddleware
@@ -43,7 +43,7 @@ class   SupplierController extends Controller implements HasMiddleware
 
 		$totalSuppliers =  $suppliers->total();
 
-		return view('supplier::index', compact('suppliers', 'totalSuppliers'));
+		return view('supplier::supplier.index', compact('suppliers', 'totalSuppliers'));
 	}
 
 	public function show(Supplier $supplier): View
@@ -54,7 +54,7 @@ class   SupplierController extends Controller implements HasMiddleware
 		$payments = $supplier->payments()->latest('id')->take(5)->get();
 		$purchases = $supplier->purchases()->latest('id')->take(5)->get();
 
-		return view('supplier::show', compact(
+		return view('supplier::supplier.show', compact(
 			'supplier',
 			'numberOfPurchases',
 			'numberOfPayments',
@@ -65,7 +65,7 @@ class   SupplierController extends Controller implements HasMiddleware
 
 	public function create(): View
   {
-		return view('supplier::create');
+		return view('supplier::supplier.create');
 	}
 
 	public function store(SupplierStoreRequest $request): RedirectResponse
@@ -78,7 +78,7 @@ class   SupplierController extends Controller implements HasMiddleware
 
 	public function edit(Supplier $supplier): View
 	{
-		return view('supplier::edit', compact('supplier'));
+		return view('supplier::supplier.edit', compact('supplier'));
 	}
 
 	public function update(SupplierUpdateRequest $request, Supplier $supplier): RedirectResponse

@@ -91,7 +91,7 @@ class Supplier extends BaseModel
 
   public function isDeletable(): bool
   {
-    return $this->payments->isEmpty() && $this->purchases->isEmpty();
+    return $this->payments->isEmpty() && $this->purchases->isEmpty() && $this->accounts->isEmpty();
   }
 
   // Relations
@@ -103,5 +103,10 @@ class Supplier extends BaseModel
   public function payments(): HasMany
   {
     return $this->hasMany(Payment::class);
+  }
+
+  public function accounts(): HasMany
+  {
+    return $this->hasMany(Account::class);
   }
 }
