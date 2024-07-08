@@ -83,4 +83,11 @@ class Payment extends BaseModel
 		return static::TYPES[$this->attributes['type']];
 	}
 
+  public function getPaymentDate()
+  {
+    $paymentDate = $this->attributes['payment_date'];
+
+    return $paymentDate ? verta($paymentDate)->format('Y/m/d') : '-';
+  }
+
 }
