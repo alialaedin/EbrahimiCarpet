@@ -345,7 +345,7 @@
                   </td>
                 </tr>
               @empty
-                <x-core::data-not-found-alert :colspan="8"/>
+                <x-core::data-not-found-alert :colspan="12"/>
               @endforelse
               </tbody>
             </table>
