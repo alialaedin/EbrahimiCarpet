@@ -15,14 +15,22 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Supplier extends BaseModel
 {
-	use HasFactory, LogsActivity;
+  use HasFactory, LogsActivity;
 
-	protected $fillable = [
-		'name',
-		'mobile',
-		'address',
-		'status'
-	];
+  public const TYPE_LEGAL = 'legal';
+  public const TYPE_REAL = 'real';
+
+  protected $fillable = [
+    'name',
+    'mobile',
+    'address',
+    'status',
+    'telephone',
+    'national_code',
+    'postal_code',
+    'type',
+    'description'
+  ];
 
   protected static function newFactory(): SupplierFactory
   {
@@ -30,45 +38,46 @@ class Supplier extends BaseModel
   }
 
   public function getActivitylogOptions(): LogOptions
-	{
-		return LogOptions::defaults()
-			->logAll()
-			->setDescriptionForEvent(function (string $eventName) {
+  {
+    return LogOptions::defaults()
+      ->logAll()
+      ->setDescriptionForEvent(function (string $eventName) {
         return "تامین کننده با شناسه عددی $this->id با نام $this->name را " . config('core.events.' . $eventName);
-			});
-	}
+      });
+  }
 
   protected static function booted(): void
   {
     static::deleting(function (Supplier $supplier) {
       if ($supplier->purchases->isNotEmpty()) {
         throw new ModelCannotBeDeletedException('از این تامین کننده خریدی ثبت شده و قابل حذف نمی باشد.');
-      }elseif ($supplier->payments->isNotEmpty()) {
+      } elseif ($supplier->payments->isNotEmpty()) {
         throw new ModelCannotBeDeletedException('برای این تامین کننده پرداختی ای ثبت شده و قابل حذف نمی باشد.');
       }
     });
   }
-	// Functions
-	public function calcTotalPurchaseAmount(): int
-	{
-		$totalAmount = 0;
 
-		foreach ($this->purchases as $purchase) {
-			$totalAmount += $purchase->getTotalAmountWithDiscount();
-		}
+  // Functions
+  public function calcTotalPurchaseAmount(): int
+  {
+    $totalAmount = 0;
 
-		return $totalAmount;
-	}
+    foreach ($this->purchases as $purchase) {
+      $totalAmount += $purchase->getTotalAmountWithDiscount();
+    }
 
-	public function calcTotalPaymentAmount(): int|null
-	{
-		return $this->payments->whereNotNull('payment_date')->sum('amount');
-	}
+    return $totalAmount;
+  }
 
-	public function getRemainingAmount(): int
-	{
-		return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
-	}
+  public function calcTotalPaymentAmount(): int|null
+  {
+    return $this->payments->whereNotNull('payment_date')->sum('amount');
+  }
+
+  public function getRemainingAmount(): int
+  {
+    return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
+  }
 
   public function countPurchases(): int
   {
@@ -85,14 +94,14 @@ class Supplier extends BaseModel
     return $this->payments->isEmpty() && $this->purchases->isEmpty();
   }
 
-	// Relations
-	public function purchases(): HasMany
-	{
-		return $this->hasMany(Purchase::class);
-	}
+  // Relations
+  public function purchases(): HasMany
+  {
+    return $this->hasMany(Purchase::class);
+  }
 
-	public function payments(): HasMany
-	{
-		return $this->hasMany(Payment::class);
-	}
+  public function payments(): HasMany
+  {
+    return $this->hasMany(Payment::class);
+  }
 }

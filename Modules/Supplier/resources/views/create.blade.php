@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+  @extends('admin.layouts.master')
 @section('content')
   <div class="page-header">
     <ol class="breadcrumb align-items-center">
@@ -48,23 +48,98 @@
                 placeholder="شماره موبایل را وارد کنید"
                 value="{{ old('mobile') }}"
                 required
+                maxlength="11"
               />
               <x-core::show-validation-error name="mobile" />
             </div>
           </div>
-          <div class="col-12">
+          <div class="col-md-6">
             <div class="form-group">
-              <label for="address" class="control-label">محل سکونت:<span class="text-danger">&starf;</span></label>
+              <label for="telephone" class="control-label"> تلفن ثابت: </label>
+              <input
+                type="text"
+                id="telephone"
+                class="form-control"
+                name="telephone"
+                placeholder="تلفن ثابت را وارد کنید"
+                value="{{ old('telephone') }}"
+                maxlength="11"
+              />
+              <x-core::show-validation-error name="telephone" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="national_code" class="control-label"> کد ملی: <span class="text-danger">&starf;</span></label>
+              <input
+                type="text"
+                id="national_code"
+                class="form-control"
+                name="national_code"
+                placeholder="کد ملی را وارد کنید"
+                value="{{ old('national_code') }}"
+                required
+                maxlength="10"
+              />
+              <x-core::show-validation-error name="national_code" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="postal_code" class="control-label"> کد پستی: <span class="text-danger">&starf;</span></label>
+              <input
+                type="text"
+                id="postal_code"
+                class="form-control"
+                name="postal_code"
+                placeholder="کد پستی را وارد کنید"
+                value="{{ old('postal_code') }}"
+                required
+                maxlength="10"
+              />
+              <x-core::show-validation-error name="postal_code" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="type" class="control-label"> نوع تامین کننده: <span class="text-danger">&starf;</span></label>
+              <select name="type" id="type" class="form-control">
+                <option value="" class="text-muted">انتخاب نوع تامین کننده</option>
+                @foreach (config('supplier.types') as $name => $label)
+                  <option value="{{ $name }}" @selected(old('type') == $name)>{{ $label }}</option>
+                @endforeach
+              </select>
+              <x-core::show-validation-error name="type" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
               <textarea
                 name="address"
                 id="address"
                 class="form-control"
                 rows="3"
-                placeholder="آدرس خود را وارد کنید"
+                placeholder="آدرس تامین کننده را وارد کنید"
                 required>
                 {{ old('address') }}
               </textarea>
               <x-core::show-validation-error name="address" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="description" class="control-label">توضیحات:</label>
+              <textarea
+                name="description"
+                id="description"
+                class="form-control"
+                rows="3"
+                placeholder="توضیحات خود را وارد کنید"
+                required>
+                {{ old('description') }}
+              </textarea>
+              <x-core::show-validation-error name="description" />
             </div>
           </div>
           <div class="col-12">

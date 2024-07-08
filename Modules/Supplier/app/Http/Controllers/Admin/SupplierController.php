@@ -28,12 +28,14 @@ class   SupplierController extends Controller implements HasMiddleware
   {
 		$name = request('full_name');
 		$mobile = request('mobile');
+		$type = request('type');
 		$status = request('status');
 
 		$suppliers = Supplier::query()
-			->select('id', 'name', 'mobile', 'status', 'created_at')
+			->select('id', 'name', 'mobile', 'status', 'national_code', 'type', 'postal_code')
 			->when($name, fn (Builder $query) => $query->where('name', 'like', "%$name%"))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
+			->when($type, fn (Builder $query) => $query->where('type', $type))
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
 			->latest('id')
 			->paginate(15)

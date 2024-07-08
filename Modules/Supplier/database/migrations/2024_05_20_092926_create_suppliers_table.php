@@ -15,7 +15,12 @@ return new class extends Migration
 			$table->id();
 			$table->string('name', 191);
 			$table->string('mobile', 20)->unique();
+			$table->string('telephone', 20)->unique()->nullable();
 			$table->text('address');
+			$table->string('national_code', 20);
+			$table->string('postal_code', 20);
+      $table->enum('type', ['legal', 'real']);
+      $table->text('description');
 			$table->boolean('status');
 			$table->timestamps();
 		});

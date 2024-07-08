@@ -3,6 +3,7 @@
 namespace Modules\Supplier\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\Core\Rules\IranMobile;
 
 class SupplierStoreRequest extends FormRequest
@@ -15,6 +16,11 @@ class SupplierStoreRequest extends FormRequest
 		return [
 			'name' => ['required', 'string', 'min:3', 'max:50'],
 			'mobile' => ['required', 'numeric', 'unique:suppliers,mobile', 'digits:11', new IranMobile],
+			'telephone' => ['nullable', 'numeric', 'unique:suppliers,telephone', 'digits:11'],
+			'national_code' => ['required', 'numeric', 'unique:suppliers,national_code', 'digits:10'],
+			'postal_code' => ['required', 'numeric', 'unique:suppliers,postal_code', 'digits:10'],
+			'description' => ['nullable', 'string'],
+			'type' => ['required', 'in:legal,real'],
 			'address' => ['required', 'string'],
 			'status' => ['nullable', 'in:1']
 		];
@@ -27,7 +33,7 @@ class SupplierStoreRequest extends FormRequest
 
 		return $validatedData;
 	}
-	
+
 	public function authorize(): bool
 	{
 		return true;

@@ -29,6 +29,9 @@
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام و نام خانوادگی</th>
                 <th class="text-center">شماره موبایل</th>
+                <th class="text-center">کد ملی</th>
+                <th class="text-center">نوع</th>
+                <th class="text-center">کد پستی</th>
                 <th class="text-center">وضعیت</th>
                 <th class="text-center">تاریخ ثبت</th>
                 <th class="text-center">عملیات</th>
@@ -40,6 +43,9 @@
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $supplier->name }}</td>
                   <td class="text-center">{{ $supplier->mobile }}</td>
+                  <td class="text-center">{{ $supplier->national_code }}</td>
+                  <td class="text-center">{{ config('supplier.types.'.$supplier->type) }}</td>
+                  <td class="text-center">{{ $supplier->postal_code }}</td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $supplier->status ? 'success' : 'danger' }}"
@@ -72,7 +78,7 @@
                   </td>
                 </tr>
               @empty
-                <x-core::data-not-found-alert :colspan="6"/>
+                <x-core::data-not-found-alert :colspan="9"/>
               @endforelse
               </tbody>
             </table>
