@@ -12,7 +12,7 @@ class SaleUpdateRequest extends FormRequest
   public function prepareForValidation(): void
   {
     $this->merge([
-      'discount' => $this->filled('discount') ? str_replace(',', '', $discount) : null,
+      'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
     ]);
   }
 
