@@ -27,6 +27,7 @@
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام مشتری</th>
                 <th class="text-center">شماره موبایل</th>
+                <th class="text-center">پرسنل ارجاع</th>
                 <th class="text-center">مبلغ خرید (ریال)</th>
                 <th class="text-center">تخفیف کلی (ریال)</th>
                 <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
@@ -44,6 +45,7 @@
                     </a>
                   </td>
                   <td class="text-center">{{ $sale->customer->mobile }}</td>
+                  <td class="text-center">{{ $sale->employee->name ?? null }}</td>
                   <td class="text-center">{{ number_format($sale->getTotalAmount()) }}</td>
                   <td class="text-center">{{ number_format($sale->discount) }}</td>
                   <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>

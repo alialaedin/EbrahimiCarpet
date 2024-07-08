@@ -46,41 +46,35 @@
   </div>
   <div class="card">
     <div class="card-header border-0">
-      <p class="card-title">اطلاعات مشتری</p>
-      <x-core::card-options/>
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-xl-4 col-md-6 col-12 fs-16 my-1">
-          <span><strong>شناسه مشتری : </strong>{{ $sale->customer->id }}</span>
+        <div class="col-lg-6">
+          <p class="header fs-20 p-2 pr-2">اطلاعات مشتری</p>
+          <ul class="list-group">
+            <li class="list-group-item"><strong>کد مشتری: </strong> {{ $sale->customer->id }} </li>
+            <li class="list-group-item">
+              <strong>نام و نام خانوادگی مشتری: </strong>
+              <a href="{{ route('admin.customers.show', $sale->customer) }}">{{ $sale->customer->name }}</a>
+            </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $sale->customer->mobile }} </li>
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $sale->customer->address }} </li>
+          </ul>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span>
-            <strong>نام و نام خانوادگی : </strong>
-            <a href="{{ route('admin.customers.show', $sale->customer) }}">
-              {{ $sale->customer->name }}
-            </a>
-          </span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>شماره موبایل : </strong>{{ $sale->customer->mobile }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>تلفن ثابت : </strong>{{ $sale->customer->telephone }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span>
-            <strong>وضعیت : </strong>
-            <x-core::badge
-              type="{{ $sale->customer->status ? 'success' : 'danger' }}"
-              text="{{ $sale->customer->status ? 'فعال' : 'غیر فعال' }}"
-            />
-          </span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>آدرس : </strong>{{ $sale->customer->address }}</span>
+        <div class="col-lg-6">
+          <p class="header fs-20 p-2 pr-2">اطلاعات کارمند</p>
+          <ul class="list-group">
+            <li class="list-group-item"><strong>کد پرسنل: </strong> {{ $sale->employee->id }} </li>
+            <li class="list-group-item">
+              <strong>نام و نام خانوادگی مشتری: </strong>
+              <a href="{{ route('admin.employees.show', $sale->employee) }}">{{ $sale->employee->name }}</a>
+            </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $sale->customer->mobile }} </li>
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $sale->customer->address }} </li>
+          </ul>
         </div>
       </div>
+
     </div>
   </div>
   <div class="row">

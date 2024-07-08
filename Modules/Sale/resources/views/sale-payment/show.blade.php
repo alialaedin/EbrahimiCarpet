@@ -24,45 +24,44 @@
       </a>
     @endcan
   </div>
+
   <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">اطلاعات مشتری</p>
-      <x-core::card-options/>
-    </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>کد : </strong>{{ $customer->id }}</span>
+        <div class="col-12">
+          <p class="header fs-20 px-5">اطلاعات مشتری</p>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>نام و نام خانوادگی : </strong>{{ $customer->name }}</span>
+        <div class="col-lg-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>کد : </strong> {{ $customer->id }} </li>
+            <li class="list-group-item">
+              <strong>نام و نام خانوادگی : </strong>
+              <a href="{{ route('admin.customers.show', $customer) }}">{{ $customer->name }}</a>
+            </li>
+            <li class="list-group-item">
+              <strong>وضعیت : </strong>
+              @if ($customer->status)
+                <span class="text-success">فعال</span>
+              @else
+                <span class="text-danger">غیر فعال</span>
+              @endif
+            </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $customer->mobile }} </li>
+          </ul>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>شماره موبایل : </strong>{{ $customer->mobile }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <strong>وضعیت : </strong>
-          @if ($customer->status)
-            <span class="text-success">فعال</span>
-          @else
-            <span class="text-danger">غیر فعال</span>
-          @endif
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>تعداد خرید ها : </strong>{{ number_format($customer->countSales()) }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>تعداد پرداختی ها : </strong>{{ number_format($customer->countPayments()) }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>تاریخ ثبت : </strong> @jalaliDate($customer->created_at) </span>
-        </div>
-        <div class="col-xl-8 col-lg-6 col-12 fs-16 my-1">
-          <span><strong>محل سکونت : </strong>{{ $customer->address }}</span>
+        <div class="col-lg-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $customer->address }} </li>
+            <li class="list-group-item"><strong>تعداد خرید ها : </strong>{{ number_format($customer->countSales()) }} </li>
+            <li class="list-group-item"><strong>تعداد پرداختی ها : </strong>{{ number_format($customer->countPayments()) }} </li>
+            <li class="list-group-item"><strong>تاریخ ثبت : </strong> @jalaliDate($customer->created_at) </li>
+          </ul>
         </div>
       </div>
+
     </div>
   </div>
+
   <div class="row">
     <div class="col-xl-4 col-lg-6 col-md-12">
       <div class="card">
@@ -361,11 +360,32 @@
 
 @section('scripts')
 
-  <x-core::date-input-script textInputId="installment_payment_date_show" dateInputId="installment_payment_date_hidden"/>
-  <x-core::date-input-script textInputId="installment_due_date_show" dateInputId="installment_due_date_hidden"/>
-  <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/>
-  <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
-  <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
+@foreach ($cashPayments as $payment)
+  <x-core::date-input-script
+    textInputId="cash_payment_date_show-{{ $payment->id }}"
+    dateInputId="cash_payment_date_hidden-{{ $payment->id }}"
+  />
+@endforeach
+@foreach ($chequePayments as $payment)
+  <x-core::date-input-script
+    textInputId="cheque_due_date_show-{{ $payment->id }}"
+    dateInputId="cheque_due_date_hidden-{{ $payment->id }}"
+  />
+  <x-core::date-input-script
+    textInputId="cheque_payment_date_show-{{ $payment->id }}"
+    dateInputId="cheque_payment_date_hidden-{{ $payment->id }}"
+  />
+@endforeach
+@foreach ($installmentPayments as $payment)
+  <x-core::date-input-script
+    textInputId="installment_payment_date_show-{{ $payment->id }}"
+    dateInputId="installment_payment_date_hidden-{{ $payment->id }}"
+  />
+  <x-core::date-input-script
+    textInputId="installment_due_date_show-{{ $payment->id }}"
+    dateInputId="installment_due_date_hidden-{{ $payment->id }}"
+  />
+@endforeach
 
   <script>
     function showPaymentDescriptionModal (description) {

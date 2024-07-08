@@ -24,7 +24,7 @@
             <div class="col-12 col-md-6 col-xl-3">
               <div class="form-group">
                 <label for="customer_id">مشتری :</label>
-                <select name="customer_id" id="customer_id" class="form-control">
+                <select name="customer_id" id="customer_id" class="form-control select2">
                   <option value="" class="text-muted">انتخاب</option>
                   @foreach ($customers as $customer)
                     <option

@@ -41,11 +41,14 @@ class SaleController extends Controller implements HasMiddleware
     $toSoldAt = request('to_sold_at');
 
     $sales = Sale::query()
-      ->select('id', 'customer_id', 'sold_at', 'discount', 'created_at')
-      ->with('customer:id,name,mobile')
-      ->when($customerId, fn (Builder $query) => $query->where('customer_id', $customerId))
-      ->when($fromSoldAt, fn (Builder $query) => $query->whereDate('sold_at', '>=', $fromSoldAt))
-      ->when($toSoldAt, fn (Builder $query) => $query->whereDate('sold_at', '<=', $toSoldAt))
+      ->select('id', 'customer_id', 'sold_at', 'discount', 'employee_id', 'discount_for')
+      ->with([
+        'customer:id,name,mobile',
+        'employee:id,name,mobile'
+      ])
+      ->when($customerId, fn(Builder $query) => $query->where('customer_id', $customerId))
+      ->when($fromSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '>=', $fromSoldAt))
+      ->when($toSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '<=', $toSoldAt))
       ->latest('id')
       ->paginate()
       ->withQueryString();
@@ -67,13 +70,17 @@ class SaleController extends Controller implements HasMiddleware
 
   public function store(SaleStoreRequest $request): RedirectResponse
   {
-    $sale = Sale::query()->create($request->only('customer_id', 'sold_at', 'discount'));
+    $sale = Sale::query()->create(
+      $request->only(
+        'customer_id', 'sold_at', 'discount', 'employee_id', 'discount_for'
+      )
+    );
 
     foreach ($request->input('products') as $product) {
 
-      $thisProduct = Product::find($product['id']);
+      $thisProduct = Product::query()->find($product['id']);
 
-      SaleItem::create([
+      SaleItem::query()->create([
         'sale_id' => $sale->id,
         'product_id' => $product['id'],
         'quantity' => $product['quantity'],
@@ -100,10 +107,11 @@ class SaleController extends Controller implements HasMiddleware
   public function show(Sale $sale): View
   {
     $sale->load([
-      'customer' => fn ($query) => $query->select('id', 'name', 'mobile', 'address', 'status', 'telephone'),
-      'items' => fn ($query) => $query->latest('id'),
-      'items.product' => fn ($query) => $query->select('id', 'title', 'image', 'category_id'),
-      'items.product.category' => fn ($query) => $query->select('id', 'unit_type')
+      'customer' => fn($query) => $query->select('id', 'name', 'mobile', 'address', 'status', 'telephone'),
+      'employee' => fn($query) => $query->select('id', 'name', 'mobile'),
+      'items' => fn($query) => $query->latest('id'),
+      'items.product' => fn($query) => $query->select('id', 'title', 'image', 'category_id'),
+      'items.product.category' => fn($query) => $query->select('id', 'unit_type')
     ]);
     $categories = $this->getCategories();
 
@@ -137,9 +145,9 @@ class SaleController extends Controller implements HasMiddleware
   public function showInvoice(Sale $sale): View
   {
     $sale->load([
-      'items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
-      'items.product' => fn ($query) => $query->select(['id', 'title', 'category_id']),
-      'items.product.category' => fn ($query) => $query->select(['id', 'title', 'unit_type']),
+      'items' => fn($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
+      'items.product' => fn($query) => $query->select(['id', 'title', 'category_id']),
+      'items.product.category' => fn($query) => $query->select(['id', 'title', 'unit_type']),
     ]);
 
     return view('sale::invoice.show', compact('sale'));

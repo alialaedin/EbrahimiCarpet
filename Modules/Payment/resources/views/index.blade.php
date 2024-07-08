@@ -24,7 +24,7 @@
             <div class="col-12 col-md-6 col-xl-3">
               <div class="form-group">
                 <label for="supplier_id">تامین کننده :</label>
-                <select name="supplier_id" id="supplier_id" class="form-control">
+                <select name="supplier_id" id="supplier_id" class="form-control select2">
                   <option value="" class="text-muted">انتخاب</option>
                   @foreach ($suppliers as $supplier)
                     <option

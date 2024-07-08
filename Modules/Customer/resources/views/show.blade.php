@@ -15,7 +15,13 @@
       </li>
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-      <x-core::print-button title="صدور فاکتور"/>
+      <a
+        href="{{ route('admin.customers.show-invoice', $customer) }}"
+        class="btn btn-purple mx-1 text-white my-md-1"
+        style="padding: 4px 12px;">
+        {{ $title ?? null }}
+        <i class="fe fe-printer mr-1"></i>
+      </a>
       @can('edit customers')
         <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-warning mx-1 my-md-1">
           ویرایش مشتری

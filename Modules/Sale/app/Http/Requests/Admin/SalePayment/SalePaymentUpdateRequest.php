@@ -18,7 +18,6 @@ class SalePaymentUpdateRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'type' => ['required', 'string', 'in:cash,cheque,installment'],
       'description' => ['nullable', 'string'],
       'amount' => ['required', 'integer', 'min:1000'],
       'payment_date' => ['nullable', 'date'],
