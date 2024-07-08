@@ -25,7 +25,7 @@ class SupplierFactory extends Factory
       return [
         'name' => Faker::fullName(),
         'mobile' => Faker::mobile(),
-        'telephone' => Faker::telephone(),
+        'telephone' => '017' . $faker->numberBetween(11111111, 99999999),
         'national_code' => Faker::melliCode(),
         'postal_code' => $faker->numberBetween(1111111111, 999999999),
         'description' => Faker::paragraph(),
