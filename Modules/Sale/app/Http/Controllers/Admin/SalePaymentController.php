@@ -141,6 +141,7 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function destroy(SalePayment $salePayment): RedirectResponse
   {
+    $this->destroyImage($salePayment);
     $salePayment->delete();
     toastr()->success("پرداختی با موفقیت حذف شد.");
 

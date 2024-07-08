@@ -24,7 +24,6 @@
       </a>
     @endcan
   </div>
-
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -61,7 +60,6 @@
 
     </div>
   </div>
-
   <div class="row">
     <div class="col-xl-4 col-lg-6 col-md-12">
       <div class="card">
@@ -144,14 +142,20 @@
               <tbody>
               @forelse ($cashPayments as $payment)
                 <tr>
-                  <td class="text-center">{{ $loop->iteration }}</td>
+                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ number_format($payment->amount) }}</td>
                   <td class="text-center"> @jalaliDate($payment->payment_date) </td>
                   <td class="text-center m-0 p-0">
                     @if ($payment->image)
                       <figure class="figure my-2">
                         <a target="_blank" href="{{ Storage::url($payment->image) }}">
-                          <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
+                          <img
+                            src="{{ Storage::url($payment->image) }}"
+                            class="img-thumbnail"
+                            alt="image"
+                            width="50"
+                            style="max-height: 32px;"
+                          />
                         </a>
                       </figure>
                     @else
@@ -215,7 +219,7 @@
               <tbody>
               @forelse ($installmentPayments as $payment)
                 <tr>
-                  <td class="text-center">{{ $loop->iteration }}</td>
+                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ number_format($payment->amount) }}</td>
                   <td class="text-center">{{ $payment->getPaymentDate() }}</td>
                   <td class="text-center m-0 p-0">
@@ -297,7 +301,7 @@
               <tbody>
               @forelse ($chequePayments as $payment)
                 <tr>
-                  <td class="text-center">{{ $loop->iteration }}</td>
+                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $payment->cheque_serial }}</td>
                   <td class="text-center">{{ $payment->cheque_holder }}</td>
                   <td class="text-center">{{ $payment->bank_name }}</td>

@@ -66,7 +66,6 @@
       <form action="{{ route('admin.sale-payments.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-
         <div class="row mb-3">
           <div class="col-md-6 col-xl-4">
             <div class="form-group">

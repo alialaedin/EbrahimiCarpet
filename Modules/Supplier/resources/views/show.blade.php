@@ -44,7 +44,7 @@
         </a>
       @endcan
       @can('view payments')
-        <a href="{{ route('admin.payments.index', $supplier) }}" class="btn btn-flickr mx-1">
+        <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-flickr mx-1">
           مشاهده همه پرداختی ها
           <i class="fa fa-eye"></i>
         </a>
