@@ -18,15 +18,16 @@
       </li>
 
       @role('super_admin')
-      <li class="slide">
-        <a class="side-menu__item" data-toggle="slide" href="#">
-          <i class="fe fe-edit sidemenu_icon"></i>
-          <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
-        </a>
-        <ul class="slide-menu">
-          <li><a href="{{route("admin.roles.index")}}" class="slide-item">مدیریت نقش ها</a></li>
-        </ul>
-      </li>
+        <li class="slide">
+          <a class="side-menu__item" data-toggle="slide" href="#">
+            <i class="fe fe-edit sidemenu_icon"></i>
+            <span class="side-menu__label">اطلاعات پایه</span><i class="angle fa fa-angle-left"></i>
+          </a>
+          <ul class="slide-menu">
+            <li><a href="{{route("admin.roles.index")}}" class="slide-item">مدیریت نقش ها</a></li>
+            <li><a href="{{route("admin.accounts.index")}}" class="slide-item">مدیریت حساب ها</a></li>
+          </ul>
+        </li>
       @endrole
 
       @canany(['view customers', 'view employees', 'view suppliers'])
