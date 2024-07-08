@@ -57,6 +57,7 @@
       @endcan
     </div>
   </div>
+
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">اطلاعات تامین کننده</p>
@@ -64,34 +65,37 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>کد : </strong>{{ $supplier->id }}</span>
+        <div class="col-lg-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>کد: </strong> {{ $supplier->id }} </li>
+            <li class="list-group-item"><strong>نام و نام خانوادگی: </strong> {{ $supplier->name }} </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $supplier->mobile }} </li>
+            <li class="list-group-item"><strong>تلفن ثابت: </strong> {{ $supplier->telephone }} </li>
+            <li class="list-group-item"><strong>کد ملی: </strong> {{ $supplier->national_code }} </li>
+            <li class="list-group-item"><strong>کد پستی: </strong> {{ $supplier->postal_code }} </li>
+          </ul>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>نام و نام خانوادگی : </strong>{{ $supplier->name }}</span>
+        <div class="col-lg-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>تعداد خرید ها: </strong> {{ number_format($numberOfPurchases) }} </li>
+            <li class="list-group-item"><strong>تعداد پرداختی ها: </strong> {{ number_format($numberOfPayments) }} </li>
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $supplier->address }} </li>
+            <li class="list-group-item"><strong>نوع: </strong> {{ config('supplier.types.'.$supplier->type) }} </li>
+            <li class="list-group-item">
+              <strong>وضعیت:  </strong>
+              @if ($supplier->status)
+                <span class="text-success">فعال</span>
+              @else
+                <span class="text-danger">غیر فعال</span>
+              @endif
+            </li>
+            <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at) </li>
+          </ul>
         </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>شماره موبایل : </strong>{{ $supplier->mobile }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <strong>وضعیت : </strong>
-          @if ($supplier->status)
-            <span class="text-success">فعال</span>
-          @else
-            <span class="text-danger">غیر فعال</span>
-          @endif
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تعداد خرید ها : </strong>{{ number_format($numberOfPurchases) }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تعداد پرداختی ها : </strong>{{ number_format($numberOfPayments) }}</span>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>تاریخ ثبت : </strong> @jalaliDate($supplier->created_at) </span>
-        </div>
-        <div class="col-xl-8 col-lg-6 col-12 fs-17 my-1">
-          <span><strong>محل سکونت : </strong>{{ $supplier->address }}</span>
+        <div class="col-12 mt-5">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>توضیحات: </strong> {{ $supplier->description}} </li>
+          </ul>
         </div>
       </div>
     </div>
