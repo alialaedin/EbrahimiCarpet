@@ -3,26 +3,26 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Employee\Models\Employee;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::table('sales', function (Blueprint $table) {
-            $table->foreignIdFor(\Modules\Employee\Models\Employee::class)->constrained()->cascadeOnDelete();
-        });
-    }
+return new class extends Migration {
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::table('sales', function (Blueprint $table) {
+      $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('sales', function (Blueprint $table) {
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::table('sales', function (Blueprint $table) {
 
-        });
-    }
+    });
+  }
 };
