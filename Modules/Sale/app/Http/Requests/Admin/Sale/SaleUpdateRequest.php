@@ -12,7 +12,7 @@ class SaleUpdateRequest extends FormRequest
   public function prepareForValidation(): void
   {
     $this->merge([
-      'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
+      'discount' => $this->filled('discount') ? str_replace(',', '', $discount) : null,
     ]);
   }
 
@@ -31,10 +31,12 @@ class SaleUpdateRequest extends FormRequest
    */
   public function passedValidation(): void
   {
-    if ($this->filled('discount') && $this->isNotFilled('discount_for')) {
+    $discount = $this->input('discount');
+
+    if ($discount > 0 && $this->isNotFilled('discount_for')) {
       throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
     }
-    if ($this->input('discount') > 0 && $this->input('discount') < 10000) {
+    if ($discount > 0 && $discount < 10000) {
       throw Helpers::makeWebValidationException('تخفیف باید بیشتر از 10000 ریال باشذ!.', 'discount');
     }
   }
