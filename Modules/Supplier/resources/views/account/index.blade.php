@@ -2,7 +2,8 @@
 @section('content')
   <div class="page-header">
     <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fe fe-home ml-1"></i> داشبورد </a></li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fe fe-home ml-1"></i> داشبورد </a>
+      </li>
       <li class="breadcrumb-item active">لیست حساب بانکی ها</li>
     </ol>
     @can('create accounts')
@@ -38,11 +39,14 @@
               @forelse ($accounts as $account)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $account->supplier->name }}</td>
+                  <td class="text-center">
+                    <a href="{{ route('admin.suppliers.show', $account->supplier) }}">{{ $account->supplier->name }}</a>
+                  </td>
                   <td class="text-center">{{ $account->supplier->mobile }}</td>
                   <td class="text-center">{{ $account->account_number }}</td>
                   <td class="text-center">{{ $account->card_number }}</td>
-                  <td class="text-center"> @jalaliDate($account->created_at) </td>
+                  <td class="text-center">{{ $account->bank_name }}</td>
+                  <td class="text-center"> @jalaliDate($account->created_at)</td>
                   <td class="text-center">
                     @can('edit accounts')
                       <button
@@ -70,8 +74,8 @@
     </div>
   </div>
 
-  @include('accounting::headline.includes.create-headline-modal')
-  @include('accounting::headline.includes.edit-headline-modal')
+  @include('supplier::account.create-modal')
+  @include('supplier::account.edit-modal')
 
 @endsection
 

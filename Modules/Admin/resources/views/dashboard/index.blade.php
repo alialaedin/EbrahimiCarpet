@@ -8,27 +8,27 @@
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('create sales')
-        <a href="{{ route('admin.sales.create') }}" class="btn btn-youtube mx-1 my-md-1">
+        <a href="{{ route('admin.sales.create') }}" class="btn btn-youtube mx-1 my-md-0 my-1">
           ثبت فاکتور فروش <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('create purchases')
-        <a href="{{ route('admin.purchases.create') }}" class="btn btn-gray-dark mx-1 my-md-1">
+        <a href="{{ route('admin.purchases.create') }}" class="btn btn-gray-dark mx-1 my-md-0 my-1">
           ثبت فاکتور خرید <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('create products')
-        <a href="{{ route('admin.products.create') }}" class="btn btn-rss mx-1 my-md-1">
+        <a href="{{ route('admin.products.create') }}" class="btn btn-rss mx-1 my-md-0 my-1">
           ثبت محصول <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('create customers')
-        <a href="{{ route('admin.customers.create') }}" class="btn btn-green mx-1 my-md-1">
+        <a href="{{ route('admin.customers.create') }}" class="btn btn-green mx-1 my-md-0 my-1">
           ثبت مشتری <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('create suppliers')
-        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-teal mx-1 my-md-1">
+        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-teal mx-1 my-md-0 my-1">
           ثبت تامین کننده <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan

@@ -27,7 +27,7 @@ class RolesAndPermissionsSeeder extends Seeder
     }
 
     $admin = Admin::query()->firstOrCreate(
-      ['mobile' => '09368917169',],
+      ['mobile' => '09368917169'],
       [
         'name' => 'علی علاالدین',
         'password' => bcrypt(123456),

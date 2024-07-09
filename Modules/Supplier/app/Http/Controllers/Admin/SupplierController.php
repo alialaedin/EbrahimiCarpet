@@ -50,16 +50,20 @@ class   SupplierController extends Controller implements HasMiddleware
   {
 		$numberOfPurchases = $supplier->purchases->count();
 		$numberOfPayments = $supplier->payments->count();
+		$numberOfAccounts = $supplier->accounts->count();
 
-		$payments = $supplier->payments()->latest('id')->take(5)->get();
-		$purchases = $supplier->purchases()->latest('id')->take(5)->get();
+		$payments = $supplier->payments()->latest('id')->get();
+		$purchases = $supplier->purchases()->latest('id')->get();
+    $accounts = $supplier->accounts()->latest('id')->get();
 
 		return view('supplier::supplier.show', compact(
 			'supplier',
 			'numberOfPurchases',
 			'numberOfPayments',
+      'numberOfAccounts',
 			'payments',
-      'purchases'
+      'purchases',
+      'accounts'
 		));
 	}
 

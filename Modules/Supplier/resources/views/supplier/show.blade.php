@@ -17,16 +17,16 @@
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('edit suppliers')
         <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning mx-1">
-          ویرایش تامین کننده
+          ویرایش
           <i class="fa fa-pencil"></i>
         </a>
       @endcan
       @can('delete suppliers')
         <button
           onclick="confirmDelete('delete-{{ $supplier->id }}')"
-          class="btn btn-danger mx-1"
+          class="btn btn-danger mx-1 my-1"
           @disabled(!$supplier->isDeletable())>
-          حذف تامین کننده<i class="fa fa-trash-o mr-2"></i>
+          حذف<i class="fa fa-trash-o mr-2"></i>
         </button>
         <form
           action="{{ route('admin.suppliers.destroy', $supplier) }}"
@@ -37,27 +37,8 @@
           @method('DELETE')
         </form>
       @endcan
-      @can('create purchases')
-        <a href="{{ route('admin.purchases.create') }}" class="btn btn-indigo mx-1">
-          ثبت خرید جدید
-          <i class="fa fa-plus"></i>
-        </a>
-      @endcan
-      @can('view payments')
-        <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-flickr mx-1">
-          مشاهده همه پرداختی ها
-          <i class="fa fa-eye"></i>
-        </a>
-      @endcan
-      @can('create payments')
-        <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-lime mx-1">
-          ثبت پرداختی جدید
-          <i class="fa fa-plus"></i>
-        </a>
-      @endcan
     </div>
   </div>
-
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">اطلاعات تامین کننده</p>
@@ -82,14 +63,14 @@
             <li class="list-group-item"><strong>آدرس: </strong> {{ $supplier->address }} </li>
             <li class="list-group-item"><strong>نوع: </strong> {{ config('supplier.types.'.$supplier->type) }} </li>
             <li class="list-group-item">
-              <strong>وضعیت:  </strong>
+              <strong>وضعیت: </strong>
               @if ($supplier->status)
                 <span class="text-success">فعال</span>
               @else
                 <span class="text-danger">غیر فعال</span>
               @endif
             </li>
-            <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at) </li>
+            <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at)</li>
           </ul>
         </div>
         <div class="col-12 mt-5">
@@ -100,11 +81,132 @@
       </div>
     </div>
   </div>
-  @include('supplier::includes.purchase-statistics')
+  <div class="row">
+    <div class="col-xl-4 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-info-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> جمع پرداختی ها (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-success-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-danger-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="card">
-    <div class="card-header border-0">
+    <div class="card-header border-0 justify-content-between">
+      <p class="card-title">حساب بانکی ها ({{ $numberOfAccounts }})</p>
+      @can('create accounts')
+        <button class="btn btn-outline-primary" data-target="#createAccountModal" data-toggle="modal">
+          حساب جدید
+          <i class="fa fa-plus font-weight-bolder mr-1"></i>
+        </button>
+      @endcan
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="row">
+            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+              <thead class="thead-light">
+              <tr>
+                <th class="text-center">ردیف</th>
+                <th class="text-center">شماره حساب</th>
+                <th class="text-center">شماره کارت</th>
+                <th class="text-center">نام بانک</th>
+                <th class="text-center">تاریخ ثبت</th>
+                <th class="text-center">عملیات</th>
+              </tr>
+              </thead>
+              <tbody>
+              @forelse ($accounts as $account)
+                <tr>
+                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+                  <td class="text-center">{{ $account->account_number }}</td>
+                  <td class="text-center">{{ $account->card_number }}</td>
+                  <td class="text-center">{{ $account->bank_name }}</td>
+                  <td class="text-center"> @jalaliDate($account->created_at) </td>
+                  <td class="text-center">
+                    @can('edit accounts')
+                      <button
+                        class="btn btn-sm btn-icon btn-warning text-white"
+                        data-target="#editAccountModal-{{ $account->id }}"
+                        data-toggle="modal"
+                        data-original-title="ویرایش">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                    @endcan
+                    @can('delete accounts')
+                      <x-core::delete-button route="admin.accounts.destroy" :model="$account"/>
+                    @endcan
+                  </td>
+                </tr>
+              @empty
+                <x-core::data-not-found-alert :colspan="6"/>
+              @endforelse
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header border-0 justify-content-between">
       <p class="card-title">خرید ها ({{ $numberOfPurchases }})</p>
-      <x-core::card-options/>
+      @can('create purchases')
+        <a href="{{ route('admin.purchases.create') }}" class="btn btn-outline-primary">
+          فاکتور خرید جدید
+          <i class="fa fa-plus"></i>
+        </a>
+      @endcan
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -128,7 +230,7 @@
                   <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
                   <td class="text-center">{{ number_format($purchase->discount) }}</td>
                   <td class="text-center">{{ number_format($purchase->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center"> @jalaliDate($purchase->purchased_at) </td>
+                  <td class="text-center"> @jalaliDate($purchase->purchased_at)</td>
                   <td class="text-center">
                     @can('view purchases')
                       <a
@@ -150,9 +252,22 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header border-0">
+    <div class="card-header border-0 justify-content-between">
       <p class="card-title">پرداختی ها ({{ $numberOfPayments }})</p>
-      <x-core::card-options/>
+      <div>
+        @can('view payments')
+          <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-outline-info ml-1">
+            همه پرداختی ها
+            <i class="fa fa-eye"></i>
+          </a>
+        @endcan
+        @can('create payments')
+          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-outline-primary mr-1">
+            پرداختی جدید
+            <i class="fa fa-plus"></i>
+          </a>
+        @endcan
+      </div>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -195,14 +310,14 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                  <td class="text-center"> @jalaliDate($payment->due_date)</td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
                       text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
                     />
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->created_at) </td>
+                  <td class="text-center"> @jalaliDate($payment->created_at)</td>
                 </tr>
               @empty
                 <x-core::data-not-found-alert :colspan="8"/>
@@ -214,4 +329,76 @@
       </div>
     </div>
   </div>
+
+  {{--------------------- Create Account Modal Section -----------------------------}}
+  <div class="modal fade" id="createAccountModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="margin-top: 20vh;">
+      <div class="modal-content modal-content-demo">
+        <div class="modal-header">
+          <p class="modal-title" style="font-size: 20px;">ثبت حساب جدید برای {{ $supplier->name }}</p><button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ route('admin.accounts.store') }}" method="post" class="save">
+            @csrf
+            <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="account_number" class="control-label">شماره حساب :<span class="text-danger">&starf;</span></label>
+                  <input
+                    type="text"
+                    id="account_number"
+                    class="form-control"
+                    name="account_number"
+                    placeholder="شماره حساب را وارد کنید"
+                    value="{{ old('account_number') }}"
+                  />
+                  <x-core::show-validation-error name="account_number" />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="card_number" class="control-label">شماره کارت :<span class="text-danger">&starf;</span></label>
+                  <input
+                    type="text"
+                    id="card_number"
+                    class="form-control"
+                    name="card_number"
+                    placeholder="شماره کارت را وارد کنید"
+                    value="{{ old('card_number') }}"
+                  />
+                  <x-core::show-validation-error name="card_number" />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="bank_name" class="control-label">نام بانک :<span class="text-danger">&starf;</span></label>
+                  <input
+                    type="text"
+                    id="bank_name"
+                    class="form-control"
+                    name="bank_name"
+                    placeholder="نام بانک را وارد کنید"
+                    value="{{ old('bank_name') }}"
+                  />
+                  <x-core::show-validation-error name="bank_name" />
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn btn-success" type="submit">ثبت و ذخیره</button>
+              <button class="btn btn-danger" data-dismiss="modal">انصراف</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{--------------------- End Of Create Modal Section -----------------------------}}
+
+  {{--------------------- Edit Account Modal Section -----------------------------}}
+  @include('supplier::account.edit-modal')
+  {{--------------------- End Of Edit Modal Section -----------------------------}}
 @endsection
