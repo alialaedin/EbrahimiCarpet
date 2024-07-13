@@ -3,7 +3,8 @@
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
-          <p class="modal-title" style="font-size: 20px;">ویرایش سرفصل - کد {{ $headline->id }}</p><button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+          <p class="modal-title" style="font-size: 20px;">ویرایش سرفصل - کد {{ $headline->id }}</p>
+          <button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
         </div>
         <div class="modal-body">
           <form action="{{ route('admin.headlines.update', $headline) }}" method="post" class="save">

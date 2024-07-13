@@ -5,6 +5,7 @@ namespace Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
@@ -79,13 +80,13 @@ class DashboardController extends Controller
       ->join('purchase_items', 'purchases.id', '=', 'purchase_items.purchase_id')
       ->selectRaw(
         'SUM(purchase_items.price * purchase_items.quantity - purchase_items.discount)
-        - purchases.discount AS total_purchases'
+        - purchases.discount AS total_sales'
       )
       ->when($time === 'today', fn($query) => $query->whereDate('purchases.purchased_at', today()))
       ->when($time === 'month', fn($query) => $query->whereBetween('purchases.purchased_at', [$startDate, $endDate]))
       ->groupBy('purchases.id', 'purchases.discount')
       ->get()
-      ->sum('total_purchases');
+      ->sum('total_sales');
   }
 
   private function getTodaySaleItems(): int
