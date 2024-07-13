@@ -78,7 +78,7 @@ class Headline extends BaseModel
   // Functions
   public function getHeadlineType(): string
   {
-    return config('core.headline_types.' . $this->attributes['type']);
+    return config('accounting.headline_types.' . $this->attributes['type']);
   }
 
   public function getTypeBadgeType(): string
