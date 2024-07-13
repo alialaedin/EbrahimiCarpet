@@ -79,8 +79,8 @@
     </div>
   </div>
 
-  @include('accounting::headline.includes.create-headline-modal')
-  @include('accounting::headline.includes.edit-headline-modal')
+  @include('accounting::headline.includes.create-modal')
+  @include('accounting::headline.includes.edit-modal')
 
 @endsection
 
