@@ -16,6 +16,7 @@ use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseStoreRequest;
 use Modules\Purchase\Http\Requests\Admin\Purchase\PurchaseUpdateRequest;
 use Modules\Purchase\Models\Purchase;
 use Modules\Purchase\Models\PurchaseItem;
+use Modules\Store\Services\StoreService;
 use Modules\Supplier\Models\Supplier;
 
 class PurchaseController extends Controller implements HasMiddleware
@@ -63,12 +64,12 @@ class PurchaseController extends Controller implements HasMiddleware
 
 	public function store(PurchaseStoreRequest $request): RedirectResponse
 	{
-		$purchase = Purchase::create($request->only('supplier_id', 'purchased_at', 'discount'));
+		$purchase = Purchase::query()->create($request->only('supplier_id', 'purchased_at', 'discount'));
 
 		foreach ($request->input('products') as $product) {
-			$thisProduct = Product::find($product['id']);
+			$thisProduct = Product::query()->find($product['id']);
 
-			PurchaseItem::create([
+			PurchaseItem::query()->create([
 				'purchase_id' => $purchase->id,
 				'product_id' => $product['id'],
 				'quantity' => $product['quantity'],
@@ -76,13 +77,13 @@ class PurchaseController extends Controller implements HasMiddleware
 				'price' => $product['price']
 			]);
 
-      $thisProduct->store->increment('balance', $product['quantity']);
+      StoreService::add_product_to_store($thisProduct, $product['price'], $product['quantity']);
 
-      $purchase->transactions()->create([
-        'store_id' => $thisProduct->store->id,
-        'type' => 'increment',
-        'quantity' => $product['quantity'],
-      ]);
+//      $purchase->transactions()->create([
+//        'store_id' => $thisProduct->store->id,
+//        'type' => 'increment',
+//        'quantity' => $product['quantity'],
+//      ]);
 
 		}
 		toastr()->success("خرید جدید از {$purchase->supplier->name} ثبت شد.");

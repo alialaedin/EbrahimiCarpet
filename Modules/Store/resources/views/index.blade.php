@@ -26,7 +26,7 @@
               <label for="product_id">انتخاب محصول :</label>
               <select name="product_id" id="product_id" class="form-control select2">
                 <option value="">همه</option>
-                @foreach ($products as $product)
+                @foreach ($productsToFilter as $product)
                   <option
                     value="{{ $product->id }}"
                     @selected(request("product_id") == $product->id)>
@@ -105,21 +105,21 @@
               </tr>
               </thead>
               <tbody>
-              @forelse ($stores as $store)
+              @forelse ($products as $product)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">
-                    <a href="{{ route('admin.products.show', $store->product) }}">
-                      {{ $store->product->title }}
+                    <a href="{{ route('admin.products.show', $product) }}">
+                      {{ $product->title }}
                     </a>
                   </td>
-                  <td class="text-center">{{ $store->product->category->title }}</td>
+                  <td class="text-center">{{ $product->category->title }}</td>
                   <td class="text-center m-0 p-0">
-                    @if ($store->product->image)
+                    @if ($product->image)
                       <figure class="figure my-2">
-                        <a target="_blank" href="{{ Storage::url($store->product->image) }}">
+                        <a target="_blank" href="{{ Storage::url($product->image) }}">
                           <img
-                            src="{{ Storage::url($store->product->image) }}"
+                            src="{{ Storage::url($product->image) }}"
                             class="img-thumbnail"
                             alt="image"
                             width="50"
@@ -131,14 +131,14 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center">{{ $store->product->category->getUnitType() }}</td>
-                  <td class="text-center">{{ $store->balance }}</td>
-                  <td class="text-center"> @jalaliDate($store->created_at) </td>
+                  <td class="text-center">{{ $product->category->getUnitType() }}</td>
+                  <td class="text-center">{{ $product->stores->sum('balance') }}</td>
+                  <td class="text-center"> @jalaliDate($product->created_at) </td>
                   <td class="text-center">
                     <button
                       class="btn btn-sm btn-success text-white"
                       style="margin-left: 1px;"
-                      data-target="#increaseStoreFormModal-{{ $store->id }}"
+                      data-target="#increaseStoreFormModal-{{ $product->id }}"
                       data-toggle="modal">
                       افزایش
                       <i class="fa fa-plus-circle mr-1"></i>
@@ -146,18 +146,18 @@
                     <button
                       class="btn btn-sm btn-danger text-white"
                       style="margin-left: 1px; margin-right: 1px;"
-                      data-target="#decreaseStoreFormModal-{{ $store->id }}"
+                      data-target="#decreaseStoreFormModal-{{ $product->id }}"
                       data-toggle="modal">
                       کاهش
                       <i class="fa fa-minus-circle mr-1"></i>
                     </button>
-                    <a
-                      href="{{route('admin.stores.show', $store)}}"
-                      class="btn btn-sm btn-primary text-white"
-                    style="margin-right: 1px;">
-                      تراکنش ها
-                      <i class="fa fa-eye mr-1"></i>
-                    </a>
+{{--                    <a--}}
+{{--                      href="{{route('admin.stores.show', $product)}}"--}}
+{{--                      class="btn btn-sm btn-primary text-white"--}}
+{{--                    style="margin-right: 1px;">--}}
+{{--                      تراکنش ها--}}
+{{--                      <i class="fa fa-eye mr-1"></i>--}}
+{{--                    </a>--}}
                   </td>
                 </tr>
               @empty
@@ -165,7 +165,7 @@
               @endforelse
               </tbody>
             </table>
-            {{ $stores->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
+            {{ $products->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
           </div>
         </div>
       </div>

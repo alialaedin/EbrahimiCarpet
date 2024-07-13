@@ -33,7 +33,7 @@ class Product extends BaseModel
 	protected static function booted(): void
 	{
 		static::deleting(function (Product $product) {
-			if ($product->store->balance > 0) {
+			if ($product->stores->sum('balance') > 0) {
 				throw new ModelCannotBeDeletedException('از این محصول در انبار موجود است و قابل حذف نمی باشد.');
 			} elseif ($product->purchaseItems->isNotEmpty()) {
 				throw new ModelCannotBeDeletedException('ازین محصول خریدی ثبت شده است و قابل حذف نمی باشد.');
@@ -94,7 +94,7 @@ class Product extends BaseModel
 
   public function isDeletable(): bool
   {
-    return $this->store->balance == 0 && $this->purchaseItems->isEmpty() && $this->saleItems->isEmpty();
+    return $this->stores->sum('balance') == 0 && $this->purchaseItems->isEmpty() && $this->saleItems->isEmpty();
   }
 
   // Relations
@@ -103,9 +103,9 @@ class Product extends BaseModel
     return $this->belongsTo(Category::class);
   }
 
-  public function store(): HasOne
+  public function stores(): HasMany
   {
-    return $this->hasOne(Store::class);
+    return $this->hasMany(Store::class);
   }
 
   public function purchaseItems(): HasMany
@@ -116,5 +116,10 @@ class Product extends BaseModel
   public function saleItems(): HasMany
   {
     return $this->hasMany(SaleItem::class);
+  }
+
+  public function prices(): HasMany
+  {
+    return $this->hasMany(Price::class);
   }
 }

@@ -10,7 +10,8 @@ class ProductStoreRequest extends FormRequest
 	{
 		$this->merge([
 			'price' => str_replace(',', '', $this->input('price')),
-			'discount' => !is_null($this->input('discount')) ? str_replace(',', '', $this->input('discount')) : null,
+			'discount' => !is_null($this->discount) ? str_replace(',', '', $this->discount) : null,
+			'purchased_price' => !is_null($this->purchased_price) ? str_replace(',', '', $this->purchased_price) : null,
 		]);
 	}
 

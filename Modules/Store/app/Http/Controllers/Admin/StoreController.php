@@ -3,16 +3,19 @@
 namespace Modules\Store\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Application;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Validation\ValidationException;
-use Modules\Core\Helpers\Helpers;
 use Modules\Product\Models\Product;
+use Modules\Store\Http\Requests\Admin\DecrementStoreBalanceRequest;
+use Modules\Store\Http\Requests\Admin\IncrementStoreBalanceRequest;
 use Modules\Store\Models\Store;
 use Modules\Store\Models\StoreTransaction;
 use Illuminate\Http\RedirectResponse;
+use Modules\Store\Services\StoreService;
 
 class StoreController extends Controller implements HasMiddleware
 {
@@ -26,34 +29,34 @@ class StoreController extends Controller implements HasMiddleware
 		];
 	}
 
-  public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function index(): View|Application
   {
     $productId = request('product_id');
     $unitType = request('unit_type');
     $fromCreatedAt = request('from_created_at');
     $toCreatedAt = request('to_created_at') ?? now();
 
-    $stores = Store::query()
-			->select('id', 'product_id', 'balance', 'created_at')
+    $products = Product::query()
+      ->select(['id', 'title', 'category_id', 'image'])
       ->with([
-        'product:id,title,image,category_id',
-        'product.category:id,title,unit_type',
+        'stores:id,balance,product_id',
+        'category:id,title,unit_type',
       ])
-      ->when($productId, fn(Builder $query) => $query->where('product_id', $productId))
+      ->when($productId, fn(Builder $query) => $query->where('id', $productId))
       ->when($fromCreatedAt, fn(Builder $query) => $query->whereDate('created_at', '>=', $fromCreatedAt))
       ->when($unitType, function ($query) use ($unitType) {
-        return $query->withWhereHas('product.category', fn($query) => $query->where('unit_type', $unitType));
+        return $query->withWhereHas('category', fn($query) => $query->where('unit_type', $unitType));
       })
       ->whereDate('created_at', '<=', $toCreatedAt)
-			->latest('id')
-			->paginate();
+      ->latest('id')
+      ->paginate();
 
-    $products = Product::all('id', 'title');
+    $productsToFilter = Product::all('id', 'title');
 
-    return view('store::index', compact(['stores', 'products']));
+    return view('store::index', compact(['products', 'productsToFilter']));
   }
 
-  public function show(Store $store): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function show(Store $store): View|Application
   {
     $store->load('product.category');
 
@@ -61,32 +64,28 @@ class StoreController extends Controller implements HasMiddleware
       ->where('store_id', $store->id)
       ->with('transactionable')
       ->latest('id')
-      ->paginate(15);
+      ->paginate();
 
     return view('store::show', compact('transactions',  'store'));
   }
 
-  /**
-   * @throws ValidationException
-   */
-  public function increase_decrease(Request $request): RedirectResponse
+  public function incrementBalance(IncrementStoreBalanceRequest $request): RedirectResponse
   {
-    $storeId = $request->input('store_id');
-    $quantity = $request->input('quantity');
-    $type = $request->input('type');
+    $product = Product::query()->find($request->input('product_id'));
+    StoreService::add_product_to_store($product, $request->input('purchased_price'), $request->input('quantity'));
 
-    $store = Store::query()->findOrFail($storeId, ['id', 'balance']);
-
-    if ($type === 'increment'){
-      $store->increment('balance', $quantity);
-    }else {
-      if ($quantity > $store->balance) {
-        throw Helpers::makeWebValidationException('مقدار وارد شده از موجودی انبار بیشتر است.', 'quantity');
-      }
-      $store->decrement('balance', $quantity);
-    }
+    toastr()->success("موجودی انبار برای محصول $product->title با موفقیت افزایش یافت.");
 
     return redirect()->back();
   }
 
+  public function decrementBalance(DecrementStoreBalanceRequest $request): RedirectResponse
+  {
+    $product = Product::query()->find($request->input('product_id'));
+    StoreService::decrement_store_balance($product, $request->input('quantity'));
+
+    toastr()->success("موجودی انبار برای محصول $product->title با موفقیت کاهش یافت.");
+
+    return redirect()->back();
+  }
 }

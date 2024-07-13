@@ -141,20 +141,13 @@
           <span class="side-menu__label">گزارشات </span><i class="angle fa fa-angle-left"></i>
         </a>
         <ul class="slide-menu">
+          <li><a href="{{ route('admin.reports.profit') }}" class="slide-item">گزارش سود و ضرر</a></li>
           <li><a href="{{ route('admin.reports.purchases-filter') }}" class="slide-item">گزارش خرید ها</a></li>
           <li><a href="{{ route('admin.reports.sales-filter') }}" class="slide-item">گزارش فروش ها</a></li>
           <li><a href="{{ route('admin.reports.customer-indebtedness') }}" class="slide-item">گزارش مالی مشتریان</a></li>
           <li><a href="{{ route('admin.reports.expenses') }}" class="slide-item">گزارش مالی هزینه ها</a></li>
           <li><a href="{{ route('admin.reports.revenues') }}" class="slide-item">گزارش مالی درامد ها</a></li>
           <li><a href="{{ route('admin.reports.salaries') }}" class="slide-item">گزارش مالی حقوق ها</a></li>
-{{--          <li class="sub-slide">--}}
-{{--            <a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label">گزارش های مالی</span><i class="sub-angle fa fa-angle-left"></i></a>--}}
-{{--            <ul class="sub-slide-menu">--}}
-{{--              <li><a class="sub-slide-item" href="{{ route('admin.reports.expenses') }}">هزینه ها</a></li>--}}
-{{--              <li><a class="sub-slide-item" href="{{ route('admin.reports.revenues') }}">درامد ها</a></li>--}}
-{{--              <li><a class="sub-slide-item" href="{{ route('admin.reports.salaries') }}">حقوق ها</a></li>--}}
-{{--            </ul>--}}
-{{--          </li>--}}
         </ul>
       </li>
       @endrole

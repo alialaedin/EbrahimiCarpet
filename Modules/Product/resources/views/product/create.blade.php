@@ -53,7 +53,14 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="price" class="control-label"> قیمت (ریال): <span class="text-danger">&starf;</span></label>
+              <label for="image" class="control-label"> انتخاب عکس </label>
+              <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
+              <x-core::show-validation-error name="image" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="price" class="control-label"> قیمت فروش (ریال): <span class="text-danger">&starf;</span></label>
               <input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت را به ریال وارد کنید" value="{{ old('price') }}">
               <x-core::show-validation-error name="price" />
             </div>
@@ -81,9 +88,9 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="image" class="control-label"> انتخاب عکس </label>
-              <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
-              <x-core::show-validation-error name="image" />
+              <label for="purchased_price" class="control-label"> قیمت خرید (ریال): <span class="text-danger">&starf;</span></label>
+              <input type="text" id="purchased_price" class="form-control comma" name="purchased_price" placeholder="قیمت را به ریال وارد کنید" value="{{ old('purchased_price') }}">
+              <x-core::show-validation-error name="purchased_price" />
             </div>
           </div>
           <div class="col-12">

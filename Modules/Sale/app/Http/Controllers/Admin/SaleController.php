@@ -19,7 +19,7 @@ use Modules\Product\Models\Product;
 use Modules\Sale\Http\Requests\Admin\Sale\SaleStoreRequest;
 use Modules\Sale\Http\Requests\Admin\Sale\SaleUpdateRequest;
 use Modules\Sale\Models\Sale;
-use Modules\Sale\Models\SaleItem;
+use Modules\Store\Services\StoreService;
 
 class SaleController extends Controller implements HasMiddleware
 {
@@ -70,34 +70,26 @@ class SaleController extends Controller implements HasMiddleware
 
   public function store(SaleStoreRequest $request): RedirectResponse
   {
-    $sale = Sale::query()->create(
-      $request->only(
-        'customer_id', 'sold_at', 'discount', 'employee_id', 'discount_for'
-      )
-    );
+    //  ---------- Creating Sale  ---------- \\
 
-    foreach ($request->input('products') as $product) {
+    $totalSellPrices = StoreService::calc_total_sell_prices($request->input('products'));
+    $totalBuyPrices = StoreService::calc_total_buy_prices($request->input('products'));
 
-      $thisProduct = Product::query()->find($product['id']);
+    $sale = Sale::query()->create([
+      'customer_id' => $request->customer_id,
+      'sold_at' => $request->sold_at,
+      'discount' => $request->discount,
+      'employee_id' => $request->employee_id,
+      'discount_for' => $request->discount_for,
+      'total_sell_prices' => $totalSellPrices,
+      'total_buy_prices' => $totalBuyPrices
+    ]);
 
-      SaleItem::query()->create([
-        'sale_id' => $sale->id,
-        'product_id' => $product['id'],
-        'quantity' => $product['quantity'],
-        'discount' => $product['discount'],
-        'price' => $product['price']
-      ]);
+    // ---------- End Of Creating Sale ---------- \\
 
-      $store = $thisProduct->store;
-
-      $store->decrement('balance', $product['quantity']);
-
-      $sale->transactions()->create([
-        'store_id' => $store->id,
-        'type' => 'decrement',
-        'quantity' => $product['quantity'],
-      ]);
-    }
+    // ---------- Creating Sale Items ---------- \\
+    StoreService::insert_products_to_sale_items($request->input('products'), $sale->id);
+    // ---------- End Of Creating Sale Items ---------- \\
 
     toastr()->success("فروش جدید برای {$sale->customer->name} ثبت شد.");
 
@@ -107,8 +99,8 @@ class SaleController extends Controller implements HasMiddleware
   public function show(Sale $sale): View
   {
     $sale->load([
-      'customer' => fn($query) => $query->select('id', 'name', 'mobile', 'address', 'status', 'telephone'),
-      'employee' => fn($query) => $query->select('id', 'name', 'mobile'),
+      'customer' => fn($query) => $query->select('id', 'name', 'mobile', 'address'),
+      'employee' => fn($query) => $query->select('id', 'name', 'mobile', 'address'),
       'items' => fn($query) => $query->latest('id'),
       'items.product' => fn($query) => $query->select('id', 'title', 'image', 'category_id'),
       'items.product.category' => fn($query) => $query->select('id', 'unit_type')
@@ -136,6 +128,10 @@ class SaleController extends Controller implements HasMiddleware
 
   public function destroy(Sale $sale): RedirectResponse
   {
+    foreach ($sale->items as $saleItem) {
+      StoreService::returning_inventory($saleItem);
+    }
+
     $sale->delete();
     toastr()->success("فروش با موفقیت حذف شد.");
 
@@ -146,7 +142,7 @@ class SaleController extends Controller implements HasMiddleware
   {
     $sale->load([
       'items' => fn($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
-      'items.product' => fn($query) => $query->select(['id', 'title', 'category_id']),
+      'items.product' => fn($query) => $query->select(['id', 'title', 'category_id', 'print_title']),
       'items.product.category' => fn($query) => $query->select(['id', 'title', 'unit_type']),
     ]);
 
@@ -156,13 +152,13 @@ class SaleController extends Controller implements HasMiddleware
   public function getProductStore(Request $request): JsonResponse
   {
     $product = Product::query()
-      ->with('store:id,product_id,balance')
+      ->with('stores:id,product_id,balance')
       ->find($request->input('product_id'));
 
     $data = [
-      'balance' => $product->store->balance,
+      'balance' => $product->stores->sum('balance'),
       'price' => number_format($product->price),
-      'discount' => number_format($product->discoun),
+      'discount' => number_format($product->discount),
     ];
 
     return response()->json($data);

@@ -130,7 +130,7 @@
 					<div class="row">
 
 						<div class="col-12 bg-light mb-2 py-2">
-							<span style="font-size: 18px;"> افزودن اقلام خرید </span>
+							<span style="font-size: 18px;"> افزودن اقلام فروش </span>
 						</div>
 
 						<div class="col-3">

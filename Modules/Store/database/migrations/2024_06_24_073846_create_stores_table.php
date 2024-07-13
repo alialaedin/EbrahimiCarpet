@@ -15,7 +15,9 @@ return new class extends Migration
 		Schema::create('stores', function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+			$table->foreignIdFor(\Modules\Product\Models\Price::class)->constrained()->cascadeOnDelete();
 			$table->unsignedBigInteger('balance');
+			$table->unsignedInteger('priority');
 			$table->text('description')->nullable();
 			$table->timestamps();
 		});

@@ -17,7 +17,7 @@
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('edit sales')
         <a href="{{ route('admin.sales.edit', $sale) }}" class="btn btn-warning mx-1">
-          ویرایش فروش
+          ویرایش
           <i class="fa fa-pencil mr-1"></i>
         </a>
       @endcan
@@ -25,7 +25,7 @@
         <button
           onclick="confirmDelete('delete-{{ $sale->id }}')"
           class="btn btn-danger mx-1">
-          حذف فروش<i class="fa fa-trash-o mr-2"></i>
+          حذف کل سفارش<i class="fa fa-trash-o mr-2"></i>
         </button>
         <form
           action="{{ route('admin.purchases.destroy', $sale) }}"
@@ -36,25 +36,18 @@
           @method('DELETE')
         </form>
       @endcan
-      @can('create sale_items')
-        <button class="btn btn-indigo mx-1" data-target="#createSaleItemModal" data-toggle="modal">
-          افزودن قلم جدید
-          <i class="fa fa-plus mr-1"></i>
-        </button>
-      @endcan
+
     </div>
   </div>
   <div class="card">
-    <div class="card-header border-0">
-    </div>
     <div class="card-body">
       <div class="row">
         <div class="col-lg-6">
           <p class="header fs-20 p-2 pr-2">اطلاعات مشتری</p>
           <ul class="list-group">
-            <li class="list-group-item"><strong>کد مشتری: </strong> {{ $sale->customer->id }} </li>
+            <li class="list-group-item"><strong>کد: </strong> {{ $sale->customer->id }} </li>
             <li class="list-group-item">
-              <strong>نام و نام خانوادگی مشتری: </strong>
+              <strong>نام و نام خانوادگی: </strong>
               <a href="{{ route('admin.customers.show', $sale->customer) }}">{{ $sale->customer->name }}</a>
             </li>
             <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $sale->customer->mobile }} </li>
@@ -64,13 +57,13 @@
         <div class="col-lg-6">
           <p class="header fs-20 p-2 pr-2">اطلاعات کارمند</p>
           <ul class="list-group">
-            <li class="list-group-item"><strong>کد پرسنل: </strong> {{ $sale->employee->id }} </li>
+            <li class="list-group-item"><strong>کد: </strong> {{ $sale->employee->id }} </li>
             <li class="list-group-item">
-              <strong>نام و نام خانوادگی مشتری: </strong>
+              <strong>نام و نام خانوادگی: </strong>
               <a href="{{ route('admin.employees.show', $sale->employee) }}">{{ $sale->employee->name }}</a>
             </li>
-            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $sale->customer->mobile }} </li>
-            <li class="list-group-item"><strong>آدرس: </strong> {{ $sale->customer->address }} </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $sale->employee->mobile }} </li>
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $sale->employee->address }} </li>
           </ul>
         </div>
       </div>
@@ -123,7 +116,8 @@
             <div class="col-9">
               <div class="mt-0 text-right">
                 <span class="fs-16 font-weight-semibold"> قیمت کل با تخفیف (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($sale->getTotalAmountWithDiscount()) }}  </h3>
+                <h3
+                  class="mb-0 mt-1 text-success fs-20"> {{ number_format($sale->getTotalAmountWithDiscount()) }}  </h3>
               </div>
             </div>
             <div class="col-3">
@@ -137,9 +131,14 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">اقلام خرید ({{ $sale->items->count() }})</p>
-      <x-core::card-options/>
+    <div class="card-header border-0 justify-content-between">
+      <p class="card-title">اقلام فروش ({{ $sale->items->count() }})</p>
+      @can('create sale_items')
+        <button class="btn btn-indigo" data-target="#createSaleItemModal" data-toggle="modal">
+          افزودن قلم جدید
+          <i class="fa fa-plus mr-1"></i>
+        </button>
+      @endcan
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -157,7 +156,7 @@
                 <th class="text-center">تخفیف (ریال)</th>
                 <th class="text-center">قیمت با تخفیف (ریال)</th>
                 <th class="text-center">قیمت کل (ریال)</th>
-                <th class="text-center">عملیات</th>
+                <th class="text-center">حذف</th>
               </tr>
               </thead>
               <tbody>
@@ -193,18 +192,9 @@
                   <td class="text-center">{{ number_format($item->getPriceWithDiscount()) }}</td>
                   <td class="text-center">{{ number_format($item->getTotalItemPrice()) }}</td>
                   <td class="text-center">
-                    @can('edit sale_items')
-                      <button
-                        class="btn btn-sm btn-icon btn-warning"
-                        data-target="#editSaleItemModal{{$item->id}}"
-                        data-toggle="modal"
-                        data-original-title="ویرایش">
-                        <i class="fa fa-pencil"></i>
-                      </button>
-                    @endcan
                     @can('delete sale_items')
-                        <x-core::delete-button route="admin.sale-items.destroy" :model="$item"/>
-                      @endcan
+                      <x-core::delete-button route="admin.sale-items.destroy" :model="$item"/>
+                    @endcan
                   </td>
                 </tr>
               @empty
@@ -219,6 +209,5 @@
   </div>
 
   @include('sale::sale.includes._create-purchase-item-modal')
-  @include('sale::sale.includes._edit-purchase-item-modal')
 
 @endsection

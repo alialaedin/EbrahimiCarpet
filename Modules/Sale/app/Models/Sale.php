@@ -22,7 +22,14 @@ class Sale extends BaseModel
     'sold_at',
     'discount',
     'employee_id',
-    'discount_for'
+    'discount_for',
+    'total_sell_prices',
+    'total_buy_prices'
+  ];
+
+  protected $hidden = [
+    'total_sell_prices',
+    'total_buy_prices'
   ];
 
   public function getActivitylogOptions(): LogOptions

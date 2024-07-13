@@ -5,6 +5,7 @@ use Modules\Report\Http\Controllers\PurchaseReportController;
 use Modules\Report\Http\Controllers\SaleReportController;
 use Modules\Report\Http\Controllers\CustomerIndebtednessController;
 use Modules\Report\Http\Controllers\AccountingReportController;
+use Modules\Report\Http\Controllers\ProfitController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,5 +32,6 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 
     Route::get('/customer-indebtedness', [CustomerIndebtednessController::class, 'list'])->name('customer-indebtedness');
 
+    Route::get('/profit', [ProfitController::class, 'index'])->name('profit');
   });
 });

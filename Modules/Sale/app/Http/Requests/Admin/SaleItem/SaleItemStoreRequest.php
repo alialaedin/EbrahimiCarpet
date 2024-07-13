@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
+use Modules\Product\Models\Product;
 
 class SaleItemStoreRequest extends FormRequest
 {
@@ -36,12 +37,19 @@ class SaleItemStoreRequest extends FormRequest
   /**
    * @throws ValidationException
    */
-  public function passedValidation()
+  public function passedValidation(): void
   {
     if ($this->filled('discount')) {
       if ($this->input('discount') > $this->input('price')) {
-        throw Helpers::makeWebValidationException('مبلغ تخفیف نی تواند بیشتر از قیمت محصول باشد.');
+        throw Helpers::makeWebValidationException('مبلغ تخفیف نی تواند بیشتر از قیمت محصول باشد.', 'discount');
       }
+    }
+
+    $product = Product::query()->with('stores')->find($this->input('product_id'), 'id');
+    $balance = $product->stores->sum('balance');
+
+    if ($this->input('quantity') > $balance) {
+      throw Helpers::makeWebValidationException('تعداد وارد شده از موجودی انبار بیشتر است.', 'quantity');
     }
   }
 

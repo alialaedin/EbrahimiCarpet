@@ -66,7 +66,7 @@
                       <x-core::edit-button route="admin.sales.edit" :model="$sale"/>
                     @endcan
                     @can('delete sales')
-                      <x-core::delete-button route="admin.sales.edit" :model="$sale"/>
+                      <x-core::delete-button route="admin.sales.destroy" :model="$sale"/>
                     @endcan
                   </td>
                 </tr>

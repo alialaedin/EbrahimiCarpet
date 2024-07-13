@@ -19,6 +19,15 @@ class SaleItem extends BaseModel
     'quantity',
     'price',
     'discount',
+    'archived_price'
+  ];
+
+  protected $casts = [
+    'archived_price' => 'array',
+  ];
+
+  protected $hidden = [
+    'archived_price'
   ];
 
   public function getActivitylogOptions(): LogOptions
@@ -28,18 +37,6 @@ class SaleItem extends BaseModel
       ->setDescriptionForEvent(function (string $eventName) {
         return "آیتم فروش با کد $this->id برای فروش با کد {$this->sale->id} متعلق به {$this->sale->customer->name} را " . config('core.events.' . $eventName);
       });
-  }
-
-  protected static function booted(): void
-  {
-    static::deleting(function (SaleItem $saleItem) {
-
-      if ($saleItem->sale->payments->isNotEmpty()) {
-        throw new ModelCannotBeDeletedException('برای این فروش پرداختی ثبت شده و آیتم های آن قابل حذف نمی باشد.');
-      }
-
-      $saleItem->incrementProductStore();
-    });
   }
 
   // Relations
@@ -61,13 +58,8 @@ class SaleItem extends BaseModel
     return is_null($discount) ? $price : $price - $discount;
   }
 
-  public function getTotalItemPrice()
+  public function getTotalItemPrice(): float|int
   {
     return $this->getPriceWithDiscount() * $this->attributes['quantity'];
-  }
-
-  private function incrementProductStore(): void
-  {
-    $this->product->store->increment('balance', $this->quantity);
   }
 }
