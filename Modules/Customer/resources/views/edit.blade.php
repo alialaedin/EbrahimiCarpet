@@ -87,7 +87,7 @@
           </div>
 					<div class="col-lg-4 col-md-6">
 						<div class="form-group">
-              <label for="address" class="control-label">آدرس:<span class="text-danger">&starf;</span></label>
+              <label for="address" class="control-label">آدرس:</label>
               <input
                 type="text"
                 name="address"
