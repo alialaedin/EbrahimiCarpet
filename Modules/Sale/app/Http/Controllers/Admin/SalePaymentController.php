@@ -101,9 +101,9 @@ class SalePaymentController extends Controller implements HasMiddleware
       $inputs['cheque_holder'] = $request->input('cheque_holder');
       $inputs['bank_name'] = $request->input('bank_name');
       $inputs['pay_to'] = $request->input('pay_to');
-      $inputs['payment_date'] = $request->input('cheque_payment_date');
       $inputs['due_date'] = $request->input('cheque_due_date');
       $inputs['is_mine'] = $request->input('is_mine');
+      $inputs['status'] = 0;
     }
 
     elseif ($payType === SalePayment::TYPE_INSTALLMENT) {
@@ -113,6 +113,7 @@ class SalePaymentController extends Controller implements HasMiddleware
         $inputs[] = [
           'type' => SalePayment::TYPE_INSTALLMENT,
           'customer_id' => $customer->id,
+          'status' => 0,
           'amount' => $request->input('installment_amount'),
           'due_date' => $payDate->copy()->toDateString()
         ];
@@ -141,7 +142,9 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function destroy(SalePayment $salePayment): RedirectResponse
   {
-    $this->destroyImage($salePayment);
+    if ($salePayment->image) {
+      Storage::disk('public')->delete($salePayment->image);
+    }
     $salePayment->delete();
     toastr()->success("پرداختی با موفقیت حذف شد.");
 

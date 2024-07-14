@@ -36,7 +36,6 @@ class SalePaymentStoreRequest extends FormRequest
       'cheque_holder' => ['nullable', 'string', 'min:5', 'max:90'],
       'bank_name' => ['nullable', 'string', 'min:3', 'max:90'],
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],
-      'cheque_payment_date' => ['nullable', 'date'],
       'cheque_due_date' => ['nullable', 'date'],
       'is_mine' => ['nullable', 'boolean'],
 

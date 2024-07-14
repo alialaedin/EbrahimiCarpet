@@ -65,7 +65,7 @@
           <div class="row mt-3">
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="form-group">
-                <label for="from_payment_date_show">پرداخت از تاریخ : <span class="text-danger">&starf;</span></label>
+                <label for="from_payment_date_show">پرداخت از تاریخ : </label>
                 <input class="form-control fc-datepicker" id="from_payment_date_show" type="text" autocomplete="off"/>
                 <input name="from_payment_date" id="from_payment_date" type="hidden" value="{{ request("from_payment_date") }}"/>
                 <x-core::show-validation-error name="from_payment_date"/>
@@ -81,8 +81,8 @@
             </div>
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="form-group">
-                <label for="from_due_date_show">سررسید از تاریخ : <span class="text-danger">&starf;</span></label>
-                <input class="form-control fc-datepicker" id="from_due_date_show" type="text" autocomplete="off" required/>
+                <label for="from_due_date_show">سررسید از تاریخ : </label>
+                <input class="form-control fc-datepicker" id="from_due_date_show" type="text" autocomplete="off"/>
                 <input name="from_due_date" id="from_due_date" type="hidden" value="{{ request("from_due_date") }}"/>
                 <x-core::show-validation-error name="from_due_date"/>
               </div>
@@ -163,13 +163,6 @@
                     />
                   </td>
                   <td class="text-center">
-                    <a
-                      class="btn btn-lime btn-sm btn-icon"
-                      href="{{ route('admin.sale-payments.create', $payment->customer) }}"
-                      data-toggle="tooltip"
-                      data-original-title="ثبت پرداختی">
-                      <i class="fa fa-plus-circle"></i>
-                    </a>
                     <x-core::show-button route="admin.sale-payments.show" :model="$payment->customer"/>
                     <button
                       class="btn btn-sm btn-icon btn-teal "

@@ -56,16 +56,6 @@ class Sale extends BaseModel
     return $this->getTotalAmount() - $this->attributes['discount'];
   }
 
-  public function getTotalPaymentAmount(): int
-  {
-    return $this->payments->sum('amount');
-  }
-
-  public function getTotalPaidPaymentAmount(): int
-  {
-    return $this->payments->where('status', 1)->whereNotNull('payment_date')->sum('amount');
-  }
-
   // Relations
   public function customer(): BelongsTo
   {

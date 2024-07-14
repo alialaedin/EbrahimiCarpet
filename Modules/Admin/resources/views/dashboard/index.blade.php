@@ -367,7 +367,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-xl-6">
       <div class="card">
         <div class="card-header border-0 justify-content-between">
           <p class="card-title">اقساط دریافتی از مشتری ({{ $receivedInstallments->count() }})</p>
@@ -388,33 +388,60 @@
                   <tr>
                     <th class="text-center">ردیف</th>
                     <th class="text-center">نام مشتری</th>
-                    <th class="text-center">شماره موبایل</th>
-                    <th class="text-center">مبلغ (ریال)</th>
-                    <th class="text-center">عکس رسید</th>
                     <th class="text-center">تاریخ سررسید</th>
-                    <th class="text-center">تاریخ ثبت</th>
+                    <th class="text-center">مبلغ (ریال)</th>
                   </tr>
                   </thead>
                   <tbody>
                   @forelse ($receivedInstallments as $payment)
                     <tr>
                       <td class="text-center">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ number_format($payment->amount) }}</td>
                       <td class="text-center">{{ $payment->customer->name }}</td>
-                      <td class="text-center">{{ $payment->customer->mobile }}</td>
-                      <td class="text-center m-0 p-0">
-                        @if ($payment->image)
-                          <figure class="figure my-2">
-                            <a target="_blank" href="{{ Storage::url($payment->image) }}">
-                              <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
-                            </a>
-                          </figure>
-                        @else
-                          <span> - </span>
-                        @endif
-                      </td>
                       <td class="text-center"> @jalaliDate($payment->due_date) </td>
-                      <td class="text-center"> @jalaliDate($payment->created_at) </td>
+                      <td class="text-center">{{ number_format($payment->amount) }}</td>
+                  @empty
+                    <x-core::data-not-found-alert :colspan="7"/>
+                  @endforelse
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-6">
+      <div class="card">
+        <div class="card-header border-0 justify-content-between">
+          <p class="card-title">اقساط پرداختی به تامین کنندگان ({{ $payableInstallments->count() }})</p>
+          <button onclick="$('#installmentPaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+          <form
+            action="{{ route('admin.payments.index') }}"
+            id="installmentPaymentsForm"
+            class="d-none">
+            <input type="hidden" name="type" value="installment">
+          </form>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+              <div class="row">
+                <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+                  <thead class="thead-light">
+                  <tr>
+                    <th class="text-center">ردیف</th>
+                    <th class="text-center">نام تامین کننده</th>
+                    <th class="text-center">تاریخ سررسید</th>
+                    <th class="text-center">مبلغ (ریال)</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @forelse ($payableInstallments as $payment)
+                    <tr>
+                      <td class="text-center">{{ $loop->iteration }}</td>
+                      <td class="text-center">{{ $payment->supplier->name }}</td>
+                      <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                      <td class="text-center">{{ number_format($payment->amount) }}</td>
                   @empty
                     <x-core::data-not-found-alert :colspan="7"/>
                   @endforelse

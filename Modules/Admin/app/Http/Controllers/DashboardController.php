@@ -39,6 +39,7 @@ class DashboardController extends Controller
     $receivedCheques = $this->getReceivedCheques();
     $payableCheques = $this->getPayableCheques();
     $receivedInstallments = $this->getReceivedInstallments();
+    $payableInstallments = $this->getPayableInstallments();
 
     return view('admin::dashboard.index', compact([
 
@@ -59,7 +60,8 @@ class DashboardController extends Controller
 
       'receivedCheques',
       'payableCheques',
-      'receivedInstallments'
+      'receivedInstallments',
+      'payableInstallments'
     ]));
   }
 
@@ -156,6 +158,18 @@ class DashboardController extends Controller
       ->where('type', '=', 'installment')
       ->whereNull('payment_date')
       ->with('customer:id,name,mobile')
+      ->whereDate('due_date', '<=', now()->addWeeks(2))
+      ->latest('id')
+      ->get();
+  }
+
+  private function getPayableInstallments(): Collection|array
+  {
+    return Payment::query()
+      ->select('id', 'supplier_id', 'amount', 'type', 'due_date', 'payment_date', 'image')
+      ->where('type', '=', 'installment')
+      ->whereNull('payment_date')
+      ->with('supplier:id,name,mobile')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
       ->latest('id')
       ->get();

@@ -16,7 +16,7 @@ return new class extends Migration
 			$table->string('name');
 			$table->string('mobile', 11)->unique();
 			$table->string('telephone', 11)->unique();
-			$table->text('address');
+			$table->text('address')->nullable();
 			$table->boolean('status');
 			$table->timestamps();
 		});

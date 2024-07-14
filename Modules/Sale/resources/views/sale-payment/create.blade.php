@@ -67,7 +67,7 @@
         @csrf
         <input type="hidden" name="customer_id" value="{{ $customer->id }}">
         <div class="row mb-3">
-          <div class="col-md-6 col-xl-4">
+          <div class="col-md-6 col-xl-3">
             <div class="form-group">
               <label for="type" class="control-label">نوع پرداخت: <span class="text-danger">&starf;</span></label>
               <select name="type" id="type" class="form-control">
@@ -80,9 +80,7 @@
             </div>
           </div>
         </div>
-
-        <p class="header fs-20 p-2 pr-2">نقد</p>
-        <div class="row mb-3">
+        <div class="row mb-3 d-none" id="cashInputsBox">
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
               <label for="cash_amount" class="control-label">مبلغ پرداخت (ریال): <span class="text-danger">&starf;</span></label>
@@ -106,9 +104,7 @@
             </div>
           </div>
         </div>
-
-        <p class="header fs-20 p-2 pr-2">چک</p>
-        <div class="row mb-3">
+        <div class="row mb-3 d-none" id="chequeInputsBox">
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
               <label for="cheque_amount" class="control-label">مبلغ چک (ریال): <span class="text-danger">&starf;</span></label>
@@ -146,14 +142,6 @@
           </div>
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
-              <label for="cheque_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-              <input class="form-control fc-datepicker" id="cheque_payment_date_show" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
-              <input name="cheque_payment_date" id="cheque_payment_date_hidden" type="hidden" required value="{{	old('cheque_payment_date') }}"/>
-              <x-core::show-validation-error name="cheque_payment_date" />
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 col-xl-3">
-            <div class="form-group">
               <label for="cheque_due_date_show" class="control-label">تاریخ سررسید:</label>
               <input class="form-control fc-datepicker" id="cheque_due_date_show" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
               <input name="cheque_due_date" id="cheque_due_date_hidden" type="hidden" required value="{{	old('cheque_due_date') }}"/>
@@ -162,7 +150,7 @@
           </div>
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
-              <label class="control-label"> چک برای خودم است:<span class="text-danger">&starf;</span></label>
+              <label class="control-label"> چک برای خودش است:<span class="text-danger">&starf;</span></label>
               <div class="custom-controls-stacked">
                 <label class="custom-control custom-checkbox">
                   <input type="checkbox" class="custom-control-input" name="is_mine" value="1" @checked(old('is_mine', 1) == '1')>
@@ -173,9 +161,7 @@
             </div>
           </div>
         </div>
-
-        <p class="header fs-20 p-2 pr-2">قسط</p>
-        <div class="row mb-3">
+        <div class="row mb-3 d-none" id="installmentInputsBox">
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
               <label for="number_of_installments" class="control-label">تعداد اقساط: <span class="text-danger">&starf;</span></label>
@@ -222,7 +208,25 @@
 
 @section('scripts')
   <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
-  <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/>
   <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
   <x-core::date-input-script textInputId="installment_start_date_show" dateInputId="installment_start_date_hidden"/>
+
+  <script>
+    $(document).ready(() => {
+      const payType = $('#type');
+      const cashInputsBox = $('#cashInputsBox');
+      const chequeInputsBox = $('#chequeInputsBox');
+      const installmentInputsBox = $('#installmentInputsBox');
+
+      payType.on('change', () => {
+        [cashInputsBox, chequeInputsBox, installmentInputsBox].forEach((box) => {
+          if (box.attr('id').toLowerCase().includes(payType.val())) {
+            box.removeClass('d-none');
+          } else {
+            box.addClass('d-none');
+          }
+        });
+      });
+    });
+  </script>
 @endsection

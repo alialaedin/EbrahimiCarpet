@@ -23,15 +23,15 @@ use Modules\Supplier\Models\Supplier;
 class PaymentController extends Controller implements HasMiddleware
 {
 
-	public static function middleware(): array
+  public static function middleware(): array
   {
-		return [
-			new Middleware('can:view payments', ['index']),
-			new Middleware('can:create payments', ['create', 'store']),
-			new Middleware('can:edit payments', ['edit', 'update']),
-			new Middleware('can:delete payments', ['destroy']),
-		];
-	}
+    return [
+      new Middleware('can:view payments', ['index']),
+      new Middleware('can:create payments', ['create', 'store']),
+      new Middleware('can:edit payments', ['edit', 'update']),
+      new Middleware('can:delete payments', ['destroy']),
+    ];
+  }
 
   public function index(): View|Application|Factory|App
   {
@@ -63,23 +63,23 @@ class PaymentController extends Controller implements HasMiddleware
     return view('payment::index', compact(['payments', 'totalPayments', 'suppliers']));
   }
 
-	public function show(Supplier $supplier): View|Application|Factory|App
+  public function show(Supplier $supplier): View|Application|Factory|App
   {
-		$payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
+    $payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
 
-    $cashPayments = $payments->where('type', '=','cash');
-    $installmentPayments = $payments->where('type', '=','installment');
-    $chequePayments = $payments->where('type', '=','cheque');
+    $cashPayments = $payments->where('type', '=', 'cash');
+    $installmentPayments = $payments->where('type', '=', 'installment');
+    $chequePayments = $payments->where('type', '=', 'cheque');
 
-		return view('payment::show', compact(['supplier', 'payments', 'installmentPayments', 'cashPayments', 'chequePayments']));
-	}
+    return view('payment::show', compact(['supplier', 'payments', 'installmentPayments', 'cashPayments', 'chequePayments']));
+  }
 
-	public function create(Supplier $supplier): View|Application|Factory|App
+  public function create(Supplier $supplier): View|Application|Factory|App
   {
-		return view('payment::create', compact('supplier'));
-	}
+    return view('payment::create', compact('supplier'));
+  }
 
-	public function store(PaymentStoreRequest $request): RedirectResponse
+  public function store(PaymentStoreRequest $request): RedirectResponse
   {
     $payType = $request->input('type');
     $supplier = $request->input('supplier');
@@ -93,9 +93,7 @@ class PaymentController extends Controller implements HasMiddleware
       $inputs['supplier_id'] = $supplier->id;
       $inputs['amount'] = $request->input('cash_amount');
       $inputs['payment_date'] = $request->input('cash_payment_date');
-    }
-
-    elseif ($payType === Payment::TYPE_CHEQUE) {
+    } elseif ($payType === Payment::TYPE_CHEQUE) {
       $inputs['type'] = Payment::TYPE_CHEQUE;
       $inputs['supplier_id'] = $supplier->id;
       $inputs['amount'] = $request->input('cheque_amount');
@@ -103,18 +101,17 @@ class PaymentController extends Controller implements HasMiddleware
       $inputs['cheque_holder'] = $request->input('cheque_holder');
       $inputs['bank_name'] = $request->input('bank_name');
       $inputs['pay_to'] = $request->input('pay_to');
-      $inputs['payment_date'] = $request->input('cheque_payment_date');
       $inputs['due_date'] = $request->input('cheque_due_date');
       $inputs['is_mine'] = $request->input('is_mine');
-    }
-
-    elseif ($payType === Payment::TYPE_INSTALLMENT) {
+      $inputs['status'] = 0;
+    } elseif ($payType === Payment::TYPE_INSTALLMENT) {
       $payDate = Carbon::parse($request->input('installment_start_date'));
       for ($i = 1; $i <= $request->input('number_of_installments'); $i++) {
 
         $inputs[] = [
           'type' => Payment::TYPE_INSTALLMENT,
           'supplier_id' => $supplier->id,
+          'status' => 0,
           'amount' => $request->input('installment_amount'),
           'due_date' => $payDate->copy()->toDateString()
         ];
@@ -123,41 +120,43 @@ class PaymentController extends Controller implements HasMiddleware
       }
     }
     DB::table('payments')->insert($inputs);
-		toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
+    toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
-		return to_route('admin.payments.index', $supplier);
-	}
+    return to_route('admin.payments.show', $supplier);
+  }
 
-	public function edit(Payment $payment): View|Application|Factory|App
+  public function edit(Payment $payment): View|Application|Factory|App
   {
-		return view('payment::edit', compact('payment'));
-	}
+    return view('payment::edit', compact('payment'));
+  }
 
-	public function update(PaymentUpdateRequest $request, Payment $payment): RedirectResponse
+  public function update(PaymentUpdateRequest $request, Payment $payment): RedirectResponse
   {
     $payment->update($request->validated());
-		toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
+    toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
-		return to_route('admin.payments.index', $payment->supplier);
-	}
+    return to_route('admin.payments.index', $payment->supplier);
+  }
 
-	public function destroy(Payment $payment): RedirectResponse
+  public function destroy(Payment $payment): RedirectResponse
   {
-    $this->destroyImage($payment);
-		$payment->delete();
-		toastr()->success("پرداختی با موفقیت حذف شد.");
+    if ($payment->image) {
+      Storage::disk('public')->delete($payment->image);
+    }
+    $payment->delete();
+    toastr()->success("پرداختی با موفقیت حذف شد.");
 
-		return redirect()->back();
-	}
+    return redirect()->back();
+  }
 
-	public function destroyImage(Payment $payment): RedirectResponse
+  public function destroyImage(Payment $payment): RedirectResponse
   {
-		Storage::disk('public')->delete($payment->image);
-		$payment->image = null;
-		$payment->save();
-		toastr()->success("عکس با موفقیت حذف شد.");
+    Storage::disk('public')->delete($payment->image);
+    $payment->image = null;
+    $payment->save();
+    toastr()->success("عکس با موفقیت حذف شد.");
 
-		return redirect()->back();
-	}
+    return redirect()->back();
+  }
 
 }

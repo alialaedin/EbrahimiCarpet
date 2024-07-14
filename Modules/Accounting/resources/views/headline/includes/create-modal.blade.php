@@ -35,9 +35,9 @@
               <div class="form-group">
                 <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
                 <select name="status" id="status" class="form-control select2" required>
-                  <option value="" class="text-muted"> وضعیت را انخاب کنید</option>
-                  <option value="1" @selected(old("status") === '1')>فعال</option>
-                  <option value="0" @selected(old("status") === '0')>غیر فعال</option>
+                  <option value="" class="text-muted"> وضعیت را انتخاب کنید</option>
+                  <option value="1" @selected(old("status", 1) == '1')>فعال</option>
+                  <option value="0" @selected(old("status") == '0')>غیر فعال</option>
                 </select>
                 <x-core::show-validation-error name="status"/>
               </div>

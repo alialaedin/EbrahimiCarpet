@@ -34,6 +34,11 @@
             @php
               toastr()->error('خطا در انجام عملیات!');
             @endphp
+            <div class="alert alert-danger mt-5">
+              @foreach($errors->all() as $e)
+                <p>{{ $e }}</p>
+              @endforeach
+            </div>
           @endif
 
           @yield("content")

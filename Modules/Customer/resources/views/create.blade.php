@@ -74,7 +74,6 @@
                 class="form-control"
                 name="telephone"
                 placeholder="تلفن ثابت را وارد کنید"
-                required
                 value="{{ old('telephone') }}"
               />
               <x-core::show-validation-error name="telephone" />

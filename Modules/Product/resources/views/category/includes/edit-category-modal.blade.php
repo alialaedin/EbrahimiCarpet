@@ -37,23 +37,37 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="unit_type" class="control-label"> نوع واحد:<span class="text-danger">&starf;</span></label>
-                  <select name="unit_type" id="unit_type" class="form-control">
+                  <label class="control-label"> نوع واحد:<span class="text-danger">&starf;</span></label>
+                  <div class="custom-controls-stacked">
                     @foreach (config('core.category_unit_types') as $name => $label)
-                      <option value="{{ $name }}" @selected(old('unit_type', $category->unit_type) == $name)> {{ $label }} </option>
+                      <label class="custom-control custom-radio">
+                        <input
+                          type="radio"
+                          class="custom-control-input"
+                          name="unit_type"
+                          value="{{ $name }}"
+                          @checked(old('unit_type', $category->unit_type) == $name)
+                        />
+                        <span class="custom-control-label">{{ $label }}</span>
+                      </label>
                     @endforeach
-                  </select>
-                  <x-core::show-validation-error name="unit_type" />
+                  </div>
+                  <x-core::show-validation-error name="status" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="status" class="control-label"> نوع واحد:<span class="text-danger">&starf;</span></label>
-                  <select name="status" id="status" class="form-control">
-                    @foreach (config('core.bool_statuses') as $name => $label)
-                      <option value="{{ $name }}" @selected(old('status', $category->status) == $name)> {{ $label }} </option>
-                    @endforeach
-                  </select>
+                  <label class="control-label"> انتخاب وضعیت:<span class="text-danger">&starf;</span></label>
+                  <div class="custom-controls-stacked">
+                    <label class="custom-control custom-radio">
+                      <input type="radio" class="custom-control-input" name="status" value="1" @checked(old('status', $category->status) == '1')>
+                      <span class="custom-control-label">فعال</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                      <input type="radio" class="custom-control-input" name="status" value="0" @checked(old('status', $category->status) == '0')>
+                      <span class="custom-control-label">غیر فعال</span>
+                    </label>
+                  </div>
                   <x-core::show-validation-error name="status" />
                 </div>
               </div>
