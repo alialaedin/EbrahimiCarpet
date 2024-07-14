@@ -20,7 +20,7 @@ class CustomerStoreRequest extends FormRequest
 			'telephone' => ['nullable', 'numeric', 'unique:customers,telephone', 'digits:11'],
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
-      'gender' => ['required', 'string'. Rule::in(Customer::GENDER_MALE.','.Customer::GENDER_FEMALE)],
+      'gender' => ['required', 'string', Rule::in(Customer::GENDER_MALE.','.Customer::GENDER_FEMALE)],
       'birthday' => ['required', 'date']
 		];
 	}
