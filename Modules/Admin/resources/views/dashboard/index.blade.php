@@ -35,248 +35,6 @@
     </div>
   </div>
   <div class="row">
-{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
-{{--      <a href="{{ route('admin.categories.index') }}">--}}
-{{--        <div class="card">--}}
-{{--          <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--              <div class="col-9">--}}
-{{--                <div class="mt-0 text-right">--}}
-{{--                  <span class="fs-16 font-weight-semibold"> دسته بندی ها : </span>--}}
-{{--                  <p class="mb-0 mt-1 text-info fs-20"> {{ $totalCategories }} </p>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="col-3">--}}
-{{--                <div class="icon1 bg-info-transparent my-auto float-left">--}}
-{{--                  <i class="fa fa-folder-open"></i>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--            </div>--}}
-{{--          </div>--}}
-{{--        </div>--}}
-{{--      </a>--}}
-{{--    </div>--}}
-{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
-{{--      <a href="{{ route('admin.products.index') }}">--}}
-{{--        <div class="card">--}}
-{{--          <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--              <div class="col-9">--}}
-{{--                <div class="mt-0 text-right">--}}
-{{--                  <span class="fs-16 font-weight-semibold"> محصولات : </span>--}}
-{{--                  <p class="mb-0 mt-1 text-danger fs-20"> {{ $totalProducts }} </p>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="col-3">--}}
-{{--                <div class="icon1 bg-danger-transparent my-auto float-left">--}}
-{{--                  <i class="fa fa-shopping-basket"></i>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--            </div>--}}
-{{--          </div>--}}
-{{--        </div>--}}
-{{--      </a>--}}
-{{--    </div>--}}
-{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
-{{--      <a href="{{ route('admin.purchases.index') }}">--}}
-{{--        <div class="card">--}}
-{{--          <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--              <div class="col-9">--}}
-{{--                <div class="mt-0 text-right">--}}
-{{--                  <span class="fs-16 font-weight-semibold">فاکتور خرید : </span>--}}
-{{--                  <p class="mb-0 mt-1 text-success fs-20"> {{ $totalPurchases }}  </p>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="col-3">--}}
-{{--                <div class="icon1 bg-success-transparent my-auto float-left">--}}
-{{--                  <i class="fa fa-shopping-cart"></i>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--            </div>--}}
-{{--          </div>--}}
-{{--        </div>--}}
-{{--      </a>--}}
-{{--    </div>--}}
-{{--    <div class="col-xl-3 col-lg-6 col-md-12">--}}
-{{--      <a href="{{ route('admin.sales.index') }}">--}}
-{{--        <div class="card">--}}
-{{--          <div class="card-body">--}}
-{{--            <div class="row">--}}
-{{--              <div class="col-9">--}}
-{{--                <div class="mt-0 text-right">--}}
-{{--                  <span class="fs-16 font-weight-semibold">فاکتور فروش : </span>--}}
-{{--                  <p class="mb-0 mt-1 text-warning fs-20"> {{ $totalSales }}  </p>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="col-3">--}}
-{{--                <div class="icon1 bg-warning-transparent my-auto float-left">--}}
-{{--                  <i class="fa fa-dollar"></i>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--            </div>--}}
-{{--          </div>--}}
-{{--        </div>--}}
-{{--      </a>--}}
-{{--    </div>--}}
-
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> خرید های امروز : </span>
-                <p class="mb-0 mt-1 text-primary fs-20"> {{ $todayPurchaseCount }}  </p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-primary-transparent my-auto float-left">
-                <i class="fa fa-credit-card"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> اقلام خرید امروز : </span>
-                <p class="mb-0 mt-1 text-pink fs-20"> {{ number_format($todayPurchaseItems) }}  </p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-pink-transparent my-auto float-left">
-                <i class="fa fa-tags"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ خرید امروز : </span>
-                <p class="mb-0 mt-1 text-success fs-20"> {{ number_format($todayPurchaseAmount) }} ریال</p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-success-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ خرید ماه : </span>
-                <p class="mb-0 mt-1 text-warning fs-20"> {{ number_format($thisMonthPurchaseAmount) }} ریال</p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-warning-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> فروش های امروز : </span>
-                <p class="mb-0 mt-1 text-secondary fs-20"> {{ $todaySaleCount }}  </p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-secondary-transparent my-auto float-left">
-                <i class="fa fa-credit-card"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> اقلام فروش امروز : </span>
-                <p class="mb-0 mt-1 text-danger fs-20"> {{ $todaySaleItems }}  </p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-danger-transparent my-auto float-left">
-                <i class="fa fa-tags"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ فروش امروز : </span>
-                <p class="mb-0 mt-1 text-purple fs-20"> {{ number_format($todaySaleAmount) }} ریال</p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-purple-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ فروش ماه : </span>
-                <p class="mb-0 mt-1 text-info fs-20"> {{ number_format($thisMonthSaleAmount) }} ریال</p>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-info-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row">
     <div class="col-xl-6">
       <div class="card">
         <div class="card-header border-0 justify-content-between">
@@ -306,7 +64,9 @@
                   @forelse ($payableCheques as $cheque)
                     <tr>
                       <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $cheque->supplier->name }}</td>
+                      <td class="text-center">
+                        <a href="{{ route('admin.suppliers.show', $cheque->supplier) }}">{{ $cheque->supplier->name }}</a>
+                      </td>
                       <td class="text-center"> @jalaliDate($cheque->due_date)</td>
                       <td class="text-center">{{ number_format($cheque->amount) }}</td>
                     </tr>
@@ -350,7 +110,9 @@
                   @forelse ($receivedCheques as $cheque)
                     <tr>
                       <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $cheque->customer->name }}</td>
+                      <td class="text-center">
+                        <a href="{{ route('admin.customers.show', $cheque->customer) }}">{{ $cheque->customer->name }}</a>
+                      </td>
                       <td class="text-center"> @jalaliDate($cheque->due_date)</td>
                       <td class="text-center">{{ number_format($cheque->amount) }}</td>
                     </tr>
@@ -371,7 +133,8 @@
       <div class="card">
         <div class="card-header border-0 justify-content-between">
           <p class="card-title">اقساط دریافتی از مشتری ({{ $receivedInstallments->count() }})</p>
-          <button onclick="$('#installmentSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+          <button onclick="$('#installmentSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه
+          </button>
           <form
             action="{{ route('admin.sale-payments.index') }}"
             id="installmentSalePaymentsForm"
@@ -396,11 +159,13 @@
                   @forelse ($receivedInstallments as $payment)
                     <tr>
                       <td class="text-center">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $payment->customer->name }}</td>
-                      <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                      <td class="text-center">
+                        <a href="{{ route('admin.customers.show', $payment->customer) }}">{{ $payment->customer->name }}</a>
+                      </td>
+                      <td class="text-center"> @jalaliDate($payment->due_date)</td>
                       <td class="text-center">{{ number_format($payment->amount) }}</td>
-                  @empty
-                    <x-core::data-not-found-alert :colspan="7"/>
+                      @empty
+                        <x-core::data-not-found-alert :colspan="4"/>
                   @endforelse
                   </tbody>
                 </table>
@@ -439,11 +204,13 @@
                   @forelse ($payableInstallments as $payment)
                     <tr>
                       <td class="text-center">{{ $loop->iteration }}</td>
-                      <td class="text-center">{{ $payment->supplier->name }}</td>
-                      <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                      <td class="text-center">
+                        <a href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a>
+                      </td>
+                      <td class="text-center"> @jalaliDate($payment->due_date)</td>
                       <td class="text-center">{{ number_format($payment->amount) }}</td>
-                  @empty
-                    <x-core::data-not-found-alert :colspan="7"/>
+                      @empty
+                        <x-core::data-not-found-alert :colspan="4"/>
                   @endforelse
                   </tbody>
                 </table>
