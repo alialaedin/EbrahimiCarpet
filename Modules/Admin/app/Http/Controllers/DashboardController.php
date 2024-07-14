@@ -117,7 +117,7 @@ class DashboardController extends Controller
       $amount -= $sale->discount;
     }
 
-    return $amount
+    return $amount;
   }
 
   private function getReceivedCheques(): Collection|array
