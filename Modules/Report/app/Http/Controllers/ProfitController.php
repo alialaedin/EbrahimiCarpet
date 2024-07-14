@@ -10,10 +10,10 @@ class ProfitController extends Controller
 {
   public function index(): View
   {
-    $productId = \request('product_id');
-    $categoryId = \request('category_id');
-    $fromDate = \request('from_date');
-    $toDate = \request('to_date') ?? now();
+    $productId = request('product_id');
+    $categoryId = request('category_id');
+    $fromDate = request('from_date');
+    $toDate = request('to_date') ?? now();
 
     $sales = Sale::query()
       ->when($fromDate, fn($query) => $query->whereDate('sold_at', '>=', $fromDate))
@@ -32,13 +32,13 @@ class ProfitController extends Controller
         foreach ($sale->items as $saleItem) {
           $sumTotalSellPrice += ($saleItem->price * $saleItem->quantity) - $saleItem->discount;
           foreach ($saleItem->archived_price as $price) {
-            $sumTotalBuyPrice += $price['buy_price'] ;
+            $sumTotalBuyPrice += (integer) $price['buy_price'] * (integer) $price['quantity'] ;
           }
         }
       }
     }
 
-    $profit = $sumTotalBuyPrice - $sumTotalSellPrice;
+    $profit = $sumTotalSellPrice - $sumTotalBuyPrice;
 
     return view('report::profit.index', compact(['sales', 'profit']));
   }
