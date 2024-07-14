@@ -351,7 +351,7 @@
                     <tr>
                       <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                       <td class="text-center">{{ $cheque->customer->name }}</td>
-                      <td class="text-center"> @jalaliDate($admin->due_date)</td>
+                      <td class="text-center"> @jalaliDate($cheque->due_date)</td>
                       <td class="text-center">{{ number_format($cheque->amount) }}</td>
                     </tr>
                   @empty
