@@ -97,22 +97,27 @@ class DashboardController extends Controller
       })->count();
   }
 
-  private function getSaleAmount(string $time): int
+  private function getSaleAmount(string $time)
   {
     $startDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->startOfMonth();
     $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
 
-    return Sale::query()
-      ->join('sale_items', 'sales.id', '=', 'sale_items.sale_id')
-      ->selectRaw(
-        'SUM(sale_items.price * sale_items.quantity - sale_items.discount)
-        - sales.discount AS total_sales'
-      )
-      ->when($time === 'today', fn($query) => $query->whereDate('sales.sold_at', today()))
-      ->when($time === 'month', fn($query) => $query->whereBetween('sales.sold_at', [$startDate, $endDate]))
-      ->groupBy('sales.id', 'sales.discount')
-      ->get()
-      ->sum('total_sales');
+    $sales = Sale::query()
+      ->when($time === 'today', fn($query) => $query->whereDate('sold_at', today()))
+      ->when($time === 'month', fn($query) => $query->whereBetween('sold_at', [$startDate, $endDate]))
+      ->with('items')
+      ->get();
+
+    $amount = 0;
+
+    foreach ($sales as $sale) {
+      foreach ($sale->items as $item) {
+        $amount += ($item->price * $item->quantity) - $item->discount;
+      }
+      $amount -= $sale->discount;
+    }
+
+    return $amount
   }
 
   private function getReceivedCheques(): Collection|array
