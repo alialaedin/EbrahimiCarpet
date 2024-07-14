@@ -76,17 +76,22 @@ class DashboardController extends Controller
     $startDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->startOfMonth();
     $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
 
-    return Purchase::query()
-      ->join('purchase_items', 'purchases.id', '=', 'purchase_items.purchase_id')
-      ->selectRaw(
-        'SUM(purchase_items.price * purchase_items.quantity - purchase_items.discount)
-        - purchases.discount AS total_sales'
-      )
-      ->when($time === 'today', fn($query) => $query->whereDate('purchases.purchased_at', today()))
-      ->when($time === 'month', fn($query) => $query->whereBetween('purchases.purchased_at', [$startDate, $endDate]))
-      ->groupBy('purchases.id', 'purchases.discount')
-      ->get()
-      ->sum('total_sales');
+    $purchases = Purchase::query()
+      ->when($time === 'today', fn($query) => $query->whereDate('purchased_at', today()))
+      ->when($time === 'month', fn($query) => $query->whereBetween('purchased_at', [$startDate, $endDate]))
+      ->with('items')
+      ->get();
+
+    $amount = 0;
+
+    foreach ($purchases as $purchase) {
+      foreach ($purchase->items as $item) {
+        $amount += ($item->price * $item->quantity) - $item->discount;
+      }
+      $amount -= $purchase->discount;
+    }
+
+    return $amount;
   }
 
   private function getTodaySaleItems(): int
