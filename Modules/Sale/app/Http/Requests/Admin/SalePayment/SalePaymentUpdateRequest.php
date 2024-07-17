@@ -27,6 +27,7 @@ class SalePaymentUpdateRequest extends FormRequest
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],
       'due_date' => ['nullable', 'date'],
       'is_mine' => ['nullable', 'boolean'],
+      'status' => ['nullable', 'boolean'],
     ];
   }
 
@@ -81,6 +82,14 @@ class SalePaymentUpdateRequest extends FormRequest
     $this->merge([
       'customer' => $customer
     ]);
+  }
+
+  public function validated($key = null, $default = null) {
+
+    $validatedData = parent::validated();
+    $validatedData['status'] = $this->filled('status') ? 1 : 0;
+
+    return $validatedData;
   }
 
   public function authorize(): bool

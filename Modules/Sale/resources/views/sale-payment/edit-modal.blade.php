@@ -37,7 +37,8 @@
                 <div class="col-12">
                   <div class="form-group">
                     <label for="cash_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                    <input class="form-control fc-datepicker" id="cash_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off"
+                    <input class="form-control fc-datepicker" id="cash_payment_date_show-{{ $payment->id }}" type="text"
+                           autocomplete="off"
                            placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
                     <input name="payment_date" id="cash_payment_date_hidden-{{ $payment->id }}" type="hidden" required
                            value="{{	old('payment_date', $payment->payment_date) }}"/>
@@ -122,7 +123,8 @@
                 <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="cheque_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                    <input class="form-control fc-datepicker" id="cheque_payment_date_show-{{ $payment->id }}" type="text"
+                    <input class="form-control fc-datepicker" id="cheque_payment_date_show-{{ $payment->id }}"
+                           type="text"
                            autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
                     <input name="payment_date" id="cheque_payment_date_hidden-{{ $payment->id }}" type="hidden" required
                            value="{{	old('payment_date', $payment->payment_date) }}"/>
@@ -132,14 +134,15 @@
                 <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="cheque_due_date_show" class="control-label">تاریخ سررسید:</label>
-                    <input class="form-control fc-datepicker" id="cheque_due_date_show-{{ $payment->id }}" type="text" autocomplete="off"
+                    <input class="form-control fc-datepicker" id="cheque_due_date_show-{{ $payment->id }}" type="text"
+                           autocomplete="off"
                            placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
                     <input name="due_date" id="cheque_due_date_hidden-{{ $payment->id }}" type="hidden" required
                            value="{{	old('due_date', $payment->due_date) }}"/>
                     <x-core::show-validation-error name="due_date"/>
                   </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-3">
                   <div class="form-group">
                     <label class="control-label"> چک برای خودم است:<span class="text-danger">&starf;</span></label>
                     <div class="custom-controls-stacked">
@@ -152,8 +155,19 @@
                     <x-core::show-validation-error name="is_mine"/>
                   </div>
                 </div>
+                <div class="col-12 col-lg-3">
+                  <div class="form-group">
+                    <label for="label" class="control-label"> وضعیت: </label>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="status"
+                             value="1" @checked(old('status', $payment->status))>
+                      <span class="custom-control-label">پرداخت شده</span>
+                    </label>
+                    <x-core::show-validation-error name="status"/>
+                  </div>
+                </div>
               @elseif($payment->type === 'installment')
-                <div class="col-12">
+                <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="amount" class="control-label">مبلغ قسط: <span class="text-danger">&starf;</span></label>
                     <input
@@ -167,24 +181,38 @@
                     <x-core::show-validation-error name="amount"/>
                   </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="installment_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                    <input class="form-control fc-datepicker" id="installment_payment_date_show-{{ $payment->id }}" type="text"
+                    <input class="form-control fc-datepicker" id="installment_payment_date_show-{{ $payment->id }}"
+                           type="text"
                            autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
-                    <input name="payment_date" id="installment_payment_date_hidden-{{ $payment->id }}" type="hidden" required
+                    <input name="payment_date" id="installment_payment_date_hidden-{{ $payment->id }}" type="hidden"
+                           required
                            value="{{	old('payment_date', $payment->payment_date) }}"/>
                     <x-core::show-validation-error name="payment_date"/>
                   </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12 col-lg-6">
                   <div class="form-group">
                     <label for="installment_due_date_show" class="control-label">تاریخ سررسید:</label>
-                    <input class="form-control fc-datepicker" id="installment_due_date_show-{{ $payment->id }}" type="text"
+                    <input class="form-control fc-datepicker" id="installment_due_date_show-{{ $payment->id }}"
+                           type="text"
                            autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
                     <input name="due_date" id="installment_due_date_hidden-{{ $payment->id }}" type="hidden" required
                            value="{{	old('due_date', $payment->due_date) }}"/>
                     <x-core::show-validation-error name="due_date"/>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-group">
+                    <label for="label" class="control-label"> وضعیت: </label>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="status"
+                             value="1" @checked($payment->status)>
+                      <span class="custom-control-label">پرداخت شده</span>
+                    </label>
+                    <x-core::show-validation-error name="status"/>
                   </div>
                 </div>
               @endif
