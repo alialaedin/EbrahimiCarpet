@@ -143,12 +143,7 @@
                     <td class="text-center">{{ $payment->cheque_serial }}</td>
                     <td class="text-center">{{ $payment->bank_name }}</td>
                     <td class="text-center">{{ verta($payment->due_date)->format('Y/m/d') }}</td>
-                    <td class="text-center">
-                      <x-core::badge
-                        type="{{ $payment->status ? 'success' : 'danger' }}"
-                        text="{{ $payment->status ? 'پاس شده' : 'پاس نشده' }}"
-                      />
-                    </td>
+                    <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
                     <td class="text-center">{{ number_format($payment->amount) }}</td>
                   </tr>
                 @endforeach
@@ -190,12 +185,7 @@
                     <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                     <td class="text-center">{{ verta($payment->due_date)->format('Y/m/d') }}</td>
                     <td class="text-center">{{ verta($payment->created_at)->format('Y/m/d') }}</td>
-                    <td class="text-center">
-                      <x-core::badge
-                        type="{{ $payment->status ? 'success' : 'danger' }}"
-                        text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
-                      />
-                    </td>
+                    <td class="text-center">{{ config('payment.statuses.'.$payment->type.'.'.$payment->status) }}</td>
                     <td class="text-center">{{ number_format($payment->amount) }}</td>
                   </tr>
                 @endforeach
