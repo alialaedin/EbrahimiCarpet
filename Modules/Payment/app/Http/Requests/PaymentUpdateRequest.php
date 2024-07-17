@@ -84,6 +84,14 @@ class PaymentUpdateRequest extends FormRequest
     ]);
 	}
 
+  public function validated($key = null, $default = null) {
+
+    $validatedData = parent::validated();
+    $validatedData['status'] = $this->filled('status') ? 1 : 0;
+
+    return $validatedData;
+  }
+
 	public function authorize(): bool
 	{
 		return true;

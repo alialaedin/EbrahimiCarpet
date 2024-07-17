@@ -161,7 +161,7 @@
                     <label class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" name="status"
                              value="1" @checked(old('status', $payment->status))>
-                      <span class="custom-control-label">پرداخت شده</span>
+                      <span class="custom-control-label">پاس شده</span>
                     </label>
                     <x-core::show-validation-error name="status"/>
                   </div>
