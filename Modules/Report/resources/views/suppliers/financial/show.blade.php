@@ -73,6 +73,9 @@
       </div>
     </div>
   </div>
+  <div class="row justify-content-center d-flex">
+    <p class="fs-22 mt-5">پرداختی های نقدی</p>
+  </div>
   @isset($cashPayments)
     <div class="card">
       <div class="card-header border-0">
@@ -113,6 +116,9 @@
       </div>
     </div>
   @endisset
+  <div class="row justify-content-center d-flex">
+    <p class="fs-22 mt-5">پرداختی های چکی</p>
+  </div>
   @isset($chequePayments)
     <div class="card">
       <div class="card-header border-0">
@@ -159,6 +165,9 @@
       </div>
     </div>
   @endisset
+  <div class="row justify-content-center d-flex">
+    <p class="fs-22 mt-5">پرداختی های قسطی</p>
+  </div>
   @isset($installmentPayments)
     <div class="card">
       <div class="card-header border-0">
