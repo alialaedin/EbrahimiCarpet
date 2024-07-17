@@ -57,9 +57,9 @@ class SupplierFinancialReportController extends Controller
 
      $payments = $supplier->payments;
 
-     $cashPayments = $payments->where('type', Payment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CASH)->sortDesc('id')->get() : null;
-     $chequePayments = $payments->where('type', Payment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CHEQUE)->sortDesc('id')->get() : null;
-     $installmentPayments = $payments->where('type', Payment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', Payment::TYPE_INSTALLMENT)->sortDesc('id')->get() : null;
+     $cashPayments = $payments->where('type', Payment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CASH)->sortByDesc('id')->get() : null;
+     $chequePayments = $payments->where('type', Payment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CHEQUE)->sortByDesc('id')->get() : null;
+     $installmentPayments = $payments->where('type', Payment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', Payment::TYPE_INSTALLMENT)->sortByDesc('id')->get() : null;
 
      return view('report::suppliers.financial.show', compact([
        'supplier',
