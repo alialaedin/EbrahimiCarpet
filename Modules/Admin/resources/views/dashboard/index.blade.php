@@ -135,7 +135,6 @@
         </div>
       </div>
     @endcan
-
     @can('view today sale_items')
       <div class="col-xl-3 col-lg-6 col-md-12">
         <div class="card">
@@ -157,7 +156,6 @@
         </div>
       </div>
     @endcan
-
     @can('view today sale_amount')
       <div class="col-xl-3 col-lg-6 col-md-12">
         <div class="card">
@@ -181,7 +179,7 @@
     @endcan
 
     @role('super_admin')
-    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -239,7 +237,7 @@
                           <a
                             href="{{ route('admin.suppliers.show', $cheque->supplier) }}">{{ $cheque->supplier->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($cheque->due_date) }} </td>
+                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
                         <td class="text-center">{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
@@ -254,7 +252,6 @@
         </div>
       </div>
     @endcan
-
     @can('view customer cheques')
       <div class="col-xl-6">
         <div class="card">
@@ -289,7 +286,7 @@
                           <a
                             href="{{ route('admin.customers.show', $cheque->customer) }}">{{ $cheque->customer->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($cheque->due_date) }} </td>
+                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
                         <td class="text-center">{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
@@ -304,7 +301,6 @@
         </div>
       </div>
     @endcan
-
     @can('view supplier installments')
       <div class="col-xl-6">
         <div class="card">
@@ -339,7 +335,7 @@
                           <a
                             href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a>
                         </td>
-                        <td class="text-center"> @jalaliDate($payment->due_date)</td>
+                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}}</td>
                         <td class="text-center">{{ number_format($payment->amount) }}</td>
                         @empty
                           <x-core::data-not-found-alert :colspan="4"/>
@@ -353,7 +349,6 @@
         </div>
       </div>
     @endcan
-
     @can('view customer installments')
       <div class="col-xl-6">
         <div class="card">
@@ -389,7 +384,7 @@
                           <a
                             href="{{ route('admin.customers.show', $payment->customer) }}">{{ $payment->customer->name }}</a>
                         </td>
-                        <td class="text-center"> @jalaliDate($payment->due_date)</td>
+                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
                         <td class="text-center">{{ number_format($payment->amount) }}</td>
                         @empty
                           <x-core::data-not-found-alert :colspan="4"/>
