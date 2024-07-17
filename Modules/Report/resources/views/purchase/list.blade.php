@@ -7,6 +7,7 @@
           <i class="fe fe-home ml-1"></i> داشبورد
         </a>
       </li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.reports.index') }}">گزارشات</a>
       <li class="breadcrumb-item"><a href="{{ route('admin.reports.purchases-filter') }}">فیلتر گزارش خرید</a></li>
       <li class="breadcrumb-item active">خرید از {{ $supplier->name }}</li>
     </ol>

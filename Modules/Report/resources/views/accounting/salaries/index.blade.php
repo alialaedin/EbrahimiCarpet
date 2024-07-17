@@ -7,6 +7,7 @@
           <i class="fe fe-home ml-1"></i> داشبورد
         </a>
       </li>
+      <li class="breadcrumb-item"><a href="{{ route('admin.reports.index') }}">گزارشات</a>
       <li class="breadcrumb-item active">گزارش مالی حقوق ها</li>
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
@@ -84,7 +85,7 @@
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="row">
             <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
+              <thead>
               <tr class="fs-10">
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام کارمند</th>
@@ -111,10 +112,12 @@
               @empty
                 <x-core::data-not-found-alert :colspan="8"/>
               @endforelse
-              <tr>
-                <td class="text-center font-weight-bold" colspan="7">جمع کل</td>
-                <td class="text-center font-weight-bold" colspan="1">{{ number_format($salaries->sum('amount')) }}</td>
-              </tr>
+              @if($salaries->isNotEmpty())
+                <tr>
+                  <td class="text-center font-weight-bold" colspan="7">جمع کل</td>
+                  <td class="text-center font-weight-bold" colspan="1">{{ number_format($salaries->sum('amount')) }}</td>
+                </tr>
+              @endif
               </tbody>
             </table>
           </div>

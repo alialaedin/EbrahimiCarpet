@@ -83,11 +83,20 @@ class Payment extends BaseModel
 		return static::TYPES[$this->attributes['type']];
 	}
 
-  public function getPaymentDate()
+  public function getPaymentDate(): string
   {
     $paymentDate = $this->attributes['payment_date'];
 
     return $paymentDate ? verta($paymentDate)->format('Y/m/d') : '-';
+  }
+
+  public static function getAllTypes(): array
+  {
+    return [
+      static::TYPE_CASH,
+      static::TYPE_CHEQUE,
+      static::TYPE_INSTALLMENT
+    ];
   }
 
 }
