@@ -85,10 +85,11 @@ class PaymentController extends Controller implements HasMiddleware
     $supplier = $request->input('supplier');
     $inputs = [];
 
+    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+      $inputs['image'] = $request->file('image')->store('images/payments', 'public');
+    }
+
     if ($payType === Payment::TYPE_CASH) {
-      if ($request->hasFile('image') && $request->file('image')->isValid()) {
-        $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
-      }
       $inputs['type'] = Payment::TYPE_CASH;
       $inputs['supplier_id'] = $supplier->id;
       $inputs['amount'] = $request->input('cash_amount');

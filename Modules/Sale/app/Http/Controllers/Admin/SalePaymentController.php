@@ -83,10 +83,11 @@ class SalePaymentController extends Controller implements HasMiddleware
     $customer = $request->input('customer');
     $inputs = [];
 
+    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+      $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
+    }
+
     if ($payType === SalePayment::TYPE_CASH) {
-      if ($request->hasFile('image') && $request->file('image')->isValid()) {
-        $inputs['image'] = $request->file('image')->store('images/sale-payments', 'public');
-      }
       $inputs['type'] = SalePayment::TYPE_CASH;
       $inputs['customer_id'] = $customer->id;
       $inputs['amount'] = $request->input('cash_amount');

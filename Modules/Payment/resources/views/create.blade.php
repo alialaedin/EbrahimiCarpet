@@ -152,6 +152,13 @@
           </div>
           <div class="col-md-6 col-lg-4 col-xl-3">
             <div class="form-group">
+              <label for="image" class="control-label"> عکس رسید: </label>
+              <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
+              <x-core::show-validation-error name="image" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
               <label class="control-label"> چک برای خودم است:<span class="text-danger">&starf;</span></label>
               <div class="custom-controls-stacked">
                 <label class="custom-control custom-checkbox">
