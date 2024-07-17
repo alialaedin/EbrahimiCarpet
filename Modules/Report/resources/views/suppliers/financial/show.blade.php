@@ -14,7 +14,8 @@
     </div>
   </div>
   <div class="row justify-content-center d-flex">
-    <p class="fs-22">گزارش مالی تامین کننده با نام <strong>{{ $supplier->name }}</strong> و شماره همراه {{ $supplier->mobile }}</p>
+    <p class="fs-22">گزارش مالی تامین کننده با نام <strong>{{ $supplier->name }}</strong> و شماره
+      همراه {{ $supplier->mobile }}</p>
   </div>
   <div class="card">
     <div class="card-header border-0">
@@ -62,7 +63,8 @@
                   <td colspan="3" class="text-center font-weight-bold">جمع کل</td>
                   <td colspan="1" class="text-center">{{ number_format($totalPurchaseAmount) }}</td>
                   <td colspan="1" class="text-center">{{ number_format($totalPurchaseDiscount) }}</td>
-                  <td colspan="1" class="text-center">{{ number_format($totalPurchaseAmount - $totalPurchaseDiscount) }}</td>
+                  <td colspan="1"
+                      class="text-center">{{ number_format($totalPurchaseAmount - $totalPurchaseDiscount) }}</td>
                 </tr>
 
               @endif
@@ -73,10 +75,11 @@
       </div>
     </div>
   </div>
-  <div class="row justify-content-center d-flex">
-    <p class="fs-22 mt-5">پرداختی های نقدی</p>
-  </div>
+
   @isset($cashPayments)
+    <div class="row justify-content-center d-none d-print-flex">
+      <p class="fs-22 mt-5">پرداختی های نقدی</p>
+    </div>
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title">نقدی ها</p>
@@ -116,10 +119,10 @@
       </div>
     </div>
   @endisset
-  <div class="row justify-content-center d-flex">
-    <p class="fs-22 mt-5">پرداختی های چکی</p>
-  </div>
   @isset($chequePayments)
+    <div class="row justify-content-center d-none d-print-flex">
+      <p class="fs-22 mt-5">پرداختی های چکی</p>
+    </div>
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title">چک ها</p>
@@ -165,10 +168,10 @@
       </div>
     </div>
   @endisset
-  <div class="row justify-content-center d-flex">
-    <p class="fs-22 mt-5">پرداختی های قسطی</p>
-  </div>
   @isset($installmentPayments)
+    <div class="row justify-content-center d-none d-print-flex">
+      <p class="fs-22 mt-5">پرداختی های قسطی</p>
+    </div>
     <div class="card">
       <div class="card-header border-0">
         <p class="card-title">اقساط</p>
