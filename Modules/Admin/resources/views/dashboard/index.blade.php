@@ -237,7 +237,7 @@
                           <a
                             href="{{ route('admin.suppliers.show', $cheque->supplier) }}">{{ $cheque->supplier->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
+                        <td class="text-center"> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
                         <td class="text-center">{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
@@ -286,7 +286,7 @@
                           <a
                             href="{{ route('admin.customers.show', $cheque->customer) }}">{{ $cheque->customer->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
+                        <td class="text-center"> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
                         <td class="text-center">{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
