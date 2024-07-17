@@ -82,7 +82,7 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead>
                 <tr>
                   <th class="text-center">ردیف</th>
@@ -122,7 +122,7 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead>
                 <tr>
                   <th class="text-center">ردیف</th>
@@ -168,7 +168,7 @@
         <div class="table-responsive">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
-              <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+              <table class="table table-vcenter text-nowrap table-bordered border-bottom">
                 <thead>
                 <tr>
                   <th class="text-center">ردیف</th>
