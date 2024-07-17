@@ -1,5 +1,5 @@
-@foreach ($salePayments as $payment)
-  <div class="modal fade" id="editSalePaymentModal-{{ $payment->id }}" style="display: none;" aria-hidden="true">
+@foreach ($payments as $payment)
+  <div class="modal fade" id="editPaymentModal-{{ $payment->id }}" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="margin-top: 15vh;">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
@@ -7,7 +7,7 @@
           <button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
         </div>
         <div class="modal-body">
-          <form action="{{ route('admin.sale-payments.update', $payment) }}" method="post" class="save">
+          <form action="{{ route('admin.payments.update', $payment) }}" method="post" class="save">
             @csrf
             @method('PATCH')
             <div class="row">
@@ -239,3 +239,4 @@
     </div>
   </div>
 @endforeach
+

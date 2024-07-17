@@ -199,6 +199,12 @@
   <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
   <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
 
+  <x-core::date-input-script textInputId="installment_payment_date_show" dateInputId="installment_payment_date_hidden"/>
+  <x-core::date-input-script textInputId="installment_due_date_show" dateInputId="installment_due_date_hidden"/>
+  <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/>
+  <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
+  <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
+
   <script>
     function showPaymentDescriptionModal(description) {
       let modal = $('#showDescriptionModal');
