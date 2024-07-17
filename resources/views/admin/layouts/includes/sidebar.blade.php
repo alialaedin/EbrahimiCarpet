@@ -10,12 +10,14 @@
 
     <ul class="side-menu">
 
-      <li class="slide">
-        <a class="side-menu__item" href="{{route("admin.dashboard")}}">
-          <i class="feather feather-home sidemenu_icon"></i>
-          <span class="side-menu__label">داشبورد</span>
-        </a>
-      </li>
+      @can('view dashboard stats')
+        <li class="slide">
+          <a class="side-menu__item" href="{{route("admin.dashboard")}}">
+            <i class="feather feather-home sidemenu_icon"></i>
+            <span class="side-menu__label">داشبورد</span>
+          </a>
+        </li>
+      @endcan
 
       @role('super_admin')
         <li class="slide">

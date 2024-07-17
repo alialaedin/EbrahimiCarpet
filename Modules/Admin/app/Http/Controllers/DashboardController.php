@@ -5,7 +5,6 @@ namespace Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;

@@ -41,9 +41,9 @@ class RolesAndPermissionsSeeder extends Seeder
     //create permissions
     $permissions = [
       'view dashboard stats' => 'مشاهده آمارهای داشبورد',
-      'view today purchases' => 'مشاهده فروش های امروز',
-      'view today purchase_items' => 'مشاهده اقلام فروش امروز',
-      'view today purchase_amount' => 'مشاهده مبلغ فروش امروز',
+      'view today sales' => 'مشاهده فروش های امروز',
+      'view today sale_items' => 'مشاهده اقلام فروش امروز',
+      'view today sale_amount' => 'مشاهده مبلغ فروش امروز',
       'view customer cheques' => 'مشاهده چک های دریافتی داشبورد',
       'view supplier cheques' => 'مشاهده چک های پرداختی داشبورد',
       'view customer installments' => 'مشاهده قسط های دریافتی داشبورد',
@@ -123,11 +123,6 @@ class RolesAndPermissionsSeeder extends Seeder
       'create salaries' => 'ایجاد حقوق ها',
       'edit salaries' => 'ویرایش حقوق ها',
       'delete salaries' => 'حذف حقوق ها',
-      //stores
-      'view stores' => 'مشاهده انبار',
-      'create stores' => 'ایجاد انبار',
-      'edit stores' => 'ویرایش انبار',
-      'delete stores' => 'حذف انبار',
       //accounts
       'view accounts' => 'مشاهده حساب بانکی ها',
       'create accounts' => 'ایجاد حساب بانکی ها',
