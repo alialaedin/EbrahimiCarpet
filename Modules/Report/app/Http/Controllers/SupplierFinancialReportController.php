@@ -57,13 +57,9 @@ class SupplierFinancialReportController extends Controller
 
      $payments = $supplier->payments;
 
-     $cashPaymentsQuery = clone $payments;
-     $chequePaymentsQuery = clone $payments;
-     $installmentPaymentsQuery = clone $payments;
-
-     $cashPayments = $cashPaymentsQuery->where('type', Payment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CASH)->latest('id')->get() : null;
-     $chequePayments = $chequePaymentsQuery->where('type', Payment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CHEQUE)->latest('id')->get() : null;
-     $installmentPayments = $installmentPaymentsQuery->where('type', Payment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', Payment::TYPE_INSTALLMENT)->latest('id')->get() : null;
+     $cashPayments = $payments->where('type', Payment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CASH)->orderBy('id', 'DESC')->get() : null;
+     $chequePayments = $payments->where('type', Payment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CHEQUE)->orderBy('id', 'DESC')->get() : null;
+     $installmentPayments = $payments->where('type', Payment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', Payment::TYPE_INSTALLMENT)->orderBy('id', 'DESC')->get() : null;
 
      return view('report::suppliers.financial.show', compact([
        'supplier',
