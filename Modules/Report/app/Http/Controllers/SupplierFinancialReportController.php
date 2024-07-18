@@ -49,8 +49,7 @@ class SupplierFinancialReportController extends Controller
         },
         'purchases.items:id,purchase_id,quantity,price,discount',
         'payments' => function ($query) use ($paymentType) {
-          return $query->select('id', 'supplier_id', 'payment_date', 'amount', 'due_date', 'status', 'type')
-            ->when($paymentType, fn($query) => $query->where('type', $paymentType));
+          return $query->when($paymentType, fn($query) => $query->where('type', $paymentType));
         },
       ])
       ->select('id', 'name', 'mobile')
