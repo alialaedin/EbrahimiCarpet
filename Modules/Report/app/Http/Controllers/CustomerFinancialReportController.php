@@ -81,7 +81,7 @@ class CustomerFinancialReportController extends Controller
     $customerId = $request->input('customer_id');
     $paymentType = $request->input('payment_type');
     $fromDate = $request->input('from_date');
-    $toDate = $request->input('to_date') ?? Carbon::now();
+    $toDate = $request->input('to_date') ?? now();
 
     $payments = SalePayment::query()
       ->when($paymentType, fn($query) => $query->where('type', $paymentType))
