@@ -61,7 +61,7 @@ class CustomerFinancialReportController extends Controller
     $chequePayments = $payments->where('type', SalePayment::TYPE_CHEQUE)->latest('id');
     $installmentPayments = $payments->where('type', SalePayment::TYPE_INSTALLMENT)->latest('id');
 
-    return view('report::suppliers.financial.show', compact([
+    return view('report::customers.financial.show', compact([
       'customer',
       'cashPayments',
       'chequePayments',
