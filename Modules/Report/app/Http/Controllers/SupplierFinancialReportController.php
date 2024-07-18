@@ -80,6 +80,7 @@ class SupplierFinancialReportController extends Controller
 
   public function supplierPayments(Request $request): View
   {
+    dd($request->all());
     $supplierId = $request->input('supplier_id');
     $paymentType = $request->input('payment_type');
     $fromDate = $request->input('from_date');
