@@ -76,7 +76,7 @@
           <div class="row">
             <div class="col">
               <div class="mt-0 text-center">
-                <a  href="{{ route('admin.reports.suppliers-finance-filter') }}">
+                <a href="{{ route('admin.reports.suppliers-finance-filter') }}">
                   <span class="fs-20 font-weight-semibold"> گزارش مالی تامین کننده (جزئی) </span>
                 </a>
               </div>
@@ -107,7 +107,7 @@
           <div class="row">
             <div class="col">
               <div class="mt-0 text-center">
-                <a>
+                <a href="{{ route('admin.reports.all-customers-finance') }}">
                   <span class="fs-20 font-weight-semibold"> گزارش مالی مشتریان (کلی) </span>
                 </a>
               </div>
@@ -122,7 +122,7 @@
           <div class="row">
             <div class="col">
               <div class="mt-0 text-center">
-                <a>
+                <a href="{{ route('admin.reports.customers-finance-filter') }}">
                   <span class="fs-20 font-weight-semibold"> گزارش مالی مشتریان (جزئی) </span>
                 </a>
               </div>
@@ -137,7 +137,7 @@
           <div class="row">
             <div class="col">
               <div class="mt-0 text-center">
-                <a>
+                <a href="{{ route('admin.reports.customer-payments-filter') }}">
                   <span class="fs-20 font-weight-semibold"> گزارش دریافتی از مشتری </span>
                 </a>
               </div>
