@@ -86,12 +86,12 @@ class SupplierFinancialReportController extends Controller
     $toDate = $request->input('to_date') ?? today();
 
     $payments = Payment::query()
-      ->select('id', 'supplier_id', 'payment_date', 'amount', 'due_date', 'status', 'type')
+      ->select('id', 'supplier_id', 'payment_date', 'amount', 'due_date', 'status', 'type', 'created_at')
       ->whereBetween('created_at', [$fromDate, $toDate])
       ->when($paymentType, fn($query) => $query->where('type', $paymentType))
       ->where('supplier_id', $supplierId)
       ->latest('id')
-      ->orderBy('type')
+//      ->orderBy('type')
       ->get();
 
     $supplier = Supplier::query()->findOrFail($supplierId);
