@@ -70,10 +70,10 @@ class CustomerFinancialReportController extends Controller
 
   public function customerPaymentsFilter(): View
   {
-    $customer = Customer::getAllCustomers();
+    $customers = Customer::getAllCustomers();
     $paymentTypes = SalePayment::getAllTypes();
 
-    return view('report::customers.payments.filter', compact(['customer', 'paymentTypes']));
+    return view('report::customers.payments.filter', compact(['customers', 'paymentTypes']));
   }
 
   public function customerPayments(Request $request): View
