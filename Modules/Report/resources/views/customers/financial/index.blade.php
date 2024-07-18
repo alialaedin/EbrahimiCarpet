@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="row justify-content-center d-none d-print-flex">
-    <p class="fs-22">گزارش مالی تامین کننده (کلی)</p>
+    <p class="fs-22">گزارش مالی مشتری (کلی)</p>
   </div>
   <div class="card">
     <div class="card-body">
@@ -24,7 +24,7 @@
                 <th class="text-center">ردیف</th>
                 <th class="text-center">نام و نام خانوادگی</th>
                 <th class="text-center">شماره موبایل</th>
-                <th class="text-center">کل خرید (ریال)</th>
+                <th class="text-center">کل فروش (ریال)</th>
                 <th class="text-center">پرداختی (ریال)</th>
                 <th class="text-center">مانده (ریال)</th>
               </tr>
@@ -32,35 +32,35 @@
               <tbody>
 
               @php
-                $totalPurchaseAmount = 0;
+                $totalSaleAmount = 0;
                 $totalPaymentAmount = 0;
                 $totalRemainingAmount = 0;
               @endphp
 
-              @forelse ($suppliers as $supplier)
+              @forelse ($customers as $customer)
 
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $supplier->name }}</td>
-                  <td class="text-center">{{ $supplier->mobile }}</td>
-                  <td class="text-center">{{ number_format($supplier->calcTotalPurchaseAmount()) }}</td>
-                  <td class="text-center">{{ number_format($supplier->calcTotalPaymentAmount()) }}</td>
-                  <td class="text-center">{{ number_format($supplier->getRemainingAmount()) }}</td>
+                  <td class="text-center">{{ $customer->name }}</td>
+                  <td class="text-center">{{ $customer->mobile }}</td>
+                  <td class="text-center">{{ number_format($customer->calcTotalSalesAmount()) }}</td>
+                  <td class="text-center">{{ number_format($customer->calcTotalSalePaymentsAmount()) }}</td>
+                  <td class="text-center">{{ number_format($customer->getRemainingAmount()) }}</td>
                 </tr>
 
                 @php
-                  $totalPurchaseAmount += $supplier->calcTotalPurchaseAmount();
-                  $totalPaymentAmount += $supplier->calcTotalPaymentAmount();
-                  $totalRemainingAmount += $supplier->getRemainingAmount();
+                  $totalSaleAmount += $customer->calcTotalSalesAmount();
+                  $totalPaymentAmount += $customer->calcTotalSalePaymentsAmount();
+                  $totalRemainingAmount += $customer->getRemainingAmount();
                 @endphp
 
               @empty
                 <x-core::data-not-found-alert :colspan="6"/>
               @endforelse
-              @if($suppliers->isNotEmpty())
+              @if($customers->isNotEmpty())
                 <tr>
                   <td colspan="3" class="text-center font-weight-bold">جمع کل</td>
-                  <td colspan="1" class="text-center">{{ number_format($totalPurchaseAmount) }}</td>
+                  <td colspan="1" class="text-center">{{ number_format($totalSaleAmount) }}</td>
                   <td colspan="1" class="text-center">{{ number_format($totalPaymentAmount) }}</td>
                   <td colspan="1" class="text-center">{{ number_format($totalRemainingAmount) }}</td>
                 </tr>
