@@ -56,18 +56,18 @@ class StoreController extends Controller implements HasMiddleware
     return view('store::index', compact(['products', 'productsToFilter']));
   }
 
-  public function show(Store $store): View|Application
-  {
-    $store->load('product.category');
-
-    $transactions = StoreTransaction::query()
-      ->where('store_id', $store->id)
-      ->with('transactionable')
-      ->latest('id')
-      ->paginate();
-
-    return view('store::show', compact('transactions',  'store'));
-  }
+//  public function showTransactions(Product $product): View|Application
+//  {
+//    $product->load('product.category');
+//
+//    $transactions = StoreTransaction::query()
+//      ->where('store_id', $store->id)
+//      ->with('transactionable')
+//      ->latest('id')
+//      ->paginate();
+//
+//    return view('store::show', compact('transactions',  'store'));
+//  }
 
   public function incrementBalance(IncrementStoreBalanceRequest $request): RedirectResponse
   {

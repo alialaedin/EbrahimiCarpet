@@ -21,17 +21,17 @@
     <div class="card-body">
       <div class="row">
         <div class="col-xl-3 col-md-6 col-12">
-            <strong>شناسه محصول :</strong> {{ $store->product->id }}
+            <strong>شناسه محصول :</strong> {{ $product->id }}
         </div>
         <div class="col-xl-3 col-md-6 col-12">
           <strong>نام محصول :</strong>
-          <a href="{{ route('admin.products.show', $store->product) }}" class="fs-14 mr-1"> {{ $store->product->title }} </a>
+          <a href="{{ route('admin.products.show', $product) }}" class="fs-14 mr-1"> {{ $product->title }} </a>
         </div>
         <div class="col-xl-3 col-md-6 col-12">
-          <strong>نام دسته بندی :</strong> {{ $store->product->category->title }}
+          <strong>نام دسته بندی :</strong> {{ $product->category->title }}
         </div>
         <div class="col-xl-3 col-md-6 col-12">
-          <strong>موجودی (تعداد / متر) :</strong> {{ $store->balance }}
+          <strong>موجودی (تعداد / متر) :</strong> {{ $product->stores->sum('balance') }}
         </div>
       </div>
     </div>

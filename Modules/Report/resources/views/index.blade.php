@@ -91,7 +91,7 @@
           <div class="row">
             <div class="col">
               <div class="mt-0 text-center">
-                <a>
+                <a href="{{ route('admin.reports.supplier-payments-filter') }}">
                   <span class="fs-20 font-weight-semibold"> گزارش پرداختی به تامین کننده </span>
                 </a>
               </div>

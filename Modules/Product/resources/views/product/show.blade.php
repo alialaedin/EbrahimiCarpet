@@ -34,13 +34,13 @@
           @method('DELETE')
         </form>
       @endcan
-      @can('view stores')
-        <a
-          href="{{ route('admin.stores.show', $product->store->id) }}"
-          class="btn btn-info mx-1">
-          مشاهده تراکنش ها<i class="fa fa-eye mr-2"></i>
-        </a>
-      @endcan
+{{--      @can('view stores')--}}
+{{--        <a--}}
+{{--          href="{{ route('admin.stores.show-transactions', $product) }}"--}}
+{{--          class="btn btn-info mx-1">--}}
+{{--          مشاهده تراکنش ها<i class="fa fa-eye mr-2"></i>--}}
+{{--        </a>--}}
+{{--      @endcan--}}
     </div>
   </div>
   <div class="card">
@@ -55,7 +55,7 @@
             <li class="list-group-item"><strong>عنوان: </strong> {{ $product->title }} </li>
             <li class="list-group-item"><strong>عوان پرینت: </strong> {{ $product->print_title }} </li>
             <li class="list-group-item"><strong>دسته بندی: </strong> {{ $product->category->title }} </li>
-            <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->store->balance . ' ' . $product->category->getUnitType()}} </li>
+            <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->stores->sum('balance') . ' ' . $product->category->getUnitType()}} </li>
             <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} ریال </li>
             <li class="list-group-item"><strong>مقدار تخفیف: </strong> {{ number_format($product->getDiscount()) }} ریال </li>
             <li class="list-group-item">

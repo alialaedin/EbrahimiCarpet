@@ -94,6 +94,11 @@ class Supplier extends BaseModel
     return $this->payments->isEmpty() && $this->purchases->isEmpty() && $this->accounts->isEmpty();
   }
 
+  public static function getAllSuppliers(): \Illuminate\Database\Eloquent\Collection|array
+  {
+    return Supplier::query()->select('id', 'name', 'mobile')->latest('id')->get();
+  }
+
   // Relations
   public function purchases(): HasMany
   {

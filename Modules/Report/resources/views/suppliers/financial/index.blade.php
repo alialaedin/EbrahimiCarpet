@@ -73,7 +73,3 @@
     </div>
   </div>
 @endsection
-@section('scripts')
-  <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
-  <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
-@endsection

@@ -152,7 +152,7 @@
                       <i class="fa fa-minus-circle mr-1"></i>
                     </button>
 {{--                    <a--}}
-{{--                      href="{{route('admin.stores.show', $product)}}"--}}
+{{--                      href="{{route('admin.stores.show-transactions', $product)}}"--}}
 {{--                      class="btn btn-sm btn-primary text-white"--}}
 {{--                    style="margin-right: 1px;">--}}
 {{--                      تراکنش ها--}}

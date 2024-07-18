@@ -153,7 +153,7 @@
       let purchasedPriceInput = $('#purchased_price');
 
       title.on('input', () => {
-        printTitle.val(this.value);
+        printTitle.val(title.val());
       });
 
       initialBalance.on('input', () => {
