@@ -74,6 +74,6 @@
 
 @endsection
 @section('scripts')
-  <x-core::date-input-script textInputId="from_date_show" dateInputId="from_date"/>
-  <x-core::date-input-script textInputId="to_date_show" dateInputId="to_date"/>
+  <x-core::date-input-script textInputId="from_date_show" dateInputId="from_date_hidden"/>
+  <x-core::date-input-script textInputId="to_date_show" dateInputId="to_date_hidden"/>
 @endsection

@@ -91,7 +91,7 @@ class SupplierFinancialReportController extends Controller
       ->when($paymentType, fn($query) => $query->where('type', $paymentType))
       ->where('supplier_id', $supplierId)
       ->latest('id')
-//      ->orderBy('type')
+      ->orderBy('type')
       ->get();
 
     $supplier = Supplier::query()->findOrFail($supplierId);
