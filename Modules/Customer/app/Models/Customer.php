@@ -97,6 +97,11 @@ class Customer extends Model
     return $this->attributes['status'] ? 'فعال' : 'غیر فعال';
   }
 
+  public static function getAllCustomers(): \Illuminate\Database\Eloquent\Collection|array
+  {
+    return Customer::query()->select('id', 'name', 'mobile')->get();
+  }
+
   // Relations
   public function sales(): HasMany
   {

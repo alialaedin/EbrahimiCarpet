@@ -50,11 +50,20 @@ class SalePayment extends BaseModel
     return config('core.payment_types.' . $this->attributes['type']);
   }
 
-  public function getPaymentDate()
+  public function getPaymentDate(): string
   {
     $paymentDate = $this->attributes['payment_date'];
 
     return $paymentDate ? verta($paymentDate)->format('Y/m/d') : '-';
+  }
+
+  public static function getAllTypes(): array
+  {
+    return [
+      self::TYPE_CASH,
+      self::TYPE_CHEQUE,
+      self::TYPE_INSTALLMENT,
+    ];
   }
 
 }

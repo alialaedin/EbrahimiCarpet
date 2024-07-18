@@ -3,65 +3,97 @@
 namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Modules\Customer\Models\Customer;
+use Modules\Sale\Models\SalePayment;
 
 class CustomerFinancialReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('report::index');
-    }
+  public function allCustomersFinance(): View
+  {
+    $customers = Customer::query()
+      ->select('id', 'name', 'mobile')
+      ->with([
+        'sales:id,customer_id,discount',
+        'sales.items:id,sale_id,quantity,price,discount',
+        'payments:id,customer_id,payment_date,amount',
+      ])
+      ->latest('id')
+      ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('report::create');
-    }
+    return view('report::customers.financial.index', compact('customers'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+  public function customersFinanceFilter(): View
+  {
+    $customers = Customer::getAllCustomers();
+    $paymentTypes = SalePayment::getAllTypes();
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('report::show');
-    }
+    return view('report::customers.financial.filter', compact(['customers', 'paymentTypes']));
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('report::edit');
-    }
+  public function customerFinance(Request $request): View
+  {
+    $customerId = $request->input('customer_id');
+    $paymentType = $request->input('payment_type');
+    $fromDate = $request->input('from_date');
+    $toDate = $request->input('to_date') ?? today();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
+    $customer = Customer::query()
+      ->with([
+        'sales' => function ($query) use ($fromDate, $toDate) {
+          return $query->select('id', 'customer_id', 'discount')
+            ->whereBetween('created_at', [$fromDate, $toDate]);
+        },
+        'sales.items:id,sale_id,quantity,price,discount',
+        'payments' => function ($query) use ($paymentType) {
+          return $query->select('id', 'customer_id', 'payment_date', 'amount', 'due_date', 'status', 'type')
+            ->when($paymentType, fn($query) => $query->where('type', $paymentType));
+        },
+      ])
+      ->select('id', 'name', 'mobile')
+      ->findOrFail($customerId);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    $payments = $customer->payments();
+
+    $cashPayments = $payments->where('type', SalePayment::TYPE_CASH)->latest('id');
+    $chequePayments = $payments->where('type', SalePayment::TYPE_CHEQUE)->latest('id');
+    $installmentPayments = $payments->where('type', SalePayment::TYPE_INSTALLMENT)->latest('id');
+
+    return view('report::suppliers.financial.show', compact([
+      'customer',
+      'cashPayments',
+      'chequePayments',
+      'installmentPayments'
+    ]));
+  }
+
+  public function customerPaymentsFilter(): View
+  {
+    $customer = Customer::getAllCustomers();
+    $paymentTypes = SalePayment::getAllTypes();
+
+    return view('report::customers.payments.filter', compact(['customer', 'paymentTypes']));
+  }
+
+  public function customerPayments(Request $request): View
+  {
+    $customerId = $request->input('customer_id');
+    $paymentType = $request->input('payment_type');
+    $fromDate = $request->input('from_date');
+    $toDate = $request->input('to_date') ?? Carbon::now();
+
+    $payments = SalePayment::query()
+      ->when($paymentType, fn($query) => $query->where('type', $paymentType))
+      ->where('customer_id', $customerId)
+      ->whereBetween('created_at', [$fromDate, $toDate])
+      ->latest('id')
+      ->orderBy('type')
+      ->get();
+
+    $customer = Customer::query()->findOrFail($customerId);
+
+    return view('report::customers.payments.index', compact(['payments', 'customer']));
+  }
 }

@@ -64,7 +64,6 @@ class SupplierFinancialReportController extends Controller
 
     return view('report::suppliers.financial.show', compact([
       'supplier',
-      'paymentType',
       'cashPayments',
       'chequePayments',
       'installmentPayments'
