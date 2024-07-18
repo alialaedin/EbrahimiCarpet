@@ -92,6 +92,8 @@ class SalePaymentController extends Controller implements HasMiddleware
       $inputs['customer_id'] = $customer->id;
       $inputs['amount'] = $request->input('cash_amount');
       $inputs['payment_date'] = $request->input('cash_payment_date');
+      $inputs['created_at'] = now();
+      $inputs['updated_at'] = now();
     }
 
     elseif ($payType === SalePayment::TYPE_CHEQUE) {
@@ -105,6 +107,8 @@ class SalePaymentController extends Controller implements HasMiddleware
       $inputs['due_date'] = $request->input('cheque_due_date');
       $inputs['is_mine'] = $request->input('is_mine');
       $inputs['status'] = 0;
+      $inputs['created_at'] = now();
+      $inputs['updated_at'] = now();
     }
 
     elseif ($payType === SalePayment::TYPE_INSTALLMENT) {
@@ -116,7 +120,9 @@ class SalePaymentController extends Controller implements HasMiddleware
           'customer_id' => $customer->id,
           'status' => 0,
           'amount' => $request->input('installment_amount'),
-          'due_date' => $payDate->copy()->toDateString()
+          'due_date' => $payDate->copy()->toDateString(),
+          'created_at' => now(),
+          'updated_at' => now(),
         ];
 
         $payDate->addMonth();

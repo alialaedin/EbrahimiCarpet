@@ -3,6 +3,7 @@
 namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Modules\Payment\Models\Payment;
@@ -80,17 +81,15 @@ class SupplierFinancialReportController extends Controller
 
   public function supplierPayments(Request $request): View
   {
-    dd($request->all());
     $supplierId = $request->input('supplier_id');
     $paymentType = $request->input('payment_type');
     $fromDate = $request->input('from_date');
-    $toDate = $request->input('to_date') ?? today();
+    $toDate = $request->input('to_date') ?? Carbon::now();
 
     $payments = Payment::query()
-      ->select('id', 'supplier_id', 'payment_date', 'amount', 'due_date', 'status', 'type', 'created_at')
-      ->whereBetween('created_at', [$fromDate, $toDate])
       ->when($paymentType, fn($query) => $query->where('type', $paymentType))
       ->where('supplier_id', $supplierId)
+      ->whereBetween('created_at', [$fromDate, $toDate])
       ->latest('id')
       ->orderBy('type')
       ->get();

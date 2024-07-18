@@ -94,6 +94,8 @@ class PaymentController extends Controller implements HasMiddleware
       $inputs['supplier_id'] = $supplier->id;
       $inputs['amount'] = $request->input('cash_amount');
       $inputs['payment_date'] = $request->input('cash_payment_date');
+      $inputs['created_at'] = now();
+      $inputs['updated_at'] = now();
     } elseif ($payType === Payment::TYPE_CHEQUE) {
       $inputs['type'] = Payment::TYPE_CHEQUE;
       $inputs['supplier_id'] = $supplier->id;
@@ -105,6 +107,8 @@ class PaymentController extends Controller implements HasMiddleware
       $inputs['due_date'] = $request->input('cheque_due_date');
       $inputs['is_mine'] = $request->input('is_mine');
       $inputs['status'] = 0;
+      $inputs['created_at'] = now();
+      $inputs['updated_at'] = now();
     } elseif ($payType === Payment::TYPE_INSTALLMENT) {
       $payDate = Carbon::parse($request->input('installment_start_date'));
       for ($i = 1; $i <= $request->input('number_of_installments'); $i++) {
@@ -114,7 +118,9 @@ class PaymentController extends Controller implements HasMiddleware
           'supplier_id' => $supplier->id,
           'status' => 0,
           'amount' => $request->input('installment_amount'),
-          'due_date' => $payDate->copy()->toDateString()
+          'due_date' => $payDate->copy()->toDateString(),
+          'created_at' => now(),
+          'updated_at' => now()
         ];
 
         $payDate->addMonth();
