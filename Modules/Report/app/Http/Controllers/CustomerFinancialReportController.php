@@ -55,11 +55,11 @@ class CustomerFinancialReportController extends Controller
       ->select('id', 'name', 'mobile')
       ->findOrFail($customerId);
 
-    $payments = $customer->payments();
+    $payments = $customer->payments;
 
-    $cashPayments = $payments->where('type', SalePayment::TYPE_CASH)->latest('id');
-    $chequePayments = $payments->where('type', SalePayment::TYPE_CHEQUE)->latest('id');
-    $installmentPayments = $payments->where('type', SalePayment::TYPE_INSTALLMENT)->latest('id');
+    $cashPayments = $payments->where('type', SalePayment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', SalePayment::TYPE_CASH)->sortByDesc('id') : null;
+    $chequePayments = $payments->where('type', SalePayment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', SalePayment::TYPE_CHEQUE)->sortByDesc('id') : null;
+    $installmentPayments = $payments->where('type', SalePayment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', SalePayment::TYPE_INSTALLMENT)->sortByDesc('id') : null;
 
     return view('report::customers.financial.show', compact([
       'customer',
