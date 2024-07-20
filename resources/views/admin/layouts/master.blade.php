@@ -30,20 +30,20 @@
 
 				<div class="app-content py-1" style="padding-left: 50px; padding-right: 50px;">
 
-          @if($errors->any())
-            @php
-              toastr()->error('خطا در انجام عملیات!');
-            @endphp
-            <div class="alert alert-danger mt-5">
-              @foreach($errors->all() as $e)
-                <p>{{ $e }}</p>
-              @endforeach
-            </div>
-          @endif
+					@if($errors->any())
+						@php
+						toastr()->error('خطا در انجام عملیات!');
+						@endphp
+						<div class="alert alert-danger mt-5">
+						@foreach($errors->all() as $e)
+							<p>{{ $e }}</p>
+						@endforeach
+						</div>
+					@endif
 
-          @yield("content")
+					@yield("content")
 
-        </div>
+				</div>
 			</div>
 
 		</div>
