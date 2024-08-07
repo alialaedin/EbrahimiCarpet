@@ -3,6 +3,7 @@
 namespace Modules\Product\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Core\Helpers\Helpers;
 
 class ProductStoreRequest extends FormRequest
 {
@@ -28,6 +29,13 @@ class ProductStoreRequest extends FormRequest
 			'description' => ['nullable', 'string'],
 			'status' => ['required', 'boolean']
 		];
+	}
+	
+	public function passedValidation()
+	{
+		if ($this->filled('initial_balance') && $this->isNotFilled('purchased_price')) {
+			throw Helpers::makeWebValidationException('با وارد کردن موجودی اولیه باید حتما قیمت خرید را وارد کنید', 'initial_balance');
+		}
 	}
 
 	public function authorize(): bool
