@@ -105,7 +105,7 @@
           </div>
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
-              <label for="salary" class="control-label"> میزان حقوق (تومن): <span class="text-danger">&starf;</span></label>
+              <label for="salary" class="control-label"> میزان حقوق (ریال): <span class="text-danger">&starf;</span></label>
               <input
                 type="text"
                 id="salary"
