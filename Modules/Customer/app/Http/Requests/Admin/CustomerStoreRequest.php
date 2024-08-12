@@ -21,7 +21,7 @@ class CustomerStoreRequest extends FormRequest
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
       'gender' => ['required', 'string', 'in:male,female'],
-      'birthday' => ['required', 'date']
+      'birthday' => ['nullable', 'date']
 		];
 	}
 

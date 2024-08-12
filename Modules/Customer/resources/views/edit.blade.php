@@ -80,9 +80,9 @@
 					</div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="birthday_show" class="control-label">تاریخ تولد :<span class="text-danger">&starf;</span></label>
+              <label for="birthday_show" class="control-label">تاریخ تولد :</label>
               <input class="form-control fc-datepicker" id="birthday_show" type="text" autocomplete="off" placeholder="تاریخ تولد را انتخاب کنید" />
-              <input name="birthday" id="birthday" type="hidden" value="{{ old("birthday", $customer->birthday) }}" required/>
+              <input name="birthday" id="birthday" type="hidden" value="{{ old("birthday", $customer->birthday) }}"/>
             </div>
           </div>
 					<div class="col-lg-4 col-md-6">

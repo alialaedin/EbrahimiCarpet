@@ -24,7 +24,7 @@ class CustomerUpdateRequest extends FormRequest
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
       'gender' => ['required', 'string', Rule::in(Customer::GENDER_MALE,Customer::GENDER_FEMALE)],
-      'birthday' => ['required', 'date']
+      'birthday' => ['nullable', 'date']
 		];
 	}
 
