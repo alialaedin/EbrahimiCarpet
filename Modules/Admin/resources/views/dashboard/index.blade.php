@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
+  <div class="page-header" style="margin-bottom: 1.5rem;">
     <ol class="breadcrumb align-items-center">
       <li class="breadcrumb-item active">
         <i class="fe fe-home ml-1"></i> داشبورد
