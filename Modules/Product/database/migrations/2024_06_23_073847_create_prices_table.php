@@ -10,13 +10,13 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('prices', function (Blueprint $table) {
-      $table->id();
-      $table->foreignIdFor(\Modules\Product\Models\Product::class)->constrained()->cascadeOnDelete();
-      $table->unsignedBigInteger('buy_price');
-      $table->unsignedBigInteger('sell_price');
-      $table->timestamps();
-    });
+    // Schema::create('prices', function (Blueprint $table) {
+    //   $table->id();
+    //   $table->foreignIdFor(\Modules\Product\Models\Product::class)->constrained()->cascadeOnDelete();
+    //   $table->unsignedBigInteger('buy_price');
+    //   $table->unsignedBigInteger('sell_price');
+    //   $table->timestamps();
+    // });
   }
 
   /**
