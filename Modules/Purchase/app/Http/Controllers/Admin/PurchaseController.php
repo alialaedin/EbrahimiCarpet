@@ -96,7 +96,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchase->load([
 			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
 			'items' => fn ($query) => $query->latest('id'),
-			'items.product' => fn ($query) => $query->select('id', 'title', 'image', 'category_id'),
+			'items.product' => fn ($query) => $query->select('id', 'title', 'image', 'category_id', 'sub_title'),
 			'items.product.category' => fn ($query) => $query->select('id', 'unit_type')
 		]);
 		$categories = $this->getCategories();

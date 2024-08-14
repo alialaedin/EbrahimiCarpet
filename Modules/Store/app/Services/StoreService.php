@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class StoreService
 {
-  public static function add_product_to_store(Product|Builder $product, int $purchasedPrice, int $initialBalance): void
+  public static function add_product_to_store(Product|Builder|Collection $product, int $purchasedPrice, int $initialBalance): void
   {
     $price = $product->prices()->create([
       'buy_price' => $purchasedPrice,
@@ -36,7 +36,7 @@ class StoreService
     ]);
   }
 
-  public static function decrement_store_balance(Product|Collection|array|Builder $product, int $quantity): void
+  public static function decrement_store_balance(Product|Collection|Builder $product, int $quantity): void
   {
     $stores = Store::query()
       ->where('product_id', $product->id)
@@ -56,6 +56,30 @@ class StoreService
       }
     }
   }
+
+  public static function check_if_product_has_initial_balance(array|Collection $products): void
+  { 
+    foreach ($products as $product) 
+    {
+      $balance = $product['initial_balance'];
+      $purchasedPrice = $product['purchased_price'];
+      
+      $hasInitialBalance = !is_null($balance);
+			$hasPurchasedPrice = !is_null($purchasedPrice) && ($purchasedPrice > 0);
+      
+      if ($hasInitialBalance && $hasPurchasedPrice) 
+      {
+        $product = Product::query()
+          ->select(['id', 'price'])
+          ->where('id', $product['id'])
+          ->with(['prices', 'stores'])
+          ->first();
+
+        static::add_product_to_store($product, $purchasedPrice, $balance);
+      }
+    }
+  }
+
   public static function update_sell_price(Product|Builder $product): void
   {
     $prices = Price::query()->whereIn('product_id', [$product->id])->get();

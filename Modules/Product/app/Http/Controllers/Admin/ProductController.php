@@ -3,6 +3,7 @@
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ class ProductController extends Controller implements HasMiddleware
     $hasDiscount = request('has_discount');
 
     $products = Product::query()
-      ->select('id', 'title', 'print_title', 'category_id', 'status', 'discount', 'price', 'image', 'created_at')
+      ->select('id', 'title', 'print_title', 'category_id', 'status', 'discount', 'price', 'image', 'parent_id')
       ->with(['category' => fn($query) => $query->select('id', 'title')])
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
       ->when($categoryId, fn(Builder $query) => $query->where('category_id', $categoryId))
@@ -59,6 +60,7 @@ class ProductController extends Controller implements HasMiddleware
           }
         });
       })
+      ->whereNull('parent_id')
       ->latest('id')
       ->paginate(15)
       ->withQueryString();
@@ -85,22 +87,49 @@ class ProductController extends Controller implements HasMiddleware
 
   public function store(ProductStoreRequest $request): \Illuminate\Http\RedirectResponse
   {
-    $inputs = $this->getFormInputs($request);
-
     if ($request->hasFile('image') && $request->file('image')->isValid()) {
-      $inputs['image'] = $request->file('image')->store('images/products', 'public');
+      $image = $request->file('image')->store('images/products', 'public');
+    }else {
+      $image = null;
+    }
+    
+    $storedProducts = [];
+    $parentId = null;
+    $description = null;
+
+    foreach ($request->input('product_dimensions') as $index => $product) {
+
+      if ($index !== 0) {
+        $description = $request->description;
+      }
+
+      $storedProduct = Product::query()->create([
+        'title' => $request->title,
+        'sub_title' => $product['sub_title'],
+        'print_title' => $request->print_title,
+        'category_id' => $request->category_id,
+        'image' => $image,
+        'description' => $description,
+        'parent_id' => $parentId,
+        'price' => $product['price'],
+        'discount' => $product['discount'],
+        'status' => $request->status,
+      ]);
+
+      if($index == 0) {
+        $parentId = $storedProduct->id;
+      }
+
+      $productCollection = collect($storedProduct);
+      $productCollection->put('initial_balance', $product['initial_balance']);
+      $productCollection->put('purchased_price', $product['purchased_price']);
+
+      $storedProducts[] = $productCollection;
     }
 
-    $product = Product::query()->create($inputs);
+    StoreService::check_if_product_has_initial_balance($storedProducts);
 
-    $purchasedPrice = $request->purchased_price;
-    $initialBalance = $request->initial_balance;
-
-    if ($purchasedPrice && $initialBalance) {
-      StoreService::add_product_to_store($product, $purchasedPrice, $initialBalance);
-    }
-
-    toastr()->success("محصول جدید با نام {$product->title} با موفقیت ساخته شد.");
+    toastr()->success("محصول جدید با نام {$request->title} با موفقیت ساخته شد.");
 
     return to_route('admin.products.index');
   }
@@ -118,7 +147,7 @@ class ProductController extends Controller implements HasMiddleware
 
     if ($request->hasFile('image') && $request->file('image')->isValid()) {
       if (!is_null($product->image)) {
-        Storage::delete($product->image);
+        Storage::disk('public')->delete($product->image);
       }
       $inputs['image'] = $request->file('image')->store('images/products', 'public');
     }

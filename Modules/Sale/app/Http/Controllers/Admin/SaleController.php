@@ -142,7 +142,7 @@ class SaleController extends Controller implements HasMiddleware
   {
     $sale->load([
       'items' => fn($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
-      'items.product' => fn($query) => $query->select(['id', 'title', 'category_id', 'print_title']),
+      'items.product' => fn($query) => $query->select(['id', 'title', 'category_id', 'print_title', 'sub_title']),
       'items.product.category' => fn($query) => $query->select(['id', 'title', 'unit_type']),
     ]);
 

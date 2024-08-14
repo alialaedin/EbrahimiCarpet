@@ -37,7 +37,7 @@ class StoreController extends Controller implements HasMiddleware
     $toCreatedAt = request('to_created_at') ?? now();
 
     $products = Product::query()
-      ->select(['id', 'title', 'category_id', 'image'])
+      ->select(['id', 'title', 'category_id', 'sub_title', 'image'])
       ->with([
         'stores:id,balance,product_id',
         'category:id,title,unit_type',

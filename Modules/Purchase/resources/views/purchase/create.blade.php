@@ -8,7 +8,7 @@
         </a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{ route('admin.purchases.index') }}">لیست خرید</a>
+        <a href="{{ route('admin.purchases.index') }}">لیست خرید ها</a>
       </li>
       <li class="breadcrumb-item active">ثبت خرید جدید</li>
     </ol>
@@ -100,7 +100,7 @@
                     @if ($category->products()->exists())
                       <optgroup label="{{ $category->title }}" class="text-muted">
                         @foreach ($category->products as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title }}</option>
+                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
                    @endif

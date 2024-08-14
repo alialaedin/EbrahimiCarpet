@@ -5,7 +5,6 @@ namespace Modules\Product\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
@@ -23,6 +22,8 @@ class Product extends BaseModel
 		'category_id',
 		'title',
 		'print_title',
+		'sub_title',
+		'parent_id',
 		'description',
 		'price',
 		'status',
@@ -94,7 +95,10 @@ class Product extends BaseModel
 
   public function isDeletable(): bool
   {
-    return $this->stores->sum('balance') == 0 && $this->purchaseItems->isEmpty() && $this->saleItems->isEmpty();
+    return $this->stores->sum('balance') == 0 
+			&& $this->purchaseItems->isEmpty()
+			&& $this->saleItems->isEmpty() 
+			&& $this->children->isEmpty();
   }
 
   // Relations
@@ -121,5 +125,15 @@ class Product extends BaseModel
   public function prices(): HasMany
   {
     return $this->hasMany(Price::class);
+  }
+
+  public function children(): HasMany
+  {
+    return $this->hasMany(Product::class, 'parent_id');
+  }
+
+  public function parent(): BelongsTo
+  {
+    return $this->belongsTo(Product::class, 'parent_id');
   }
 }

@@ -14,29 +14,29 @@
     </ol>
   </div>
   <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">ویرایش محصول</h3>
+    <div class="card-header border-0">
+      <h1 class="card-title">ویرایش محصول</h3>
     </div>
     <div class="card-body">
       <form action="{{ route('admin.products.update', $product) }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
               <input type="text" id="title" class="form-control" name="title" placeholder="عنوان را وارد کنید" value="{{ old('title', $product->title) }}">
               <x-core::show-validation-error name="title" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="print_title" class="control-label"> عنوان (پرینت فاکتور مشتری): <span class="text-danger">&starf;</span></label>
               <input type="text" id="print_title" class="form-control" name="print_title" placeholder="عنوان را به فارسی وارد کنید" value="{{ old('print_title', $product->print_title) }}" required autofocus>
               <x-core::show-validation-error name="print_title" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
               <select name="category_id" id="category_id" class="form-control">
@@ -51,21 +51,21 @@
               <x-core::show-validation-error name="category_id" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="price" class="control-label"> قیمت (ریال): <span class="text-danger">&starf;</span></label>
               <input type="text" id="price" class="form-control comma" name="price" placeholder="قیمت را به ریال وارد کنید" value="{{ old('price', number_format($product->price)) }}">
               <x-core::show-validation-error name="price" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="discount" class="control-label"> تخفیف (ریال): </label>
               <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', $product->discount ? number_format($product->discount) : null) }}">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="image" class="control-label"> انتخاب عکس </label>
               <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
@@ -73,7 +73,15 @@
             </div>
           </div>
           @if ($product->image)
-            <div class="col-md-6">
+          <div class="col-12 text-center">
+            <div class="img-holder my-4 img-show w-100 bg-light" style="max-height: 300px;">
+              <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
+                <i class="fa fa-trash-o"></i>
+              </button>
+              <img src="{{ Storage::url($product->image) }}" style="max-height: 300px">
+            </div>
+          </div>
+            {{-- <div class="col-md-6">
               <div class="form-group">
                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
                   <i class="fa fa-trash-o"></i>
@@ -85,7 +93,7 @@
                   </a>
                 </figure>
               </div>
-            </div>
+            </div> --}}
           @endif
           <div class="col-12">
             <div class="form-group">

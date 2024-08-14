@@ -1,5 +1,16 @@
 @extends('admin.layouts.master')
+
+@section('styles')
+  <style>
+    strong {
+      font-size: 16px;
+      margin-left: 4px;
+    }
+  </style>
+@endsection
+
 @section('content')
+
   <div class="page-header">
     <ol class="breadcrumb align-items-center">
       <li class="breadcrumb-item">
@@ -34,15 +45,9 @@
           @method('DELETE')
         </form>
       @endcan
-{{--      @can('view stores')--}}
-{{--        <a--}}
-{{--          href="{{ route('admin.stores.show-transactions', $product) }}"--}}
-{{--          class="btn btn-info mx-1">--}}
-{{--          مشاهده تراکنش ها<i class="fa fa-eye mr-2"></i>--}}
-{{--        </a>--}}
-{{--      @endcan--}}
     </div>
   </div>
+
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">اطلاعات اولیه</p>
@@ -54,6 +59,7 @@
             <li class="list-group-item"><strong>کد: </strong> {{ $product->id }} </li>
             <li class="list-group-item"><strong>عنوان: </strong> {{ $product->title }} </li>
             <li class="list-group-item"><strong>عوان پرینت: </strong> {{ $product->print_title }} </li>
+            <li class="list-group-item"><strong>ابعاد: </strong> {{ $product->sub_title }} </li>
             <li class="list-group-item"><strong>دسته بندی: </strong> {{ $product->category->title }} </li>
             <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->stores->sum('balance') . ' ' . $product->category->getUnitType()}} </li>
             <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} ریال </li>
@@ -72,13 +78,139 @@
         <div>
           <figure class="figure w-100 h-100 text-center m-0">
             <a target="blank" href="{{ Storage::url($product->image) }}">
-              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 470px;" alt="{{ $product->title }}"/>
+              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 540px;" alt="{{ $product->title }}"/>
             </a>
           </figure>
         </div>
       </div>
     </div>
   </div>
+
+  @if ($product->children->isNotEmpty())
+
+    <div class="card">
+      <div class="card-header border-0">
+        <h1 class="card-title">محصولات زیر دسته</h1>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+              <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom">
+                <thead class="bg-light">
+                <tr>
+                  <th>ردیف</th>
+                  <th>ابعاد</th>
+                  <th>شناسه</th>
+                  <th>قیمت (ریال)</th>
+                  <th>تخفیف (ریال)</th>
+                  <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($product->children as $childProduct)
+                  <tr>
+                    <td class="font-weight-bold">{{ $loop->iteration }}</td>
+                    <td>{{ $childProduct->sub_title }}</td>
+                    <td>{{ $childProduct->id }}</td>
+                    <td>{{ number_format($childProduct->price) }}</td>
+                    <td>{{ number_format($childProduct->getDiscount()) }}</td>
+                    <td>
+                      @can('edit products')
+                        <button
+                          class="btn btn-sm btn-icon btn-warning text-white"
+                          data-toggle="modal"
+                          data-target="#edit-product-form-{{ $childProduct->id }}">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                      @endcan
+                      @can('delete products')
+                        <x-core::delete-button
+                          route="admin.products.destroy"
+                          :model="$childProduct"
+                          disabled="{{ !$childProduct->isDeletable() }}"
+                        />
+                      @endcan
+                    </td>
+                  </tr>
+                @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @foreach ($product->children as $childProduct)
+      <div class="modal fade" id="edit-product-form-{{ $childProduct->id }}" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+          <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+              <p class="modal-title" style="font-size: 20px;">ویرایش محصول - کد {{ $childProduct->id }}</p>
+              <button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <form action="{{ route('admin.products.update', $childProduct) }}" method="POST">
+
+                @csrf
+                @method('PATCH')
+
+                <input type="hidden" name="title" value="{{ $product->title }}">
+                <input type="hidden" name="print_title" value="{{ $product->print_title }}">
+                <input type="hidden" name="category_id" value="{{ $product->category_id }}">
+
+                <div class="row">
+
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label> قیمت (ریال): <span class="text-danger">&starf;</span></label>
+                      <input type="text" class="form-control comma" name="price" value="{{ old('price', number_format($childProduct->price)) }}">
+                      <x-core::show-validation-error name="price" />
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label> تخفیف (ریال): <span class="text-danger">&starf;</span></label>
+                      <input type="text" class="form-control comma" name="discount" value="{{ old('discount', number_format($childProduct->discount)) }}">
+                      <x-core::show-validation-error name="discount" />
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label> انتخاب وضعیت:<span class="text-danger">&starf;</span></label>
+                      <div class="custom-controls-stacked">
+                        <label class="custom-control custom-radio">
+                          <input type="radio" class="custom-control-input" name="status" value="1" @checked(old('status', $childProduct->status) == '1')>
+                          <span class="custom-control-label">فعال</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                          <input type="radio" class="custom-control-input" name="status" value="0" @checked(old('status', $childProduct->status) == '0')>
+                          <span class="custom-control-label">غیر فعال</span>
+                        </label>
+                      </div>
+                      <x-core::show-validation-error name="status" />
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="justify-content-center d-flex">
+                  <button class="btn btn-warning mx-1" type="submit">بروزرسانی</button>
+                  <button class="btn btn-outline-danger mx-1" data-dismiss="modal">انصراف</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
+  @endif
+
   @if($product->description)
     <div class="card">
       <div class="card-header border-0">
@@ -89,4 +221,5 @@
       </div>
     </div>
   @endif
+
 @endsection

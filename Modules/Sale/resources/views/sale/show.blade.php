@@ -165,7 +165,7 @@
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">
                     <a href="{{ route('admin.products.show', $item->product) }}">
-                      {{ $item->product->title }}
+                      {{ $item->product->title .' '. $item->product->sub_title }}
                     </a>
                   </td>
                   <td class="text-center m-0 p-0">
