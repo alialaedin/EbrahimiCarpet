@@ -16,7 +16,7 @@
             <div class="col-lg-6 col-12">
               <div class="form-group">
                 <label for="title" class="control-label">عنوان محصول :</label>
-                <input type="text" id="title" class="form-control" value="{{ $product->title }}" readonly>
+                <input type="text" id="title" class="form-control" value="{{ $product->title .' '. $product->sub_title }}" readonly>
               </div>
             </div>
 

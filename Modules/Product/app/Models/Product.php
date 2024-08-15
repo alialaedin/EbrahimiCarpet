@@ -101,6 +101,34 @@ class Product extends BaseModel
 			&& $this->children->isEmpty();
   }
 
+	public function getTotalDimensionsStoreBalance(): int
+	{
+		$children = $this->children;
+		$totsalBalance = 0;
+
+		foreach ($children as $child) {
+			$balance = $child->stores->sum('balance');
+			$totsalBalance += $balance;
+		}	
+
+		return $totsalBalance;
+	}
+
+	public function loadStoreBalance()
+	{
+		return $this->stores->sum('balance');
+	}
+
+	public function loadDeletableMessages(): array
+	{
+		return [
+			'اگر موجودی انبار آن حداقل یکی یا بیشتر باشد!',
+			'اگر از این محصول در فاکتور فروشی ثبت شده باشد!',
+			'اگر از این محصول فاکتور خریدی ثبت شده باشد!',
+			'اگر محصول اصلی دارای ابعاد باشد!'
+		];
+	}
+
   // Relations
   public function category(): BelongsTo
   {

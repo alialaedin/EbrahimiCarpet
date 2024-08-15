@@ -57,7 +57,7 @@
         @foreach($permissions->chunk(4) as $chunk)
           <div class="row">
             @foreach($chunk as $permission)
-              <div class="col-3">
+              <div class="col-12 col-lg-3 col-md-6">
                 <div class="form-group">
                   <label class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" name="permissions[]" value="{{ $permission->name }}">

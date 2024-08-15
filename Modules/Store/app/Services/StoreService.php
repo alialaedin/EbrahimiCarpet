@@ -199,9 +199,4 @@ class StoreService
     }
   }
 
-  public static function update_balance()
-  {
-
-  }
-
 }

@@ -18,7 +18,7 @@
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
                       <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products as $product)
+                        @foreach ($category->products->whereNotNull('parent_id') as $product)
                           <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>

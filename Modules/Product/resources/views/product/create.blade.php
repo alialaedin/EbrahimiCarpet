@@ -21,7 +21,7 @@
       <form action="{{ route('admin.products.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         <div class="row">
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
               <input type="text" id="title" class="form-control" name="title" placeholder="عنوان را به فارسی وارد کنید"
@@ -29,7 +29,7 @@
               <x-core::show-validation-error name="title"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="print_title" class="control-label"> عنوان (پرینت فاکتور مشتری): <span class="text-danger">&starf;</span></label>
               <input type="text" id="print_title" class="form-control" name="print_title"
@@ -37,7 +37,7 @@
               <x-core::show-validation-error name="print_title"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
               <select name="category_id" id="category_id" class="form-control">
@@ -56,53 +56,30 @@
               <x-core::show-validation-error name="category_id"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="image" class="control-label"> انتخاب عکس </label>
               <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
               <x-core::show-validation-error name="image"/>
             </div>
           </div>
-          {{-- <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
-              <label for="price" class="control-label"> قیمت فروش (ریال): <span
+              <label for="price" class="control-label"> قیمت فروش پایه (ریال): <span
                   class="text-danger">&starf;</span></label>
               <input type="text" id="price" class="form-control comma" name="price"
                      placeholder="قیمت را به ریال وارد کنید" value="{{ old('price') }}">
               <x-core::show-validation-error name="price"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-4">
             <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف (ریال): </label>
+              <label for="discount" class="control-label"> تخفیف پایه (ریال): </label>
               <input type="text" id="discount" class="form-control comma" name="discount"
                      placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount') }}">
               <x-core::show-validation-error name="discount"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="form-group">
-              <label for="initial_balance" class="control-label"> موجودی اولیه (متر / عدد): </label>
-              <input
-                type="number"
-                id="initial_balance"
-                class="form-control"
-                name="initial_balance"
-                placeholder="موجودی اولیه را به ریال وارد کنید"
-                value="{{ old('initial_balance') }}"
-              />
-              <x-core::show-validation-error name="initial_balance"/>
-            </div>
-          </div> --}}
-          {{-- <div class="col-md-6 col-lg-3 d-none" id="purchased_price_box">
-            <div class="form-group">
-              <label for="purchased_price" class="control-label"> قیمت خرید (ریال): <span
-                  class="text-danger">&starf;</span></label>
-              <input type="text" id="purchased_price" class="form-control comma" name="purchased_price"
-                     placeholder="قیمت را به ریال وارد کنید" value="{{ old('purchased_price') }}">
-              <x-core::show-validation-error name="purchased_price"/>
-            </div>
-          </div> --}}
           <div class="col-12">
             <div class="form-group">
               <label for="description" class="control-label">توضیحات :</label>

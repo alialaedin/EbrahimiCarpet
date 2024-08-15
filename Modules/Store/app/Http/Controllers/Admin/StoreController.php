@@ -3,7 +3,6 @@
 namespace Modules\Store\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Application;
@@ -12,8 +11,6 @@ use Illuminate\Routing\Controllers\Middleware;
 use Modules\Product\Models\Product;
 use Modules\Store\Http\Requests\Admin\DecrementStoreBalanceRequest;
 use Modules\Store\Http\Requests\Admin\IncrementStoreBalanceRequest;
-use Modules\Store\Models\Store;
-use Modules\Store\Models\StoreTransaction;
 use Illuminate\Http\RedirectResponse;
 use Modules\Store\Services\StoreService;
 
@@ -48,10 +45,11 @@ class StoreController extends Controller implements HasMiddleware
         return $query->withWhereHas('category', fn($query) => $query->where('unit_type', $unitType));
       })
       ->whereDate('created_at', '<=', $toCreatedAt)
+      ->whereNotNull('parent_id')
       ->latest('id')
       ->paginate();
 
-    $productsToFilter = Product::all('id', 'title');
+    $productsToFilter = Product::query()->select('id', 'title', 'sub_title')->whereNotNull('parent_id')->get();
 
     return view('store::index', compact(['products', 'productsToFilter']));
   }

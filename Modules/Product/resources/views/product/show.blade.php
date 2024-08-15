@@ -48,6 +48,17 @@
     </div>
   </div>
 
+  <div class="card bg-warning">
+    <div class="card-body">
+      <h4 class="text-gray-400 font-weight-bold">اگر قابلیت حذف محصول را ندارید ممکن است به خاطر دلایل زیر باشد :</h4>
+      <ul class="mr-3">
+        @foreach ($product->loadDeletableMessages() as $message)
+          <li class="fs-16 text-gray-dark my-1"><i class="fa fa-dot-circle-o ml-2"></i>{{ $message }}</li>
+        @endforeach
+      </ul>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">اطلاعات اولیه</p>
@@ -57,13 +68,12 @@
         <div>
           <ul class="list-group">
             <li class="list-group-item"><strong>کد: </strong> {{ $product->id }} </li>
-            <li class="list-group-item"><strong>عنوان: </strong> {{ $product->title }} </li>
+            <li class="list-group-item"><strong>عنوان محصول: </strong> {{ $product->title }} </li>
             <li class="list-group-item"><strong>عوان پرینت: </strong> {{ $product->print_title }} </li>
-            <li class="list-group-item"><strong>ابعاد: </strong> {{ $product->sub_title }} </li>
             <li class="list-group-item"><strong>دسته بندی: </strong> {{ $product->category->title }} </li>
-            <li class="list-group-item"><strong>موجودی انبار: </strong> {{ $product->stores->sum('balance') . ' ' . $product->category->getUnitType()}} </li>
+            <li class="list-group-item"><strong>موجودی کلی تمام ابعاد: </strong> {{ $product->getTotalDimensionsStoreBalance() .' '. $product->category->getUnitType()}} </li>
             <li class="list-group-item"><strong>قیمت پایه: </strong> {{ number_format($product->price) }} ریال </li>
-            <li class="list-group-item"><strong>مقدار تخفیف: </strong> {{ number_format($product->getDiscount()) }} ریال </li>
+            <li class="list-group-item"><strong>تخفیف پایه: </strong> {{ number_format($product->getDiscount()) }} ریال </li>
             <li class="list-group-item">
               <strong>وضعیت: </strong>
               <x-core::badge
@@ -78,7 +88,7 @@
         <div>
           <figure class="figure w-100 h-100 text-center m-0">
             <a target="blank" href="{{ Storage::url($product->image) }}">
-              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 540px;" alt="{{ $product->title }}"/>
+              <img src="{{ Storage::url($product->image) }}" class="w-auto" style="height: 490px;" alt="{{ $product->title }}"/>
             </a>
           </figure>
         </div>
@@ -101,6 +111,7 @@
                 <tr>
                   <th>ردیف</th>
                   <th>ابعاد</th>
+                  <th>موجودی</th>
                   <th>شناسه</th>
                   <th>قیمت (ریال)</th>
                   <th>تخفیف (ریال)</th>
@@ -112,6 +123,7 @@
                   <tr>
                     <td class="font-weight-bold">{{ $loop->iteration }}</td>
                     <td>{{ $childProduct->sub_title }}</td>
+                    <td>{{ number_format($childProduct->loadStoreBalance()) }}</td>
                     <td>{{ $childProduct->id }}</td>
                     <td>{{ number_format($childProduct->price) }}</td>
                     <td>{{ number_format($childProduct->getDiscount()) }}</td>
@@ -158,7 +170,8 @@
 
                 <input type="hidden" name="title" value="{{ $product->title }}">
                 <input type="hidden" name="print_title" value="{{ $product->print_title }}">
-                <input type="hidden" name="category_id" value="{{ $product->category_id }}">
+                <input type="hidden" name="category_id" value="{{ $product->category_id }}">  
+                <input type="hidden" name="description" value="{{ $product->description }}">  
 
                 <div class="row">
 

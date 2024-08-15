@@ -30,7 +30,7 @@
                   <option
                     value="{{ $product->id }}"
                     @selected(request("product_id") == $product->id)>
-                    {{ $product->title }}
+                    {{ $product->title .' '. $product->sub_title }}
                   </option>
                 @endforeach
               </select>

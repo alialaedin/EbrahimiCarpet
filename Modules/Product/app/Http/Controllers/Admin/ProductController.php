@@ -3,7 +3,6 @@
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -14,7 +13,6 @@ use Modules\Product\Http\Requests\Admin\Product\ProductStoreRequest;
 use Modules\Product\Http\Requests\Admin\Product\ProductUpdateRequest;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
-use Modules\Store\Models\Store;
 use Modules\Store\Services\StoreService;
 
 class ProductController extends Controller implements HasMiddleware
@@ -46,8 +44,18 @@ class ProductController extends Controller implements HasMiddleware
     $hasDiscount = request('has_discount');
 
     $products = Product::query()
-      ->select('id', 'title', 'print_title', 'category_id', 'status', 'discount', 'price', 'image', 'parent_id')
-      ->with(['category' => fn($query) => $query->select('id', 'title')])
+      ->select(
+        'id',   
+        'title',   
+        'print_title',   
+        'category_id',   
+        'status',   
+        'discount',   
+        'price',   
+        'image',   
+        'parent_id',
+      )
+      ->with([ 'category' => fn($query) => $query->select('id', 'title')])
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
       ->when($categoryId, fn(Builder $query) => $query->where('category_id', $categoryId))
       ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
@@ -73,7 +81,7 @@ class ProductController extends Controller implements HasMiddleware
 
   public function show(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
   {
-    $product->load('category.parent');
+    $product->load(['category.parent', 'children']);
 
     return view('product::product.show', compact('product'));
   }
@@ -87,38 +95,38 @@ class ProductController extends Controller implements HasMiddleware
 
   public function store(ProductStoreRequest $request): \Illuminate\Http\RedirectResponse
   {
+    $image = null;
+
     if ($request->hasFile('image') && $request->file('image')->isValid()) {
       $image = $request->file('image')->store('images/products', 'public');
-    }else {
-      $image = null;
     }
-    
+
+    $mainProduct = Product::query()->create([
+      'title' => $request->title,
+      'print_title' => $request->print_title,
+      'category_id' => $request->category_id,
+      'image' => $image,
+      'description' => $request->description,
+      'price' => $request->price,
+      'discount' => $request->discount,
+      'status' => $request->status,
+    ]);
+
     $storedProducts = [];
-    $parentId = null;
-    $description = null;
+    $parentId = $mainProduct->id;
 
-    foreach ($request->input('product_dimensions') as $index => $product) {
-
-      if ($index !== 0) {
-        $description = $request->description;
-      }
+    foreach ($request->input('product_dimensions') as $product) {
 
       $storedProduct = Product::query()->create([
         'title' => $request->title,
         'sub_title' => $product['sub_title'],
         'print_title' => $request->print_title,
         'category_id' => $request->category_id,
-        'image' => $image,
-        'description' => $description,
         'parent_id' => $parentId,
         'price' => $product['price'],
         'discount' => $product['discount'],
         'status' => $request->status,
       ]);
-
-      if($index == 0) {
-        $parentId = $storedProduct->id;
-      }
 
       $productCollection = collect($storedProduct);
       $productCollection->put('initial_balance', $product['initial_balance']);

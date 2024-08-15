@@ -36,7 +36,7 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="purchased_date_show" class="control-label">تاریخ خرید :<span class="text-danger">&starf;</span></label>
-              <input class="form-control fc-datepicker" id="purchased_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
+              <input class="form-control fc-datepicker" id="purchased_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" required/>
               <input name="purchased_at" id="purchased_date" type="hidden" value="{{ old("purchased_at") }}" required/>
             </div>
           </div>
@@ -99,7 +99,7 @@
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
                       <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products as $product)
+                        @foreach ($category->products->whereNotNull('parent_id') as $product)
                           <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
@@ -153,8 +153,8 @@
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
                       <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title }}</option>
+                        @foreach ($category->products->whereNotNull('parent_id') as $product)
+                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
                     @endif
