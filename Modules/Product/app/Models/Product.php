@@ -100,7 +100,7 @@ class Product extends BaseModel
 	$hasSaleItem = $this->saleItems->isNotEmpty();
 	// $hasChildren = $this->children->isNotEmpty();
 
-    return true;
+    return !$hasPurchaseItem && !$hasSaleItem;
   }
 
 	public function getTotalDimensionsStoreBalance(): int
