@@ -98,9 +98,9 @@ class Product extends BaseModel
 	$hasBalance = $this->stores->sum('balance') > 0;
 	$hasPurchaseItem = $this->purchaseItems->isNotEmpty();
 	$hasSaleItem = $this->saleItems->isNotEmpty();
-	// $hasChildren = $this->children->isNotEmpty();
+	$hasChildren = $this->children->isNotEmpty();
 
-    return !$hasPurchaseItem && !$hasSaleItem;
+    return !$hasPurchaseItem AND !$hasSaleItem AND !$hasChildren;
   }
 
 	public function getTotalDimensionsStoreBalance(): int
