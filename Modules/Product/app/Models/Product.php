@@ -95,7 +95,12 @@ class Product extends BaseModel
 
   public function isDeletable(): bool
   {
-    return ((int) $this->stores->sum('balance') == 0) && $this->purchaseItems->isEmpty() && $this->saleItems->isEmpty() && !$this->children()->exists();
+	$hasBalance = ($this->stores->sum('balance') > 0) || !is_null($this->stores->sum('balance'));
+	$hasPurchaseItem = $this->purchaseItems->isNotEmpty();
+	$hasSaleItem = $this->saleItems->isNotEmpty();
+	$hasChildren = $this->children->isNotEmpty();
+
+    return !$hasBalance && !$hasPurchaseItem && !$hasSaleItem && !$hasChildren;
   }
 
 	public function getTotalDimensionsStoreBalance(): int
