@@ -53,7 +53,7 @@
 
         </div>
 
-        <x-core::filter-buttons table="categories"/>
+        <x-core::filter-buttons table="products"/>
 
       </form>
     </div>
