@@ -96,6 +96,12 @@
     </div>
   </div>
 
+  <div class="card bg-warning">
+    <div class="card-body">
+      <h4 class="text-gray-400 font-weight-bold">برای افزایش یا کاهش موجودی روی دکمه 'موجودی' کلیک کنید!</h4>
+    </div>
+  </div>
+
   @if ($product->children->isNotEmpty())
 
     <div class="card">
@@ -143,6 +149,18 @@
                           disabled="{{ !$childProduct->isDeletable() }}"
                         />
                       @endcan
+                      <button 
+                        onclick="$('#productStoreForm').submit()" 
+                        class="btn btn-sm btn-icon btn-info text-white">
+                        موجودی
+                      </button>
+                      <form
+                        action="{{ route('admin.stores.index') }}"
+                        method="GET"
+                        id="productStoreForm"
+                        class="d-none">
+                        <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
+                      </form>
                     </td>
                   </tr>
                 @endforeach

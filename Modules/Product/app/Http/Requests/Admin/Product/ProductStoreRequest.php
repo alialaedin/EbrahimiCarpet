@@ -14,37 +14,34 @@ class ProductStoreRequest extends FormRequest
 			throw Helpers::makeWebValidationException('ابعاد محصول را وارد کنید', 'initial_balance');
 		}
 
-		$productDimensions = [];	
+		$productDimensions = [];
 
-		if ($this->filled('product_dimensions')) {
-			foreach ($this->input('product_dimensions') as $productDimension) {
+		foreach ($this->input('product_dimensions') as $productDimension) {
 
-				$balance = $productDimension['initial_balance'];
-				$purchasedPrice = $productDimension['purchased_price'];
+			$balance = $productDimension['initial_balance'];
+			$purchasedPrice = $productDimension['purchased_price'];
 
-				$hasInitialBalance = !is_null($balance);
-				$hasPurchasedPrice = !is_null($purchasedPrice) && $purchasedPrice > 0;
+			$hasInitialBalance = !is_null($balance);
+			$hasPurchasedPrice = !is_null($purchasedPrice) && $purchasedPrice > 0;
 
-				if ($hasInitialBalance && !$hasPurchasedPrice) {
-					throw Helpers::makeWebValidationException('با وارد کردن موجودی اولیه باید حتما قیمت خرید را وارد کنید', 'initial_balance');
-				}
-
-				$productDimensions[] = [
-					'sub_title' => $productDimension['dimensions'],
-					'price' => Helpers::removeComma($productDimension['price']),
-					'discount' => $productDimension['discount'] != null ? Helpers::removeComma($productDimension['discount']) : null,
-					'initial_balance' => $productDimension['initial_balance'],
-					'purchased_price' => $productDimension['purchased_price'] != null ? Helpers::removeComma($productDimension['purchased_price']) : null
-				];
+			if ($hasInitialBalance && !$hasPurchasedPrice) {
+				throw Helpers::makeWebValidationException('با وارد کردن موجودی اولیه باید حتما قیمت خرید را وارد کنید', 'initial_balance');
 			}
+
+			$productDimensions[] = [
+				'sub_title' => $productDimension['dimensions'],
+				'price' => Helpers::removeComma($productDimension['price']),
+				'discount' => $productDimension['discount'] != null ? Helpers::removeComma($productDimension['discount']) : null,
+				'initial_balance' => $productDimension['initial_balance'],
+				'purchased_price' => $productDimension['purchased_price'] != null ? Helpers::removeComma($productDimension['purchased_price']) : null
+			];
 		}
-		
+
 		$this->merge([
 			'product_dimensions' => $productDimensions,
 			'price' => Helpers::removeComma($this->input('price')),
 			'discount' => $this->filled('discount') ? Helpers::removeComma($this->input('discount')) : null,
 		]);
-
 	}
 
 	public function rules(): array
@@ -60,7 +57,7 @@ class ProductStoreRequest extends FormRequest
 			'status' => ['required', 'boolean']
 		];
 	}
-	
+
 	public function authorize(): bool
 	{
 		return true;
