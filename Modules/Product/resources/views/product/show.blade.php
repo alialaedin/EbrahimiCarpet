@@ -98,7 +98,7 @@
 
   <div class="card bg-warning">
     <div class="card-body">
-      <h4 class="text-gray-400 font-weight-bold">برای افزایش یا کاهش موجودی روی دکمه 'موجودی' کلیک کنید!</h4>
+      <p class="text-gray-200 font-weight-bold">برای افزایش یا کاهش موجودی روی دکمه <span class="text-info font-weight-bold">موجودی</span> کلیک کنید!</p>
     </div>
   </div>
 

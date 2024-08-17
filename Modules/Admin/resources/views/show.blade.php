@@ -60,6 +60,7 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">توضیحات</th>
+                <th class="text-center">شناسه لاگ</th>
                 <th class="text-center">تاریخ</th>
                 <th class="text-center">ساعت</th>
               </tr>
@@ -69,6 +70,7 @@
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $activity->description }}</td>
+                  <td class="text-center">{{ $activity->id }}</td>
                   <td class="text-center">{{ verta($activity->created_at)->formatDate() }}</td>
                   <td class="text-center">{{ verta($activity->created_at)->formatTime() }}</td>
                 </tr>

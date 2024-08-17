@@ -56,16 +56,17 @@ class Product extends BaseModel
         $eventTime = verta()->formatTime();
 				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
 				$productTitle = $this->title;
+				$productSubTitle = $this->sub_title ? "در ابعاد {$this->sub_title}" : null;
 
 				switch ($eventName) {
           case 'created':
-            $message = "{$messageBase} یک محصول جدید با عنوان {$productTitle} را ثبت کرد.";
+            $message = "{$messageBase} یک محصول جدید با عنوان {$productTitle} {$productSubTitle} را ثبت کرد.";
             break;
           case 'updated':
-            $message = "{$messageBase} محصول با عنوان {$productTitle} را ویرایش کرد.";
+            $message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را ویرایش کرد.";
             break;
           case 'deleted':
-            $message = "{$messageBase} محصول با عنوان {$productTitle} را حذف کرد.";
+            $message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را حذف کرد.";
             break;
         }
 
