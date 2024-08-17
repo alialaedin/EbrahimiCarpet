@@ -150,14 +150,14 @@
                         />
                       @endcan
                       <button 
-                        onclick="$('#productStoreForm').submit()" 
+                        onclick="$('#productStoreForm-' + @json($childProduct->id)).submit()" 
                         class="btn btn-sm btn-icon btn-info text-white">
                         موجودی
                       </button>
                       <form
                         action="{{ route('admin.stores.index') }}"
                         method="GET"
-                        id="productStoreForm"
+                        id="productStoreForm-{{ $childProduct->id }}"
                         class="d-none">
                         <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
                       </form>
