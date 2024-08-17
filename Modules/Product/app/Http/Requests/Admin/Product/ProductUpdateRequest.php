@@ -3,15 +3,41 @@
 namespace Modules\Product\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Modules\Core\Helpers\Helpers;
 
 class ProductUpdateRequest extends FormRequest
 {
 	protected function prepareForValidation(): void
 	{
+		$productDimensions = [];
+		
+		if ($this->filled('product_dimensions')) {
+			foreach ($this->input('product_dimensions') as $productDimension) {
+				
+				$balance = $productDimension['initial_balance'];
+				$purchasedPrice = $productDimension['purchased_price'];
+				
+				$hasInitialBalance = !is_null($balance);
+				$hasPurchasedPrice = !is_null($purchasedPrice) && $purchasedPrice > 0;
+				
+				if ($hasInitialBalance && !$hasPurchasedPrice) {
+					throw Helpers::makeWebValidationException('با وارد کردن موجودی اولیه باید حتما قیمت خرید را وارد کنید', 'initial_balance');
+				}
+				
+				$productDimensions[] = [
+					'sub_title' => $productDimension['dimensions'],
+					'price' => Helpers::removeComma($productDimension['price']),
+					'discount' => $productDimension['discount'] != null ? Helpers::removeComma($productDimension['discount']) : null,
+					'initial_balance' => $productDimension['initial_balance'],
+					'purchased_price' => $productDimension['purchased_price'] != null ? Helpers::removeComma($productDimension['purchased_price']) : null
+				];
+			}
+		}
+
 		$this->merge([
-			'price' => str_replace(',', '', $this->input('price')),
-			'discount' => !is_null($this->input('discount')) ? str_replace(',', '', $this->input('discount')) : null,
+			'product_dimensions' => $productDimensions ?? null,
+			'price' => Helpers::removeComma($this->input('price')),
+			'discount' => $this->filled('discount') ? Helpers::removeComma($this->input('discount')) : null,
 		]);
 	}
 

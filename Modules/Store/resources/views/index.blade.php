@@ -108,11 +108,7 @@
               @forelse ($products as $product)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">
-                    <a href="{{ route('admin.products.show', $product) }}">
-                      {{ $product->title .' '. $product->sub_title }}
-                    </a>
-                  </td>
+                  <td class="text-center">{{ $product->title .' '. $product->sub_title }}</td>
                   <td class="text-center">{{ $product->category->title }}</td>
                   <td class="text-center m-0 p-0">
                     @if ($product->image)

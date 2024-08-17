@@ -19,9 +19,12 @@
     </div>
     <div class="card-body">
       <form action="{{ route('admin.products.update', $product) }}" method="post" class="save" enctype="multipart/form-data">
+
         @csrf
         @method('PATCH')
-        <div class="row">
+
+        <div class="row my-5">
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
@@ -29,6 +32,7 @@
               <x-core::show-validation-error name="title" />
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="print_title" class="control-label"> عنوان (پرینت فاکتور مشتری): <span class="text-danger">&starf;</span></label>
@@ -36,6 +40,7 @@
               <x-core::show-validation-error name="print_title" />
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
@@ -51,6 +56,7 @@
               <x-core::show-validation-error name="category_id" />
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="price" class="control-label"> قیمت (ریال): <span class="text-danger">&starf;</span></label>
@@ -58,6 +64,7 @@
               <x-core::show-validation-error name="price" />
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="discount" class="control-label"> تخفیف (ریال): </label>
@@ -65,6 +72,7 @@
               <x-core::show-validation-error name="discount" />
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4">
             <div class="form-group">
               <label for="image" class="control-label"> انتخاب عکس </label>
@@ -72,29 +80,18 @@
               <x-core::show-validation-error name="image" />
             </div>
           </div>
+
           @if ($product->image)
-          <div class="col-12 text-center">
-            <div class="img-holder my-4 img-show w-100 bg-light" style="max-height: 300px;">
-              <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
-                <i class="fa fa-trash-o"></i>
-              </button>
-              <img src="{{ Storage::url($product->image) }}" style="max-height: 300px">
-            </div>
-          </div>
-            {{-- <div class="col-md-6">
-              <div class="form-group">
+            <div class="col-12 text-center">
+              <div class="img-holder my-4 img-show w-100 bg-light" style="max-height: 300px;">
                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('delete-image-{{ $product->id }}')">
                   <i class="fa fa-trash-o"></i>
                 </button>
-                <br>
-                <figure class="figure">
-                  <a target="blank" href="{{ Storage::url($product->image) }}">
-                    <img src="{{ Storage::url($product->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 36px;" />
-                  </a>
-                </figure>
+                <img src="{{ Storage::url($product->image) }}" style="max-height: 300px">
               </div>
-            </div> --}}
+            </div>
           @endif
+
           <div class="col-12">
             <div class="form-group">
               <label for="description" class="control-label">توضیحات :</label>
@@ -102,6 +99,7 @@
               <x-core::show-validation-error name="description" />
             </div>
           </div>
+
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label"> انتخاب وضعیت:<span class="text-danger">&starf;</span></label>
@@ -118,15 +116,100 @@
               <x-core::show-validation-error name="status" />
             </div>
           </div>
+
         </div>
-        <div class="row">
+
+        <div class="row my-5">
+          <div class="col bg-yellow" style="border-radius: 10px;">
+              <ul class="mr-3">
+                <li class="fs-16 text-gray-dark my-1">فیلد های <span class="text-danger">ستاره دار</span> اجباری هستند!</li>
+                <li class="fs-16 text-gray-dark my-1">در صورت وارد کردن موجودی اولیه باید قیمت خرید را وارد کنید!</li>
+                <li class="fs-16 text-gray-dark my-1">تمامی قیمت ها را به <span class="font-weight-bold">ریال</span> وارد کنید!</li>
+              </ul>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-12 bg-gray-darker text-center py-3" style="border-radius: 10px;">
+            <p class="fs-18 text-white font-weight-bold mb-0 ">ابعاد فعلی محصول</p>
+          </div>
+          <div class="col-12 table-responsive mt-4 px-0">
+            <table role="table" class="table b-table table-bordered text-center border-top">
+              <thead role="rowgroup">
+              <tr role="row">
+                <th class="fs-15">ابعاد</th>
+                <th class="fs-15">موجودی</th>
+                <th class="fs-15">قیمت فروش</th>
+                <th class="fs-15">تخفیف</th>
+                <th class="fs-15">عملیات</th>
+              </tr>
+              </thead>
+              <tbody role="rowgroup"> 
+                @foreach ($product->children->sortByDesc('id') as $index => $childProduct)
+                  <tr>  
+                    <td class="p-3">{{ $childProduct->sub_title }}</td>  
+                    <td class="p-3">{{ $childProduct->loadStoreBalance() }}</td>  
+                    <td class="p-3">{{ number_format($childProduct->price) }}</td>  
+                    <td class="p-3">{{ number_format($childProduct->discount) }}</td>  
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-icon btn-warning text-white"
+                        data-toggle="modal"
+                        data-target="#edit-product-form-{{ $childProduct->id }}">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button 
+                        type="button" 
+                        class="delete-btn btn btn-sm btn-icon btn-danger text-whitem" 
+                        onclick="confirmDelete('delete-product-demenision-{{ $childProduct->id }}')"
+                        style="margin-left: 1px;">  
+                        <i class="fa fa-trash-o"></i>  
+                      </button>  
+                    </td>  
+                  </tr>  
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row mt-5 ">
+          <div class="col text-center px-0">
+            <button id="add-dimensions-btn" class="btn btn-success btn-block fs-16" type="button">ثبت ابعاد جدید</button>
+          </div>
+        </div>
+
+        <div class="row" id="products-dimensions-section">
+          <div class="col-12 mx-auto table-responsive mt-4 px-0">
+            <table id="products-dimensions-table" role="table" class="table b-table table-bordered text-center border-top">
+              <thead role="rowgroup">
+              <tr role="row">
+                <th class="fs-15">ابعاد <span class="text-danger">&starf;</span></th>
+                <th class="fs-15">موجودی اولیه</th>
+                <th class="fs-15">قیمت خرید</th>
+                <th class="fs-15">قیمت فروش <span class="text-danger">&starf;</span></th>
+                <th class="fs-15">تخفیف</th>
+                <th class="fs-15">عملیات</th>
+              </tr>
+              </thead>
+              <tbody role="rowgroup"> 
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row my-5">
           <div class="col">
             <div class="text-center">
               <button class="btn btn-warning" type="submit">بروزرسانی</button>
             </div>
           </div>
         </div>
+
       </form>
+
       @if ($product->image)
         <form
           action="{{ route('admin.products.image.destroy', $product) }}"
@@ -137,6 +220,66 @@
           @method("DELETE")
         </form>
       @endif
+
+      @include('product::product.includes.child-product-edit-from')
+
+      @foreach ($product->children as $childProduct)
+        <form
+          action="{{ route('admin.products.destroy', $childProduct) }}"
+          id="delete-product-demenision-{{$childProduct->id}}"
+          method="POST"
+          style="display: none;">
+          @csrf
+          @method("DELETE")
+        </form>
+      @endforeach
+
     </div>
   </div>
+@endsection
+
+@section('scripts')
+<script>
+  $(document).ready(() => {
+
+    let counter = 100; 
+
+    $('#products-dimensions-section').hide(); 
+    
+    $('#add-dimensions-btn').click(() => {
+      $('#products-dimensions-section').show(); 
+      let html = `
+        <tr>  
+          <td class="p-3"><input type="text" class="form-control" name="product_dimensions[${counter}][dimensions]" required></td>  
+          <td class="p-3"><input type="number" class="form-control p-0" name="product_dimensions[${counter}][initial_balance]"></td>  
+          <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][purchased_price]"></td>  
+          <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][price]" required></td>  
+          <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][discount]"></td>  
+          <td>
+            <div>
+              <button type="button" class="delete-btn btn btn-sm btn-icon btn-danger text-whitem" style="margin-left: 1px;">  
+                <i class="fa fa-minus"></i>  
+              </button>  
+              <button type="button" class="add-btn btn btn-sm btn-icon btn-success text-whitem" style="margin-right: 1px;">  
+                <i class="fa fa-plus"></i>  
+              </button>  
+            </div>  
+          </td>  
+        </tr>  
+      `;
+      $('#products-dimensions-table tbody').append(html);
+      comma();
+      counter++;
+    });
+
+    $('#products-dimensions-table').on('click', '.delete-btn', function() {  
+        $(this).closest('tr').remove();   
+    });  
+
+    $('#products-dimensions-table').on('click', '.add-btn', () => {  
+      $('#add-dimensions-btn').click();  
+    }); 
+
+  });
+</script>
 @endsection

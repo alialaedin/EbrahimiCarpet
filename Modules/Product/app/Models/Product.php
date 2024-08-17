@@ -126,10 +126,23 @@ class Product extends BaseModel
 	{
 		return [
 			'اگر موجودی انبار آن حداقل یکی یا بیشتر باشد!',
-			'اگر از این محصول در فاکتور فروشی ثبت شده باشد!',
+			'اگر از این محصول فاکتور فروشی ثبت شده باشد!',
 			'اگر از این محصول فاکتور خریدی ثبت شده باشد!',
 			'اگر محصول اصلی دارای ابعاد باشد!'
 		];
+	}
+
+
+	public function updateChildrenTitles(): void
+	{
+		if ($this->children->isNotEmpty()) {
+			foreach ($this->children as $product) {
+				$product->update([
+					'title' => $this->title,
+					'print_title' => $this->title,
+				]);
+			}
+		}
 	}
 
   // Relations

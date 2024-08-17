@@ -73,7 +73,7 @@ class ProductController extends Controller implements HasMiddleware
       ->paginate(15)
       ->withQueryString();
 
-    $categories = Category::all('id', 'title');
+    $categories = Category::query()->select('id', 'title')->get();
     $productsCount = $products->total();
 
     return view('product::product.index', compact('products', 'productsCount', 'categories'));
@@ -112,30 +112,7 @@ class ProductController extends Controller implements HasMiddleware
       'status' => $request->status,
     ]);
 
-    $storedProducts = [];
-    $parentId = $mainProduct->id;
-
-    foreach ($request->input('product_dimensions') as $product) {
-
-      $storedProduct = Product::query()->create([
-        'title' => $request->title,
-        'sub_title' => $product['sub_title'],
-        'print_title' => $request->print_title,
-        'category_id' => $request->category_id,
-        'parent_id' => $parentId,
-        'price' => $product['price'],
-        'discount' => $product['discount'],
-        'status' => $request->status,
-      ]);
-
-      $productCollection = collect($storedProduct);
-      $productCollection->put('initial_balance', $product['initial_balance']);
-      $productCollection->put('purchased_price', $product['purchased_price']);
-
-      $storedProducts[] = $productCollection;
-    }
-
-    StoreService::check_if_product_has_initial_balance($storedProducts);
+    StoreService::store_product_demenisions($mainProduct, $request->input('product_dimensions'), $request);
 
     toastr()->success("محصول جدید با نام {$request->title} با موفقیت ساخته شد.");
 
@@ -161,7 +138,14 @@ class ProductController extends Controller implements HasMiddleware
     }
 
     $product->update($inputs);
+
+    $product->updateChildrenTitles();
+
     StoreService::update_sell_price($product);
+
+    if (count($request->input('product_dimensions')) != 0) {
+      StoreService::store_product_demenisions($product, $request->input('product_dimensions'), $request);
+    }
 
     toastr()->success("محصول با نام {$product->title} با موفقیت بروزرسانی شد.");
 

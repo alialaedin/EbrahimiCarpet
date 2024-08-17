@@ -36,6 +36,31 @@ class StoreService
     ]);
   }
 
+  public static function store_product_demenisions($mainProduct, $demenisions, $request)
+  {
+    foreach ($demenisions as $demenisionProduct) {
+
+      $storedProduct = Product::query()->create([
+        'title' => $request->title,
+        'sub_title' => $demenisionProduct['sub_title'],
+        'print_title' => $request->print_title,
+        'category_id' => $request->category_id,
+        'parent_id' => $mainProduct->id,
+        'price' => $demenisionProduct['price'],
+        'discount' => $demenisionProduct['discount'],
+        'status' => $request->status,
+      ]);
+
+      $productCollection = collect($storedProduct);
+      $productCollection->put('initial_balance', $demenisionProduct['initial_balance']);
+      $productCollection->put('purchased_price', $demenisionProduct['purchased_price']);
+
+      $storedProducts[] = $productCollection;
+    }
+
+    static::check_if_product_has_initial_balance($storedProducts);
+  }
+
   public static function decrement_store_balance(Product|Collection|Builder $product, int $quantity): void
   {
     $stores = Store::query()
