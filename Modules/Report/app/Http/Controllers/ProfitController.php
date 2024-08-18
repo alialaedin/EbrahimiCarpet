@@ -4,6 +4,8 @@ namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Modules\Product\Models\Category;
+use Modules\Product\Models\Product;
 use Modules\Sale\Models\Sale;
 
 class ProfitController extends Controller
@@ -40,6 +42,16 @@ class ProfitController extends Controller
 
     $profit = $sumTotalSellPrice - $sumTotalBuyPrice;
 
-    return view('report::profit.index', compact(['sales', 'profit']));
+    $products = Product::childrens()->select('id', 'title', 'sub_title')->get();
+    $categories = Category::query()->select('id', 'title')->get();
+
+    return view('report::profit.index', compact([
+      'sales', 
+      'profit', 
+      'products', 
+      'categories',
+      'sumTotalSellPrice',
+      'sumTotalBuyPrice'
+    ]));
   }
 }

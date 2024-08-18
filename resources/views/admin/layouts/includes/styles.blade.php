@@ -38,9 +38,9 @@
 <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet" />
 
 <style>
-  @page {
+  /* @page {
     margin-block: 30px;
-  }
+  } */
   h1, h2, h3, h4, h5, h6 {
     font-family: Vazir;
   }

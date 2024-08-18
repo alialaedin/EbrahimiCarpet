@@ -145,6 +145,11 @@ class Product extends BaseModel
 		}
 	}
 
+	public static function scopeChildrens($query)
+	{
+		return $query->whereNotNull('parent_id');
+	}
+
   // Relations
   public function category(): BelongsTo
   {

@@ -9,7 +9,25 @@
   </div>
   <div class="row">
 
+    @foreach ($reports as $report)
     <div class="col-xl-4 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="mt-0 text-center">
+                <a href="{{ route($report['route']) }}">
+                  <span class="fs-20 font-weight-semibold"> {{ $report['title'] }} </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    @endforeach
+
+    {{-- <div class="col-xl-4 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -191,7 +209,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
   </div>
 @endsection
