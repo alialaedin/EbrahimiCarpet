@@ -139,7 +139,8 @@ class ProductController extends Controller implements HasMiddleware
 
     $product->update($inputs);
 
-    $product->updateChildrenTitles();
+    // $product->updateChildrenTitles();
+    $product->updateChildren(['title', 'print_title', 'category_id']);
 
     StoreService::update_sell_price($product);
 

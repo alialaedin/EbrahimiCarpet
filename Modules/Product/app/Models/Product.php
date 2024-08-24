@@ -145,6 +145,19 @@ class Product extends BaseModel
 		}
 	}
 
+	public function updateChildren(array $columns)
+	{
+		if ($this->children->isNotEmpty()) {
+			foreach ($this->children as $product) {
+				foreach ($columns as $column) {
+					$product->update([
+						$column => $this->attributes[$column],
+					]);
+				}
+			}
+		}
+	}
+
 	public static function scopeChildrens($query)
 	{
 		return $query->whereNotNull('parent_id');
