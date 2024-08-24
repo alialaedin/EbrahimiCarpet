@@ -84,17 +84,17 @@
       </div>
 
       <div>
-        <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
+        <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom card-table">
           <thead style="background-color: #EAEAEA">
           <tr>
-            <th class="text-center border-top">ردیف</th>
-            <th class="text-center border-top">نام محصول</th>
-            <th class="text-center border-top">نوع واحد</th>
-            <th class="text-center border-top">تعداد</th>
-            <th class="text-center border-top">قیمت واحد (ریال)</th>
-            <th class="text-center border-top">تخفیف (ریال)</th>
-            <th class="text-center border-top">قیمت با تخفیف (ریال)</th>
-            <th class="text-center border-top">قیمت کل (ریال)</th>
+            <th>ردیف</th>
+            <th>محصول</th>
+            <th>ابعاد</th>
+            <th>تعداد</th>
+            <th>قیمت واحد (ریال)</th>
+            <th>تخفیف (ریال)</th>
+            <th>قیمت با تخفیف (ریال)</th>
+            <th>قیمت کل (ریال)</th>
           </tr>
           </thead>
           <tbody>
@@ -110,14 +110,14 @@
             @foreach($sale->items as $item)
 
               <tr>
-                <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                <td class="text-center">{{ $item->product->title }}</td>
-                <td class="text-center">{{ $item->product->category->getUnitType() }}</td>
-                <td class="text-center">{{ $item->quantity }}</td>
-                <td class="text-center">{{ number_format($item->price) }}</td>
-                <td class="text-center">{{ number_format($item->discount) }}</td>
-                <td class="text-center">{{ number_format($item->getPriceWithDiscount()) }}</td>
-                <td class="text-center">{{ number_format($item->getTotalItemPrice()) }}</td>
+                <td class=" font-weight-bold">{{ $loop->iteration }}</td>
+                <td>{{ $item->product->title }}</td>
+                <td>{{ $item->product->sub_title }}</td>
+                <td>{{ $item->quantity .' '. $item->product->category->getUnitType()}}</td>
+                <td>{{ number_format($item->price) }}</td>
+                <td>{{ number_format($item->discount) }}</td>
+                <td>{{ number_format($item->getPriceWithDiscount()) }}</td>
+                <td>{{ number_format($item->getTotalItemPrice()) }}</td>
               </tr>
 
               @php
@@ -130,13 +130,14 @@
 
             @endforeach
 
-            <tr class="bg-light">
-              <td class="text-center" colspan="3"> جمع کل </td>
-              <td class="text-center"> {{ number_format($totalQuantity) }} </td>
-              <td class="text-center"> {{ number_format($totalPrice) }} </td>
-              <td class="text-center"> {{ number_format($totalDiscount) }} </td>
-              <td class="text-center"> {{ number_format($totalPriceWithDiscount) }} </td>
-              <td class="text-center"> {{ number_format($totalTotalItemPrice) }} </td>
+            <tr class="bg-gray-dark-lighter text-danger">
+              <td class="font-weight-bold fs-17" colspan="7"> تخفیف کل فاکتور {{ $sale->discount_for ? 'بابت ' .  $sale->discount_for : null }} </td>
+              <td class="font-weight-bold fs-17"> {{ number_format($sale->discount) }} </td>
+            </tr>
+
+            <tr class="bg-dark text-white">
+              <td class="font-weight-bold fs-17" colspan="7"> جمع کل </td>
+              <td class="font-weight-bold fs-17"> {{ number_format($totalTotalItemPrice - $sale->discount) }} </td>
             </tr>
 
           </tbody>
