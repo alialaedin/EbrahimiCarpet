@@ -76,10 +76,12 @@
       </div>
 
       <div class="mt-5 d-flex justify-content-center">
+        @php($customer = $sale->customer)
         <p class="fs-17">
-          فاکتور ارائه شده به آقا / خانم <strong>{{ $sale->customer->name }}</strong>
-          شماره تماس <strong>{{ $sale->customer->mobile }}</strong>
-          به نشانی <strong>{{ $sale->customer->address }}</strong>
+          فاکتور ارائه شده به
+          <strong> {{ config('customer.gender_prefix_to_print.' . $customer->gender) .' '. $customer->name}} </strong>
+          با شماره تماس <strong> {{ $customer->mobile }} </strong>
+          به نشانی <strong> {{ $customer->address }} </strong>
         </p>
       </div>
 
