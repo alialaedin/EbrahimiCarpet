@@ -13,7 +13,7 @@
           <div class="col-12 col-md-6 col-xl-4">
             <div class="form-group">
               <label for="supplier_id">انتخاب تامین کننده :</label>
-              <select name="supplier_id" id="supplier_id" class="form-control">
+              <select name="supplier_id" id="supplier_id" class="form-control select2">
                 <option value="">همه</option>
                 @foreach ($suppliers as $supplier)
                   <option value="{{ $supplier->id }}" @selected(request("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>

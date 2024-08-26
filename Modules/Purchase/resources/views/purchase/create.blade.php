@@ -66,7 +66,10 @@
   <x-core::date-input-script textInputId="purchased_date_show" dateInputId="purchased_date"/>
 
 	<script>
-		$(document).ready(function() {
+
+    
+    $(document).ready(function() {
+      $('#supplier_id').select2({placeholder: 'تامین کننده را انتخاب کنید'});
       let index = 0;
 
       const addPurchaseItemButtonTop = $("#addPurchaseItemButtonTop");
@@ -94,13 +97,13 @@
 						<div class="col-3">
 							<div class="form-group">
 								<label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-								<select name="products[${index + 1}][id]" class="form-control mt-1" required>
+								<select name="products[${index + 1}][id]" class="form-control mt-1 select2" required>
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
-                    @if ($category->products()->exists())
+                    @if ($category->products->isNotEmpty())
                       <optgroup label="{{ $category->title }}" class="text-muted">
                         @foreach ($category->products->whereNotNull('parent_id') as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
+                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' - '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
                    @endif
@@ -130,6 +133,8 @@
 					</div>
 				`);
 
+        $('.select2').select2();
+
         $('#submitButton').removeClass('d-none');
 
         $('#contentArea').append(newPurchaseItemInputs);
@@ -148,13 +153,13 @@
 					<div class="row">
 						<div class="col-3">
 							<div class="form-group">
-								<select name="products[${index + 1}][id]" class="form-control mt-1">
+								<select name="products[${index + 1}][id]" class="form-control mt-1 select2">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
-                    @if ($category->products()->exists())
+                    @if ($category->products->isNotEmpty())
                       <optgroup label="{{ $category->title }}" class="text-muted">
                         @foreach ($category->products->whereNotNull('parent_id') as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
+                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' - '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
                     @endif
@@ -184,6 +189,8 @@
 						</div>
 					</div>
 				`);
+
+        $('.select2').select2();
 
         $('#contentArea').append(newPurchaseItemInputs);
         index++;
