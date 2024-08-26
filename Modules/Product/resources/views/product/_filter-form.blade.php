@@ -20,7 +20,7 @@
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="category_id">دسته بندی :</label>
-              <select name="category_id" id="category_id" class="form-control">
+              <select name="category_id" id="category_id" class="form-control select2">
                 <option value="">همه</option>
                 @foreach ($categories as $category)
                   <option value="{{ $category->id }}" @selected(request("category_id") == $category->id)>{{ $category->title }}</option>
