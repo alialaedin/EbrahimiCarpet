@@ -133,7 +133,7 @@
 					</div>
 				`);
 
-        $('.select2').select2();
+        newPurchaseItemInputs.find('.select2').select2();
 
         $('#submitButton').removeClass('d-none');
 
@@ -190,7 +190,7 @@
 					</div>
 				`);
 
-        $('.select2').select2();
+        newPurchaseItemInputs.find('.select2').select2();
 
         $('#contentArea').append(newPurchaseItemInputs);
         index++;
