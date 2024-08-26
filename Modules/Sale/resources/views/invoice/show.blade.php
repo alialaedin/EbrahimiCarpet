@@ -57,7 +57,7 @@
     <div id="header">
 
       <div>
-        <span id="header-text">فرش ابراهیمی</span>
+        <span id="header-text">سرای فرش ابراهیمی</span>
       </div>
 
       <div>
@@ -100,10 +100,10 @@
           <tbody>
 
             @php
-              $totalQuantity = 0;
-              $totalPrice = 0;
-              $totalDiscount = 0;
-              $totalPriceWithDiscount = 0;
+              // $totalQuantity = 0;
+              // $totalPrice = 0;
+              // $totalDiscount = 0;
+              // $totalPriceWithDiscount = 0;
               $totalTotalItemPrice = 0;
             @endphp
 
@@ -121,10 +121,10 @@
               </tr>
 
               @php
-                $totalQuantity += $item->quantity;
-                $totalPrice += $item->price;
-                $totalDiscount += $item->discount;
-                $totalPriceWithDiscount += $item->getPriceWithDiscount();
+                // $totalQuantity += $item->quantity;
+                // $totalPrice += $item->price;
+                // $totalDiscount += $item->discount;
+                // $totalPriceWithDiscount += $item->getPriceWithDiscount();
                 $totalTotalItemPrice += $item->getTotalItemPrice();
               @endphp
 
@@ -150,8 +150,8 @@
 
           <div class="col-8">
             <ul>
-              <li class="fs-16 mb-2"><strong>آدرس فروشگاه :</strong> گلوگاه - خیابان تست - پلاک 23</li>
-              <li class="fs-16 mt-2"><strong>شماره تماس فروشکاه :</strong> 093654653215 - 01754634697</li>
+              <li class="fs-16 mb-2"><strong>آدرس فروشگاه :</strong> گلوگاه - خیابان شهید پهلوان - نبش کوچه چهارم - سرای فرش ابراهیمی</li>
+              <li class="fs-16 mt-2"><strong>شماره تماس فروشکاه :</strong> 01134669718 - 09904712648</li>
             </ul>
           </div>
 

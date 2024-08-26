@@ -48,7 +48,7 @@
 <div id="header">
 
   <div>
-    <span id="header-text">فرش ابراهیمی</span>
+    <span id="header-text">سرای فرش ابراهیمی</span>
   </div>
 
   <div class="d-flex justify-content-center">
