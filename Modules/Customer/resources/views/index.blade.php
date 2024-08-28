@@ -95,6 +95,18 @@
                   </td>
                   <td class="text-center">@jalaliDate($customer->created_at)</td>
                   <td class="text-center">
+                    <button
+                      class="btn btn-pinterest btn-icon btn-sm"
+                      onclick="$('#Form').submit()">
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+                    <form
+                      action="{{ route('admin.sales.create') }}"
+                      id="Form"
+                      method="GET"
+                      class="d-none">
+                      <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                    </form>
                     <a
                       href="{{ route('admin.customers.show-invoice', $customer) }}"
                       target="_blank"
