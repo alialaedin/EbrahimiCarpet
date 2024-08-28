@@ -209,9 +209,7 @@
         `;
         const $newRow = $(html);  
         $('#products-dimensions-table tbody').append($newRow); 
-        setTimeout(() => { 
-          $newRow.slideDown('slow');  
-        }, 2000);
+        $newRow.slideDown('slow');  
         comma();
         counter++;
       });
