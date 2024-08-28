@@ -187,7 +187,7 @@
         // $('#products-dimensions-section').show();
         // $('#warning-messages-section').show();
         // $('#submit-btn-section').show();  
-        $('.hidden-part').slideDown(2000);
+        $('.hidden-part').slideDown('slow');
         let html = `
           <tr>  
             <td class="p-3"><input type="text" class="form-control" name="product_dimensions[${counter}][dimensions]" required></td>  
