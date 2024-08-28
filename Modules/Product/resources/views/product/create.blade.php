@@ -177,10 +177,10 @@
           purchasedPriceInput.val(null)
         }
       });
-
-      $('#products-dimensions-section').hide();  
-      $('#warning-messages-section').hide();  
-      $('#submit-btn-section').hide();  
+      $('.hidden-part').hide();
+      // $('#products-dimensions-section').hide();  
+      // $('#warning-messages-section').hide();  
+      // $('#submit-btn-section').hide();  
       let counter = 1; 
       
       $('#add-dimensions-btn').click(() => {
