@@ -28,7 +28,7 @@
               <select name="customer_id" id="customer_id" class="form-control select2" required>
                 <option value="" class="text-muted">-- مشتری را انخاب کنید --</option>
                 @foreach ($customers as $customer)
-                  <option value="{{ $customer->id }}" @selected(old("customer_id") == $customer->id)>{{ $customer->name .' - '. $customer->mobile }}</option>
+                  <option value="{{ $customer->id }}" @selected(request("customer_id") == $customer->id)>{{ $customer->name .' - '. $customer->mobile }}</option>
                 @endforeach
               </select>
               <x-core::show-validation-error name="customer_id" />
