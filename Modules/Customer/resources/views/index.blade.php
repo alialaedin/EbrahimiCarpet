@@ -122,7 +122,7 @@
                         href="{{ route('admin.sale-payments.show', $customer) }}"
                         class="btn btn-success btn-icon btn-sm"
                         data-toggle="tooltip"
-                        data-original-title="پرداختی ها">
+                        data-original-title="دریافتی ها">
                         <i class="fa fa-money"></i>
                       </a>
                     @endcan

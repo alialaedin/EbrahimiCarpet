@@ -115,7 +115,7 @@
             </button>
           </div>
         </div>
-        <div class="row mb-5 justify-content-center" id="warning-messages-section">
+        <div class="row hidden-part mb-5 justify-content-center" id="warning-messages-section">
           <div class="col bg-yellow p-2" style="border-radius: 10px;">
               <ul class="mr-3">
                 <li class="fs-16 text-gray-dark my-1">فیلد های <span class="text-danger">ستاره دار</span> اجباری هستند!</li>
@@ -124,7 +124,7 @@
               </ul>
           </div>
         </div>
-        <div class="row">
+        <div class="row hidden-part">
           <div id="products-dimensions-section" class="col-12 mx-auto table-responsive mt-4">
             <table id="products-dimensions-table" role="table" class="table b-table table-bordered text-center border-top">
               <thead role="rowgroup">
@@ -143,7 +143,7 @@
             </table>
           </div>
         </div>
-        <div class="row" id="submit-btn-section">
+        <div class="row hidden-part" id="submit-btn-section">
           <div class="col">
             <div class="text-center">
               <button class="btn btn-pink" type="submit">ثبت و ذخیره</button>
@@ -184,9 +184,10 @@
       let counter = 1; 
       
       $('#add-dimensions-btn').click(() => {
-        $('#products-dimensions-section').show();
-        $('#warning-messages-section').show();
-        $('#submit-btn-section').show();  
+        // $('#products-dimensions-section').show();
+        // $('#warning-messages-section').show();
+        // $('#submit-btn-section').show();  
+        $('.hidden-part').slideDown(2000);
         let html = `
           <tr>  
             <td class="p-3"><input type="text" class="form-control" name="product_dimensions[${counter}][dimensions]" required></td>  
