@@ -207,7 +207,9 @@
             </td>  
           </tr>  
         `;
+        $(html).css('display', 'none');
         $('#products-dimensions-table tbody').append(html);
+        $(html).slideDown('slow');
         comma();
         counter++;
       });
