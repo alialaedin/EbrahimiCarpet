@@ -189,7 +189,7 @@
         // $('#submit-btn-section').show();  
         $('.hidden-part').slideDown('slow');
         let html = `
-          <tr>  
+          <tr style="display: none;">  
             <td class="p-3"><input type="text" class="form-control" name="product_dimensions[${counter}][dimensions]" required></td>  
             <td class="p-3"><input type="number" class="form-control p-0" name="product_dimensions[${counter}][initial_balance]"></td>  
             <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][purchased_price]"></td>  
@@ -207,9 +207,9 @@
             </td>  
           </tr>  
         `;
-        $(html).css('display', 'none');
-        $('#products-dimensions-table tbody').append(html);
-        $(html).slideDown('slow');
+        const newRow = $(html)
+        $('#products-dimensions-table tbody').append(newRow);
+        newRow.slideDown('slow');
         comma();
         counter++;
       });
