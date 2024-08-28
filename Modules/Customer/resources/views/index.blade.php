@@ -96,8 +96,10 @@
                   <td class="text-center">@jalaliDate($customer->created_at)</td>
                   <td class="text-center">
                     <button
-                      class="btn btn-pinterest btn-icon btn-sm"
-                      onclick="$('#Form').submit()">
+                      class="btn btn-vimeo btn-icon btn-sm"
+                      onclick="$('#Form').submit()"
+                      data-toggle="tooltip"
+                      data-original-title="فاکتور فروش جدید">
                       <i class="fa fa-shopping-cart"></i>
                     </button>
                     <form
@@ -112,7 +114,7 @@
                       target="_blank"
                       class="btn btn-sm btn-purple btn-icon text-white p-0"
                       data-toggle="tooltip"
-                      data-original-title="فاکتور">
+                      data-original-title="پرینت">
                       <i class="fe fe-printer" style="margin: 1px 0; padding: 0 6px;"></i>
                     </a>
                     @can('view sale_payments')
