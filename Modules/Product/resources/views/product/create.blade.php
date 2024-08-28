@@ -207,9 +207,9 @@
             </td>  
           </tr>  
         `;
-        const newRow = $(html)
-        $('#products-dimensions-table tbody').append(newRow);
-        newRow.slideDown('slow');
+        const $newRow = $(html);  
+        $('#products-dimensions-table tbody').append($newRow);  
+        $newRow.slideDown('slow');  
         comma();
         counter++;
       });
