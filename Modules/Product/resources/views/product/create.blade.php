@@ -190,11 +190,11 @@
         $('.hidden-part').slideDown('slow');
         let html = `
           <tr style="display: none;">  
-            <td class="p-3"><input type="text" class="form-control" name="product_dimensions[${counter}][dimensions]" required></td>  
-            <td class="p-3"><input type="number" class="form-control p-0" name="product_dimensions[${counter}][initial_balance]"></td>  
-            <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][purchased_price]"></td>  
-            <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][price]" required></td>  
-            <td class="p-3"><input type="text" class="form-control p-0 comma" name="product_dimensions[${counter}][discount]"></td>  
+            <td class="p-3"><input type="text" class="form-control text-center" name="product_dimensions[${counter}][dimensions]" required></td>  
+            <td class="p-3"><input type="number" class="form-control text-center p-0" name="product_dimensions[${counter}][initial_balance]"></td>  
+            <td class="p-3"><input type="text" class="form-control text-center p-0 comma" name="product_dimensions[${counter}][purchased_price]"></td>  
+            <td class="p-3"><input type="text" class="form-control text-center p-0 comma" name="product_dimensions[${counter}][price]" required></td>  
+            <td class="p-3"><input type="text" class="form-control text-center p-0 comma" name="product_dimensions[${counter}][discount]"></td>  
             <td>
               <div>
                 <button type="button" class="delete-btn btn btn-sm btn-icon btn-danger text-whitem" style="margin-left: 1px;">  
@@ -208,8 +208,10 @@
           </tr>  
         `;
         const $newRow = $(html);  
-        $('#products-dimensions-table tbody').append($newRow);  
-        $newRow.slideDown('slow');  
+        $('#products-dimensions-table tbody').append($newRow); 
+        setTimeout(() => { 
+          $newRow.slideDown('slow');  
+        }, 2000);
         comma();
         counter++;
       });
