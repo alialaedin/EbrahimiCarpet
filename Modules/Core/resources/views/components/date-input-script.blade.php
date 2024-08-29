@@ -4,7 +4,7 @@
     targetTextSelector: '#' + "{{ $textInputId }}",
     englishNumber: false,
     toDate:true,
-    enableTimePicker: false,
+    enableTimePicker: true,
     dateFormat: 'yyyy-MM-dd',
     textFormat: 'yyyy-MM-dd',
     groupId: 'rangeSelector1',
