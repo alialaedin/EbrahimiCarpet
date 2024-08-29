@@ -53,9 +53,25 @@
                     />
                   <td class="text-center"> @jalaliDate($supplier->created_at) </td>
                   <td class="text-center">
+                    @can('create purchases')
+                      <button
+                        class="btn btn-yellow btn-icon btn-sm"
+                        onclick="$('#Form').submit()"
+                        data-toggle="tooltip"
+                        data-original-title="فاکتور فروش جدید">
+                        <i class="fa fa-shopping-cart"></i>
+                      </button>
+                      <form
+                        action="{{ route('admin.sales.create') }}"
+                        id="Form"
+                        method="GET"
+                        class="d-none">
+                        <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                      </form>
+                    @endcan
                     @can('create accounts')
                       <button
-                        class="btn btn-cyan btn-icon btn-sm"
+                        class="btn btn-teal btn-icon btn-sm"
                         onclick="createAccountModal('{{$supplier->name}}', '{{$supplier->id}}')"
                         style="padding: 1px 7px;"
                         data-toggle="tooltip"
@@ -66,7 +82,7 @@
                     @can('view payments')
                       <a
                         href="{{ route('admin.payments.show', $supplier) }}"
-                        class="btn btn-success btn-icon btn-sm"
+                        class="btn btn-lime btn-icon btn-sm"
                         data-toggle="tooltip"
                         data-original-title="پرداختی ها">
                         <i class="fa fa-money"></i>
