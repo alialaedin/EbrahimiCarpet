@@ -19,9 +19,9 @@
     </div>
     <div class="card-body">
 
-      <form action="{{ route('admin.employees.update', $employee) }}" method="post" class="save">
+      <form action="{{ route('admin.employees.update', $employee) }}" method="POST">
         @csrf
-        @method('PATCH')
+        @method('PUT')
         <div class="row">
           <div class="col-lg-4 col-md-6 col-12">
             <div class="form-group">
