@@ -58,7 +58,7 @@
                         class="btn btn-yellow btn-icon btn-sm"
                         onclick="$('#Form').submit()"
                         data-toggle="tooltip"
-                        data-original-title="فاکتور فروش جدید">
+                        data-original-title="فاکتور خربد جدید">
                         <i class="fa fa-shopping-cart"></i>
                       </button>
                       <form
