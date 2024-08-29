@@ -93,13 +93,13 @@
                 autocomplete="off"
               />
               <input
-                name="employmented_at"
+                name="employment_at"
                 id="employmented_date"
                 type="hidden"
                 required
-                value="{{	old('employmented_at', $employee->employmented_at) }}"
+                value="{{	old('employment_at', $employee->employment_at) }}"
               />
-              <x-core::show-validation-error name="employmented_at" />
+              <x-core::show-validation-error name="employment_at" />
             </div>
 
           </div>
