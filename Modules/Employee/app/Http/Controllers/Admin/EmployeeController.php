@@ -81,7 +81,7 @@ class EmployeeController extends Controller implements HasMiddleware
   {
     $employee->update($request->validated());
 
-    return redirect()->back()->withInput();
+    return to_route('admin.employees.index');
   }
 
   public function destroy(Employee $employee): RedirectResponse
