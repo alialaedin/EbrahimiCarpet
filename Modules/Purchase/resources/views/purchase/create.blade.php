@@ -34,7 +34,7 @@
               <select name="supplier_id" id="supplier_id" class="form-control select2" required>
                 <option value="" class="text-muted">-- تامین کننده را انخاب کنید --</option>
                 @foreach ($suppliers as $supplier)
-                  <option value="{{ $supplier->id }}" @selected(old("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
+                  <option value="{{ $supplier->id }}" @selected(request("supplier_id") == $supplier->id)>{{ $supplier->name .' - '. $supplier->mobile }}</option>
                 @endforeach
               </select>
             </div>
