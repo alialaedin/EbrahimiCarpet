@@ -62,11 +62,11 @@
                         <i class="fa fa-shopping-cart"></i>
                       </button>
                       <form
-                        action="{{ route('admin.sales.create') }}"
+                        action="{{ route('admin.purchases.create') }}"
                         id="Form"
                         method="GET"
                         class="d-none">
-                        <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                        <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
                       </form>
                     @endcan
                     @can('create accounts')
