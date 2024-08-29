@@ -79,7 +79,7 @@ class EmployeeController extends Controller implements HasMiddleware
 
   public function update(EmployeeUpdateRequest $request, Employee $employee): RedirectResponse
   {
-    $employee->update($request->validated());
+    $employee->update($request->all());
 
     return to_route('admin.employees.index');
   }
