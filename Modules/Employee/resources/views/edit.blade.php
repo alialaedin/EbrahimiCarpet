@@ -18,6 +18,7 @@
       <p class="card-title">ویرایش کارمند - کد {{ $employee->id }}</p>
     </div>
     <div class="card-body">
+
       <form action="{{ route('admin.employees.update', $employee) }}" method="post" class="save">
         @csrf
         @method('PATCH')
@@ -97,7 +98,7 @@
                 id="employmented_date"
                 type="hidden"
                 required
-                value="{{	request('employmented_at', $employee->employmented_at) }}"
+                value="{{	old('employmented_at', $employee->employmented_at) }}"
               />
               <x-core::show-validation-error name="employmented_at" />
             </div>
