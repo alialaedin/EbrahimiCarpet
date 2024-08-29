@@ -37,7 +37,7 @@ class EmployeeUpdateRequest extends FormRequest
 				'digits:10',
 				Rule::unique('employees', 'national_code')->ignore($employee->id)
 			],
-			'employment_at' => ['required', 'date'],
+			'employmented_at' => ['required', 'date'],
 			'salary' => ['required', 'integer', 'min:1'],
 			'card_number' => ['required', 'digits:16', 'numeric', new IranianCardNumber],
 			'sheba_number' => ['nullable', 'numeric'],
