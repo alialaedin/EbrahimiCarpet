@@ -21,7 +21,7 @@ class Employee extends BaseModel
 		'mobile',
 		'address',
 		'national_code',
-		'employment_at',
+		'employmented_at',
 		'card_number',
 		'sheba_number',
 		'bank_name',
