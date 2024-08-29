@@ -97,7 +97,7 @@
                 id="employmented_date"
                 type="hidden"
                 required
-                value="{{	old('employment_at', $employee->employment_at) }}"
+                value="{{	request('employment_at', $employee->employment_at) }}"
               />
               <x-core::show-validation-error name="employment_at" />
             </div>
