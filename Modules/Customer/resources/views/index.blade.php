@@ -97,14 +97,14 @@
                   <td class="text-center">
                     <button
                       class="btn btn-vimeo btn-icon btn-sm"
-                      onclick="$('#Form').submit()"
+                      onclick="$('#Form-{{  $customer->id }}').submit()"
                       data-toggle="tooltip"
                       data-original-title="فاکتور فروش جدید">
                       <i class="fa fa-shopping-cart"></i>
                     </button>
                     <form
                       action="{{ route('admin.sales.create') }}"
-                      id="Form"
+                      id="Form-{{  $customer->id }}"
                       method="GET"
                       class="d-none">
                       <input type="hidden" name="customer_id" value="{{ $customer->id }}">

@@ -56,14 +56,14 @@
                     @can('create purchases')
                       <button
                         class="btn btn-yellow btn-icon btn-sm"
-                        onclick="$('#Form').submit()"
+                        onclick="$('#Form-{{ $supplier->id }}').submit()"
                         data-toggle="tooltip"
                         data-original-title="فاکتور خربد جدید">
                         <i class="fa fa-shopping-cart"></i>
                       </button>
                       <form
                         action="{{ route('admin.purchases.create') }}"
-                        id="Form"
+                        id="Form-{{ $supplier->id }}"
                         method="GET"
                         class="d-none">
                         <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
