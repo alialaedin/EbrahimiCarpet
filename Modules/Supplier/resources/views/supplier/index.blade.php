@@ -82,7 +82,7 @@
                     @can('view payments')
                       <a
                         href="{{ route('admin.payments.show', $supplier) }}"
-                        class="btn btn-lime btn-icon btn-sm"
+                        class="btn btn-green btn-icon btn-sm"
                         data-toggle="tooltip"
                         data-original-title="پرداختی ها">
                         <i class="fa fa-money"></i>
