@@ -122,6 +122,11 @@ class Product extends BaseModel
 		return $this->stores->sum('balance');
 	}
 
+	public function getStoreBalanceAttribute()
+	{
+		return $this->stores->sum('balance');
+	}
+
 	public function loadDeletableMessages(): array
 	{
 		return [

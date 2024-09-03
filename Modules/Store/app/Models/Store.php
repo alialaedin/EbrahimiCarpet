@@ -10,6 +10,7 @@ use Modules\Admin\Models\Admin;
 use Modules\Core\Models\BaseModel;
 use Modules\Product\Models\Price;
 use Modules\Product\Models\Product;
+use Modules\Purchase\Models\PurchaseItem;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -58,6 +59,11 @@ class Store extends BaseModel
   public function price(): BelongsTo
   {
     return $this->belongsTo(Price::class);
+  }
+
+  public function item(): BelongsTo
+  {
+    return $this->belongsTo(PurchaseItem::class, 'purchase_item_id');
   }
 
 	public function transactions(): HasMany

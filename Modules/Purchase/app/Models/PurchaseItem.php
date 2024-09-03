@@ -5,9 +5,12 @@ namespace Modules\Purchase\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Product\Models\Product;
+use Modules\Store\Models\Store;
+use Modules\Store\Services\StoreService;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -53,14 +56,14 @@ class PurchaseItem extends Model
 
 	protected static function booted(): void
 	{
-		static::deleting(function (PurchaseItem $purchaseItem) {
-			if ($purchaseItem->purchase()->payments()->exists()) {
-				throw new ModelCannotBeDeletedException('برای این خرید پرداختی ثبت شده و آیتم های آن قابل حذف نمی باشد.');
-			} elseif ($purchaseItem->product->store->balance < $purchaseItem->quantity) {
+		static::deleting(function (PurchaseItem $item) {
+			if ($item->product->store_balance < $item->quantity) {
 				throw new ModelCannotBeDeletedException('موجودی انبار کمتر از تعداد محصول این آیتم است و قابل حذف نمی باشد.');
 			}
-
-			$purchaseItem->decrementProductStore();
+		});
+		
+		static::deleted(function (PurchaseItem $item) {
+			StoreService::decrement_store_balance($item->product, $item->attributes['quantity']);
 		});
 	}
 
@@ -72,6 +75,11 @@ class PurchaseItem extends Model
 	public function purchase(): BelongsTo
 	{
 		return $this->belongsTo(Purchase::class);
+	}
+
+	public function store(): HasOne
+	{
+		return $this->hasOne(Store::class);
 	}
 
 	// Functions
