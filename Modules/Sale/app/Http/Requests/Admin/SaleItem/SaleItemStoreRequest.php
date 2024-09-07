@@ -12,9 +12,14 @@ class SaleItemStoreRequest extends FormRequest
 {
   protected function prepareForValidation(): void
   {
+    if (!is_float((float)$this->quantity)) {
+      throw Helpers::makeWebValidationException('تعداد وارد شده عدد معتبری نیست', 'quantity');
+    }
+
     $this->merge([
       'price' => str_replace(',', '', $this->input('price')),
       'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
+      'quantity' => number_format((float) $this->quantity, 2, '.', '')
     ]);
   }
 
@@ -28,7 +33,7 @@ class SaleItemStoreRequest extends FormRequest
         Rule::exists('products', 'id'),
         Rule::unique('sale_items', 'product_id')
           ->where('sale_id', $this->input('sale_id'))],
-      'quantity' => ['required', 'integer', 'min:1'],
+      'quantity' => ['required', 'decimal:2', 'min:0.01'],
       'discount' => ['nullable', 'integer'],
       'price' => ['required', 'integer', 'min:1000'],
     ];

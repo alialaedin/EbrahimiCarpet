@@ -39,7 +39,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="quantity" class="control-label">تعداد:<span class="text-danger">&starf;</span></label>
-                <input type="number" id="quantity" class="form-control" name="quantity" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('quantity') }}">
+                <input type="number" step="0.01" id="quantity" class="form-control" name="quantity" placeholder="تعداد محصول خریداری شده را وارد کنید" value="{{ old('quantity') }}">
                 <x-core::show-validation-error name="quantity" />
               </div>
             </div>

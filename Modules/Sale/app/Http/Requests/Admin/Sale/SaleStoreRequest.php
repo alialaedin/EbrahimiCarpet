@@ -17,7 +17,7 @@ class SaleStoreRequest extends FormRequest
     foreach ($this->input('products') as $index => $product) {
       $products[] = [
         'id' => $product['id'],
-        'quantity' => $product['quantity'],
+        'quantity' => number_format((float) $product['quantity'], 2, '.', ''),
         'price' => str_replace(',', '', $product['price']),
         'discount' => str_replace(',', '', $product['discount']),
         'balance' => $product['balance']
@@ -41,7 +41,7 @@ class SaleStoreRequest extends FormRequest
       'discount' => ['nullable', 'integer', 'min:1000'],
       'products' => ['required', 'array'],
       'products.*.id' => ['required', 'integer', 'exists:products,id'],
-      'products.*.quantity' => ['required', 'integer', 'min:1'],
+      'products.*.quantity' => ['required', 'decimal:2', 'min:0.01'],
     ];
   }
 

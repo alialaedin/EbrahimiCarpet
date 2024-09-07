@@ -175,7 +175,7 @@
 						<div class="col-2">
               <div class="form-group">
                 <label class="control-label">تعداد / متر:<span class="text-danger">&starf;</span></label>
-                <input type="number" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
+                <input type="number" step="0.01" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
 							</div>
 						</div>
 
@@ -235,7 +235,7 @@
 
 						<div class="col-2">
               <div class="form-group">
-                <input type="number" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
+                <input type="number" step="0.01" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
 							</div>
 						</div>
 

@@ -5,17 +5,24 @@ namespace Modules\Store\Http\Requests\Admin;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Helpers\Helpers;
-use Modules\Product\Models\Product;
 
 class DecrementStoreBalanceRequest extends FormRequest
 {
-  /**
-   * Get the validation rules that apply to the request.
-   */
+  public function prepareForValidation(): void
+  {
+    if (!is_float((float)$this->quantity)) {
+      throw Helpers::makeWebValidationException('تعداد وارد شده عدد معتبری نیست', 'quantity');
+    }
+
+    $this->merge([ 
+      'quantity' => number_format((float) $this->quantity, 2, '.', '')
+    ]);
+  }
+  
   public function rules(): array
   {
     return [
-      'quantity' => ['required', 'min:1', 'integer'],
+      'quantity' => ['required', 'min:0.01', 'decimal:2'],
     ];
   }
 

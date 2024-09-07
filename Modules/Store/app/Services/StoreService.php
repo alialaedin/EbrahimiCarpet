@@ -62,7 +62,7 @@ class StoreService
     static::check_if_product_has_initial_balance($storedProducts);
   }
 
-  public static function decrement_store_balance(Product|Collection|Builder $product, int $quantity): void
+  public static function decrement_store_balance(Product|Collection|Builder $product, int|float $quantity): void
   {
     $stores = Store::query()
       ->where('product_id', $product->id)
@@ -72,7 +72,7 @@ class StoreService
     foreach ($stores as $store) {
 
       $balance = $store->balance;
-      $quantityToDecrement = min($balance, $quantity);
+      $quantityToDecrement = (float) min($balance, $quantity);
 
       $store->decrement('balance', $quantityToDecrement);
       $quantity -= $balance;
@@ -84,17 +84,15 @@ class StoreService
   }
 
   public static function check_if_product_has_initial_balance(array|Collection $products): void
-  { 
-    foreach ($products as $product) 
-    {
+  {
+    foreach ($products as $product) {
       $balance = $product['initial_balance'];
       $purchasedPrice = $product['purchased_price'];
-      
+
       $hasInitialBalance = !is_null($balance);
-			$hasPurchasedPrice = !is_null($purchasedPrice) && ($purchasedPrice > 0);
-      
-      if ($hasInitialBalance && $hasPurchasedPrice) 
-      {
+      $hasPurchasedPrice = !is_null($purchasedPrice) && ($purchasedPrice > 0);
+
+      if ($hasInitialBalance && $hasPurchasedPrice) {
         $product = Product::query()
           ->select(['id', 'price'])
           ->where('id', $product['id'])
@@ -188,7 +186,6 @@ class StoreService
 
           $store->balance = 0;
           $store->save();
-
         } else {
 
           $archivedPriceArr[] = [
@@ -224,5 +221,4 @@ class StoreService
       $store->increment('balance', $price['quantity']);
     }
   }
-
 }

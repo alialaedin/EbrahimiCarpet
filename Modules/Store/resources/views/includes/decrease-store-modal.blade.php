@@ -30,7 +30,7 @@
             <div class="col-lg-6 col-12">
               <div class="form-group">
                 <label for="quantity" class="control-label">تعداد کاهش :<span class="text-danger">&starf;</span></label>
-                <input type="number" id="quantity" class="form-control" name="quantity" value="{{ old('quantity') }}">
+                <input type="number" step="0.01" id="quantity" class="form-control" name="quantity" value="{{ old('quantity') }}">
               </div>
             </div>
 
