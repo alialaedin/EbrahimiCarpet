@@ -153,9 +153,9 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->due_date)</td>
-                  <td class="text-center"> @jalaliDate($payment->payment_date)</td>
-                  <td class="text-center"> @jalaliDate($payment->created_at)</td>
+                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
+                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
+                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
@@ -188,6 +188,7 @@
                 <x-core::data-not-found-alert :colspan="10"/>
               @endforelse
               </tbody>
+              {{ $payments->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </table>
           </div>
         </div>
@@ -232,8 +233,8 @@
                   <div class="col-12">
                     <div class="form-group">
                       <label for="cash_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                      <input class="form-control fc-datepicker" id="cash_payment_date_show" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
-                      <input name="payment_date" id="cash_payment_date_hidden" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
+                      <input class="form-control fc-datepicker" id="cash_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
+                      <input name="payment_date" id="cash_payment_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
                       <x-core::show-validation-error name="payment_date" />
                     </div>
                   </div>
@@ -312,16 +313,16 @@
                   <div class="col-12 col-lg-6">
                     <div class="form-group">
                       <label for="cheque_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                      <input class="form-control fc-datepicker" id="cheque_payment_date_show" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
-                      <input name="payment_date" id="cheque_payment_date_hidden" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
+                      <input class="form-control fc-datepicker" id="cheque_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
+                      <input name="payment_date" id="cheque_payment_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
                       <x-core::show-validation-error name="payment_date" />
                     </div>
                   </div>
                   <div class="col-12 col-lg-6">
                     <div class="form-group">
                       <label for="cheque_due_date_show" class="control-label">تاریخ سررسید:</label>
-                      <input class="form-control fc-datepicker" id="cheque_due_date_show" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
-                      <input name="due_date" id="cheque_due_date_hidden" type="hidden" required value="{{	old('due_date', $payment->due_date) }}"/>
+                      <input class="form-control fc-datepicker" id="cheque_due_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
+                      <input name="due_date" id="cheque_due_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('due_date', $payment->due_date) }}"/>
                       <x-core::show-validation-error name="due_date" />
                     </div>
                   </div>
@@ -355,16 +356,16 @@
                   <div class="col-12">
                     <div class="form-group">
                       <label for="installment_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                      <input class="form-control fc-datepicker" id="installment_payment_date_show" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
-                      <input name="payment_date" id="installment_payment_date_hidden" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
+                      <input class="form-control fc-datepicker" id="installment_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
+                      <input name="payment_date" id="installment_payment_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
                       <x-core::show-validation-error name="payment_date" />
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="form-group">
                       <label for="installment_due_date_show" class="control-label">تاریخ سررسید:</label>
-                      <input class="form-control fc-datepicker" id="installment_due_date_show" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
-                      <input name="due_date" id="installment_due_date_hidden" type="hidden" required value="{{	old('due_date', $payment->due_date) }}"/>
+                      <input class="form-control fc-datepicker" id="installment_due_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
+                      <input name="due_date" id="installment_due_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('due_date', $payment->due_date) }}"/>
                       <x-core::show-validation-error name="due_date" />
                     </div>
                   </div>
@@ -387,16 +388,42 @@
 
 @section('scripts')
 
+@foreach ($cashPayments as $cashPayment)
+  <x-core::date-input-script 
+    textInputId="cash_payment_date_show-{{ $cashPayment->id }}" 
+    dateInputId="cash_payment_date_hidden-{{ $cashPayment->id }}"
+  />
+@endforeach
+@foreach ($chequePayments as $chequePayment)
+  <x-core::date-input-script
+    textInputId="cheque_due_date_show-{{ $chequePayment->id }}"
+    dateInputId="cheque_due_date_hidden-{{ $chequePayment->id }}"
+  />
+  <x-core::date-input-script
+    textInputId="cheque_payment_date_show-{{ $chequePayment->id }}"
+    dateInputId="cheque_payment_date_hidden-{{ $chequePayment->id }}"
+  />
+@endforeach
+@foreach ($installmentPayments as $installmentPayment)
+  <x-core::date-input-script
+    textInputId="installment_payment_date_show-{{ $installmentPayment->id }}"
+    dateInputId="installment_payment_date_hidden-{{ $installmentPayment->id }}"
+  />
+  <x-core::date-input-script
+    textInputId="installment_due_date_show-{{ $installmentPayment->id }}"
+    dateInputId="installment_due_date_hidden-{{ $installmentPayment->id }}"
+  />
+@endforeach
+
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
   <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
   <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
 
-  <x-core::date-input-script textInputId="installment_payment_date_show" dateInputId="installment_payment_date_hidden"/>
-  <x-core::date-input-script textInputId="installment_due_date_show" dateInputId="installment_due_date_hidden"/>
-  <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/>
-  <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
-  <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
+  {{-- <x-core::date-input-script textInputId="installment_payment_date_show" dateInputId="installment_payment_date_hidden"/> --}}
+  {{-- <x-core::date-input-script textInputId="installment_due_date_show" dateInputId="installment_due_date_hidden"/> --}}
+  {{-- <x-core::date-input-script textInputId="cheque_payment_date_show" dateInputId="cheque_payment_date_hidden"/> --}}
+  {{-- <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/> --}}
 
   <script>
     function showPaymentDescriptionModal(description) {
