@@ -153,9 +153,9 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
-                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
-                  <td class="text-center"> {{ verta($payment->due_date)->format('Y/m/d') }}</td>
+                  <td class="text-center"> {{ $payment->due_date }}</td>
+                  <td class="text-center"> {{ $payment->payment_date }}</td>
+                  <td class="text-center"> {{ $payment->created_at }}</td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
