@@ -101,10 +101,6 @@
           <tbody>
 
             @php
-              // $totalQuantity = 0;
-              // $totalPrice = 0;
-              // $totalDiscount = 0;
-              // $totalPriceWithDiscount = 0;
               $totalTotalItemPrice = 0;
             @endphp
 
@@ -122,23 +118,28 @@
               </tr>
 
               @php
-                // $totalQuantity += $item->quantity;
-                // $totalPrice += $item->price;
-                // $totalDiscount += $item->discount;
-                // $totalPriceWithDiscount += $item->getPriceWithDiscount();
                 $totalTotalItemPrice += $item->getTotalItemPrice();
               @endphp
 
             @endforeach
 
-            <tr class="bg-gray-dark-lighter text-danger">
-              <td class="font-weight-bold fs-17" colspan="7"> تخفیف کل فاکتور {{ $sale->discount_for ? 'بابت ' .  $sale->discount_for : null }} </td>
-              <td class="font-weight-bold fs-17"> {{ number_format($sale->discount) }} </td>
-            </tr>
+            @if ($sale->discount)
+              <tr class="bg-gray-dark-lighter text-danger">
+                <td class="font-weight-bold fs-17" colspan="7"> تخفیف کل فاکتور {{ $sale->discount_for ? 'بابت ' .  $sale->discount_for : null }} </td>
+                <td class="font-weight-bold fs-17"> {{ number_format($sale->discount) }} </td>
+              </tr>
+            @endif
+
+            @if (!is_null($sale->cost_of_sewing) AND ($sale->cost_of_sewing != 0))
+              <tr>
+                <td class="font-weight-bold fs-17" colspan="7"> هزینه دوخت </td>
+                <td class="font-weight-bold fs-17"> {{ number_format($sale->cost_of_sewing) }} </td>
+              </tr>
+            @endif
 
             <tr class="bg-dark text-white">
               <td class="font-weight-bold fs-17" colspan="7"> جمع کل </td>
-              <td class="font-weight-bold fs-17"> {{ number_format($totalTotalItemPrice - $sale->discount) }} </td>
+              <td class="font-weight-bold fs-17"> {{ number_format($totalTotalItemPrice - $sale->discount - $sale->cost_of_sewing) }} </td>
             </tr>
 
           </tbody>

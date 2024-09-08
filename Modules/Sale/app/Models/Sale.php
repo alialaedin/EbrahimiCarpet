@@ -5,7 +5,6 @@ namespace Modules\Sale\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Customer\Models\Customer;
 use Modules\Employee\Models\Employee;
@@ -21,6 +20,7 @@ class Sale extends BaseModel
     'customer_id',
     'sold_at',
     'discount',
+    'cost_of_sewing',
     'employee_id',
     'discount_for',
     'total_sell_prices',
@@ -48,7 +48,7 @@ class Sale extends BaseModel
     foreach ($this->items as $item) {
       $totalPrice += (($item->price - $item->discount) * $item->quantity);
     }
-    return $totalPrice;
+    return $totalPrice - $this->attributes['cost_of_sewing'];
   }
 
   public function getTotalAmountWithDiscount(): int

@@ -28,6 +28,8 @@ class ProfitController extends Controller
 
     $sumTotalBuyPrice = 0;
     $sumTotalSellPrice = 0;
+    $sumTotalDiscountPrice = 0;
+    $sumTotalCostOfSewingPrice = 0;
 
     if ($sales->count() >= 1) {
       foreach ($sales as $sale) {
@@ -37,21 +39,33 @@ class ProfitController extends Controller
             $sumTotalBuyPrice += (integer) $price['buy_price'] * (integer) $price['quantity'] ;
           }
         }
+        if ((int) $sale->discount) {
+          $sumTotalDiscountPrice += (int) $sale->discount;
+        }
+        if ((int) $sale->cost_of_sewing) {
+          $sumTotalCostOfSewingPrice += (int) $sale->cost_of_sewing;
+        }
       }
     }
 
-    $profit = $sumTotalSellPrice - $sumTotalBuyPrice;
+    $profit = $sumTotalSellPrice - $sumTotalBuyPrice - $sumTotalDiscountPrice + $sumTotalCostOfSewingPrice;
 
     $products = Product::childrens()->select('id', 'title', 'sub_title')->get();
     $categories = Category::query()->select('id', 'title')->get();
+
+    $totalPrice = [
+      'sum_total_sell_price' => $sumTotalSellPrice,
+      'sum_total_buy_price' => $sumTotalBuyPrice,
+      'sum_total_discount_price' => $sumTotalDiscountPrice,
+      'sum_total_cost_of_sewing_price' => $sumTotalCostOfSewingPrice,
+    ];
 
     return view('report::profit.index', compact([
       'sales', 
       'profit', 
       'products', 
       'categories',
-      'sumTotalSellPrice',
-      'sumTotalBuyPrice'
+      'totalPrice'
     ]));
   }
 }

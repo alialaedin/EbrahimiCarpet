@@ -26,6 +26,7 @@ class SaleStoreRequest extends FormRequest
 
     $this->merge([
       'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
+      'cost_of_sewing' => $this->filled('cost_of_sewing') ? str_replace(',', '', $this->input('cost_of_sewing')) : null,
       'products' => $products
     ]);
 
@@ -39,6 +40,7 @@ class SaleStoreRequest extends FormRequest
       'employee_id' => ['required', 'integer', Rule::exists('employees', 'id')],
       'discount_for' => ['nullable', 'string'],
       'discount' => ['nullable', 'integer', 'min:1000'],
+      'cost_of_sewing' => ['nullable', 'integer', 'min:1000'],
       'products' => ['required', 'array'],
       'products.*.id' => ['required', 'integer', 'exists:products,id'],
       'products.*.quantity' => ['required', 'decimal:2', 'min:0.01'],
