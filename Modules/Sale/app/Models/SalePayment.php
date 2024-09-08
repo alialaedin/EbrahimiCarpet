@@ -71,14 +71,4 @@ class SalePayment extends BaseModel
     ];
   }
 
-  public function getPaymentDateAttribute()
-  {
-    return $this->attributes['payment_date'] ? verta($this->attributes['payment_date'])->format('Y/m/d') : '-';
-  }
-
-  public function getDueDateAttribute()
-  {
-    return $this->type === self::TYPE_CASH ? '-' : verta($this->attributes['due_date'])->format('Y/m/d');
-  }
-
 }

@@ -153,8 +153,8 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> {{ $payment->due_date }}</td>
-                  <td class="text-center"> {{ $payment->payment_date }}</td>
+                  <td class="text-center"> {{ $payment->getDueDate() }}</td>
+                  <td class="text-center"> {{ $payment->getPaymentDate() }}</td>
                   <td class="text-center"> @jalaliDate($payment->created_at)</td>
                   <td class="text-center">
                     <x-core::badge
