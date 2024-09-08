@@ -356,7 +356,7 @@
                   <div class="col-12">
                     <div class="form-group">
                       <label for="installment_payment_date_show" class="control-label">تاریخ پرداخت:</label>
-                      <input class="form-control fc-datepicker" id="installment_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ سررسید را در صورت نیاز وارد کنید"/>
+                      <input class="form-control fc-datepicker" id="installment_payment_date_show-{{ $payment->id }}" type="text" autocomplete="off" placeholder="تاریخ پرداخت را در صورت نیاز وارد کنید"/>
                       <input name="payment_date" id="installment_payment_date_hidden-{{ $payment->id }}" type="hidden" required value="{{	old('payment_date', $payment->payment_date) }}"/>
                       <x-core::show-validation-error name="payment_date" />
                     </div>
