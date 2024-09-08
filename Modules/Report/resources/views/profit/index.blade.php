@@ -122,7 +122,7 @@
                       <td>{{ $saleItem->product->id }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
                       <td>{{ $saleItem->quantity .' '. $saleItem->product->category->getUnitType() }}</td>
-                      <td> @jalaliDate($saleItem->sale->sold_at) </td>
+                      <td> {{ verta($saleItem->sale->sold_at)->formatDate() }} </td>
                       <td>{{ number_format($saleItem->getPriceWithDiscount() * $saleItem->quantity) }}</td>
                     </tr>
                     @php($counter++)
