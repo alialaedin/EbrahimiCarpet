@@ -188,8 +188,8 @@
                 <x-core::data-not-found-alert :colspan="10"/>
               @endforelse
               </tbody>
-              {{ $payments->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
             </table>
+            {{ $payments->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
           </div>
         </div>
       </div>
