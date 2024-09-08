@@ -85,16 +85,16 @@
               <span class="btn btn-primary">
                 <span class="fs-15">مبلغ خریدادری شده :</span> {{ number_format($totalPrice['sum_total_buy_price']) }} ریال
               </span> 
-              <span class="btn btn-orange mx-3">
+              <span class="btn btn-orange mx-2">
                 <span class="fs-15">مبلغ فروخته شده :</span> {{ number_format($totalPrice['sum_total_sell_price']) }} ریال
               </span> 
-              <span class="btn btn-warning mx-3">
+              <span class="btn btn-warning mx-2">
                 <span class="fs-15">جمع تخفیف های داده شده :</span> {{ number_format($totalPrice['sum_total_discount_price']) }} ریال
               </span> 
-              <span class="btn btn-danger mx-3">
+              <span class="btn btn-danger mx-2">
                 <span class="fs-15">جمع هزینه های دوخت :</span> {{ number_format($totalPrice['sum_total_cost_of_sewing_price']) }} ریال
               </span> 
-              <span class="btn btn-lime">
+              <span class="btn btn-lime mr-2">
                 <span class="fs-15">سود شما :</span> {{ number_format($profit) }} ریال
               </span> 
           </div>
