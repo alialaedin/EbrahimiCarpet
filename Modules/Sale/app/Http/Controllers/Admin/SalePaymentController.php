@@ -55,7 +55,11 @@ class SalePaymentController extends Controller implements HasMiddleware
     $totalPayments = $payments->total();
     $customers = Customer::all('id', 'name', 'mobile');
 
-    return view('sale::sale-payment.index', compact(['payments', 'totalPayments', 'customers']));
+    $cashPayments = $payments->where('type', '=', 'cash');
+    $installmentPayments = $payments->where('type', '=', 'installment');
+    $chequePayments = $payments->where('type', '=', 'cheque');
+
+    return view('sale::sale-payment.index', compact(['payments', 'totalPayments', 'customers', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }
 
   public function show(Customer $customer): View
