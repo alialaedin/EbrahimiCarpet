@@ -172,7 +172,12 @@
                       <i class="fa fa-book"></i>
                     </button>
                     @can('edit payments')
-                      <x-core::edit-button route="admin.payments.edit" :model="$payment"/>
+                    <button
+                      data-target="#editPaymentModal-{{$payment->id}}"
+                      class="btn btn-sm btn-icon btn-warning text-white"
+                      data-toggle="modal">
+                      <i class="fa fa-pencil" ></i>
+                    </button>
                     @endcan
                     @can('delete payments')
                       <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
@@ -192,7 +197,7 @@
   </div>
   @include('payment::_show-description-modal')
   @foreach ($payments as $payment)
-  <div class="modal fade" id="editSalePaymentModal-{{ $payment->id }}" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="editPaymentModal-{{ $payment->id }}" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
