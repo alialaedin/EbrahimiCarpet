@@ -82,19 +82,19 @@
       <div class="table-responsive">
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="row">
-              <span class="btn btn-primary">
+              <span class="btn btn-primary btn-sm">
                 <span class="fs-15">مبلغ خریدادری شده :</span> {{ number_format($totalPrice['sum_total_buy_price']) }} ریال
               </span> 
-              <span class="btn btn-orange mx-2">
+              <span class="btn btn-orange btn-sm mr-4 ml-2">
                 <span class="fs-15">مبلغ فروخته شده :</span> {{ number_format($totalPrice['sum_total_sell_price']) }} ریال
               </span> 
-              <span class="btn btn-warning mx-2">
+              <span class="btn btn-warning btn-sm mx-2">
                 <span class="fs-15">جمع تخفیف های داده شده :</span> {{ number_format($totalPrice['sum_total_discount_price']) }} ریال
               </span> 
-              <span class="btn btn-danger mx-2">
+              <span class="btn btn-danger btn-sm mx-2">
                 <span class="fs-15">جمع هزینه های دوخت :</span> {{ number_format($totalPrice['sum_total_cost_of_sewing_price']) }} ریال
               </span> 
-              <span class="btn btn-lime mr-2">
+              <span class="btn btn-lime btn-sm mr-2">
                 <span class="fs-15">سود شما :</span> {{ number_format($profit) }} ریال
               </span> 
           </div>
@@ -121,7 +121,7 @@
                       <td>{{ $saleItem->product->title }}</td>
                       <td>{{ $saleItem->product->id }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
-                      <td>{{ $saleItem->quantity }}</td>
+                      <td>{{ $saleItem->quantity .' '. $saleItem->product->category->getUnitType() }}</td>
                       <td> @jalaliDate($saleItem->sale->sold_at) </td>
                       <td>{{ number_format($saleItem->getPriceWithDiscount() * $saleItem->quantity) }}</td>
                     </tr>
