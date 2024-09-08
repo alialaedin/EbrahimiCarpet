@@ -202,10 +202,13 @@
     <div class="card-header border-0 justify-content-between">
       <p class="card-title">خرید ها ({{ $numberOfPurchases }})</p>
       @can('create purchases')
-        <a href="{{ route('admin.purchases.create') }}" class="btn btn-outline-primary">
+        <button onclick="$('#CreateNewPurchaseForm').submit()" class="btn btn-outline-primary">
           فاکتور خرید جدید
           <i class="fa fa-plus"></i>
-        </a>
+        </button>
+        <form id="CreateNewPurchaseForm" action="{{ route('admin.purchases.create') }}" method="GET" class="d-none">
+          <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
+        </form>
       @endcan
     </div>
     <div class="card-body">
