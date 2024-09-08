@@ -163,7 +163,7 @@
                     />
                   </td>
                   <td class="text-center">
-                    <x-core::show-button route="admin.payments.show" :model="$payment->supplier"/>
+                    <x-core::show-button route="admin.payments.show" :model="$payment"/>
                     <button
                       class="btn btn-sm btn-icon btn-teal "
                       onclick="showPaymentDescriptionModal('{{$payment->description}}')"
