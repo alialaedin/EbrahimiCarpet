@@ -55,9 +55,9 @@ class SaleStoreRequest extends FormRequest
     if ($this->input('sold_at') > Carbon::now()) {
       throw Helpers::makeWebValidationException('تاریخ خرید نمی تواند از تاریخ امروز بزرگ تر باشد.', 'sold_at');
     }
-    if ($this->filled('discount') && $this->isNotFilled('discount_for')) {
-      throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
-    }
+    // if ($this->filled('discount') && $this->isNotFilled('discount_for')) {
+      // throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
+    // }
 
     foreach ($this->input('products') as $index => $product) {
       if ($product['quantity'] > $product['balance']) {

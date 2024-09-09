@@ -35,9 +35,9 @@ class SaleUpdateRequest extends FormRequest
   {
     $discount = $this->input('discount');
 
-    if ($discount > 0 && $this->isNotFilled('discount_for')) {
-      throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
-    }
+    // if ($discount > 0 && $this->isNotFilled('discount_for')) {
+    //   throw Helpers::makeWebValidationException('فیلد بابت تخفیف الزامی است!.', 'discount_for');
+    // }
     if ($discount > 0 && $discount < 10000) {
       throw Helpers::makeWebValidationException('تخفیف باید بیشتر از 10000 ریال باشذ!.', 'discount');
     }
