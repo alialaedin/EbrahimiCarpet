@@ -143,7 +143,7 @@
 						<div class="col-3">
 							<div class="form-group">
 								<label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control mt-1" required onchange="getProductStore('#product-${index + 1}')">
+								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control mt-1 product-select" required onchange="getProductStore('#product-${index + 1}')">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
@@ -189,6 +189,8 @@
 					</div>
 				`);
 
+        newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
+
         $('#submitButton').removeClass('d-none');
 
         $('#contentArea').append(newPurchaseItemInputs);
@@ -207,7 +209,7 @@
 
 						<div class="col-3">
 							<div class="form-group">
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control mt-1" onchange="getProductStore('#product-${index + 1}')">
+								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select mt-1" onchange="getProductStore('#product-${index + 1}')">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
@@ -254,7 +256,7 @@
 
 					</div>
 				`);
-
+        newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
 
         $('#contentArea').append(newPurchaseItemInputs);
 
