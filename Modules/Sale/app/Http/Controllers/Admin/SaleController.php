@@ -41,7 +41,7 @@ class SaleController extends Controller implements HasMiddleware
     $toSoldAt = request('to_sold_at');
 
     $sales = Sale::query()
-      ->select('id', 'customer_id', 'sold_at', 'discount', 'employee_id', 'discount_for')
+      ->select('id', 'customer_id', 'sold_at', 'discount', 'employee_id', 'discount_for', 'cost_of_sewing')
       ->with([
         'customer:id,name,mobile',
         'employee:id,name,mobile'
