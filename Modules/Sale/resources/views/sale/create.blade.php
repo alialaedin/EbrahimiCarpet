@@ -143,7 +143,7 @@
 						<div class="col-3">
 							<div class="form-group">
 								<label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control mt-1 product-select" required onchange="getProductStore('#product-${index + 1}')">
+								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="d-block form-control mt-1 product-select" required onchange="getProductStore('#product-${index + 1}')">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
@@ -209,7 +209,7 @@
 
 						<div class="col-3">
 							<div class="form-group">
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select mt-1" onchange="getProductStore('#product-${index + 1}')">
+								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="d-block form-control product-select mt-1" onchange="getProductStore('#product-${index + 1}')">
 									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
                   @foreach ($categories as $category)
                     @if ($category->products()->exists())
