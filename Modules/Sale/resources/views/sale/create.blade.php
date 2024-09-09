@@ -189,7 +189,7 @@
 					</div>
 				`);
 
-        newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
+        // newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
 
         $('#submitButton').removeClass('d-none');
 
@@ -256,7 +256,7 @@
 
 					</div>
 				`);
-        newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
+        // newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
 
         $('#contentArea').append(newPurchaseItemInputs);
 
