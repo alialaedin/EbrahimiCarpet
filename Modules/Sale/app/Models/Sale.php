@@ -45,10 +45,11 @@ class Sale extends BaseModel
   public function getTotalAmount(): int
   {
     $totalPrice = 0;
+    $costOfSewing = $this->attributes['cost_of_sewing'] ?? 0;
     foreach ($this->items as $item) {
       $totalPrice += (($item->price - $item->discount) * $item->quantity);
     }
-    return $totalPrice - ($this->attributes['cost_of_sewing'] ?? 0);
+    return $totalPrice + $costOfSewing;
   }
 
   public function getTotalAmountWithDiscount(): int
