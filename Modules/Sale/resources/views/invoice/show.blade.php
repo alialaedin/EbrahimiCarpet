@@ -139,7 +139,7 @@
 
             <tr class="bg-dark text-white">
               <td class="font-weight-bold fs-17" colspan="7"> جمع کل </td>
-              <td class="font-weight-bold fs-17"> {{ number_format($totalTotalItemPrice - $sale->discount - $sale->cost_of_sewing) }} </td>
+              <td class="font-weight-bold fs-17"> {{ number_format($sale->getTotalAmountWithDiscount()) }} </td>
             </tr>
 
           </tbody>
