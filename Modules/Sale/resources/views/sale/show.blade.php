@@ -71,14 +71,14 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xl-4 col-lg-6 col-md-12">
+    <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قیمت کل فروش (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($sale->getTotalAmount()) }} </h3>
+                <span class="fs-16 font-weight-semibold"> جمع اقلام (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }} </h3>
               </div>
             </div>
             <div class="col-3">
@@ -90,13 +90,32 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-4 col-lg-6 col-md-12">
+    <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> تخفیف کل فروش (ریال) : </span>
+                <span class="fs-16 font-weight-semibold"> هزینه دوخت (ریال) : </span>
+                <h3 class="mb-0 mt-1 text-warning fs-20"> {{ number_format($sale->cost_of_sewing) }} </h3>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="icon1 bg-warning-transparent my-auto float-left">
+                <i class="fa fa-money"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              <div class="mt-0 text-right">
+                <span class="fs-16 font-weight-semibold"> تخفیف کل فاکتور (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($sale->discount) }} </h3>
               </div>
             </div>
@@ -109,13 +128,13 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-4 col-lg-6 col-md-12">
+    <div class="col-xl-3 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-body">
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قیمت کل با تخفیف (ریال) : </span>
+                <span class="fs-16 font-weight-semibold"> قیمت کل فاکتور (ریال) : </span>
                 <h3
                   class="mb-0 mt-1 text-success fs-20"> {{ number_format($sale->getTotalAmountWithDiscount()) }}  </h3>
               </div>

@@ -31,7 +31,7 @@
                 <th class="text-center">مبلغ خرید (ریال)</th>
                 <th class="text-center">هزینه دوخت (ریال)</th>
                 <th class="text-center">تخفیف کلی (ریال)</th>
-                <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
+                <th class="text-center">مبلغ کل فاکتور (ریال)</th>
                 <th class="text-center">تاریخ خرید</th>
                 <th class="text-center">عملیات</th>
               </tr>
@@ -47,11 +47,11 @@
                   </td>
                   <td class="text-center">{{ $sale->customer->mobile }}</td>
                   <td class="text-center">{{ $sale->employee->name ?? null }}</td>
-                  <td class="text-center">{{ number_format($sale->getTotalAmount()) }}</td>
+                  <td class="text-center">{{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }}</td>
                   <td class="text-center">{{ number_format($sale->cost_of_sewing) }}</td>
                   <td class="text-center">{{ number_format($sale->discount) }}</td>
                   <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center">@jalaliDate($sale->sold_at)</td>
+                  <td class="text-center">{{ verta($sale->sold_at)->formatDate() }}</td>
                   <td class="text-center">
                     <a
                       href="{{ route('admin.sales.invoice.show', $sale) }}"
