@@ -42,8 +42,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> خرید های امروز : </span>
-                <p class="mb-0 mt-1 text-primary fs-20"> {{ $todayPurchaseCount }}  </p>
+                <span class="fs-14 font-weight-bold"> خرید های امروز : </span>
+                <p class="mb-0 mt-1 text-primary fs-16"> {{ $todayPurchaseCount }}  </p>
               </div>
             </div>
             <div class="col-3">
@@ -61,8 +61,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> اقلام خرید امروز : </span>
-                <p class="mb-0 mt-1 text-pink fs-20"> {{ number_format($todayPurchaseItems) }}  </p>
+                <span class="fs-14 font-weight-bold"> اقلام خرید امروز : </span>
+                <p class="mb-0 mt-1 text-pink fs-16"> {{ number_format($todayPurchaseItems) }}  </p>
               </div>
             </div>
             <div class="col-3">
@@ -80,8 +80,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ خرید امروز : </span>
-                <p class="mb-0 mt-1 text-success fs-20"> {{ number_format($todayPurchaseAmount) }} ریال</p>
+                <span class="fs-14 font-weight-bold"> مبلغ خرید امروز : </span>
+                <p class="mb-0 mt-1 text-success fs-16"> {{ number_format($todayPurchaseAmount) }} ریال</p>
               </div>
             </div>
             <div class="col-3">
@@ -99,8 +99,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ خرید ماه : </span>
-                <p class="mb-0 mt-1 text-warning fs-20"> {{ number_format($thisMonthPurchaseAmount) }} ریال</p>
+                <span class="fs-14 font-weight-bold"> مبلغ خرید ماه : </span>
+                <p class="mb-0 mt-1 text-warning fs-16"> {{ number_format($thisMonthPurchaseAmount) }} ریال</p>
               </div>
             </div>
             <div class="col-3">
@@ -121,8 +121,8 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> فروش های امروز : </span>
-                  <p class="mb-0 mt-1 text-secondary fs-20"> {{ $todaySaleCount }}  </p>
+                  <span class="fs-14 font-weight-bold"> فروش های امروز : </span>
+                  <p class="mb-0 mt-1 text-secondary fs-16"> {{ $todaySaleCount }}  </p>
                 </div>
               </div>
               <div class="col-3">
@@ -142,8 +142,8 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> اقلام فروش امروز : </span>
-                  <p class="mb-0 mt-1 text-danger fs-20"> {{ $todaySaleItems }}  </p>
+                  <span class="fs-14 font-weight-bold"> اقلام فروش امروز : </span>
+                  <p class="mb-0 mt-1 text-danger fs-16"> {{ $todaySaleItems }}  </p>
                 </div>
               </div>
               <div class="col-3">
@@ -163,8 +163,8 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-16 font-weight-semibold"> مبلغ فروش امروز : </span>
-                  <p class="mb-0 mt-1 text-purple fs-20"> {{ number_format($todaySaleAmount) }} ریال</p>
+                  <span class="fs-14 font-weight-bold"> مبلغ فروش امروز : </span>
+                  <p class="mb-0 mt-1 text-purple fs-16"> {{ number_format($todaySaleAmount) }} ریال</p>
                 </div>
               </div>
               <div class="col-3">
@@ -185,8 +185,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ فروش ماه : </span>
-                <p class="mb-0 mt-1 text-info fs-20"> {{ number_format($thisMonthSaleAmount) }} ریال</p>
+                <span class="fs-14 font-weight-bold"> مبلغ فروش ماه : </span>
+                <p class="mb-0 mt-1 text-info fs-16"> {{ number_format($thisMonthSaleAmount) }} ریال</p>
               </div>
             </div>
             <div class="col-3">
@@ -207,8 +207,8 @@
       <div class="col-xl-6">
         <div class="card">
           <div class="card-header border-0 justify-content-between">
-            <p class="card-title">چک های پرداختی ({{ $payableCheques->count() }})</p>
-            <button onclick="$('#chequePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+            <p class="card-title">چک های پرداختی</p>
+            <button onclick="$('#chequePaymentsForm').submit()" class="btn btn-outline-primary btn-sm">مشاهده همه</button>
             <form
               action="{{ route('admin.payments.index') }}"
               id="chequePaymentsForm"
@@ -220,25 +220,25 @@
             <div class="table-responsive">
               <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
-                  <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-                    <thead class="thead-light">
+                  <table class="table text-center table-vcenter table-striped">
+                    <thead>
                     <tr>
-                      <th class="text-center">ردیف</th>
-                      <th class="text-center">تامین کننده</th>
-                      <th class="text-center">تاریخ سررسید</th>
-                      <th class="text-center">مبلغ (ریال)</th>
+                      <th>ردیف</th>
+                      <th>تامین کننده</th>
+                      <th>تاریخ سررسید</th>
+                      <th>مبلغ (ریال)</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse ($payableCheques as $cheque)
                       <tr>
                         <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                        <td class="text-center">
+                        <td>
                           <a
                             href="{{ route('admin.suppliers.show', $cheque->supplier) }}">{{ $cheque->supplier->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
-                        <td class="text-center">{{ number_format($cheque->amount) }}</td>
+                        <td> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
+                        <td>{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
                       <x-core::data-not-found-alert :colspan="4"/>
@@ -256,8 +256,8 @@
       <div class="col-xl-6">
         <div class="card">
           <div class="card-header border-0 justify-content-between">
-            <p class="card-title">چک های دریافتی ({{ $receivedCheques->count() }})</p>
-            <button onclick="$('#chequeSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+            <p class="card-title">چک های دریافتی</p>
+            <button onclick="$('#chequeSalePaymentsForm').submit()" class="btn btn-outline-primary btn-sm">مشاهده همه</button>
             <form
               action="{{ route('admin.sale-payments.index') }}"
               id="chequeSalePaymentsForm"
@@ -269,25 +269,24 @@
             <div class="table-responsive">
               <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
-                  <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-                    <thead class="thead-light">
+                  <table class="table text-center table-vcenter table-striped">
+                    <thead>
                     <tr>
-                      <th class="text-center">ردیف</th>
-                      <th class="text-center">مشتری</th>
-                      <th class="text-center">تاریخ سررسید</th>
-                      <th class="text-center">مبلغ (ریال)</th>
+                      <th>ردیف</th>
+                      <th>مشتری</th>
+                      <th>تاریخ سررسید</th>
+                      <th>مبلغ (ریال)</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse ($receivedCheques as $cheque)
                       <tr>
-                        <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                        <td class="text-center">
-                          <a
-                            href="{{ route('admin.customers.show', $cheque->customer) }}">{{ $cheque->customer->name }}</a>
+                        <td class="font-weight-bold">{{ $loop->iteration }}</td>
+                        <td>
+                          <a href="{{ route('admin.customers.show', $cheque->customer) }}">{{ $cheque->customer->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
-                        <td class="text-center">{{ number_format($cheque->amount) }}</td>
+                        <td> {{verta($cheque->due_date)->format('Y/m/d')}} </td>
+                        <td>{{ number_format($cheque->amount) }}</td>
                       </tr>
                     @empty
                       <x-core::data-not-found-alert :colspan="4"/>
@@ -305,8 +304,8 @@
       <div class="col-xl-6">
         <div class="card">
           <div class="card-header border-0 justify-content-between">
-            <p class="card-title">اقساط پرداختی به تامین کنندگان ({{ $payableInstallments->count() }})</p>
-            <button onclick="$('#installmentPaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه</button>
+            <p class="card-title">اقساط پرداختی به تامین کنندگان</p>
+            <button onclick="$('#installmentPaymentsForm').submit()" class="btn btn-outline-primary btn-sm">مشاهده همه</button>
             <form
               action="{{ route('admin.payments.index') }}"
               id="installmentPaymentsForm"
@@ -318,25 +317,25 @@
             <div class="table-responsive">
               <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
-                  <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-                    <thead class="thead-light">
+                  <table class="table table-vcenter table-striped text-center">
+                    <thead>
                     <tr>
-                      <th class="text-center">ردیف</th>
-                      <th class="text-center">نام تامین کننده</th>
-                      <th class="text-center">تاریخ سررسید</th>
-                      <th class="text-center">مبلغ (ریال)</th>
+                      <th>ردیف</th>
+                      <th>نام تامین کننده</th>
+                      <th>تاریخ سررسید</th>
+                      <th>مبلغ (ریال)</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse ($payableInstallments as $payment)
                       <tr>
-                        <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                        <td class="text-center">
+                        <td class="font-weight-bold">{{ $loop->iteration }}</td>
+                        <td>
                           <a
                             href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}}</td>
-                        <td class="text-center">{{ number_format($payment->amount) }}</td>
+                        <td> {{verta($payment->due_date)->format('Y/m/d')}}</td>
+                        <td>{{ number_format($payment->amount) }}</td>
                         @empty
                           <x-core::data-not-found-alert :colspan="4"/>
                     @endforelse
@@ -353,8 +352,8 @@
       <div class="col-xl-6">
         <div class="card">
           <div class="card-header border-0 justify-content-between">
-            <p class="card-title">اقساط دریافتی از مشتری ({{ $receivedInstallments->count() }})</p>
-            <button onclick="$('#installmentSalePaymentsForm').submit()" class="btn btn-outline-primary">مشاهده همه
+            <p class="card-title">اقساط دریافتی از مشتری</p>
+            <button onclick="$('#installmentSalePaymentsForm').submit()" class="btn btn-outline-primary btn-sm">مشاهده همه
             </button>
             <form
               action="{{ route('admin.sale-payments.index') }}"
@@ -367,25 +366,25 @@
             <div class="table-responsive">
               <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <div class="row">
-                  <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-                    <thead class="thead-light">
+                  <table class="table table-vcenter table-striped text-center">
+                    <thead>
                     <tr>
-                      <th class="text-center">ردیف</th>
-                      <th class="text-center">نام مشتری</th>
-                      <th class="text-center">تاریخ سررسید</th>
-                      <th class="text-center">مبلغ (ریال)</th>
+                      <th>ردیف</th>
+                      <th>نام مشتری</th>
+                      <th>تاریخ سررسید</th>
+                      <th>مبلغ (ریال)</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse ($receivedInstallments as $payment)
                       <tr>
-                        <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                        <td class="text-center">
+                        <td class="font-weight-bold">{{ $loop->iteration }}</td>
+                        <td>
                           <a
                             href="{{ route('admin.customers.show', $payment->customer) }}">{{ $payment->customer->name }}</a>
                         </td>
-                        <td class="text-center"> {{verta($payment->due_date)->format('Y/m/d')}} </td>
-                        <td class="text-center">{{ number_format($payment->amount) }}</td>
+                        <td> {{verta($payment->due_date)->format('Y/m/d')}} </td>
+                        <td>{{ number_format($payment->amount) }}</td>
                         @empty
                           <x-core::data-not-found-alert :colspan="4"/>
                     @endforelse

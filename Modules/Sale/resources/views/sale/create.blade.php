@@ -14,9 +14,9 @@
     </ol>
   </div>
   <div class="card">
-    <div class="card-header justify-content-between">
+    <div class="card-header justify-content-between border-bottom-0">
       <p class="card-title">ثبت فروش جدید</p>
-      <button id="addSaleItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button>
+      {{-- <button id="addSaleItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button> --}}
     </div>
     <div class="card-body">
       <form action="{{ route('admin.sales.store') }}" method="post" class="save">
@@ -49,7 +49,7 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="sold_date_show" class="control-label">تاریخ فروش :<span class="text-danger">&starf;</span></label>
-              <input class="form-control fc-datepicker" id="sold_date_show" type="text" autocomplete="off" placeholder="تاریخ خرید را انتخاب کنید" />
+              <input class="form-control fc-datepicker" id="sold_date_show" type="text" autocomplete="off" placeholder="تاریخ فروش را انتخاب کنید" />
               <input name="sold_at" id="sold_date" type="hidden" value="{{ old("sold_at") }}" required/>
             </div>
             <x-core::show-validation-error name="sold_at" />
@@ -76,15 +76,50 @@
             </div>
           </div>
         </div>
-        <div  id="contentArea"></div>
+        {{-- <div  id="contentArea"></div> --}}
+        <div class="row mb-5">
+          <div class="col-12 d-flex justify-content-center" style="border-radius: 10px;">
+            <button id="addSaleItemButton" class="btn btn-green d-flex justify-content-center align-items-center" type="button">
+              <span class="ml-1">افزودن آیتم به فاکتور</span>
+              <i class="fa fa-plus font-weight-bold"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row mx-4 my-5" id="ProductsSection">
+          <div class="table-responsive">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <table class="table text-center text-nowrap table-bordered border-bottom">
+                  <thead>
+                  <tr>
+                    <th>انتخاب محصول <span class="text-danger">&starf;</span></th>
+                    <th>موجودی</th>
+                    <th>قیمت واحد (ریال)</th>
+                    <th>تخفیف (ریال)</th>
+                    <th>تعداد / متر <span class="text-danger">&starf;</span></th>
+                    <th>عملیات</th>
+                  </tr>
+                  </thead>
+                  <tbody id="ProductsTableBody">
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
         <div class="row">
+          <div class="col">
+            <div class="text-center">
+              <button id="submitButton" class="btn btn-pink mt-2" type="submit">ثبت و ذخیره</button>
+            </div>
+          </div>
+        </div>
+        {{-- <div class="row">
           <div class="col">
             <div class="text-center">
               <button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
               <button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
             </div>
           </div>
-        </div>
+        </div> --}}
       </form>
     </div>
   </div>
@@ -94,9 +129,14 @@
   <x-core::date-input-script textInputId="sold_date_show" dateInputId="sold_date"/>
 	<script>
 
+    $('#customer_id').select2({placeholder: 'انتخاب مشتری'});
+    $('#employee_id').select2({placeholder: 'انتخاب کارمند'});
+
     function getProductStore(id) {
 
       let productId = $(id).val();
+      console.log(productId);
+      
       let token = $('meta[name="csrf-token"]').attr('content');
 
       $.ajax({
@@ -115,157 +155,52 @@
 		$(document).ready(function() {
 
       let index = 0;
+      const addSaleItemButton = $("#addSaleItemButton");
+      const submitButton = $("#submitButton");
+      const productsSection = $("#ProductsSection");
+      const productsTableBody = $("#ProductsTableBody");
+      
+      submitButton.hide();
+      productsSection.hide();
 
-      const addSaleItemButtonTop = $("#addSaleItemButtonTop");
-      const addPurchaseItemButton = $("#addPurchaseItemButton");
+      addSaleItemButton.click(() => {
 
-      addSaleItemButtonTop.css({
-        'display': 'none'
-      });
+        submitButton.show();
+        productsSection.show();
 
-      addPurchaseItemButton.on('click', function() {
+        let tr = $(`
+          <tr role="row">  
+            <td>
+              <select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select d-block" onchange="getProductStore('#product-${index + 1}')" required>
+                <option value=""> محصول مورد نظر را انتخاب کنید </option>
+                @foreach ($categories as $category)
+                  @if ($category->products->isNotEmpty())
+                    <optgroup label="{{ $category->title }}">
+                      @foreach ($category->products->whereNotNull('parent_id') as $product)
+                        <option value="{{ $product->id }}">{{ $product->title .' - '. $product->sub_title }}</option>
+                      @endforeach
+                    </optgroup>
+                  @endif
+                @endforeach
+              </select>
+            </td>  
+            <td><input type="text" class="form-control" name="products[${index + 1}][balance]" id="product-${index + 1}-balance" readonly></td>  
+            <td><input type="text" class="form-control" name="products[${index + 1}][price]" id="product-${index + 1}-price" readonly></td>  
+            <td><input type="text" class="form-control" name="products[${index + 1}][discount]" readonly></td>  
+            <td><input type="number" step="0.01" class="form-control" name="products[${index + 1}][quantity]"></td>  
+            <td>  
+              <button type="button" class="positive-btn font-weight-bold btn btn-sm btn-icon btn-success ml-1">+</button>
+              <button type="button" class="negative-btn font-weight-bold btn btn-sm btn-icon btn-danger ml-1">-</button>
+            </td>  
+          </tr>  
+        `);
 
-        addSaleItemButtonTop.css({
-          'display': 'block'
-        });
-
-        addPurchaseItemButton.css({
-          'display': 'none'
-        });
-
-        const newPurchaseItemInputs = $(`
-					<div class="row">
-
-						<div class="col-12 bg-light mb-2 py-2">
-							<span style="font-size: 18px;"> افزودن اقلام فروش </span>
-						</div>
-
-						<div class="col-3">
-							<div class="form-group">
-								<label class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control mt-1 product-select" required onchange="getProductStore('#product-${index + 1}')">
-									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
-                  @foreach ($categories as $category)
-                    @if ($category->products()->exists())
-                      <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products->whereNotNull('parent_id') as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title  }}</option>
-                        @endforeach
-                      </optgroup>
-                   @endif
-                  @endforeach
-                </select>
-              </div>
-             </div>
-
-            <div class="col-2">
-              <div class="form-group">
-                <label class="control-label">موجودی:</label>
-                <input type="text" class="form-control mt-1" id="product-${index + 1}-balance" name="products[${index + 1}][balance]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-							<div class="form-group">
-								<label class="control-label">قیمت واحد (ریال):</label>
-								<input type="text" class="form-control mt-1" id="product-${index + 1}-price" name="products[${index + 1}][price]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-							<div class="form-group">
-								<label class="control-label">تخفیف (ریال): </label>
-								<input type="text" class="form-control mt-1" id="product-${index + 1}-discount" name="products[${index + 1}][discount]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-              <div class="form-group">
-                <label class="control-label">تعداد / متر:<span class="text-danger">&starf;</span></label>
-                <input type="number" step="0.01" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
-							</div>
-						</div>
-
-					</div>
-				`);
-
-        // newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
-
-        $('#submitButton').removeClass('d-none');
-
-        $('#contentArea').append(newPurchaseItemInputs);
-
-				index++;
-
-				newPurchaseItemInputs.find('.deleteRowButton').on('click', function() {
-          $(this).closest('.row').remove();
-        });
-
-			});
-
-      addSaleItemButtonTop.on('click', function () {
-        const newPurchaseItemInputs = $(`
-					<div class="row">
-
-						<div class="col-3">
-							<div class="form-group">
-								<select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select mt-1" onchange="getProductStore('#product-${index + 1}')">
-									<option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
-                  @foreach ($categories as $category)
-                    @if ($category->products()->exists())
-                      <optgroup label="{{ $category->title }}" class="text-muted">
-                        @foreach ($category->products->whereNotNull('parent_id') as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
-                        @endforeach
-                      </optgroup>
-                    @endif
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
-            <div class="col-2">
-              <div class="form-group">
-                <input type="text" class="form-control mt-1" id="product-${index + 1}-balance" name="products[${index + 1}][balance]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-							<div class="form-group">
-								<input type="text" class="form-control mt-1" id="product-${index + 1}-price" name="products[${index + 1}][price]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-							<div class="form-group">
-								<input type="text" class="form-control mt-1" id="product-${index + 1}-discount" name="products[${index + 1}][discount]" placeholder="ابتدا محصول را انتخاب کنید" readonly>
-							</div>
-						</div>
-
-						<div class="col-2">
-              <div class="form-group">
-                <input type="number" step="0.01" class="form-control mt-1" name="products[${index + 1}][quantity]" placeholder="تعداد محصول خریداری شده را وارد کنید">
-							</div>
-						</div>
-
-						<div class="col-1 text-left">
-						  <button class="btn btn-danger mt-1 deleteRowButton" type="button">
-  						  <i class="fa fa-trash-o" data-toggle="tooltip" data-original-title="حذف"></i>
-							</button>
-						</div>
-
-					</div>
-				`);
-        // newPurchaseItemInputs.find('.product-select').select2({placeholder: 'انتخاب محصول'});
-
-        $('#contentArea').append(newPurchaseItemInputs);
-
+        comma();
+        tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
+        productsTableBody.append(tr);
+        tr.find('.negative-btn').click(() => $(this).closest('tr').remove());  
+        tr.find('.positive-btn').click(() => addSaleItemButton.trigger('click'));
         index++;
-
-        newPurchaseItemInputs.find('.deleteRowButton').on('click', function() {
-          $(this).closest('.row').remove();
-        });
-
       });
 
 		});
