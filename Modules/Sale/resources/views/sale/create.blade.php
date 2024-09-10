@@ -69,7 +69,7 @@
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
-              <label for="cost_of_sewing" class="control-label"> هزینه دوخت : </label>
+              <label for="cost_of_sewing" class="control-label"> هزینه دوخت / نصب : </label>
               <input type="text" id="cost_of_sewing" class="form-control comma" name="cost_of_sewing" placeholder="هزینه دوخت را وارد کنید" value="{{ old('cost_of_sewing') }}">
               <x-core::show-validation-error name="cost_of_sewing" />
             </div>

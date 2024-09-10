@@ -29,7 +29,7 @@
                 <th class="text-center">شماره موبایل</th>
                 <th class="text-center">پرسنل ارجاع</th>
                 <th class="text-center">مبلغ خرید (ریال)</th>
-                <th class="text-center">هزینه دوخت (ریال)</th>
+                <th class="text-center">هزینه دوخت / نصب (ریال)</th>
                 <th class="text-center">تخفیف کلی (ریال)</th>
                 <th class="text-center">مبلغ کل فاکتور (ریال)</th>
                 <th class="text-center">تاریخ خرید</th>

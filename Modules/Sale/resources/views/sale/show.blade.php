@@ -96,7 +96,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> هزینه دوخت (ریال) : </span>
+                <span class="fs-16 font-weight-semibold"> هزینه دوخت / نصب (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-warning fs-20"> {{ number_format($sale->cost_of_sewing) }} </h3>
               </div>
             </div>
