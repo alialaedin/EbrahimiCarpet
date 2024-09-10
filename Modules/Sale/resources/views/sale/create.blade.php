@@ -16,10 +16,9 @@
   <div class="card">
     <div class="card-header justify-content-between border-bottom-0">
       <p class="card-title">ثبت فروش جدید</p>
-      {{-- <button id="addSaleItemButtonTop" class="btn btn-indigo">افزودن آیتم جدید</button> --}}
     </div>
     <div class="card-body">
-      <form action="{{ route('admin.sales.store') }}" method="post" class="save">
+      <form id="SubmitForm" action="{{ route('admin.sales.store') }}" method="post" class="save">
         @csrf
         <div class="row">
           <div class="col-lg-4 col-md-6">
@@ -76,7 +75,6 @@
             </div>
           </div>
         </div>
-        {{-- <div  id="contentArea"></div> --}}
         <div class="row mb-5">
           <div class="col-12 d-flex justify-content-center" style="border-radius: 10px;">
             <button id="addSaleItemButton" class="btn btn-green d-flex justify-content-center align-items-center" type="button">
@@ -112,14 +110,6 @@
             </div>
           </div>
         </div>
-        {{-- <div class="row">
-          <div class="col">
-            <div class="text-center">
-              <button id="submitButton" class="btn btn-pink d-none mt-2" type="submit">ثبت و ذخیره</button>
-              <button id="addPurchaseItemButton" class="btn btn-indigo" type="button">افزودن آیتم جدید</button>
-            </div>
-          </div>
-        </div> --}}
       </form>
     </div>
   </div>
@@ -171,7 +161,7 @@
         let tr = $(`
           <tr role="row">  
             <td>
-              <select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select d-block" onchange="getProductStore('#product-${index + 1}')" required>
+              <select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select d-block" onchange="getProductStore('#product-${index + 1}')">
                 <option value=""> محصول مورد نظر را انتخاب کنید </option>
                 @foreach ($categories as $category)
                   @if ($category->products->isNotEmpty())
@@ -198,10 +188,16 @@
         comma();
         tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
         productsTableBody.append(tr);
-        tr.find('.negative-btn').click(() => $(this).closest('tr').remove());  
-        tr.find('.positive-btn').click(() => addSaleItemButton.trigger('click'));
+        tr.find('.negative-btn').click(function() {  
+          $(this).closest('tr').remove(); 
+        });  
+        tr.find('.positive-btn').click(function() {  
+          addSaleItemButton.trigger('click'); 
+        });
         index++;
       });
+
+      submitButton.click(() => $('#SubmitForm').submit());
 
 		});
 	</script>

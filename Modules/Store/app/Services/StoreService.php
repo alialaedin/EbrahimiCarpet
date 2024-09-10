@@ -8,7 +8,6 @@ use Modules\Product\Models\Product;
 use Modules\Sale\Models\SaleItem;
 use Modules\Store\Models\Store;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Purchase\Models\PurchaseItem;
 
 class StoreService
 {
@@ -148,7 +147,7 @@ class StoreService
   public static function calc_total_sell_prices(array $products): int
   {
     return collect($products)->map(function ($product) {
-      return ($product['quantity'] * $product['price']) - $product['discount'];
+      return ($product['quantity'] * $product['price']) - (float)$product['discount'];
     })->sum();
   }
 
@@ -156,7 +155,6 @@ class StoreService
   {
     $productIds = collect($products)->pluck('id')->all();
     $productsData = Product::query()->whereIn('id', $productIds)->get()->keyBy('id');
-
     foreach ($products as $product) {
 
       $numProductsToBeSold = $product['quantity'];
@@ -199,12 +197,11 @@ class StoreService
           break;
         }
       }
-
       SaleItem::query()->create([
         'sale_id' => $saleId,
         'product_id' => $product['id'],
         'quantity' => $product['quantity'],
-        'discount' => $product['discount'],
+        'discount' => empty($product['discount']) ? null : (int)$product['discount'],
         'archived_price' => $archivedPriceArr,
         'price' => $product['price']
       ]);
