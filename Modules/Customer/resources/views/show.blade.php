@@ -17,24 +17,22 @@
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       <a
         href="{{ route('admin.customers.show-invoice', $customer) }}"
-        class="btn btn-purple mx-1 text-white my-md-1"
+        class="btn btn-sm btn-purple mx-1 text-white my-md-1"
         style="padding: 4px 12px;">
-        صدور فاکتور
+        فاکتور
         <i class="fe fe-printer mr-1"></i>
       </a>
       @can('edit customers')
-        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-warning mx-1 my-md-1">
-          ویرایش مشتری
-          <i class="fa fa-pencil mr-1"></i>
+        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">
+          ویرایش <i class="fa fa-pencil mr-1"></i>
         </a>
       @endcan
       @can('delete customers')
         <button
           onclick="confirmDelete('delete-{{ $customer->id }}')"
-          class="btn btn-danger mx-1 my-md-1"
+          class="btn btn-sm btn-danger mx-1 my-md-1"
           @disabled(!$customer->isDeletable())>
-          حذف مشتری
-          <i class="fa fa-trash-o mr-1"></i>
+          حذف <i class="fa fa-trash-o mr-1"></i>
         </button>
         <form
           action="{{ route('admin.customers.destroy', $customer) }}"
@@ -46,20 +44,20 @@
         </form>
       @endcan
       @can('create sales')
-        <a href="{{ route('admin.sales.create') }}" class="btn btn-indigo mx-1 my-md-1">
-          ثبت فروش جدید
+        <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">
+          فاکتور فروش
           <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('view sale_salePayments')
-        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-flickr mx-1 my-md-1">
-          مشاهده همه پرداختی ها
+        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">
+          مشاهده پرداختی ها
           <i class="fa fa-eye mr-1"></i>
         </a>
       @endcan
       @can('create sale_salePayments')
-        <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-lime mx-1 my-md-1">
-          ثبت پرداختی جدید
+        <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">
+          پرداختی جدید
           <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
