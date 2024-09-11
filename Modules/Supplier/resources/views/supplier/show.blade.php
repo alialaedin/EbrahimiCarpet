@@ -25,12 +25,12 @@
         <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
       @endcan
       @can('edit suppliers')
-        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning mx-1">ویرایش</a>
+        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-sm btn-warning mx-1">ویرایش</a>
       @endcan
       @can('delete suppliers')
         <button
           onclick="confirmDelete('delete-{{ $supplier->id }}')"
-          class="btn btn-danger mx-1 my-1"
+          class="btn btn-sm btn-danger mx-1 my-1"
           @disabled(!$supplier->isDeletable())>
           حذف
         </button>
@@ -319,9 +319,9 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->due_date)</td>
+                  <td class="text-center"> @jalaliDateFormat($payment->due_date)</td>
                   <td class="text-center">
-                    <x-core::badge
+                    <x-core::light-badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
                       text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
                     />
