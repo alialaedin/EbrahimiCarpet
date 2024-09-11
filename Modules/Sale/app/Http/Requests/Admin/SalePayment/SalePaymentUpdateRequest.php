@@ -81,7 +81,8 @@ class SalePaymentUpdateRequest extends FormRequest
 
     $this->merge([
       'customer' => $customer,
-      'status' => $this->filled('status') ? 1 : 0
+      'status' => $this->filled('status') ? 1 : 0,
+      'is_mine' => $this->filled('status') ? 1 : 0,
     ]);
   }
 
