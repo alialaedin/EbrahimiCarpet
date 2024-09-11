@@ -80,17 +80,18 @@ class SalePaymentUpdateRequest extends FormRequest
     }
 
     $this->merge([
-      'customer' => $customer
+      'customer' => $customer,
+      'status' => $this->filled('status') ? 1 : 0
     ]);
   }
 
-  public function validated($key = null, $default = null) {
+  // public function validated($key = null, $default = null) {
 
-    $validatedData = parent::validated();
-    $validatedData['status'] = $this->filled('status') ? 1 : 0;
+  //   $validatedData = parent::validated();
+  //   $validatedData['status'] = $this->filled('status') ? 1 : 0;
 
-    return $validatedData;
-  }
+  //   return $validatedData;
+  // }
 
   public function authorize(): bool
   {
