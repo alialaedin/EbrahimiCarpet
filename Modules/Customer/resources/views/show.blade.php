@@ -19,11 +19,10 @@
         href="{{ route('admin.customers.show-invoice', $customer) }}"
         class="btn btn-sm btn-purple mx-1 text-white my-md-1">
         فاکتور
-        <i class="fa fa-printer mr-1"></i>
       </a>
       @can('edit customers')
         <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">
-          ویرایش <i class="fa fa-pencil mr-1"></i>
+          ویرایش 
         </a>
       @endcan
       @can('delete customers')
@@ -31,7 +30,7 @@
           onclick="confirmDelete('delete-{{ $customer->id }}')"
           class="btn btn-sm btn-danger mx-1 my-md-1"
           @disabled(!$customer->isDeletable())>
-          حذف <i class="fa fa-trash-o mr-1"></i>
+          حذف 
         </button>
         <form
           action="{{ route('admin.customers.destroy', $customer) }}"
@@ -45,18 +44,15 @@
       @can('create sales')
         <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">
           فاکتور فروش
-          <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
       @can('view sale_salePayments')
         <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">
           مشاهده پرداختی ها
-          <i class="fa fa-eye mr-1"></i>
         </a>
       @endcan
       @can('create sale_salePayments')
         <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">
-          پرداختی جدید
           <i class="fa fa-plus mr-1"></i>
         </a>
       @endcan
