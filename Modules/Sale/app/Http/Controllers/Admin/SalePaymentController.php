@@ -145,7 +145,7 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function update(SalePaymentUpdateRequest $request, SalePayment $salePayment): RedirectResponse
   {
-    $salePayment->update($request->validated());
+    $salePayment->update($request->all());
     toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
     return to_route('admin.sale-payments.show', $salePayment->customer);
