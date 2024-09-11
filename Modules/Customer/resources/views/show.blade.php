@@ -15,15 +15,9 @@
       </li>
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
-      <a
-        href="{{ route('admin.customers.show-invoice', $customer) }}"
-        class="btn btn-sm btn-purple mx-1 text-white my-md-1">
-        فاکتور
-      </a>
+      <a href="{{ route('admin.customers.show-invoice', $customer) }}" class="btn btn-sm btn-purple mx-1 text-white my-md-1">فاکتور</a>
       @can('edit customers')
-        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">
-          ویرایش 
-        </a>
+        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">ویرایش </a>
       @endcan
       @can('delete customers')
         <button
@@ -42,19 +36,13 @@
         </form>
       @endcan
       @can('create sales')
-        <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">
-          فاکتور فروش
-        </a>
+        <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور فروش</a>
       @endcan
       @can('view sale_salePayments')
-        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">
-          مشاهده پرداختی ها
-        </a>
+        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
       @endcan
       @can('create sale_salePayments')
-        <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">
-          <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
       @endcan
     </div>
   </div>
