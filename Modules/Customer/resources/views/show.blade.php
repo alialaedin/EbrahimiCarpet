@@ -153,7 +153,7 @@
                 <th class="text-center">مبلغ (ریال)</th>
                 <th class="text-center">هزینه دوخت / نصب (ریال)</th>
                 <th class="text-center">تخفیف کلی (ریال)</th>
-                <th class="text-center">مبلغ فروش با تخفیف (ریال)</th>
+                <th class="text-center">مبلغ کل فاکتور (ریال)</th>
                 <th class="text-center">تاریخ فروش</th>
                 <th class="text-center">عملیات</th>
               </tr>
@@ -174,7 +174,7 @@
                         href="{{route('admin.sales.show', $sale)}}"
                         target="_blank"
                         class="btn btn-sm btn-cyan">
-                        جزئیات فروش ها
+                        جزئیات فاکتور
                       </a>
                     @endcan
                   </td>
@@ -235,9 +235,9 @@
                         <span> - </span>
                       @endif
                     </td>
-                    <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                    <td class="text-center"> {{ verta($payment->due_date)->formatDate() }} </td>
                     <td class="text-center">
-                      <x-core::badge
+                      <x-core::light-badge
                         type="{{ $payment->status ? 'success' : 'danger' }}"
                         text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
                       />
