@@ -38,10 +38,10 @@
       @can('create sales')
         <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور فروش</a>
       @endcan
-      @can('view sale_salePayments')
+      @can('view sale_payments')
         <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
       @endcan
-      @can('create sale_salePayments')
+      @can('create sale_payments')
         <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
       @endcan
     </div>

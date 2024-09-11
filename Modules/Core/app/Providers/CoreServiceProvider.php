@@ -61,6 +61,9 @@ class CoreServiceProvider extends ServiceProvider
     Blade::directive('jalaliDate', function (string $expression) {
       return "<?php echo verta($expression)->format('Y/m/d H:i') ?>";
     });
+    Blade::directive('jalaliDateFormat', function (string $expression) {
+      return "<?php echo verta($expression)->format('Y/m/d') ?>";
+    });
     Blade::directive('jalaliDateForHumans', function (string $expression) {
       return "<?php echo verta(now())->diffDays($expression) > 7 ? verta($expression)->format('Y/m/d H:i') : verta($expression)->formatDifference() ?>";
     });

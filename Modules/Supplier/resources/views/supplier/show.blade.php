@@ -15,18 +15,24 @@
       </li>
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
+      @can('create purchases')
+        <a href="{{ route('admin.purchases.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور خرید</a>
+      @endcan
+      @can('view payments')
+        <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
+      @endcan
+      @can('create payments')
+        <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
+      @endcan
       @can('edit suppliers')
-        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning mx-1">
-          ویرایش
-          <i class="fa fa-pencil"></i>
-        </a>
+        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning mx-1">ویرایش</a>
       @endcan
       @can('delete suppliers')
         <button
           onclick="confirmDelete('delete-{{ $supplier->id }}')"
           class="btn btn-danger mx-1 my-1"
           @disabled(!$supplier->isDeletable())>
-          حذف<i class="fa fa-trash-o mr-2"></i>
+          حذف
         </button>
         <form
           action="{{ route('admin.suppliers.destroy', $supplier) }}"
@@ -142,7 +148,7 @@
   </div>
   <div class="card">
     <div class="card-header border-0 justify-content-between">
-      <p class="card-title">حساب بانکی ها ({{ $numberOfAccounts }})</p>
+      <p class="card-title">حساب های بانکی ({{ $numberOfAccounts }})</p>
       @can('create accounts')
         <button class="btn btn-outline-primary" data-target="#createAccountModal" data-toggle="modal">
           حساب جدید
@@ -233,7 +239,7 @@
                   <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
                   <td class="text-center">{{ number_format($purchase->discount) }}</td>
                   <td class="text-center">{{ number_format($purchase->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center"> @jalaliDate($purchase->purchased_at)</td>
+                  <td class="text-center"> @jalaliDateFormat($purchase->purchased_at)</td>
                   <td class="text-center">
                     @can('view purchases')
                       <a
