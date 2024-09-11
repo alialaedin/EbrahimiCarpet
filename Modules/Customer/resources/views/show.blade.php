@@ -53,7 +53,7 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-lg-6 px-0">
+        <div class="col-lg-6">
           <ul class="list-group">
             <li class="list-group-item"><strong>کد: </strong> {{ $customer->id }} </li>
             <li class="list-group-item"><strong>نام و نام خانوادگی: </strong> {{ $customer->name }} </li>
@@ -63,7 +63,7 @@
             <li class="list-group-item"><strong>تاریخ تولد: </strong> {{ verta($customer->birthday)->format('Y/m/d') }} </li>
           </ul>
         </div>
-        <div class="col-lg-6 px-0">
+        <div class="col-lg-6">
           <ul class="list-group">
             <li class="list-group-item"><strong>وضعیت: </strong> {{ config('customer.statuses.'.$customer->status) }} </li>
             <li class="list-group-item"><strong>تعداد فروش ها: </strong> {{ number_format($salesCount) }} </li>
@@ -84,7 +84,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ کل فروش ها (ریال) : </span>
+                <span class="fs-16 font-weight-semibold"> مبلغ کل فاکتور های فروش (ریال) : </span>
                 <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($customer->calcTotalSalesAmount()) }} </h3>
               </div>
             </div>
@@ -138,7 +138,7 @@
   </div>
   <div class="card">
     <div class="card-header border-0">
-      <p class="card-title">فروش ها ({{ $salesCount }})</p>
+      <p class="card-title">فاکتور های فروش ({{ $salesCount }})</p>
       <x-core::card-options/>
     </div>
     <div class="card-body">
@@ -149,7 +149,9 @@
               <thead class="thead-light">
               <tr>
                 <th class="text-center">ردیف</th>
-                <th class="text-center">مبلغ فروش (ریال)</th>
+                <th class="text-center">شناسه فاکتور</th>
+                <th class="text-center">مبلغ (ریال)</th>
+                <th class="text-center">هزینه دوخت / نصب (ریال)</th>
                 <th class="text-center">تخفیف کلی (ریال)</th>
                 <th class="text-center">مبلغ فروش با تخفیف (ریال)</th>
                 <th class="text-center">تاریخ فروش</th>
@@ -160,10 +162,12 @@
               @forelse ($sales as $sale)
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ number_format($sale->getTotalAmount()) }}</td>
+                  <td class="text-center">{{ $sale->id }}</td>
+                  <td class="text-center">{{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }}</td>
+                  <td class="text-center">{{ number_format($sale->cost_of_sewing) }}</td>
                   <td class="text-center">{{ number_format($sale->discount) }}</td>
                   <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center"> @jalaliDate($sale->sold_at) </td>
+                  <td class="text-center">{{ verta($sale->sold_at)->formatDate() }} </td>
                   <td class="text-center">
                     @can('view sales')
                       <a
