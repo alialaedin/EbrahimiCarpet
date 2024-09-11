@@ -19,7 +19,7 @@
         href="{{ route('admin.customers.show-invoice', $customer) }}"
         class="btn btn-sm btn-purple mx-1 text-white my-md-1">
         فاکتور
-        <i class="fe fe-printer mr-1 fs-12"></i>
+        <i class="fa fa-printer mr-1"></i>
       </a>
       @can('edit customers')
         <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">
