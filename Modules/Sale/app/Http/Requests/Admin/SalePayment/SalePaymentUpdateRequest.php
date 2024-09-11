@@ -84,6 +84,8 @@ class SalePaymentUpdateRequest extends FormRequest
       'status' => $this->filled('status') ? 1 : 0,
       'is_mine' => $this->filled('is_mine') ? 1 : 0,
     ]);
+
+    dd($this->all());
   }
 
   // public function validated($key = null, $default = null) {
