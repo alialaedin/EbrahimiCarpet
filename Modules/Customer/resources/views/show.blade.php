@@ -17,8 +17,7 @@
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       <a
         href="{{ route('admin.customers.show-invoice', $customer) }}"
-        class="btn btn-sm btn-purple mx-1 text-white my-md-1"
-        style="padding: 4px 12px;">
+        class="btn btn-sm btn-purple mx-1 text-white my-md-1">
         فاکتور
         <i class="fe fe-printer mr-1"></i>
       </a>
