@@ -130,7 +130,7 @@
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">
-                    <a href="{{ route('admin.suppliers.show', $payment->customer->id) }}">
+                    <a href="{{ route('admin.customers.show', $payment->customer->id) }}">
                       {{ $payment->customer->name }}
                     </a>
                   </td>
