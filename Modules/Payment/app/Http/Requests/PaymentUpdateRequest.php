@@ -80,17 +80,11 @@ class PaymentUpdateRequest extends FormRequest
     }
 
     $this->merge([
-      'supplier' => $supplier
+      'supplier' => $supplier,
+      'status' => $this->filled('status') ? 1 : 0,
+      'is_mine' => $this->filled('is_mine') ? 1 : 0,
     ]);
 	}
-
-  public function validated($key = null, $default = null) {
-
-    $validatedData = parent::validated();
-    $validatedData['status'] = $this->filled('status') ? 1 : 0;
-
-    return $validatedData;
-  }
 
 	public function authorize(): bool
 	{

@@ -5,7 +5,6 @@ namespace Modules\Payment\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
@@ -143,7 +142,7 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function update(PaymentUpdateRequest $request, Payment $payment): RedirectResponse
   {
-    $payment->update($request->validated());
+    $payment->update($request->all());
     toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
     return to_route('admin.payments.show', $payment->supplier);
