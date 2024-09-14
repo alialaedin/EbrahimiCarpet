@@ -122,6 +122,11 @@ class Product extends BaseModel
 		return $this->stores->sum('balance');
 	}
 
+	public function calcAllDemenisionsStoreBalance()
+	{
+		return $this->children->each(fn($product) => $product->store_balance)->sum();
+	}
+
 	public function getStoreBalanceAttribute()
 	{
 		return $this->stores->sum('balance');
