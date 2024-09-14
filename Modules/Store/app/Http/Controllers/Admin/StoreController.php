@@ -34,7 +34,7 @@ class StoreController extends Controller implements HasMiddleware
     $toCreatedAt = request('to_created_at') ?? now();
 
     $products = Product::query()
-      ->select(['id', 'title', 'category_id', 'sub_title', 'image'])
+      ->select(['id', 'title', 'category_id', 'sub_title', 'image', 'parent_id'])
       ->with([
         'stores:id,balance,product_id',
         'category:id,title,unit_type',
@@ -49,8 +49,6 @@ class StoreController extends Controller implements HasMiddleware
       ->whereNotNull('parent_id')
       ->latest('id')
       ->paginate();
-
-      dd($products);
 
     $productsToFilter = Product::query()->select('id', 'title', 'sub_title')->whereNotNull('parent_id')->get();
 
