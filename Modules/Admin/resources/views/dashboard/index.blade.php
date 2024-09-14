@@ -38,7 +38,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-14 font-weight-bold"> خرید های امروز : </span>
+                <span class="fs-14 font-weight-bold"> فاکتور های خرید امروز : </span>
                 <p class="mb-0 mt-1 text-primary fs-16"> {{ $todayPurchaseCount }}  </p>
               </div>
             </div>
@@ -76,7 +76,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-14 font-weight-bold"> مبلغ خرید امروز : </span>
+                <span class="fs-14 font-weight-bold"> میزان خرید امروز : </span>
                 <p class="mb-0 mt-1 text-success fs-16"> {{ number_format($todayPurchaseAmount) }} ریال</p>
               </div>
             </div>
@@ -95,7 +95,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-14 font-weight-bold"> مبلغ خرید ماه : </span>
+                <span class="fs-14 font-weight-bold"> میزان خرید ماه : </span>
                 <p class="mb-0 mt-1 text-warning fs-16"> {{ number_format($thisMonthPurchaseAmount) }} ریال</p>
               </div>
             </div>
@@ -117,7 +117,7 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-14 font-weight-bold"> فروش های امروز : </span>
+                  <span class="fs-14 font-weight-bold"> فاکنور های فروش امروز : </span>
                   <p class="mb-0 mt-1 text-secondary fs-16"> {{ $todaySaleCount }}  </p>
                 </div>
               </div>
@@ -159,7 +159,7 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-14 font-weight-bold"> مبلغ فروش امروز : </span>
+                  <span class="fs-14 font-weight-bold"> میزان فروش امروز : </span>
                   <p class="mb-0 mt-1 text-purple fs-16"> {{ number_format($todaySaleAmount) }} ریال</p>
                 </div>
               </div>
@@ -181,7 +181,7 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-14 font-weight-bold"> مبلغ فروش ماه : </span>
+                <span class="fs-14 font-weight-bold"> میزان فروش ماه : </span>
                 <p class="mb-0 mt-1 text-info fs-16"> {{ number_format($thisMonthSaleAmount) }} ریال</p>
               </div>
             </div>
