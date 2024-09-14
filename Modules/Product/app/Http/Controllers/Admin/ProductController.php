@@ -56,7 +56,7 @@ class ProductController extends Controller implements HasMiddleware
         'parent_id',
       )
       ->with([
-        'category' => fn($query) => $query->select('id', 'title'),
+        'category' => fn($query) => $query->select('id', 'title', 'unit_type'),
         'stores' => fn($query) => $query->select('id', 'product_id', 'balance'),
       ])
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
