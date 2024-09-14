@@ -117,7 +117,7 @@
             <div class="row">
               <div class="col-9">
                 <div class="mt-0 text-right">
-                  <span class="fs-14 font-weight-bold"> فاکنور های فروش امروز : </span>
+                  <span class="fs-14 font-weight-bold"> فاکتور های فروش امروز : </span>
                   <p class="mb-0 mt-1 text-secondary fs-16"> {{ $todaySaleCount }}  </p>
                 </div>
               </div>
