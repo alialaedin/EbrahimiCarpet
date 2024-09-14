@@ -30,6 +30,7 @@
                 <th class="text-center">عنوان</th>
                 <th class="text-center">تصویر</th>
                 <th class="text-center">دسته بندی</th>
+                <th class="text-center">تعداد ابعاد</th>
                 <th class="text-center">موجودی کلی</th>
                 <th class="text-center">قیمت (ریال)</th>
                 <th class="text-center">تخفیف (ریال)</th>
@@ -56,6 +57,7 @@
                     @endif
                   </td>
                   <td class="text-center">{{ $product->category->title }}</td>
+                  <td class="text-center">{{ $product->count_children }}</td>
                   <td class="text-center">{{ $product->calcAllDemenisionsStoreBalance() .' '. $product->category->getUnitType() }}</td>
                   <td class="text-center">{{ number_format($product->price) }}</td>
                   <td class="text-center">{{ number_format($product->getDiscount()) }}</td>
