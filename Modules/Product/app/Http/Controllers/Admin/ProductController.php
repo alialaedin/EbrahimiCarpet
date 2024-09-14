@@ -59,7 +59,6 @@ class ProductController extends Controller implements HasMiddleware
         'category' => fn($query) => $query->select('id', 'title', 'unit_type'),
         'stores' => fn($query) => $query->select('id', 'product_id', 'balance'),
       ])
-      ->withCount('children')
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
       ->when($categoryId, fn(Builder $query) => $query->where('category_id', $categoryId))
       ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
@@ -73,9 +72,12 @@ class ProductController extends Controller implements HasMiddleware
         });
       })
       ->whereNull('parent_id')
+      ->withCount(relations: 'children')
       ->latest('id')
       ->paginate()
       ->withQueryString();
+
+      dd($products);
 
     $categories = Category::query()->select('id', 'title')->get();
     $productsCount = $products->total();
