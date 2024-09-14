@@ -55,7 +55,10 @@ class ProductController extends Controller implements HasMiddleware
         'image',   
         'parent_id',
       )
-      ->with([ 'category' => fn($query) => $query->select('id', 'title')])
+      ->with([
+        'category' => fn($query) => $query->select('id', 'title'),
+        'stores' => fn($query) => $query->select('id', 'product_id', 'balance'),
+      ])
       ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
       ->when($categoryId, fn(Builder $query) => $query->where('category_id', $categoryId))
       ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
@@ -70,7 +73,7 @@ class ProductController extends Controller implements HasMiddleware
       })
       ->whereNull('parent_id')
       ->latest('id')
-      ->paginate(15)
+      ->paginate()
       ->withQueryString();
 
     $categories = Category::query()->select('id', 'title')->get();
