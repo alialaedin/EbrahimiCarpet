@@ -61,7 +61,7 @@
             </button>
           </div>
         </div>
-        <div class="row mx-4 my-5" id="ProductsSection">
+        <div class="row mx-4" id="ProductsSection">
           <div class="table-responsive">
             <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                 <table class="table text-center text-nowrap table-bordered border-bottom">
@@ -80,10 +80,15 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col">
+        <div class="row mx-4">
+          <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 r" >
+            <span class="fs-16">جمع مبلغ کل فاکتور : </span>
+            <span class="font-weight-bold fs-16" id="totalPrice">0</span>
+            <span class="font-weight-bold fs-16">ریال</span>
+          </div>
+          <div class="col-12" id="submitButton">
             <div class="text-center">
-              <button id="submitButton" class="btn btn-pink mt-2" type="submit">ثبت و ذخیره</button>
+              <button  class="btn btn-pink mt-2" type="submit">ثبت و ذخیره</button>
             </div>
           </div>
         </div>
@@ -98,16 +103,46 @@
   <x-core::date-input-script textInputId="purchased_date_show" dateInputId="purchased_date"/>
 
 	<script>
-    
+
     $(document).ready(function() {
+
       $('#supplier_id').select2({placeholder: 'تامین کننده را انتخاب کنید'});
+
       $('#submitButton').hide();
       $('#ProductsSection').hide();
+
       let index = 0;
+
       const addPurchaseItemButton = $("#addPurchaseItemButton");
+      const totalPriceBox = $("#totalPrice");
+      const discountInput = $("#discount");
+
+      function calculateTotalPrice() {  
+        let total = 0;  
+        let discount = discountInput.val().replace(/,/g, '') || 0;
+        $('#ProductsTableBody tr').each(function() {  
+          const quantityInput = $(this).find('.product-quantity');  
+          const priceInput = $(this).find('.product-price');
+          const quantity = Math.max(parseFloat(quantityInput.val()) || 0, 0);  
+          const priceValue = priceInput.val().replace(',', ''); 
+          const price = priceValue ? Math.max(parseFloat(priceValue.replace(',', '')) || 0, 0) : 0;
+          total += quantity * price;  
+        });  
+        total -= discount;
+        totalPriceBox.text(total.toLocaleString()); 
+      } 
+
+      discountInput.on('input', () => {
+        if ($(this).val() !== null) {
+          calculateTotalPrice();
+        }
+      });
+
       addPurchaseItemButton.click(() => {
+
         $('#submitButton').show();
         $('#ProductsSection').show();
+
         let tr = $(`
           <tr role="row">  
             <td>
@@ -124,31 +159,9 @@
                 @endforeach
               </select>
             </td>  
-            <td>
-              <input 
-                type="number" 
-                class="form-control" 
-                name="products[${index + 1}][quantity]" 
-                required 
-                min="1"
-              />
-            </td>  
-            <td>  
-							<input 
-                type="text" 
-                class="form-control comma" 
-                name="products[${index + 1}][price]" 
-                required 
-                min="1000"
-              />
-            </td>  
-            <td class="product-discount">  
-              <input 
-                type="text" 
-                class="form-control comma" 
-                name="products[${index + 1}][discount]" 
-              />
-            </td>  
+            <td><input type="number" class="form-control product-quantity" name="products[${index + 1}][quantity]" required min="1"/></td>  
+            <td><input type="text" class="form-control comma product-price" name="products[${index + 1}][price]" required min="1000"/></td>  
+            <td class="product-discount"><input type="text" class="form-control comma" name="products[${index + 1}][discount]" /></td>  
             <td>  
               <button type="button" class="positive-btn font-weight-bold btn btn-sm btn-icon btn-success ml-1">+</button>
               <button type="button" class="negative-btn font-weight-bold btn btn-sm btn-icon btn-danger ml-1">-</button>
@@ -160,10 +173,14 @@
         $('#ProductsTableBody').append(tr);
         tr.find('.negative-btn').click(function() {  
           $(this).closest('tr').remove(); 
+          calculateTotalPrice();
         });  
         tr.find('.positive-btn').click(function() {  
           addPurchaseItemButton.trigger('click'); 
         });
+        tr.find('.product-quantity, .product-price').on('input', function() {  
+          calculateTotalPrice();
+        });  
         index++;
       });
 		});
