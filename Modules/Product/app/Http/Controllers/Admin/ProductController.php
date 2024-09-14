@@ -77,8 +77,6 @@ class ProductController extends Controller implements HasMiddleware
       ->paginate()
       ->withQueryString();
 
-      dd($products);
-
     $categories = Category::query()->select('id', 'title')->get();
     $productsCount = $products->total();
 
