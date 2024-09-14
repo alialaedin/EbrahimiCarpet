@@ -35,9 +35,9 @@
                     <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                     <td>
 											@if ($table == 'sale-payments')
-												<a href="{{ route('admin.customers.show', $data->customers) }}">{{ $data->customers->name }}</a>	
+												<a href="{{ route('admin.customers.show', $data->customer) }}">{{ $data->customer->name }}</a>	
 											@else
-												<a href="{{ route('admin.suppliers.show', $data->suppliers) }}">{{ $data->suppliers->name }}</a>	
+												<a href="{{ route('admin.suppliers.show', $data->supplier) }}">{{ $data->supplier->name }}</a>	
 											@endif
                     </td>
                     <td> {{verta($data->due_date)->format('Y/m/d')}} </td>
