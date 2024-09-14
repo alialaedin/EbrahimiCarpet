@@ -104,7 +104,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 rounded" >
+            <span class="fs-16">جمع مبلغ کل فاکتور : </span>
+            <span class="font-weight-bold fs-16" id="totalPrice">0</span>
+            <span class="font-weight-bold fs-16">ریال</span>
+          </div>
+          <div class="col-12">
             <div class="text-center">
               <button id="submitButton" class="btn btn-pink mt-2" type="submit">ثبت و ذخیره</button>
             </div>
@@ -125,7 +130,6 @@
     function getProductStore(id) {
 
       let productId = $(id).val();
-      console.log(productId);
       
       let token = $('meta[name="csrf-token"]').attr('content');
 
@@ -149,9 +153,45 @@
       const submitButton = $("#submitButton");
       const productsSection = $("#ProductsSection");
       const productsTableBody = $("#ProductsTableBody");
+      const totalDiscountInput = $("#discount");
+      const costOfSewingInput = $("#cost_of_sewing");
+      const totalPriceBox = $("#totalPrice");
       
       submitButton.hide();
       productsSection.hide();
+
+      function calculateTotalPrice() {  
+
+        let total = 0;  
+
+        let totalDiscount = totalDiscountInput.val().replace(/,/g, '') || 0;
+        let costOfSewing = parseInt(costOfSewingInput.val().replace(/,/g, '')) || 0;
+
+        productsTableBody.find('tr').each(function() {
+
+          const quantity = Math.max(parseFloat($(this).find('.product-quantity').val()) || 0, 0); 
+          const price = Math.max(parseFloat($(this).find('.product-price').val().replace(/,/g, '')) || 0, 0); 
+          const discount = Math.max(parseFloat($(this).find('.product-discount').val().replace(/,/g, '')) || 0, 0);
+
+          total += (quantity * (price - discount));  
+        });  
+        
+        let totalPrice = total + costOfSewing - totalDiscount;
+
+        totalPriceBox.text(totalPrice.toLocaleString()); 
+      }
+
+      totalDiscountInput.on('input', () => {
+        if ($(this).val() !== null) {
+          calculateTotalPrice();
+        }
+      });
+
+      costOfSewingInput.on('input', () => {
+        if ($(this).val() !== null) {
+          calculateTotalPrice();
+        }
+      });
 
       addSaleItemButton.click(() => {
 
@@ -174,10 +214,10 @@
                 @endforeach
               </select>
             </td>  
-            <td><input type="text" class="form-control" name="products[${index + 1}][balance]" id="product-${index + 1}-balance" readonly></td>  
-            <td><input type="text" class="form-control" name="products[${index + 1}][price]" id="product-${index + 1}-price" readonly></td>  
-            <td><input type="text" class="form-control" name="products[${index + 1}][discount]" readonly></td>  
-            <td><input type="number" step="0.01" class="form-control" name="products[${index + 1}][quantity]"></td>  
+            <td><input type="text" class="form-control text-center" name="products[${index + 1}][balance]" id="product-${index + 1}-balance" readonly></td>  
+            <td><input type="text" class="form-control text-center product-price" name="products[${index + 1}][price]" id="product-${index + 1}-price" readonly></td>  
+            <td><input type="text" class="form-control text-center product-discount" name="products[${index + 1}][discount]" readonly></td>  
+            <td><input type="number" step="0.01" class="form-control text-center product-quantity" name="products[${index + 1}][quantity]"></td>  
             <td>  
               <button type="button" class="positive-btn font-weight-bold btn btn-sm btn-icon btn-success ml-1">+</button>
               <button type="button" class="negative-btn font-weight-bold btn btn-sm btn-icon btn-danger ml-1">-</button>
@@ -185,11 +225,14 @@
           </tr>  
         `);
 
+        tr.find('.product-quantity').on('input', calculateTotalPrice);
+
         comma();
         tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
         productsTableBody.append(tr);
         tr.find('.negative-btn').click(function() {  
           $(this).closest('tr').remove(); 
+          calculateTotalPrice();
         });  
         tr.find('.positive-btn').click(function() {  
           addSaleItemButton.trigger('click'); 

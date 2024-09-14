@@ -22,12 +22,12 @@
   </div>
   <div class="card">
     <div class="card-header border-bottom-0">
-      <p class="card-title">ثبت خرید جدید</p>
+      <h1 class="card-title">فاکتور خرید جدید</h1>
     </div>
     <div class="card-body">
       <form action="{{ route('admin.purchases.store') }}" method="post" class="save">
         @csrf
-        <div class="row">
+        <div class="row mx-2">
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="supplier_id" class="control-label">انتخاب تامین کننده :<span class="text-danger">&starf;</span></label>
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-5">
+        <div class="row mx-2 mb-5">
           <div class="col-12 d-flex justify-content-center" style="border-radius: 10px;">
             <button id="addPurchaseItemButton" class="btn btn-green d-flex justify-content-center align-items-center" type="button">
               <span class="ml-1">افزودن آیتم به فاکتور</span>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="row mx-4">
-          <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 r" >
+          <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 rounded" >
             <span class="fs-16">جمع مبلغ کل فاکتور : </span>
             <span class="font-weight-bold fs-16" id="totalPrice">0</span>
             <span class="font-weight-bold fs-16">ریال</span>
@@ -119,16 +119,19 @@
 
       function calculateTotalPrice() {  
         let total = 0;  
-        let discount = discountInput.val().replace(/,/g, '') || 0;
+        let totalDiscount = discountInput.val().replace(/,/g, '') || 0;
         $('#ProductsTableBody tr').each(function() {  
           const quantityInput = $(this).find('.product-quantity');  
           const priceInput = $(this).find('.product-price');
+          const discountInput = $(this).find('.product-discount');
           const quantity = Math.max(parseFloat(quantityInput.val()) || 0, 0);  
           const priceValue = priceInput.val().replace(',', ''); 
+          const discountValue = discountInput.val().replace(',', ''); 
           const price = priceValue ? Math.max(parseFloat(priceValue.replace(',', '')) || 0, 0) : 0;
-          total += quantity * price;  
+          const discount = discountValue ? Math.max(parseFloat(discountValue.replace(',', '')) || 0, 0) : 0;
+          total += quantity * (price - discount);  
         });  
-        total -= discount;
+        total -= totalDiscount;
         totalPriceBox.text(total.toLocaleString()); 
       } 
 
@@ -161,7 +164,7 @@
             </td>  
             <td><input type="number" class="form-control product-quantity" name="products[${index + 1}][quantity]" required min="1"/></td>  
             <td><input type="text" class="form-control comma product-price" name="products[${index + 1}][price]" required min="1000"/></td>  
-            <td class="product-discount"><input type="text" class="form-control comma" name="products[${index + 1}][discount]" /></td>  
+            <td><input type="text" class="form-control comma product-discount" name="products[${index + 1}][discount]" /></td>  
             <td>  
               <button type="button" class="positive-btn font-weight-bold btn btn-sm btn-icon btn-success ml-1">+</button>
               <button type="button" class="negative-btn font-weight-bold btn btn-sm btn-icon btn-danger ml-1">-</button>
@@ -178,7 +181,7 @@
         tr.find('.positive-btn').click(function() {  
           addPurchaseItemButton.trigger('click'); 
         });
-        tr.find('.product-quantity, .product-price').on('input', function() {  
+        tr.find('.product-quantity, .product-price, .product-discount').on('input', function() {  
           calculateTotalPrice();
         });  
         index++;
