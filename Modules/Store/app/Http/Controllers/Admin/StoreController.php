@@ -38,6 +38,7 @@ class StoreController extends Controller implements HasMiddleware
       ->with([
         'stores:id,balance,product_id',
         'category:id,title,unit_type',
+        'parent:id,image'
       ])
       ->when($productId, fn(Builder $query) => $query->where('id', $productId))
       ->when($fromCreatedAt, fn(Builder $query) => $query->whereDate('created_at', '>=', $fromCreatedAt))
