@@ -28,9 +28,9 @@
               <tr>
                 <th class="text-center">ردیف</th>
                 <th class="text-center">عنوان</th>
-                <th class="text-center">عنوان پرینت</th>
                 <th class="text-center">تصویر</th>
                 <th class="text-center">دسته بندی</th>
+                <th class="text-center">موجودی کلی</th>
                 <th class="text-center">قیمت (ریال)</th>
                 <th class="text-center">تخفیف (ریال)</th>
                 <th class="text-center">وضعیت</th>
@@ -43,7 +43,6 @@
                 <tr>
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $product->title }}</td>
-                  <td class="text-center">{{ $product->print_title }}</td>
                   <td class="text-center m-0 p-0">
                     @if ($product->image)
                       <figure class="figure my-2">
@@ -57,6 +56,7 @@
                     @endif
                   </td>
                   <td class="text-center">{{ $product->category->title }}</td>
+                  <td class="text-center">{{ $product->store_balance }}</td>
                   <td class="text-center">{{ number_format($product->price) }}</td>
                   <td class="text-center">{{ number_format($product->getDiscount()) }}</td>
                   <td class="text-center">
