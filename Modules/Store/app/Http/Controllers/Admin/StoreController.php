@@ -50,6 +50,8 @@ class StoreController extends Controller implements HasMiddleware
       ->latest('id')
       ->paginate();
 
+      dd($products);
+
     $productsToFilter = Product::query()->select('id', 'title', 'sub_title')->whereNotNull('parent_id')->get();
 
     return view('store::index', compact(['products', 'productsToFilter']));
