@@ -98,6 +98,6 @@ class   SupplierController extends Controller implements HasMiddleware
 		$supplier->delete();
 		toastr()->success("تامین کننده با نام $supplier->name با موفقیت حذف شد.");
 
-		return redirect()->back();
+		return to_route('admin.suppliers.index');
 	}
 }

@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header" style="margin-bottom: 1.3rem;">
+  <div class="page-header mb-1">
     <ol class="breadcrumb align-items-center">
       <li class="breadcrumb-item active">
         <i class="fe fe-home ml-1"></i> داشبورد
@@ -8,29 +8,25 @@
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('create sales')
-        <a href="{{ route('admin.sales.create') }}" class="btn btn-youtube mx-1 my-md-0 my-1">
-          ثبت فاکتور فروش <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-youtube mx-1 my-md-0 my-1">فاکتور فروش</a>
       @endcan
       @can('create purchases')
-        <a href="{{ route('admin.purchases.create') }}" class="btn btn-gray-dark mx-1 my-md-0 my-1">
-          ثبت فاکتور خرید <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.purchases.create') }}" class="btn btn-sm btn-gray-dark mx-1 my-md-0 my-1">فاکتور خرید</a>
       @endcan
       @can('create products')
-        <a href="{{ route('admin.products.create') }}" class="btn btn-rss mx-1 my-md-0 my-1">
-          ثبت محصول <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.products.create') }}" class="btn btn-sm btn-rss mx-1 my-md-0 my-1">محصول جدید</a>
+      @endcan
+      @can('create products')
+        <a href="{{ route('admin.expenses.create') }}" class="btn btn-sm btn-purple mx-1 my-md-0 my-1">هزینه جدید</a>
+      @endcan
+      @can('create products')
+        <a href="{{ route('admin.salaries.create') }}" class="btn btn-sm btn-primary mx-1 my-md-0 my-1">پرداخت حقوق</a>
       @endcan
       @can('create customers')
-        <a href="{{ route('admin.customers.create') }}" class="btn btn-green mx-1 my-md-0 my-1">
-          ثبت مشتری <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.customers.create') }}" class="btn btn-sm btn-green mx-1 my-md-0 my-1">مشتری جدید</a>
       @endcan
       @can('create suppliers')
-        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-teal mx-1 my-md-0 my-1">
-          ثبت تامین کننده <i class="fa fa-plus mr-1"></i>
-        </a>
+        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-sm btn-teal mx-1 my-md-0 my-1">تامین کننده جدید</a>
       @endcan
     </div>
   </div>

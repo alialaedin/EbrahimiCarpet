@@ -71,8 +71,8 @@ class SaleController extends Controller implements HasMiddleware
   {
     //  ---------- Creating Sale  ---------- \\
 
-    $totalSellPrices = StoreService::calc_total_sell_prices($request->input('products'));
-    $totalBuyPrices = StoreService::calc_total_buy_prices($request->input('products'));
+    $totalSellPrices = StoreService::calcTotalSellPrices($request->input('products'));
+    $totalBuyPrices = StoreService::calcTotalBuyPrices($request->input('products'));
 
     $sale = Sale::query()->create([
       'customer_id' => $request->customer_id,
@@ -88,7 +88,7 @@ class SaleController extends Controller implements HasMiddleware
     // ---------- End Of Creating Sale ---------- \\
 
     // ---------- Creating Sale Items ---------- \\
-    StoreService::insert_products_to_sale_items($request->input('products'), $sale->id);
+    StoreService::insertProductsToSaleItems($request->input('products'), $sale->id);
     // ---------- End Of Creating Sale Items ---------- \\
 
     toastr()->success("فروش جدید برای {$sale->customer->name} ثبت شد.");
@@ -129,13 +129,13 @@ class SaleController extends Controller implements HasMiddleware
   public function destroy(Sale $sale): RedirectResponse
   {
     foreach ($sale->items as $saleItem) {
-      StoreService::returning_inventory($saleItem);
+      StoreService::returningInventory($saleItem);
     }
 
     $sale->delete();
     toastr()->success("فروش با موفقیت حذف شد.");
 
-    return redirect()->back();
+    return to_route('admin.sales.index');
   }
 
   public function showInvoice(Sale $sale): View

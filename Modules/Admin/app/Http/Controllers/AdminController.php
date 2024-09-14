@@ -110,6 +110,6 @@ class AdminController extends Controller implements HasMiddleware
 
 		toastr()->success("ادمین با نام $admin->name با موفقیت پاک شد.");
 
-		return redirect()->back();
+		return to_route('admin.admins.index');
 	}
 }

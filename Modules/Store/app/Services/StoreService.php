@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class StoreService
 {
-  public static function add_product_to_store(Product|Builder|Collection $product, int $purchasedPrice, int $initialBalance): void
+  public static function addProductToStore(Product|Builder|Collection $product, int $purchasedPrice, int $initialBalance): void
   {
     $price = $product->prices()->create([
       'buy_price' => $purchasedPrice,
@@ -36,7 +36,7 @@ class StoreService
     ]);
   }
 
-  public static function store_product_demenisions($mainProduct, $demenisions, $request)
+  public static function storeProductDemenisions($mainProduct, $demenisions, $request)
   {
     foreach ($demenisions as $demenisionProduct) {
 
@@ -58,10 +58,10 @@ class StoreService
       $storedProducts[] = $productCollection;
     }
 
-    static::check_if_product_has_initial_balance($storedProducts);
+    static::checkIfProductHasInitialBalance($storedProducts);
   }
 
-  public static function decrement_store_balance(Product|Collection|Builder $product, int|float $quantity): void
+  public static function decrementStoreBalance(Product|Collection|Builder $product, int|float $quantity): void
   {
     $stores = Store::query()
       ->where('product_id', $product->id)
@@ -82,7 +82,7 @@ class StoreService
     }
   }
 
-  public static function check_if_product_has_initial_balance(array|Collection $products): void
+  public static function checkIfProductHasInitialBalance(array|Collection $products): void
   {
     foreach ($products as $product) {
       $balance = $product['initial_balance'];
@@ -98,12 +98,12 @@ class StoreService
           ->with(['prices', 'stores'])
           ->first();
 
-        static::add_product_to_store($product, $purchasedPrice, $balance);
+        static::addProductToStore($product, $purchasedPrice, $balance);
       }
     }
   }
 
-  public static function update_sell_price(Product|Builder $product): void
+  public static function updateSellPrice(Product|Builder $product): void
   {
     $prices = Price::query()->whereIn('product_id', [$product->id])->get();
     foreach ($prices as $price) {
@@ -112,7 +112,7 @@ class StoreService
     }
   }
 
-  public static function calc_total_buy_prices(array $products): int
+  public static function calcTotalBuyPrices(array $products): int
   {
     $totalProductsBuyPrices = 0;
 
@@ -144,14 +144,14 @@ class StoreService
     return $totalProductsBuyPrices;
   }
 
-  public static function calc_total_sell_prices(array $products): int
+  public static function calcTotalSellPrices(array $products): int
   {
     return collect($products)->map(function ($product) {
       return ($product['quantity'] * $product['price']) - (float)$product['discount'];
     })->sum();
   }
 
-  public static function insert_products_to_sale_items(array|Builder $products, int $saleId): void
+  public static function insertProductsToSaleItems(array|Builder $products, int $saleId): void
   {
     $productIds = collect($products)->pluck('id')->all();
     $productsData = Product::query()->whereIn('id', $productIds)->get()->keyBy('id');
@@ -211,7 +211,7 @@ class StoreService
     }
   }
 
-  public static function returning_inventory(SaleItem $saleItem): void
+  public static function returningInventory(SaleItem $saleItem): void
   {
     foreach ($saleItem->archived_price as $price) {
       $store = Store::findByPriceId($price['price_id']);

@@ -88,6 +88,6 @@ class EmployeeController extends Controller implements HasMiddleware
   {
     $employee->delete();
 
-    return redirect()->back();
+    return to_route('admin.employees.index');
   }
 }

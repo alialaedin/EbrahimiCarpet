@@ -77,7 +77,7 @@ class PurchaseController extends Controller implements HasMiddleware
 				'price' => $product['price']
 			]);
 
-      StoreService::add_product_to_store($thisProduct, $product['price'], $product['quantity']);
+      StoreService::addProductToStore($thisProduct, $product['price'], $product['quantity']);
 
 //      $purchase->transactions()->create([
 //        'store_id' => $thisProduct->store->id,
@@ -116,7 +116,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchase->update($request->validated());
 		toastr()->success("خرید با موفقیت بروزرسانی شد.");
 
-		return redirect()->back()->withInput();
+		return to_route('admin.purchases.index');
 	}
 
 	public function destroy(Purchase $purchase): RedirectResponse
@@ -124,7 +124,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		$purchase->delete();
 		toastr()->success("خرید با موفقیت حذف شد.");
 
-		return redirect()->back();
+		return to_route('admin.purchases.index');
 	}
 
 	private function getSuppliers(): Collection|array

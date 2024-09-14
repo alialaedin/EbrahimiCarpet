@@ -93,7 +93,7 @@ class CustomerController extends Controller implements HasMiddleware
 		$customer->delete();
 		toastr()->success("مشتری با نام {$customer->name} با موفقیت حذف شد.");
 
-		return redirect()->back();
+		return to_route('admin.customers.index');
 	}
 
   public function showInvoice(Customer $customer): View

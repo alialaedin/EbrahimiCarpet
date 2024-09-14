@@ -112,7 +112,7 @@ class ProductController extends Controller implements HasMiddleware
       'status' => $request->status,
     ]);
 
-    StoreService::store_product_demenisions($mainProduct, $request->input('product_dimensions'), $request);
+    StoreService::storeProductDemenisions($mainProduct, $request->input('product_dimensions'), $request);
 
     toastr()->success("محصول جدید با نام {$request->title} با موفقیت ساخته شد.");
 
@@ -142,10 +142,10 @@ class ProductController extends Controller implements HasMiddleware
     // $product->updateChildrenTitles();
     $product->updateChildren(['title', 'print_title', 'category_id']);
 
-    StoreService::update_sell_price($product);
+    StoreService::updateSellPrice($product);
 
     if (count($request->input('product_dimensions')) != 0) {
-      StoreService::store_product_demenisions($product, $request->input('product_dimensions'), $request);
+      StoreService::storeProductDemenisions($product, $request->input('product_dimensions'), $request);
     }
 
     toastr()->success("محصول با نام {$product->title} با موفقیت بروزرسانی شد.");
@@ -163,7 +163,7 @@ class ProductController extends Controller implements HasMiddleware
 
     toastr()->success("محصول با نام {$product->title} با موفقیت حذف شد.");
 
-    return redirect()->back();
+    return $product->getRedirectRoute();
   }
 
   public function destroyImage(Product $product): \Illuminate\Http\RedirectResponse

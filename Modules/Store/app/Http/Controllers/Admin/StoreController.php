@@ -70,7 +70,7 @@ class StoreController extends Controller implements HasMiddleware
   public function incrementBalance(IncrementStoreBalanceRequest $request): RedirectResponse
   {
     $product = Product::query()->find($request->input('product_id'));
-    StoreService::add_product_to_store($product, $request->input('purchased_price'), $request->input('quantity'));
+    StoreService::addProductToStore($product, $request->input('purchased_price'), $request->input('quantity'));
 
     toastr()->success("موجودی انبار برای محصول $product->title با موفقیت افزایش یافت.");
 
@@ -80,7 +80,7 @@ class StoreController extends Controller implements HasMiddleware
   public function decrementBalance(DecrementStoreBalanceRequest $request): RedirectResponse
   {
     $product = Product::query()->find($request->input('product_id'));
-    StoreService::decrement_store_balance($product, $request->input('quantity'));
+    StoreService::decrementStoreBalance($product, $request->input('quantity'));
 
     toastr()->success("موجودی انبار برای محصول $product->title با موفقیت کاهش یافت.");
 

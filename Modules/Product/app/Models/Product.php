@@ -168,6 +168,15 @@ class Product extends BaseModel
 		return $query->whereNotNull('parent_id');
 	}
 
+	public function getRedirectRoute()
+	{
+		if (is_null($this->parent_id)) {
+			return to_route('admin.products.index');
+		}else {
+			return redirect()->back();
+		}
+	}
+
   // Relations
   public function category(): BelongsTo
   {

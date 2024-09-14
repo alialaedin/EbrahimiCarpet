@@ -63,7 +63,7 @@ class PurchaseItem extends Model
 		});
 		
 		static::deleted(function (PurchaseItem $item) {
-			StoreService::decrement_store_balance($item->product, $item->attributes['quantity']);
+			StoreService::decrementStoreBalance($item->product, $item->attributes['quantity']);
 		});
 	}
 

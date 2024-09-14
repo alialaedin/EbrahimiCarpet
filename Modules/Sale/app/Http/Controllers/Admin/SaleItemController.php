@@ -125,7 +125,7 @@ class SaleItemController extends Controller implements HasMiddleware
 
   public function destroy(SaleItem $saleItem): \Illuminate\Http\RedirectResponse
   {
-    StoreService::returning_inventory($saleItem);
+    StoreService::returningInventory($saleItem);
     $saleItem->delete();
     toastr()->success('آیتم مورد نظر با موفقیت حذف شد');
 
