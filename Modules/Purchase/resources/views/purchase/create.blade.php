@@ -150,7 +150,7 @@
           <tr role="row">  
             <td>
               <select name="products[${index + 1}][id]" class="form-control product-select d-block" required>
-                <option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
+                <option value=""></option>
                 @foreach ($categories as $category)
                   @if ($category->products->isNotEmpty())
                     <optgroup label="{{ $category->title }}">
@@ -158,7 +158,7 @@
                         <option value="{{ $product->id }}">{{ $product->title .' - '. $product->sub_title }}</option>
                       @endforeach
                     </optgroup>
-                @endif
+                  @endif
                 @endforeach
               </select>
             </td>  

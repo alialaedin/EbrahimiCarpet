@@ -111,11 +111,11 @@
                   <td class="text-center">{{ $product->title .' '. $product->sub_title }}</td>
                   <td class="text-center">{{ $product->category->title }}</td>
                   <td class="text-center m-0 p-0">
-                    @if ($product->image)
+                    @if ($product->parent->image)
                       <figure class="figure my-2">
-                        <a target="_blank" href="{{ Storage::url($product->image) }}">
+                        <a target="_blank" href="{{ Storage::url($product->parent->image) }}">
                           <img
-                            src="{{ Storage::url($product->image) }}"
+                            src="{{ Storage::url($product->parent->image) }}"
                             class="img-thumbnail"
                             alt="image"
                             width="50"

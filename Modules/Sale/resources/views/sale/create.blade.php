@@ -15,7 +15,7 @@
   </div>
   <div class="card">
     <div class="card-header justify-content-between border-bottom-0">
-      <p class="card-title">ثبت فروش جدید</p>
+      <p class="card-title">فاکتور فروش جدید</p>
     </div>
     <div class="card-body">
       <form id="SubmitForm" action="{{ route('admin.sales.store') }}" method="post" class="save">
@@ -175,7 +175,7 @@
 
           total += (quantity * (price - discount));  
         });  
-        
+
         let totalPrice = total + costOfSewing - totalDiscount;
 
         totalPriceBox.text(totalPrice.toLocaleString()); 
@@ -201,8 +201,8 @@
         let tr = $(`
           <tr role="row">  
             <td>
-              <select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select d-block" onchange="getProductStore('#product-${index + 1}')">
-                <option value=""> محصول مورد نظر را انتخاب کنید </option>
+              <select name="products[${index + 1}][id]" id="product-${index + 1}" class="form-control product-select d-block" onchange="getProductStore('#product-${index + 1}')" required>
+                <option value=""></option>
                 @foreach ($categories as $category)
                   @if ($category->products->isNotEmpty())
                     <optgroup label="{{ $category->title }}">
