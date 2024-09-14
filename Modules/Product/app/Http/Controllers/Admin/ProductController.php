@@ -79,8 +79,9 @@ class ProductController extends Controller implements HasMiddleware
 
     $categories = Category::query()->select('id', 'title')->get();
     $productsCount = $products->total();
+    $totalProducts = Product::count();
 
-    return view('product::product.index', compact('products', 'productsCount', 'categories'));
+    return view('product::product.index', compact(['products', 'productsCount', 'categories', 'totalProducts']));
   }
 
   public function show(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application

@@ -16,7 +16,7 @@
   @include('product::product._filter-form')
   <div class="card">
     <div class="card-header border-0">
-      <p class="card-title">لیست محصولات ({{ $productsCount }})</p>
+      <p class="card-title">لیست محصولات ({{ $totalProducts }})</p>
       <x-core::card-options/>
     </div>
     <div class="card-body">
