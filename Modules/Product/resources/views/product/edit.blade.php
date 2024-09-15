@@ -181,13 +181,6 @@
                         موجودی
                         <i class="fa fa-database mr-1"></i>
                       </button>
-                      <form
-                        action="{{ route('admin.stores.index') }}"
-                        method="GET"
-                        id="productStoreForm-{{ $childProduct->id }}"
-                        class="d-none">
-                        <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
-                      </form>
                     </td>  
                   </tr>  
                 @endforeach
@@ -253,6 +246,13 @@
           style="display: none;">
           @csrf
           @method("DELETE")
+        </form>
+        <form
+          action="{{ route('admin.stores.index') }}"
+          method="GET"
+          id="productStoreForm-{{ $childProduct->id }}"
+          class="d-none">
+          <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
         </form>
       @endforeach
 
