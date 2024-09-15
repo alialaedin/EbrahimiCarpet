@@ -168,7 +168,7 @@
                       </button>  
                       <button 
                         type="button"
-                        onclick="$('#productStoreForm-{{ $cchildProduct->id }}').submit()" 
+                        onclick="$('#productStoreForm-{{ $childProduct->id }}').submit()" 
                         class="btn btn-sm btn-icon btn-info text-white">
                         <i class="fa fa-plus-circle"></i>
                       </button>
