@@ -141,6 +141,7 @@
                 <th class="fs-15">موجودی</th>
                 <th class="fs-15">قیمت فروش</th>
                 <th class="fs-15">تخفیف</th>
+                <th class="fs-15">وضعیت</th>
                 <th class="fs-15">عملیات</th>
               </tr>
               </thead>
@@ -151,6 +152,12 @@
                     <td class="p-3">{{ $childProduct->loadStoreBalance() }}</td>  
                     <td class="p-3">{{ number_format($childProduct->price) }}</td>  
                     <td class="p-3">{{ number_format($childProduct->discount) }}</td>  
+                    <td class="p-3">
+                      <x-core::light-badge
+                        type="{{ $childProduct->status ? 'success' : 'danger' }}"
+                        text="{{ $childProduct->status ? 'فعال' : 'غیر فعال' }}"
+                      /> 
+                    </td>  
                     <td>
                       <button
                         type="button"
@@ -170,7 +177,7 @@
                       </button>  
                       <button 
                         type="button"
-                        onclick="$('#productStoreForm-{{ $childProduct->id }}').submit()" 
+                        onclick="$('#productStoreForm-' + @json($childProduct->id)).submit()" 
                         class="btn btn-sm btn-icon btn-info text-white">
                         موجودی
                         <i class="fa fa-database mr-1"></i>
