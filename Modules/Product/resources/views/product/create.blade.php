@@ -51,21 +51,6 @@
                     @endif
                   </optgroup>
                 @endforeach
-                
-                
-                
-                {{-- @foreach ($parentCategories as $category)
-                  <option value="{{ $category->id }}"
-                          class="text-muted" @selected(old('category_id') == $category->id)>{{ $category->title }}</option>
-                  @if ($category->has('children'))
-                    @foreach($category->children as $child)
-                      <option value="{{ $child->id }}" @selected(old('category_id') == $child->id)>
-                        &nbsp;&nbsp;{{ $child->title }}</option>
-                    @endforeach
-                  @endif
-                @endforeach --}}
-
-
               </select>
               <x-core::show-validation-error name="category_id"/>
             </div>
@@ -178,6 +163,8 @@
       let initialBalance = $('#initial_balance');
       let purchasedPriceBox = $('#purchased_price_box');
       let purchasedPriceInput = $('#purchased_price');
+
+      $('#category_id').select2({placeholder: 'انتخاب دسته بندی'});
 
       title.on('input', () => {
         printTitle.val(title.val());
