@@ -166,6 +166,18 @@
                         style="margin-left: 1px;">  
                         <i class="fa fa-trash-o"></i>  
                       </button>  
+                      <button 
+                        onclick="$('#productStoreForm-' + @json($childProduct->id)).submit()" 
+                        class="btn btn-sm btn-icon btn-info text-white">
+                        <i class="fa fa-plus-circle"></i>
+                      </button>
+                      <form
+                        action="{{ route('admin.stores.index') }}"
+                        method="GET"
+                        id="productStoreForm-{{ $childProduct->id }}"
+                        class="d-none">
+                        <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
+                      </form>
                     </td>  
                   </tr>  
                 @endforeach
