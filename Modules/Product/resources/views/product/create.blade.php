@@ -43,6 +43,18 @@
               <select name="category_id" id="category_id" class="form-control">
                 <option value=""> دسته بندی را انتخاب کنید</option>
                 @foreach ($parentCategories as $category)
+                  <optgroup label="{{ $category->title .' ('. $category->getUnitType() .')'  }}">
+                    @if ($category->has('children'))
+                      @foreach($category->children as $child)
+                        <option value="{{ $child->id }}" @selected(old('category_id') == $child->id)>{{ $child->title }}</option>
+                      @endforeach
+                    @endif
+                  </optgroup>
+                @endforeach
+                
+                
+                
+                {{-- @foreach ($parentCategories as $category)
                   <option value="{{ $category->id }}"
                           class="text-muted" @selected(old('category_id') == $category->id)>{{ $category->title }}</option>
                   @if ($category->has('children'))
@@ -51,7 +63,9 @@
                         &nbsp;&nbsp;{{ $child->title }}</option>
                     @endforeach
                   @endif
-                @endforeach
+                @endforeach --}}
+
+
               </select>
               <x-core::show-validation-error name="category_id"/>
             </div>
