@@ -30,7 +30,7 @@ class ProductController extends Controller implements HasMiddleware
   private function getParentCategories(): array|Collection
   {
     return Category::query()
-      ->select('id', 'title')
+      ->select('id', 'title', 'unit_type')
       ->whereNull('parent_id')
       ->with('children:id,title,parent_id')
       ->get();
