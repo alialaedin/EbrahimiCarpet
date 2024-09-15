@@ -157,20 +157,23 @@
                         class="btn btn-sm btn-icon btn-warning text-white"
                         data-toggle="modal"
                         data-target="#edit-product-form-{{ $childProduct->id }}">
-                        <i class="fa fa-pencil"></i>
+                        ویرایش
+                        <i class="fa fa-pencil mr-1"></i>
                       </button>
                       <button 
                         type="button" 
                         class="delete-btn btn btn-sm btn-icon btn-danger text-whitem" 
                         onclick="confirmDelete('delete-product-demenision-{{ $childProduct->id }}')"
                         style="margin-left: 1px;">  
-                        <i class="fa fa-trash-o"></i>  
+                        حذف
+                        <i class="fa fa-trash-o mr-1"></i>  
                       </button>  
                       <button 
                         type="button"
                         onclick="$('#productStoreForm-{{ $childProduct->id }}').submit()" 
                         class="btn btn-sm btn-icon btn-info text-white">
-                        <i class="fa fa-plus-circle"></i>
+                        موجودی
+                        <i class="fa fa-database mr-1"></i>
                       </button>
                       <form
                         action="{{ route('admin.stores.index') }}"
