@@ -170,8 +170,7 @@
                       <button 
                         type="button" 
                         class="delete-btn btn btn-sm btn-icon btn-danger text-whitem" 
-                        onclick="confirmDelete('delete-product-demenision-{{ $childProduct->id }}')"
-                        style="margin-left: 1px;">  
+                        onclick="confirmDelete('delete-product-demenision-{{ $childProduct->id }}')">  
                         حذف
                         <i class="fa fa-trash-o mr-1"></i>  
                       </button>  
