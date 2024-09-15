@@ -167,7 +167,8 @@
                         <i class="fa fa-trash-o"></i>  
                       </button>  
                       <button 
-                        onclick="$('#productStoreForm-' + @json($childProduct->id)).submit()" 
+                        type="button"
+                        onclick="$('#productStoreForm-{{ $cchildProduct->id }}').submit()" 
                         class="btn btn-sm btn-icon btn-info text-white">
                         <i class="fa fa-plus-circle"></i>
                       </button>
