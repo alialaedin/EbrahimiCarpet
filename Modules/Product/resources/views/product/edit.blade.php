@@ -265,7 +265,9 @@
 @section('scripts')
 <script>
   $(document).ready(() => {
-
+    $('#category_id').select2({
+      placeholder: 'انتخاب دسته بندی'
+    });
     let counter = 100; 
 
     $('#products-dimensions-section').hide(); 
