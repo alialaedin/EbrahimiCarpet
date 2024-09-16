@@ -22,7 +22,7 @@ class ProfitController extends Controller
       ->when($toDate, fn($q) => $q->whereDate('sold_at', '<=', $toDate))
       ->when($productId, fn($q) => $q->whereHas('items', fn($itemQ) => $itemQ->where('product_id', $productId)))
       ->when($categoryId, fn($q) => $q->whereHas('items.product', fn($itemQ) => $itemQ->where('category_id', $categoryId)))
-      ->with('items.product')
+      ->with('items.product.category')
       ->latest('id')
       ->get();
 

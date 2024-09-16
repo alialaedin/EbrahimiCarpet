@@ -164,8 +164,8 @@
                 <th>ردیف</th>
                 <th>شناسه فاکتور فروش</th>
                 <th>محصول</th>
-                <th>شناسه محصول</th>
                 <th>ابعاد</th>
+                <th>دسته بندی</th>
                 <th>تعداد قلم فروخته شده</th>
                 <th>تاریخ فروش</th>
                 <th>مبلغ (ریال)</th>
@@ -179,8 +179,8 @@
                       <td class="font-weight-bold">{{ $counter }}</td>
                       <td>{{ $sale->id }}</td>
                       <td>{{ $saleItem->product->title }}</td>
-                      <td>{{ $saleItem->product->id }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
+                      <td>{{ $saleItem->product->category->title }}</td>
                       <td>{{ $saleItem->quantity .' '. $saleItem->product->category->getUnitType() }}</td>
                       <td> {{ verta($saleItem->sale->sold_at)->formatDate() }} </td>
                       <td>{{ number_format($saleItem->getPriceWithDiscount() * $saleItem->quantity) }}</td>
