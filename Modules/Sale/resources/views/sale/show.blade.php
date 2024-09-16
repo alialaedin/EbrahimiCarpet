@@ -16,7 +16,7 @@
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('edit sales')
-        <a href="{{ route('admin.sales.edit', $sale) }}" class="btn btn-warning mx-1">
+        <a href="{{ route('admin.sales.edit', $sale) }}" class="btn btn-warning btn-sm mx-1">
           ویرایش
           <i class="fa fa-pencil mr-1"></i>
         </a>
@@ -24,7 +24,7 @@
       @can('delete sales')
         <button
           onclick="confirmDelete('delete-{{ $sale->id }}')"
-          class="btn btn-danger mx-1">
+          class="btn btn-danger btn-sm mx-1">
           حذف کل سفارش<i class="fa fa-trash-o mr-2"></i>
         </button>
         <form
@@ -77,8 +77,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> جمع اقلام (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }} </h3>
+                <span class="fs-14 font-weight-bold"> جمع اقلام : </span>
+                <h3 class="mb-0 mt-1 text-info fs-16"> {{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }} ریال</h3>
               </div>
             </div>
             <div class="col-3">
@@ -96,8 +96,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> هزینه دوخت / نصب (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-warning fs-20"> {{ number_format($sale->cost_of_sewing) }} </h3>
+                <span class="fs-14 font-weight-bold"> هزینه دوخت / نصب : </span>
+                <h3 class="mb-0 mt-1 text-warning fs-16"> {{ number_format($sale->cost_of_sewing) }} ریال</h3>
               </div>
             </div>
             <div class="col-3">
@@ -115,8 +115,8 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> تخفیف کل فاکتور (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($sale->discount) }} </h3>
+                <span class="fs-14 font-weight-bold"> تخفیف کل فاکتور : </span>
+                <h3 class="mb-0 mt-1 text-danger fs-16"> {{ number_format($sale->discount) }} ریال</h3>
               </div>
             </div>
             <div class="col-3">
@@ -134,9 +134,9 @@
           <div class="row">
             <div class="col-9">
               <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> قیمت کل فاکتور (ریال) : </span>
+                <span class="fs-14 font-weight-bold"> قیمت کل فاکتور : </span>
                 <h3
-                  class="mb-0 mt-1 text-success fs-20"> {{ number_format($sale->getTotalAmountWithDiscount()) }}  </h3>
+                  class="mb-0 mt-1 text-success fs-16"> {{ number_format($sale->getTotalAmountWithDiscount()) }} ریال</h3>
               </div>
             </div>
             <div class="col-3">
@@ -153,7 +153,7 @@
     <div class="card-header border-0 justify-content-between">
       <p class="card-title">اقلام فروش ({{ $sale->items->count() }})</p>
       @can('create sale_items')
-        <button class="btn btn-indigo" data-target="#createSaleItemModal" data-toggle="modal">
+        <button class="btn btn-indigo btn-sm" data-target="#createSaleItemModal" data-toggle="modal">
           افزودن قلم جدید
           <i class="fa fa-plus mr-1"></i>
         </button>
@@ -188,11 +188,11 @@
                     </a>
                   </td>
                   <td class="text-center m-0 p-0">
-                    @if ($item->product->image)
+                    @if ($item->product->parent->image)
                       <figure class="figure my-2">
-                        <a target="_blank" href="{{ Storage::url($item->product->image) }}">
+                        <a target="_blank" href="{{ Storage::url($item->product->parent->image) }}">
                           <img
-                            src="{{ Storage::url($item->product->image) }}"
+                            src="{{ Storage::url($item->product->parent->image) }}"
                             class="img-thumbnail"
                             alt="image"
                             width="50"
