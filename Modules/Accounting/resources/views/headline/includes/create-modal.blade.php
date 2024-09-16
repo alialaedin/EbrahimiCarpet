@@ -1,5 +1,5 @@
 <div class="modal fade" id="createHeadlineModal" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content modal-content-demo">
       <div class="modal-header">
         <p class="modal-title" style="font-size: 20px;">ثبت سرفصل جدید</p>
@@ -10,7 +10,7 @@
           @csrf
           <div class="row">
 
-            <div class="col-lg-6 co-12">
+            <div class="co-12">
               <div class="form-group">
                 <label for="title" class="control-label">عنوان :<span class="text-danger">&starf;</span></label>
                 <input type="text" id="title" class="form-control" name="title" required value="{{ old('title') }}">
@@ -18,7 +18,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 co-12">
+            <div class="co-12">
               <div class="form-group">
                 <label for="type" class="control-label">نوع سرفصل :<span class="text-danger">&starf;</span></label>
                 <select name="type" id="type" class="form-control select2" required>
@@ -31,7 +31,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 co-12">
+            <div class="co-12">
               <div class="form-group">
                 <label for="status" class="control-label">وضعیت :<span class="text-danger">&starf;</span></label>
                 <select name="status" id="status" class="form-control select2" required>
