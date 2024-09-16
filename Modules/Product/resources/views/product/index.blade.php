@@ -62,7 +62,7 @@
                   <td class="text-center">{{ number_format($product->price) }}</td>
                   <td class="text-center">{{ number_format($product->getDiscount()) }}</td>
                   <td class="text-center">
-                    <x-core::badge
+                    <x-core::light-badge
                       type="{{ $product->status ? 'success' : 'danger' }}"
                       text="{{ $product->status ? 'فعال' : 'غیر فعال' }}"
                     />
