@@ -48,7 +48,7 @@ class StoreController extends Controller implements HasMiddleware
       ->whereDate('created_at', '<=', $toCreatedAt)
       ->whereNotNull('parent_id')
       ->latest('id')
-      ->paginate(225);
+      ->paginate();
 
     $productsToFilter = Product::query()->select('id', 'title', 'sub_title')->whereNotNull('parent_id')->get();
 
