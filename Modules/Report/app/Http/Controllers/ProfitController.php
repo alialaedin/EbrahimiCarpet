@@ -51,7 +51,7 @@ class ProfitController extends Controller
     $profit = $sumTotalSellPrice - $sumTotalBuyPrice - $sumTotalDiscountPrice + $sumTotalCostOfSewingPrice;
 
     $products = Product::childrens()->select('id', 'title', 'sub_title')->get();
-    $categories = Category::query()->select('id', 'title')->get();
+    $categories = Category::query()->children()->select('id', 'title')->get();
 
     $totalPrice = [
       'sum_total_sell_price' => $sumTotalSellPrice,

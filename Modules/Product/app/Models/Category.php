@@ -81,6 +81,11 @@ class Category extends Model
     return $this->children->isEmpty() && $this->products->isEmpty();
   }
 
+  public function scopeChildren($query)
+  {
+	return $query->whereNotNull('parent_id');
+  }
+
   // Relations
   public function children(): HasMany
   {
