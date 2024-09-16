@@ -78,7 +78,7 @@
     </div>
   </div> --}}
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-between">
     <div class="col-xl-2 col-lg-6 col-12">
       <div class="card">
         <div class="card-body">
