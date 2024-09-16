@@ -31,7 +31,10 @@
                 <select name="product_id" id="product_id" class="form-control select2">
                   <option value="">محصول را انتخاب کنید</option>
                   @foreach ($products as $product)
-                    <option value="{{ $product->id }}">{{ $product->title .' - '. $product->sub_title }}</option>
+                    <option 
+                      value="{{ $product->id }}"
+                      @selected(request('product_id') == $product->id)>
+                      {{ $product->title .' - '. $product->sub_title }}</option>
                   @endforeach
                 </select>
               </div>
@@ -42,7 +45,7 @@
                 <select name="category_id" id="category_id" class="form-control select2">
                   <option value="">دسته بندی را انتخاب کنید</option>
                   @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                    <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $category->title }}</option>
                   @endforeach
                 </select>
               </div>
