@@ -64,7 +64,12 @@
                         <i class="fa fa-pencil"></i>
                       </button>
                     @endcan
-                    @can('delete headlines')<x-core::delete-button route="admin.headlines.destroy" :model="$headline" disabled="{{ !$headline->isDeletable() }}" />@endcan
+                    @can('delete headlines')
+                    <x-core::delete-button 
+                      route="admin.headlines.destroy" 
+                      :model="$headline" 
+                      disabled="{{ !$headline->isDeletable() }}" />
+                    @endcan
                   </td>
                 </tr>
               @empty

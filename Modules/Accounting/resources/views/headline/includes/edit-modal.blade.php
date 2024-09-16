@@ -1,5 +1,5 @@
 @foreach ($headlines as $headline)
-  <div class="modal fade" id="editAccountModal-{{ $headline->id }}" style="display: none;" aria-hidden="true">
+  <div class="modal fade" id="editHeadlineModal-{{ $headline->id }}" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content modal-content-demo">
         <div class="modal-header">
