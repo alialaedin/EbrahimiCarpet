@@ -45,12 +45,14 @@
             <div class="form-group">
               <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
               <select name="category_id" id="category_id" class="form-control">
-                @foreach ($parentCategories as $category)<option value="{{ $category->id }}" class="text-muted" @selected(old('category_id', $product->category_id) == $category->id)>{{ $category->title }}</option>
-                @if ($category->has('children'))
-                  @foreach($category->children as $child)
-                    <option value="{{ $child->id }}" @selected(old('category_id', $product->category_id) == $child->id)>&nbsp;&nbsp;{{ $child->title }}</option>
-                  @endforeach
-                @endif
+                @foreach ($parentCategories as $category)
+                  <optgroup label="{{ $category->title .' ('. $category->getUnitType() .')'  }}">
+                    @if ($category->has('children'))
+                      @foreach($category->children as $child)
+                        <option value="{{ $child->id }}" @selected(old('category_id', $product->category_id) == $child->id)>{{ $child->title }}</option>
+                      @endforeach
+                    @endif
+                  </optgroup>
                 @endforeach
               </select>
               <x-core::show-validation-error name="category_id" />
