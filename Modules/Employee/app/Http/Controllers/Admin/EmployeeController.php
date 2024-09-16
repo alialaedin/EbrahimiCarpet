@@ -35,7 +35,7 @@ class EmployeeController extends Controller implements HasMiddleware
     $toEmploymentAt = request('to_employmented_at');
 
     $employees = Employee::query()
-      ->select('id', 'name', 'mobile', 'employmented_at', 'salary', 'national_code')
+      ->select('id', 'name', 'mobile', 'employmented_at', 'salary', 'national_code', 'created_at')
       ->when($fullName, fn(Builder $query) => $query->where('name', 'like', "%{$fullName}%"))
       ->when($mobile, fn(Builder $query) => $query->where('mobile', $mobile))
       ->when($fromEmploymentAt, fn(Builder $query) => $query->whereDate('employmented_at', '>=', $fromEmploymentAt))

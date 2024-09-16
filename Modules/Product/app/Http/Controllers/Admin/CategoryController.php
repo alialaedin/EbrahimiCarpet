@@ -34,7 +34,7 @@ class CategoryController extends Controller implements HasMiddleware
 		$status = request('status');
 
 		$categories = Category::query()
-			->select('id', 'title', 'parent_id', 'status', 'unit_type', 'created_at')
+			->select('id', 'title', 'parent_id', 'status', 'unit_type', 'created_at', 'updated_at')
 			->when($title, fn (Builder $query) => $query->where('title', 'like', "%{$title}%"))
 			->when($parentId, function (Builder $query) use ($parentId) {
 				return $query->where(function ($query) use ($parentId) {

@@ -13,7 +13,7 @@ class CustomerFinancialReportController extends Controller
   public function allCustomersFinance(): View
   {
     $customers = Customer::query()
-      ->select('id', 'name', 'mobile')
+      ->select('id', 'name', 'mobile', 'created_at')
       ->with([
         'sales:id,customer_id,discount',
         'sales.items:id,sale_id,quantity,price,discount',

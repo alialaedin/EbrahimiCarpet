@@ -53,7 +53,8 @@ class ProductController extends Controller implements HasMiddleware
         'discount',   
         'price',   
         'image',   
-        'parent_id',
+        'parent_id', 
+        'created_at'
       )
       ->with([
         'category' => fn($query) => $query->select('id', 'title', 'unit_type'),

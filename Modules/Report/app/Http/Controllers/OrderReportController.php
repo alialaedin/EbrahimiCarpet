@@ -16,7 +16,7 @@ class OrderReportController extends Controller
 {
   public function purchasesFilter(): View
   {
-    $suppliers = Supplier::query()->select('id', 'name', 'mobile')->get();
+    $suppliers = Supplier::query()->select('id', 'name', 'mobile', 'created_at')->get();
 
     return view('report::purchase.filter', compact('suppliers'));
   }

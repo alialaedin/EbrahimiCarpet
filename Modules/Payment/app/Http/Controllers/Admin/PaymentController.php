@@ -43,7 +43,7 @@ class PaymentController extends Controller implements HasMiddleware
     $toDueDate = \request('to_due_date');
 
     $payments = Payment::query()
-      ->select('id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status')
+      ->select('id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status', 'created_at')
       ->when($supplierId, fn(Builder $query) => $query->where('supplier_id', $supplierId))
       ->when($type, fn(Builder $query) => $query->where('type', $type))
       ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
