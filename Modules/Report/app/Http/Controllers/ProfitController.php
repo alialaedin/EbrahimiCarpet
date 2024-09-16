@@ -18,10 +18,10 @@ class ProfitController extends Controller
     $toDate = request('to_date') ?? now();
 
     $sales = Sale::query()
-      ->when($fromDate, fn($query) => $query->whereDate('sold_at', '>=', $fromDate))
-      ->when($toDate, fn($query) => $query->whereDate('sold_at', '<=', $toDate))
-      ->when($productId, fn($query) => $query->whereHas('items', fn($itemQuery) => $itemQuery->where('product_id', $productId)))
-      ->when($categoryId, fn($query) => $query->whereHas('items.product', fn($itemQuery) => $itemQuery->where('category_id', $categoryId)))
+      ->when($fromDate, fn($q) => $q->whereDate('sold_at', '>=', $fromDate))
+      ->when($toDate, fn($q) => $q->whereDate('sold_at', '<=', $toDate))
+      ->when($productId, fn($q) => $q->whereHas('items', fn($itemQ) => $itemQ->where('product_id', $productId)))
+      ->when($categoryId, fn($q) => $q->whereHas('items.product', fn($itemQ) => $itemQ->where('category_id', $categoryId)))
       ->with('items.product')
       ->latest('id')
       ->get();

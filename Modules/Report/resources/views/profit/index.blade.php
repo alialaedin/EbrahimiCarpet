@@ -17,12 +17,12 @@
   <div class="row justify-content-center d-none d-print-flex">
     <p class="fs-22">گزارش سود و ضرر</p>
   </div>
-  {{-- <div class="card d-print-none">
+  <div class="card d-print-none">
     <div class="card-header border-0">
       <p class="card-title">جستجوی پیشرفته</p>
     </div>
     <div class="card-body">
-      <div class="row" style="margin-bottom: 25px;">
+      <div class="row">
         <form action="{{ route("admin.reports.profit") }}" class="col-12" method="GET">
           <div class="row">
   
@@ -76,7 +76,7 @@
         </form>
       </div>
     </div>
-  </div> --}}
+  </div>
 
   <div class="row justify-content-between">
     <div class="col-xl-2 col-lg-6 col-12">
