@@ -82,21 +82,31 @@
       <div class="table-responsive">
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="row">
+            <div class="col-lg-6 col-12">
               <span class="btn btn-primary btn-sm">
                 <span class="fs-15">مبلغ خریدادری شده :</span> {{ number_format($totalPrice['sum_total_buy_price']) }} ریال
               </span> 
-              <span class="btn btn-orange btn-sm mr-4 ml-2">
+            </div>
+            <div class="col-lg-6 col-12">
+              <span class="btn btn-orange btn-sm">
                 <span class="fs-15">مبلغ فروخته شده :</span> {{ number_format($totalPrice['sum_total_sell_price']) }} ریال
-              </span> 
-              <span class="btn btn-warning btn-sm mx-2">
+              </span>
+            </div>
+            <div class="col-lg-6 col-12">
+              <span class="btn btn-warning btn-sm">
                 <span class="fs-15">جمع تخفیف های داده شده :</span> {{ number_format($totalPrice['sum_total_discount_price']) }} ریال
               </span> 
-              <span class="btn btn-danger btn-sm mx-2">
+            </div>
+            <div class="col-lg-6 col-12">
+              <span class="btn btn-danger btn-sm">
                 <span class="fs-15">جمع هزینه های دوخت :</span> {{ number_format($totalPrice['sum_total_cost_of_sewing_price']) }} ریال
               </span> 
-              <span class="btn btn-lime btn-sm mr-2">
+            </div>
+            <div class="col-lg-6 col-12">
+              <span class="btn btn-lime btn-sm">
                 <span class="fs-15">سود شما :</span> {{ number_format($profit) }} ریال
-              </span> 
+              </span>  
+            </div>
           </div>
           <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom" style="margin-top: 25px;">
               <thead class="thead-light">
