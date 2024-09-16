@@ -21,14 +21,14 @@
           <i class="fa fa-pencil mr-1"></i>
         </a>
       @endcan
-      @can('delete purchases')
+      @can('delete sales')
         <button
           onclick="confirmDelete('delete-{{ $sale->id }}')"
           class="btn btn-danger mx-1">
           حذف کل سفارش<i class="fa fa-trash-o mr-2"></i>
         </button>
         <form
-          action="{{ route('admin.purchases.destroy', $sale) }}"
+          action="{{ route('admin.sales.destroy', $sale) }}"
           method="POST"
           id="delete-{{ $sale->id }}"
           style="display: none">
