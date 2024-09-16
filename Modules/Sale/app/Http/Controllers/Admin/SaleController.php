@@ -99,11 +99,12 @@ class SaleController extends Controller implements HasMiddleware
   public function show(Sale $sale): View
   {
     $sale->load([
-      'customer' => fn($query) => $query->select('id', 'name', 'mobile', 'address'),
-      'employee' => fn($query) => $query->select('id', 'name', 'mobile', 'address'),
-      'items' => fn($query) => $query->latest('id'),
-      'items.product' => fn($query) => $query->select('id', 'title', 'image', 'category_id', 'sub_title'),
-      'items.product.category' => fn($query) => $query->select('id', 'unit_type')
+      'customer' => fn($q) => $q->select('id', 'name', 'mobile', 'address'),
+      'employee' => fn($q) => $q->select('id', 'name', 'mobile', 'address'),
+      'items' => fn($q) => $q->latest('id'),
+      'items.product' => fn($q) => $q->select('id', 'title', 'category_id', 'sub_title', 'parent_id'),
+      'items.product.parent' => fn($q) => $q->select('id', 'image'),
+      'items.product.category' => fn($q) => $q->select('id', 'unit_type'),
     ]);
     $categories = $this->getCategories();
 
