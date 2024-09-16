@@ -134,7 +134,6 @@ class DashboardController extends Controller
       ->whereNull('payment_date')
       ->with('customer:id,name')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->latest('id')
       ->orderBy('due_date', 'ASC')
       ->get();
   }
@@ -147,7 +146,6 @@ class DashboardController extends Controller
       ->whereNull('payment_date')
       ->with('supplier:id,name')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->latest('id')
       ->orderBy('due_date', 'ASC')
       ->get();
   }
@@ -160,7 +158,6 @@ class DashboardController extends Controller
       ->whereNull('payment_date')
       ->with('customer:id,name,mobile')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->latest('id')
       ->orderBy('due_date', 'ASC')
       ->get();
   }
@@ -173,7 +170,6 @@ class DashboardController extends Controller
       ->whereNull('payment_date')
       ->with('supplier:id,name,mobile')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->latest('id')
       ->orderBy('due_date', 'ASC')
       ->get();
   }
