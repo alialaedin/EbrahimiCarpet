@@ -77,37 +77,84 @@
       </div>
     </div>
   </div> --}}
+
+  <div class="row justify-content-center">
+    <div class="col-xl-2 col-lg-6 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-0 text-right">
+                <span class="fs-14 font-weight-bold"> مبلغ خریدادری شده : </span>
+                <p class="mb-0 mt-1 text-primary fs-16"> {{ number_format($totalPrice['sum_total_buy_price']) }} ریال</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-0 text-right">
+                <span class="fs-14 font-weight-bold"> مبلغ فروخته شده : </span>
+                <p class="mb-0 mt-1 text-orange fs-16"> {{ number_format($totalPrice['sum_total_sell_price']) }} ریال</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-0 text-right">
+                <span class="fs-14 font-weight-bold"> میزان تخفیف اعمال شده : </span>
+                <p class="mb-0 mt-1 text-warning fs-16"> {{ number_format($totalPrice['sum_total_discount_price']) }} ریال</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-0 text-right">
+                <span class="fs-14 font-weight-bold"> جمع هزینه دوخت / نصب : </span>
+                <p class="mb-0 mt-1 text-danger fs-16"> {{ number_format($totalPrice['sum_total_cost_of_sewing_price']) }} ریال</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-0 text-right">
+                <span class="fs-14 font-weight-bold"> سود شما : </span>
+                <p class="mb-0 mt-1 text-success fs-16"> {{ number_format($profit) }} ریال</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <div class="col-lg-6 col-12">
-              <span class="btn btn-primary btn-sm">
-                <span class="fs-15">مبلغ خریدادری شده :</span> {{ number_format($totalPrice['sum_total_buy_price']) }} ریال
-              </span> 
-            </div>
-            <div class="col-lg-6 col-12">
-              <span class="btn btn-orange btn-sm">
-                <span class="fs-15">مبلغ فروخته شده :</span> {{ number_format($totalPrice['sum_total_sell_price']) }} ریال
-              </span>
-            </div>
-            <div class="col-lg-6 col-12">
-              <span class="btn btn-warning btn-sm">
-                <span class="fs-15">جمع تخفیف های داده شده :</span> {{ number_format($totalPrice['sum_total_discount_price']) }} ریال
-              </span> 
-            </div>
-            <div class="col-lg-6 col-12">
-              <span class="btn btn-danger btn-sm">
-                <span class="fs-15">جمع هزینه های دوخت :</span> {{ number_format($totalPrice['sum_total_cost_of_sewing_price']) }} ریال
-              </span> 
-            </div>
-            <div class="col-lg-6 col-12">
-              <span class="btn btn-lime btn-sm">
-                <span class="fs-15">سود شما :</span> {{ number_format($profit) }} ریال
-              </span>  
-            </div>
-          </div>
+        <div class="dataTables_wrapper dt-bootstrap4 no-footer"> 
           <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom" style="margin-top: 25px;">
               <thead class="thead-light">
               <tr>
