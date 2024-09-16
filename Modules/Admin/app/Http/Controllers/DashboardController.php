@@ -135,6 +135,7 @@ class DashboardController extends Controller
       ->with('customer:id,name')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
       ->latest('id')
+      ->orderBy('due_date', 'ASC')
       ->get();
   }
 
@@ -147,6 +148,7 @@ class DashboardController extends Controller
       ->with('supplier:id,name')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
       ->latest('id')
+      ->orderBy('due_date', 'ASC')
       ->get();
   }
 
@@ -159,6 +161,7 @@ class DashboardController extends Controller
       ->with('customer:id,name,mobile')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
       ->latest('id')
+      ->orderBy('due_date', 'ASC')
       ->get();
   }
 
@@ -171,6 +174,7 @@ class DashboardController extends Controller
       ->with('supplier:id,name,mobile')
       ->whereDate('due_date', '<=', now()->addWeeks(2))
       ->latest('id')
+      ->orderBy('due_date', 'ASC')
       ->get();
   }
 }
