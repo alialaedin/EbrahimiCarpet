@@ -44,7 +44,7 @@ class ProfitController extends Controller
       ->with([
         'sale' => fn($q) => $q->select(['id', 'discount', 'cost_of_sewing', 'sold_at']),
         'product' => fn($q) => $q->select(['id', 'title', 'sub_title', 'category_id']),
-        'product.category' => fn($q) => $q->select(['id', 'title', 'unit_type', 'category_id'])
+        'product.category' => fn($q) => $q->select(['id', 'title', 'unit_type'])
       ])
       ->latest('id')
       ->get();
