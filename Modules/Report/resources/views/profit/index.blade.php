@@ -174,7 +174,7 @@
               <tbody>
                 @php($counter = 1)
                 {{-- @forelse ($sales as $sale) --}}
-                  @forelse($sale->items as $saleItem)
+                  @forelse($saleItems as $saleItem)
                     <tr class="table-body">
                       <td class="font-weight-bold">{{ $counter }}</td>
                       <td>{{ $sale->id }}</td>
