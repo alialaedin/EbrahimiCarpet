@@ -177,7 +177,7 @@
                   @forelse($saleItems as $saleItem)
                     <tr class="table-body">
                       <td class="font-weight-bold">{{ $counter }}</td>
-                      <td>{{ $sale->id }}</td>
+                      <td>{{ $saleItem->sale->id }}</td>
                       <td>{{ $saleItem->product->title }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
                       <td>{{ $saleItem->product->category->title }}</td>
