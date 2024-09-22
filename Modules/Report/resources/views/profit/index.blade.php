@@ -1,4 +1,15 @@
 @extends('admin.layouts.master')
+@section('styles')
+  <style>
+    #boxes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 10px;
+      grid-row-gap: 0px;
+    }
+  </style>
+@endsection
 @section('content')
   <div class="page-header d-print-none">
     <ol class="breadcrumb align-items-center">
@@ -81,8 +92,8 @@
     </div>
   </div>
 
-  <div class="row justify-content-between">
-    <div class="col-xl-2 col-lg-6 col-12">
+  <div id="boxes" class="mx-auto">
+    <div>
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -96,7 +107,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-2 col-lg-6 col-12">
+    <div>
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -110,7 +121,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-2 col-lg-6 col-12">
+    <div>
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -124,7 +135,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-2 col-lg-6 col-12">
+    <div>
       <div class="card">
         <div class="card-body">
           <div class="row">
@@ -138,7 +149,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-2 col-lg-6 col-12">
+    <div>
       <div class="card">
         <div class="card-body">
           <div class="row">
