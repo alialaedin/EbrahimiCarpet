@@ -184,11 +184,11 @@
               </thead>
               <tbody>
                 @php($counter = 1)
-                @forelse ($sales as $sale)
-                  @foreach($sale->items as $saleItem)
+                {{-- @forelse ($sales as $sale) --}}
+                  @forelse($saleItems as $saleItem)
                     <tr class="table-body">
                       <td class="font-weight-bold">{{ $counter }}</td>
-                      <td>{{ $sale->id }}</td>
+                      <td>{{ $saleItem->sale->id }}</td>
                       <td>{{ $saleItem->product->title }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
                       <td>{{ $saleItem->product->category->title }}</td>
@@ -197,10 +197,12 @@
                       <td>{{ number_format($saleItem->getPriceWithDiscount() * $saleItem->quantity) }}</td>
                     </tr>
                     @php($counter++)
-                  @endforeach
-                @empty
-                  <x-core::data-not-found-alert :colspan="7"/>
-                @endforelse
+                    @empty
+                      <x-core::data-not-found-alert :colspan="7"/>
+                  @endforelse
+                {{-- @empty --}}
+                  {{-- <x-core::data-not-found-alert :colspan="7"/> --}}
+                {{-- @endforelse --}}
               </tbody>
           </table>
         </div>
