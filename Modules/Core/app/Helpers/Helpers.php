@@ -55,18 +55,13 @@ class Helpers
 
 	public static function toGregorian(string $jDate): ?string
 	{
-		$output = null;
-		$pattern = '#^(\\d{4})/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])$#';
-
-		if (preg_match($pattern, $jDate)) {
-			$jDateArray = explode('/', $jDate);
-			$dateArray = Verta::jalaliToGregorian(
-				$jDateArray[0],
-				$jDateArray[1],
-				$jDateArray[2]
-			);
-			$output = implode('-', $dateArray);
-		}
+		$jDateArray = explode('-', $jDate);
+		$dateArray = Verta::jalaliToGregorian(
+			(int)$jDateArray[0],
+			(int)$jDateArray[1],
+			(int)$jDateArray[2]
+		);
+		$output = implode('-', $dateArray);
 
 		return $output;
 	}
