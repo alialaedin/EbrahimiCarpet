@@ -3,12 +3,9 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
 use Modules\Payment\Models\Payment;
-use Modules\Product\Models\Category;
-use Modules\Product\Models\Product;
 use Modules\Purchase\Models\Purchase;
 use Modules\Purchase\Models\PurchaseItem;
 use Modules\Sale\Models\Sale;
@@ -100,8 +97,8 @@ class DashboardController extends Controller
     $endDate = Helpers::toGregorian(Verta::endMonth());
 
     $sales = Sale::query()
-      ->when($time === 'today', fn($query) => $query->whereDate('sold_at', today()))
-      ->when($time === 'month', fn($query) => $query->whereBetween('sold_at', [$startDate, $endDate]))
+      ->when($time == 'today', fn($q) => $q->whereDate('sold_at', today()))
+      ->when($time == 'month', fn($q) => $q->whereBetween('sold_at', [$startDate, $endDate]))
       ->with('items')
       ->get();
 
@@ -112,6 +109,7 @@ class DashboardController extends Controller
         $amount += ($item->price * $item->quantity) - $item->discount;
       }
       $amount -= $sale->discount;
+      $amount += $sale->cost_of_sewing;
     }
 
     return $amount;
