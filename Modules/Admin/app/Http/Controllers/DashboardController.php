@@ -4,6 +4,7 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
 use Modules\Payment\Models\Payment;
 use Modules\Product\Models\Category;
@@ -14,17 +15,12 @@ use Modules\Sale\Models\Sale;
 use Modules\Sale\Models\SaleItem;
 use Modules\Sale\Models\SalePayment;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Core\Helpers\Helpers;
 
 class DashboardController extends Controller
 {
   public function index(): View
   {
-
-    $totalProducts = Product::query()->count();
-    $totalSales = Sale::query()->count();
-    $totalPurchases = Purchase::query()->count();
-    $totalCategories = Category::query()->count();
-
     $todayPurchaseCount = Purchase::query()->whereDate('purchased_at', today())->count();
     $todayPurchaseItems = $this->getTodayPurchaseItems();
     $todayPurchaseAmount = $this->getPurchaseAmount('today');
@@ -41,11 +37,6 @@ class DashboardController extends Controller
     $payableInstallments = $this->getPayableInstallments();
 
     return view('admin::dashboard.index', compact([
-
-      'totalProducts',
-      'totalSales',
-      'totalPurchases',
-      'totalCategories',
 
       'todayPurchaseCount',
       'todayPurchaseItems',
@@ -74,8 +65,8 @@ class DashboardController extends Controller
 
   private function getPurchaseAmount(string $time): int
   {
-    $startDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->startOfMonth();
-    $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
+    $startDate = Helpers::toGregorian(Verta::startMonth());
+    $endDate = Helpers::toGregorian(Verta::endMonth());
 
     $purchases = Purchase::query()
       ->when($time === 'today', fn($query) => $query->whereDate('purchased_at', today()))
@@ -105,8 +96,8 @@ class DashboardController extends Controller
 
   private function getSaleAmount(string $time)
   {
-    $startDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->startOfMonth();
-    $endDate = Carbon::now()->timezone(env('APP_TIMEZONE'))->endOfMonth();
+    $startDate = Helpers::toGregorian(Verta::startMonth());
+    $endDate = Helpers::toGregorian(Verta::endMonth());
 
     $sales = Sale::query()
       ->when($time === 'today', fn($query) => $query->whereDate('sold_at', today()))

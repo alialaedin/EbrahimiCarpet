@@ -65,7 +65,7 @@ class Helpers
 				$jDateArray[1],
 				$jDateArray[2]
 			);
-			$output = implode('/', $dateArray);
+			$output = implode('-', $dateArray);
 		}
 
 		return $output;
