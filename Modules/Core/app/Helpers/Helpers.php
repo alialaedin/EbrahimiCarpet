@@ -60,7 +60,7 @@ class Helpers
 
 		if (preg_match($pattern, $jDate)) {
 			$jDateArray = explode('/', $jDate);
-			$dateArray = Verta::getGregorian(
+			$dateArray = Verta::jalaliToGregorian(
 				$jDateArray[0],
 				$jDateArray[1],
 				$jDateArray[2]

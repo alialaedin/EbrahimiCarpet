@@ -3,11 +3,10 @@
 namespace Modules\Payment\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -34,23 +33,9 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function index(): View|Application|Factory|App
   {
-    $supplierId = \request('supplier_id');
-    $type = \request('type');
-    $status = \request('status');
-    $fromPaymentDate = \request('from_payment_date');
-    $toPaymentDate = \request('to_payment_date');
-    $fromDueDate = \request('from_due_date');
-    $toDueDate = \request('to_due_date');
-
     $payments = Payment::query()
-      ->select('id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status', 'created_at')
-      ->when($supplierId, fn(Builder $query) => $query->where('supplier_id', $supplierId))
-      ->when($type, fn(Builder $query) => $query->where('type', $type))
-      ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
-      ->when($fromPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '>=', $fromPaymentDate))
-      ->when($toPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '<=', $toPaymentDate))
-      ->when($fromDueDate, fn(Builder $query) => $query->whereDate('due_date', '>=', $fromDueDate))
-      ->when($toDueDate, fn(Builder $query) => $query->whereDate('due_date', '<=', $toDueDate))
+      ->select(['id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status', 'created_at'])
+      ->filters()
       ->with('supplier:id,name')
       ->latest('id')
       ->paginate()
@@ -113,23 +98,58 @@ class PaymentController extends Controller implements HasMiddleware
       $inputs['created_at'] = now();
       $inputs['updated_at'] = now();
     } elseif ($payType === Payment::TYPE_INSTALLMENT) {
-      $payDate = Carbon::parse($request->input('installment_start_date'));
+
+      $shamsiFirstPayDate = verta($request->input('installment_start_date'));
+      $jalaliDateArr = explode('-', $shamsiFirstPayDate->copy()->formatDate());
+
+      $year = $jalaliDateArr[0];
+      $month = $jalaliDateArr[1];
+      $day = $jalaliDateArr[2];
+
       for ($i = 1; $i <= $request->input('number_of_installments'); $i++) {
+
+        $payDate = implode('-', Verta::jalaliToGregorian($year, $month, $day));
 
         $inputs[] = [
           'type' => Payment::TYPE_INSTALLMENT,
           'supplier_id' => $supplier->id,
           'status' => 0,
           'amount' => $request->input('installment_amount'),
-          'due_date' => $payDate->copy()->toDateString(),
+          'due_date' => $payDate,
           'created_at' => now(),
           'updated_at' => now()
         ];
 
-        $payDate->addMonth();
+        $month = (int) $month + 1;
+
+        if ($month > 12) {
+          $month = 1;
+          $year += 1;
+        }
+
+        if ($month < 10) {
+          $month = '0' . $month;
+        }
+
+        if ($day == 31) {
+          if (in_array($month, ['07', '08', '09', '10', '11'])) {
+            $newDay = 30;
+          } elseif ($month == '12') {
+            $newDay = 29;
+          } else {
+            $newDay = 31;
+          }
+        }
+
+        if ($day == 30) {
+          $newDay = ($month == '12') ? 29 : 30; 
+        }
+
+        $day = $newDay ?? $day;
       }
     }
-    DB::table('payments')->insert($inputs);
+
+    Payment::insert($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
     return to_route('admin.payments.show', $supplier);

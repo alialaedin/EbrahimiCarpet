@@ -3,14 +3,12 @@
 namespace Modules\Sale\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Customer\Models\Customer;
 use Modules\Sale\Http\Requests\Admin\SalePayment\SalePaymentStoreRequest;
@@ -69,9 +67,9 @@ class SalePaymentController extends Controller implements HasMiddleware
       ->latest('id')
       ->get();
 
-    $cashPayments = $salePayments->where('type', '=','cash');
-    $installmentPayments = $salePayments->where('type', '=','installment');
-    $chequePayments = $salePayments->where('type', '=','cheque');
+    $cashPayments = $salePayments->where('type', '=', 'cash');
+    $installmentPayments = $salePayments->where('type', '=', 'installment');
+    $chequePayments = $salePayments->where('type', '=', 'cheque');
 
     return view('sale::sale-payment.show', compact(['customer', 'salePayments', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }
@@ -98,9 +96,7 @@ class SalePaymentController extends Controller implements HasMiddleware
       $inputs['payment_date'] = $request->input('cash_payment_date');
       $inputs['created_at'] = now();
       $inputs['updated_at'] = now();
-    }
-
-    elseif ($payType === SalePayment::TYPE_CHEQUE) {
+    } elseif ($payType === SalePayment::TYPE_CHEQUE) {
       $inputs['type'] = SalePayment::TYPE_CHEQUE;
       $inputs['customer_id'] = $customer->id;
       $inputs['amount'] = $request->input('cheque_amount');
@@ -113,26 +109,59 @@ class SalePaymentController extends Controller implements HasMiddleware
       $inputs['status'] = 0;
       $inputs['created_at'] = now();
       $inputs['updated_at'] = now();
-    }
+    } elseif ($payType === SalePayment::TYPE_INSTALLMENT) {
 
-    elseif ($payType === SalePayment::TYPE_INSTALLMENT) {
-      $payDate = Carbon::parse($request->input('installment_start_date'));
+      $shamsiFirstPayDate = verta($request->input('installment_start_date'));
+      $jalaliDateArr = explode('-', $shamsiFirstPayDate->copy()->formatDate());
+
+      $year = $jalaliDateArr[0];
+      $month = $jalaliDateArr[1];
+      $day = $jalaliDateArr[2];
+
       for ($i = 1; $i <= $request->input('number_of_installments'); $i++) {
+
+        $payDate = implode('-', Verta::jalaliToGregorian($year, $month, $day));
 
         $inputs[] = [
           'type' => SalePayment::TYPE_INSTALLMENT,
           'customer_id' => $customer->id,
           'status' => 0,
           'amount' => $request->input('installment_amount'),
-          'due_date' => $payDate->copy()->toDateString(),
+          'due_date' => $payDate,
           'created_at' => now(),
           'updated_at' => now(),
         ];
 
-        $payDate->addMonth();
+        $month = (int) $month + 1;
+
+        if ($month > 12) {
+          $month = 1;
+          $year += 1;
+        }
+
+        if ($month < 10) {
+          $month = '0' . $month;
+        }
+
+        if ($day == 31) {
+          if (in_array($month, ['07', '08', '09', '10', '11'])) {
+            $newDay = 30;
+          } elseif ($month == '12') {
+            $newDay = 29;
+          } else {
+            $newDay = 31;
+          }
+        }
+
+        if ($day == 30) {
+          $newDay = ($month == '12') ? 29 : 30; 
+        }
+
+        $day = $newDay ?? $day;
       }
     }
-    DB::table('sale_payments')->insert($inputs);
+
+    SalePayment::insert($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
     return to_route('admin.sale-payments.show', $customer);
@@ -171,5 +200,4 @@ class SalePaymentController extends Controller implements HasMiddleware
 
     return redirect()->back();
   }
-
 }

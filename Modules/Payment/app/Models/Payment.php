@@ -2,6 +2,7 @@
 
 namespace Modules\Payment\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Models\Admin;
@@ -80,7 +81,7 @@ class Payment extends BaseModel
 	// Functions
 	public function getType(): string
   {
-		return static::TYPES[$this->attributes['type']];
+		return self::TYPES[$this->attributes['type']];
 	}
 
   public function getPaymentDate(): string
@@ -92,16 +93,42 @@ class Payment extends BaseModel
 
   public function getDueDate(): string
   {
-    return $this->type === static::TYPE_CASH ? '-' : verta($this->attributes['due_date'])->format('Y/m/d');
+    return $this->type === self::TYPE_CASH ? '-' : verta($this->attributes['due_date'])->format('Y/m/d');
   }
 
   public static function getAllTypes(): array
   {
     return [
-      static::TYPE_CASH,
-      static::TYPE_CHEQUE,
-      static::TYPE_INSTALLMENT
+      self::TYPE_CASH,
+      self::TYPE_CHEQUE,
+      self::TYPE_INSTALLMENT
     ];
+  }
+
+  public function scopeFilters($query)
+  {
+    return $query
+      ->when(request('supplier_id'), function(Builder $q) {
+        $q->where('supplier_id', request('supplier_id'));
+      })
+      ->when(request('type'), function(Builder $q) {
+        $q->where('type', request('type'));
+      })
+      ->when(request('from_payment_date'), function(Builder $q) {
+        $q->whereDate('payment_date', '>=', request('from_payment_date'));
+      })
+      ->when(request('to_payment_date'), function(Builder $q) {
+        $q->whereDate('payment_date', '<=', request('to_payment_date'));
+      })
+      ->when(request('from_due_date'), function(Builder $q) {
+        $q->whereDate('due_date', '>=', request('from_due_date'));
+      })
+      ->when(request('to_due_date'), function(Builder $q) {
+        $q->whereDate('due_date', '<=', request('to_due_date'));
+      })
+      ->when(!is_null(request('status')), function(Builder $q) {
+        $q->where('status', request('status'));
+      });
   }
 
 }

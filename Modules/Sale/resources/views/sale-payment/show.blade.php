@@ -233,7 +233,7 @@
                       <span> - </span>
                     @endif
                   </td>
-                  <td class="text-center"> @jalaliDate($payment->due_date) </td>
+                  <td class="text-center"> @jalaliDateFormat($payment->due_date) </td>
                   <td class="text-center">
                     <x-core::badge
                       type="{{ $payment->status ? 'success' : 'danger' }}"
