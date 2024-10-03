@@ -79,11 +79,13 @@
             <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at)</li>
           </ul>
         </div>
-        <div class="col-12 mt-5">
-          <ul class="list-group">
-            <li class="list-group-item"><strong>توضیحات: </strong> {{ $supplier->description}} </li>
-          </ul>
-        </div>
+        @if ( $supplier->description)
+          <div class="col-12 mt-5">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>توضیحات: </strong> {{ $supplier->description}} </li>
+            </ul>
+          </div>
+        @endif
       </div>
     </div>
   </div>
@@ -93,49 +95,41 @@
       'title' => 'مبلغ کل خرید (ریال)',
       'amount' => number_format($supplier->total_purchases_amount),
       'color' => 'primary',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'جمع کل پرداختی ها (ریال)',
       'amount' => number_format($supplier->total_payments_amount),
       'color' => 'pink',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های پرداخت شده (ریال)',
       'amount' => number_format($supplier->paid_payments_amount),
       'color' => 'success',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های پرداخت نشده (ریال)',
       'amount' => number_format($supplier->unpaid_payments_amount),
       'color' => 'warning',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های نقدی (ریال)',
       'amount' => number_format($supplier->cash_payments_amount),
       'color' => 'secondary',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های چکی (ریال)',
       'amount' => number_format($supplier->cheque_purchases_amount),
       'color' => 'danger',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های قسطی (ریال)',
       'amount' => number_format($supplier->installment_purchases_amount),
       'color' => 'purple',
-      'icon' => 'money'
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'مبلغ باقی مانده (ریال)',
       'amount' => number_format($supplier->remaining_amount),
       'color' => 'info',
-      'icon' => 'money'
     ])
   </div>
   <div class="card">
