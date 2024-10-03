@@ -54,7 +54,7 @@ class PaymentStoreRequest extends FormRequest
 	{
 		$supplier = Supplier::query()->findOrFail($this->input('supplier_id'));
 		$type = $this->input('type');
-    $remainingAmount = $supplier->getRemainingAmount();
+    // $remainingAmount = $supplier->getRemainingAmount();
 
     if ($type == 'cheque') {
 
@@ -70,9 +70,9 @@ class PaymentStoreRequest extends FormRequest
         throw Helpers::makeWebValidationException('در وجه چک الزامی است!', 'pay_to');
       }elseif ($this->isNotFilled('cheque_due_date')) {
         throw Helpers::makeWebValidationException('تاریخ موعد چک الزامی است!', 'cheque_due_date');
-      }elseif ($this->input('cheque_amount') > $remainingAmount) {
+      }/*elseif ($this->input('cheque_amount') > $remainingAmount) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'cheque_amount');
-      }
+      }*/
 
     } elseif ($type == 'cash') {
 
@@ -80,9 +80,9 @@ class PaymentStoreRequest extends FormRequest
         throw Helpers::makeWebValidationException('تاریخ پرداخت را مشخص کنید.', 'cash_payment_date');
       } elseif ($this->isNotFilled('cash_amount')) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی را وارد کنید.', 'cash_amount');
-      }elseif ($this->input('cash_amount') > $remainingAmount) {
+      }/*elseif ($this->input('cash_amount') > $remainingAmount) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'cash_amount');
-      }
+      }*/
 
     }elseif ($type == 'installment') {
 

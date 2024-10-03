@@ -69,9 +69,11 @@ class Supplier extends BaseModel
     return $totalAmount;
   }
 
-  public function calcTotalPaymentAmount(): int|null
+  public function calcTotalPaymentAmount()
   {
-    return $this->payments->whereNotNull('payment_date')->sum('amount');
+    return $this->payments->filter(function ($payment) {
+      return $payment->status == 1 || (!is_null($payment->payment_date) && $payment->due_date < $payment->payment_date);
+    })->sum('amount');
   }
 
   public function getRemainingAmount(): int

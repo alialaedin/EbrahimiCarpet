@@ -38,7 +38,7 @@ class SalePaymentUpdateRequest extends FormRequest
   {
     $salePayment = $this->route('sale_payment');
     $customer = $salePayment->customer;
-    $remainingAmount = $customer->calcTotalSalesAmount() - $customer->payments->sum('amount') + $salePayment->amount;
+    // $remainingAmount = $customer->calcTotalSalesAmount() - $customer->payments->sum('amount') + $salePayment->amount;
     $type = $this->input('type');
 
     if ($type == 'cheque') {
@@ -55,9 +55,9 @@ class SalePaymentUpdateRequest extends FormRequest
         throw Helpers::makeWebValidationException('در وجه چک الزامی است!', 'pay_to');
       }elseif ($this->isNotFilled('due_date')) {
         throw Helpers::makeWebValidationException('تاریخ موعد چک الزامی است!', 'due_date');
-      }elseif ($this->input('amount') > $remainingAmount) {
+      }/*elseif ($this->input('amount') > $remainingAmount) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
-      }
+      }*/
 
     } elseif ($type == 'cash') {
 
@@ -65,9 +65,9 @@ class SalePaymentUpdateRequest extends FormRequest
         throw Helpers::makeWebValidationException('تاریخ پرداخت را مشخص کنید.', 'payment_date');
       } elseif ($this->isNotFilled('amount')) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی را وارد کنید.', 'amount');
-      }elseif ($this->input('amount') > $remainingAmount) {
+      }/*elseif ($this->input('amount') > $remainingAmount) {
         throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
-      }
+      }*/
 
     }elseif ($type == 'installment') {
 
