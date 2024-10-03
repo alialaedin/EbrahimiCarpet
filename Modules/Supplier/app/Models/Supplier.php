@@ -57,6 +57,50 @@ class Supplier extends BaseModel
     });
   }
 
+  public function getTotalPurchasesAmountAttribute()
+  {
+    return $this->purchases->sum(function ($purchase) {  
+      return $purchase->getTotalAmountWithDiscount();  
+    }); 
+  }
+
+  public function getTotalPaymentsAmountAttribute()
+  {
+    return $this->payments->sum('amount');
+  }
+
+  public function getPaidPaymentsAmountAttribute()
+  {
+    return $this->payments->filter(function ($payment) {
+      return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date < $payment->payment_date;
+    })->sum('amount');
+  }
+
+  public function getUnpaidPaymentsAmountAttribute()
+  {
+    return $this->payments->filter(function ($payment) {
+      return $payment->status != 1 || (is_null($payment->payment_date));
+    })->sum('amount');
+  }
+
+  public function getRemainingAmountAttribute()
+  {
+    return $this->total_purchases_amount - $this->total_payments_amount;
+  }
+
+  public function getChequePaymentsAmountAttribute()
+  {
+    return $this->payments->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount');
+  }
+  public function getCashPaymentsAmountAttribute()
+  {
+    return $this->payments->where('type', '=', Payment::TYPE_CASH)->sum('amount');
+  }
+  public function getInstallmentPaymentsAmountAttribute()
+  {
+    return $this->payments->where('type', '=', Payment::TYPE_INSTALLMENT)->sum('amount');
+  }
+
   // Functions
   public function calcTotalPurchaseAmount(): int
   {

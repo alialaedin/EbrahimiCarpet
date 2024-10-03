@@ -88,63 +88,55 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xl-4 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ کل خرید (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-info fs-20"> {{ number_format($supplier->calcTotalPurchaseAmount()) }} </h3>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-info-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> جمع پرداختی ها (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-success fs-20"> {{ number_format($supplier->calcTotalPaymentAmount()) }} </h3>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-success-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-9">
-              <div class="mt-0 text-right">
-                <span class="fs-16 font-weight-semibold"> مبلغ باقی مانده (ریال) : </span>
-                <h3 class="mb-0 mt-1 text-danger fs-20"> {{ number_format($supplier->getRemainingAmount()) }}  </h3>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="icon1 bg-danger-transparent my-auto float-left">
-                <i class="fa fa-money"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'مبلغ کل خرید (ریال)',
+      'amount' => number_format($supplier->total_purchases_amount),
+      'color' => 'primary',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'جمع کل پرداختی ها (ریال)',
+      'amount' => number_format($supplier->total_payments_amount),
+      'color' => 'pink',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'پرداختی های پرداخت شده (ریال)',
+      'amount' => number_format($supplier->paid_payments_amount),
+      'color' => 'success',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'پرداختی های پرداخت نشده (ریال)',
+      'amount' => number_format($supplier->unpaid_payments_amount),
+      'color' => 'warning',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'پرداختی های نقدی (ریال)',
+      'amount' => number_format($supplier->cash_payments_amount),
+      'color' => 'secondary',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'پرداختی های چکی (ریال)',
+      'amount' => number_format($supplier->cheque_purchases_amount),
+      'color' => 'danger',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'پرداختی های قسطی (ریال)',
+      'amount' => number_format($supplier->installment_purchases_amount),
+      'color' => 'purple',
+      'icon' => 'money'
+    ])
+    @include('admin::dashboard.includes.info-box', [
+      'title' => 'مبلغ باقی مانده (ریال)',
+      'amount' => number_format($supplier->remaining_amount),
+      'color' => 'info',
+      'icon' => 'money'
+    ])
   </div>
   <div class="card">
     <div class="card-header border-0 justify-content-between">
