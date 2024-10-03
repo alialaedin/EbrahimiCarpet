@@ -16,7 +16,8 @@
     </ol>
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('create purchases')
-        <a href="{{ route('admin.purchases.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور خرید</a>
+        <button onclick="$('#NewPurchaseForm').submit()" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور خرید جدید</button>
+        <form action="{{ route('admin.purchases.create', $supplier) }}" id="NewPurchaseForm" style="display: none"></form>
       @endcan
       @can('view payments')
         <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
