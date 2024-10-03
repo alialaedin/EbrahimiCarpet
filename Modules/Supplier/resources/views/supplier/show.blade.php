@@ -136,7 +136,7 @@
     <div class="card-header border-0 justify-content-between">
       <p class="card-title">حساب های بانکی ({{ $numberOfAccounts }})</p>
       @can('create accounts')
-        <button class="btn btn-outline-primary" data-target="#createAccountModal" data-toggle="modal">
+        <button class="btn btn-outline-primary btn-sm" data-target="#createAccountModal" data-toggle="modal">
           حساب جدید
           <i class="fa fa-plus font-weight-bolder mr-1"></i>
         </button>
@@ -194,7 +194,7 @@
     <div class="card-header border-0 justify-content-between">
       <p class="card-title">خرید ها ({{ $numberOfPurchases }})</p>
       @can('create purchases')
-        <button onclick="$('#CreateNewPurchaseForm').submit()" class="btn btn-outline-primary">
+        <button onclick="$('#CreateNewPurchaseForm').submit()" class="btn btn-outline-primary btn-sm">
           فاکتور خرید جدید
           <i class="fa fa-plus"></i>
         </button>
@@ -251,13 +251,13 @@
       <p class="card-title">پرداختی ها ({{ $numberOfPayments }})</p>
       <div>
         @can('view payments')
-          <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-outline-info ml-1">
+          <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-outline-info ml-1">
             همه پرداختی ها
             <i class="fa fa-eye"></i>
           </a>
         @endcan
         @can('create payments')
-          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-outline-primary mr-1">
+          <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-outline-primary mr-1">
             پرداختی جدید
             <i class="fa fa-plus"></i>
           </a>
