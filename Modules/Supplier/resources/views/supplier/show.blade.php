@@ -17,7 +17,9 @@
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       @can('create purchases')
         <button onclick="$('#NewPurchaseForm').submit()" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور خرید جدید</button>
-        <form action="{{ route('admin.purchases.create', $supplier) }}" id="NewPurchaseForm" style="display: none"></form>
+        <form action="{{ route('admin.purchases.create', $supplier) }}" id="NewPurchaseForm" style="display: none">
+          <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
+        </form>
       @endcan
       @can('view payments')
         <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
