@@ -2,7 +2,6 @@
 
 namespace Modules\Supplier\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
@@ -72,7 +71,7 @@ class Supplier extends BaseModel
   public function getPaidPaymentsAmountAttribute()
   {
     return $this->payments->filter(function ($payment) {
-      return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date < $payment->payment_date;
+      return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date <= $payment->payment_date;
     })->sum('amount');
   }
 
@@ -99,40 +98,6 @@ class Supplier extends BaseModel
   public function getInstallmentPaymentsAmountAttribute()
   {
     return $this->payments->where('type', '=', Payment::TYPE_INSTALLMENT)->sum('amount');
-  }
-
-  // Functions
-  public function calcTotalPurchaseAmount(): int
-  {
-    $totalAmount = 0;
-
-    foreach ($this->purchases as $purchase) {
-      $totalAmount += $purchase->getTotalAmountWithDiscount();
-    }
-
-    return $totalAmount;
-  }
-
-  public function calcTotalPaymentAmount()
-  {
-    return $this->payments->filter(function ($payment) {
-      return $payment->status == 1 || (!is_null($payment->payment_date) && $payment->due_date < $payment->payment_date);
-    })->sum('amount');
-  }
-
-  public function getRemainingAmount(): int
-  {
-    return $this->calcTotalPurchaseAmount() - $this->calcTotalPaymentAmount();
-  }
-
-  public function countPurchases(): int
-  {
-    return $this->purchases->count();
-  }
-
-  public function countPayments(): int
-  {
-    return $this->payments->count();
   }
 
   public function isDeletable(): bool

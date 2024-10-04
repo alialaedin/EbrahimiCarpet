@@ -48,8 +48,8 @@
         <div class="col-lg-6">
           <ul class="list-group">
             <li class="list-group-item"><strong>آدرس: </strong> {{ $supplier->address }} </li>
-            <li class="list-group-item"><strong>تعداد خرید ها : </strong>{{ number_format($supplier->countPurchases()) }} </li>
-            <li class="list-group-item"><strong>تعداد پرداختی ها : </strong>{{ number_format($supplier->countPayments()) }} </li>
+            <li class="list-group-item"><strong>تعداد خرید ها : </strong>{{ number_format($supplier->purchases_count) }} </li>
+            <li class="list-group-item"><strong>تعداد پرداختی ها : </strong>{{ number_format($supplier->payments_count) }} </li>
             <li class="list-group-item"><strong>تاریخ ثبت : </strong> @jalaliDate($supplier->created_at) </li>
           </ul>
         </div>

@@ -42,7 +42,7 @@ class PaymentController extends Controller implements HasMiddleware
       ->withQueryString();
 
     $totalPayments = $payments->total();
-    $suppliers = Supplier::all('id', 'name', 'mobile');
+    $suppliers = Supplier::getAllSuppliers();
 
     $cashPayments = $payments->where('type', '=', 'cash');
     $installmentPayments = $payments->where('type', '=', 'installment');
@@ -54,7 +54,7 @@ class PaymentController extends Controller implements HasMiddleware
   public function show(Supplier $supplier): View|Application|Factory|App
   {
     $payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
-
+    $supplier->loadCount(['purchases', 'payments']);
     $cashPayments = $payments->where('type', '=', 'cash');
     $installmentPayments = $payments->where('type', '=', 'installment');
     $chequePayments = $payments->where('type', '=', 'cheque');
@@ -64,6 +64,7 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function create(Supplier $supplier): View|Application|Factory|App
   {
+    $supplier->loadCount(['purchases', 'payments']);
     return view('payment::create', compact('supplier'));
   }
 

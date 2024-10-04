@@ -47,11 +47,11 @@
         </div>
         <div class="card-body">
           <ul class="list-group">
-            <li class="list-group-item"><strong class="ml-1">تعداد خرید ها : </strong> {{ $supplier->countPurchases() }} </li>
-            <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها : </strong> {{ $supplier->countPayments() }} </li>
-            <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید : </strong> {{ number_format($supplier->calcTotalPurchaseAmount()) }} ریال</li>
-            <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->calcTotalPaymentAmount()) }} ریال</li>
-            <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->getRemainingAmount()) }} ریال </li>
+            <li class="list-group-item"><strong class="ml-1">تعداد خرید ها : </strong> {{ $supplier->purchases_count }} </li>
+            <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها : </strong> {{ $supplier->payments_count }} </li>
+            <li class="list-group-item"><strong class="ml-1">مبلغ کل خرید : </strong> {{ number_format($supplier->total_purchases_amount) }} ریال</li>
+            <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->total_payments_amount) }} ریال</li>
+            <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->remaining_amount) }} ریال </li>
           </ul>
         </div>
       </div>
