@@ -12,20 +12,6 @@ class ProfitController extends Controller
 {
   public function index(): View
   {
-    // $productId = request('product_id');
-    // $categoryId = request('category_id');
-    // $fromDate = request('from_date');
-    // $toDate = request('to_date') ?? now();
-
-    // $sales = Sale::query()
-    //   ->when($fromDate, fn($q) => $q->whereDate('sold_at', '>=', $fromDate))
-    //   ->when($toDate, fn($q) => $q->whereDate('sold_at', '<=', $toDate))
-    //   ->when($productId, fn($q) => $q->whereHas('items', fn($itemQ) => $itemQ->where('product_id', $productId)))
-    //   ->when($categoryId, fn($q) => $q->whereHas('items.product', fn($itemQ) => $itemQ->where('category_id', $categoryId)))
-    //   ->with('items.product.category')
-    //   ->latest('id')
-    //   ->get();
-
     $saleItems = SaleItem::query()
       ->select(['id', 'sale_id', 'product_id', 'price', 'quantity', 'discount', 'archived_price'])
       ->when(request('from_date'), function ($itemQuery) {
@@ -60,41 +46,30 @@ class ProfitController extends Controller
     if ($saleItems->isNotEmpty()) {
 
       foreach ($saleItems as $item) {
+
         $sumTotalSellPrice += ($item->price * $item->quantity) - $item->discount;
+
         foreach ($item->archived_price as $price) {
           $sumTotalBuyPrice += (int) $price['buy_price'] * (int) $price['quantity'];
         }
-      }
 
-      $saleId = $item->sale_id;
-      if ($item->sale) {
-        if (!isset($saleDiscounts[$saleId]) && (int) $item->sale->discount) {
-          $saleDiscounts[$saleId] = (int) $item->sale->discount;
-          $sumTotalDiscountPrice += $saleDiscounts[$saleId];
-        }
-        if (!isset($saleCostsOfSewing[$saleId]) && (int) $item->sale->cost_of_sewing) {
-          $saleCostsOfSewing[$saleId] = (int) $item->sale->cost_of_sewing;
-          $sumTotalCostOfSewingPrice += $saleCostsOfSewing[$saleId];
+        $saleId = $item->sale_id;
+
+        if ($item->sale) {
+
+          if (!isset($saleDiscounts[$saleId]) && (int) $item->sale->discount) {
+            $saleDiscounts[$saleId] = (int) $item->sale->discount;
+            $sumTotalDiscountPrice += $saleDiscounts[$saleId];
+          }
+
+          if (!isset($saleCostsOfSewing[$saleId]) && (int) $item->sale->cost_of_sewing) {
+            $saleCostsOfSewing[$saleId] = (int) $item->sale->cost_of_sewing;
+            $sumTotalCostOfSewingPrice += $saleCostsOfSewing[$saleId];
+          }
+
         }
       }
     }
-
-    // if ($sales->count() >= 1) {
-    //   foreach ($sales as $sale) {
-    //     foreach ($sale->items as $saleItem) {
-    //       $sumTotalSellPrice += ($saleItem->price * $saleItem->quantity) - $saleItem->discount;
-    //       foreach ($saleItem->archived_price as $price) {
-    //         $sumTotalBuyPrice += (int) $price['buy_price'] * (int) $price['quantity'];
-    //       }
-    //     }
-    //     if ((int) $sale->discount) {
-    //       $sumTotalDiscountPrice += (int) $sale->discount;
-    //     }
-    //     if ((int) $sale->cost_of_sewing) {
-    //       $sumTotalCostOfSewingPrice += (int) $sale->cost_of_sewing;
-    //     }
-    //   }
-    // }
 
     $profit = $sumTotalSellPrice - $sumTotalBuyPrice - $sumTotalDiscountPrice + $sumTotalCostOfSewingPrice;
 
