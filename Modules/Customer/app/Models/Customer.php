@@ -51,7 +51,7 @@ class Customer extends Model
   public function getTotalSalesAmountAttribute()
   {
     return $this->sales->sum(function ($sale) {  
-      return $sale->getTotalAmountWithDiscount();  
+      return $sale->total_amount;  
     }); 
   }
 
