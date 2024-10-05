@@ -2,7 +2,7 @@
 
     @include('admin::dashboard.includes.info-box', [
       'title' => 'مبلغ کل خرید (ریال)',
-      'amount' => number_format($customer->total_purchases_amount),
+      'amount' => number_format($customer->total_sales_amount),
       'color' => 'primary',
     ])
     @include('admin::dashboard.includes.info-box', [
