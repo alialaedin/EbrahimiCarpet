@@ -33,11 +33,11 @@ class PurchaseStoreRequest extends FormRequest
 		return [
 			'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
 			'purchased_at' => ['required', 'date'],
-			'discount' => ['nullable', 'integer', 'min:1000'],
+			'discount' => ['nullable', 'integer'],
 			'products' => ['required', 'array'],
 			'products.*.id' => ['required', 'integer', 'exists:products,id'],
 			'products.*.quantity' => ['required', 'integer', 'min:1'],
-			'products.*.discount' => ['nullable', 'integer', 'min:1000'],
+			'products.*.discount' => ['nullable', 'integer'],
 			'products.*.price' => ['required', 'integer', 'min:1000'],
 		];
 	}

@@ -28,7 +28,7 @@ class PurchaseItemStoreRequest extends FormRequest
         Rule::unique('purchase_items', 'product_id')
           ->where('purchase_id', $this->input('purchase_id'))],
 			'quantity' => ['required', 'integer', 'min:1'],
-			'discount' => ['nullable', 'integer', 'min:1000'],
+			'discount' => ['nullable', 'integer'],
 			'price' => ['required', 'integer', 'min:1000'],
 		];
 	}

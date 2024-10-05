@@ -39,7 +39,7 @@ class SaleStoreRequest extends FormRequest
       'sold_at' => ['required', 'date'],
       'employee_id' => ['required', 'integer', Rule::exists('employees', 'id')],
       'discount_for' => ['nullable', 'string'],
-      'discount' => ['nullable', 'integer', 'min:1000'],
+      'discount' => ['nullable', 'integer'],
       'cost_of_sewing' => ['nullable', 'integer', 'min:1000'],
       'products' => ['required', 'array'],
       'products.*.id' => ['required', 'integer', 'exists:products,id'],

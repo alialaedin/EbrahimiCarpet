@@ -14,21 +14,21 @@
         <a>نمایش تامین کننده</a>
       </li>
     </ol>
-    <div class="d-flex align-items-center flex-wrap text-nowrap">
+    <div class="d-flex align-items-center flex-wrap text-nowrap" style="gap: 5px;">
       @can('create purchases')
-        <button onclick="$('#NewPurchaseForm').submit()" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور خرید جدید</button>
+        <button onclick="$('#NewPurchaseForm').submit()" class="btn btn-sm btn-indigo my-md-1">فاکتور خرید جدید</button>
         <form action="{{ route('admin.purchases.create', $supplier) }}" id="NewPurchaseForm" style="display: none">
           <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
         </form>
       @endcan
       @can('view payments')
-        <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
+        <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr my-md-1">مشاهده پرداختی ها</a>
       @endcan
       @can('create payments')
-        <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
+        <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-lime my-md-1">پرداختی جدید</a>
       @endcan
       @can('edit suppliers')
-        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-sm btn-warning mx-1">ویرایش</a>
+        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-sm btn-warning">ویرایش</a>
       @endcan
       @can('delete suppliers')
         <button
@@ -399,4 +399,14 @@
   {{--------------------- Edit Account Modal Section -----------------------------}}
   @include('supplier::account.edit-modal')
   {{--------------------- End Of Edit Modal Section -----------------------------}}
+@endsection
+
+@section('scripts')
+  <script>
+    $(document).ready(function() {
+      console.log('نقد : ' + @json($supplier->cash_payments_amount));
+      console.log('چک : ' + @json($supplier->cheque_purchases_amount));
+      console.log('قسط : ' + @json($supplier->installment_purchases_amount));
+    });
+  </script>
 @endsection

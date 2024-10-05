@@ -19,7 +19,7 @@ class PurchaseUpdateRequest extends FormRequest
 		return [
 			'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
 			'purchased_at' => ['required', 'date'],
-			'discount' => ['nullable', 'integer', 'min:1000'],
+			'discount' => ['nullable', 'integer'],
 		];
 	}
 
