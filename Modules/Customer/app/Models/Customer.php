@@ -128,6 +128,6 @@ class Customer extends Model
 
   public function payments(): HasMany
   {
-    return $this->hasMany(SalePayment::class);
+    return $this->hasMany(SalePayment::class, 'customer_id');
   }
 }
