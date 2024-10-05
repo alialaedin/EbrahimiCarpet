@@ -340,4 +340,9 @@
       modal.modal('show');
     }
   </script>
+  <script>
+    $(document).ready(function() {
+      console.log(@json($customer->all_payments_amount));
+    });
+  </script>
 @endsection
