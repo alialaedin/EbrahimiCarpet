@@ -92,49 +92,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
-
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'مبلغ کل خرید (ریال)',
-      'amount' => number_format($supplier->total_purchases_amount),
-      'color' => 'primary',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'جمع کل پرداختی ها (ریال)',
-      'amount' => number_format($supplier->total_payments_amount),
-      'color' => 'pink',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'پرداختی های پرداخت شده (ریال)',
-      'amount' => number_format($supplier->paid_payments_amount),
-      'color' => 'success',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'پرداختی های پرداخت نشده (ریال)',
-      'amount' => number_format($supplier->unpaid_payments_amount),
-      'color' => 'warning',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'پرداختی های نقدی (ریال)',
-      'amount' => number_format($supplier->all_payments_amount['cash']),
-      'color' => 'secondary',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'پرداختی های چکی (ریال)',
-      'amount' => number_format($supplier->all_payments_amount['cheque']),
-      'color' => 'danger',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'پرداختی های قسطی (ریال)',
-      'amount' => number_format($supplier->all_payments_amount['installment']),
-      'color' => 'purple',
-    ])
-    @include('admin::dashboard.includes.info-box', [
-      'title' => 'مبلغ باقی مانده (ریال)',
-      'amount' => number_format($supplier->remaining_amount),
-      'color' => 'info',
-    ])
-  </div>
+  @include('supplier::includes.purchase-statistics')
   <div class="card">
     <div class="card-header border-0 justify-content-between">
       <p class="card-title">حساب های بانکی ({{ $numberOfAccounts }})</p>
@@ -328,7 +286,6 @@
     </div>
   </div>
 
-  {{--------------------- Create Account Modal Section -----------------------------}}
   <div class="modal fade" id="createAccountModal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="margin-top: 20vh;">
       <div class="modal-content modal-content-demo">
@@ -394,19 +351,6 @@
       </div>
     </div>
   </div>
-  {{--------------------- End Of Create Modal Section -----------------------------}}
 
-  {{--------------------- Edit Account Modal Section -----------------------------}}
   @include('supplier::account.edit-modal')
-  {{--------------------- End Of Edit Modal Section -----------------------------}}
-@endsection
-
-@section('scripts')
-  <script>
-    $(document).ready(function() {
-      console.log('نقد : ' + @json($supplier->cash_payments_amount));
-      console.log('چک : ' + @json($supplier->cheque_purchases_amount));
-      console.log('قسط : ' + @json($supplier->installment_purchases_amount));
-    });
-  </script>
 @endsection

@@ -43,15 +43,15 @@
                   <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                   <td class="text-center">{{ $customer->name }}</td>
                   <td class="text-center">{{ $customer->mobile }}</td>
-                  <td class="text-center">{{ number_format($customer->calcTotalSalesAmount()) }}</td>
-                  <td class="text-center">{{ number_format($customer->calcTotalSalePaymentsAmount()) }}</td>
-                  <td class="text-center">{{ number_format($customer->getRemainingAmount()) }}</td>
+                  <td class="text-center">{{ number_format($customer->total_sales_amount) }}</td>
+                  <td class="text-center">{{ number_format($customer->total_payments_amount) }}</td>
+                  <td class="text-center">{{ number_format($customer->remaining_amount) }}</td>
                 </tr>
 
                 @php
-                  $totalSaleAmount += $customer->calcTotalSalesAmount();
-                  $totalPaymentAmount += $customer->calcTotalSalePaymentsAmount();
-                  $totalRemainingAmount += $customer->getRemainingAmount();
+                  $totalSaleAmount += $customer->total_sales_amount;
+                  $totalPaymentAmount += $customer->total_payments_amount;
+                  $totalRemainingAmount += $customer->remaining_amount;
                 @endphp
 
               @empty

@@ -39,7 +39,7 @@ class PaymentUpdateRequest extends FormRequest
 		$payment = $this->route('payment');
 		$supplier = $payment->supplier;
 		$type = $this->input('type');
-    // $remainingAmount = $supplier->getRemainingAmount() + $payment->amount;
+    // $remainingAmount = $supplier->remaining_amount + $payment->amount;
 
     if ($type == 'cheque') {
 

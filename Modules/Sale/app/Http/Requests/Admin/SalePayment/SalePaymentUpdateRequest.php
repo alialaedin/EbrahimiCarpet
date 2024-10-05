@@ -38,7 +38,6 @@ class SalePaymentUpdateRequest extends FormRequest
   {
     $salePayment = $this->route('sale_payment');
     $customer = $salePayment->customer;
-    // $remainingAmount = $customer->calcTotalSalesAmount() - $customer->payments->sum('amount') + $salePayment->amount;
     $type = $this->input('type');
 
     if ($type == 'cheque') {

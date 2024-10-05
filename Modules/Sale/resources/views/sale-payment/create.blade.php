@@ -49,9 +49,9 @@
           <ul class="list-group">
             <li class="list-group-item"><strong>تعداد خرید ها : </strong> {{ $customer->countSales() }} </li>
             <li class="list-group-item"><strong>تعداد پرداختی ها : </strong> {{ $customer->countPayments() }} </li>
-            <li class="list-group-item"><strong>مبلغ کل خرید : </strong> {{ number_format($customer->calcTotalSalesAmount()) }} ریال</li>
-            <li class="list-group-item"><strong>جمع پرداخت شده ها : </strong> {{ number_format($customer->calcTotalSalePaymentsAmount()) }} ریال</li>
-            <li class="list-group-item"><strong>مبلغ باقی مانده : </strong> {{ number_format($customer->getRemainingAmount()) }} ریال </li>
+            <li class="list-group-item"><strong>مبلغ کل خرید : </strong> {{ number_format($customer->total_sales_amount) }} ریال</li>
+            <li class="list-group-item"><strong>جمع پرداخت شده ها : </strong> {{ number_format($customer->total_payments_amount) }} ریال</li>
+            <li class="list-group-item"><strong>مبلغ باقی مانده : </strong> {{ number_format($customer->remaining_amount) }} ریال </li>
           </ul>
         </div>
       </div>

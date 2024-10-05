@@ -53,7 +53,6 @@ class SalePaymentStoreRequest extends FormRequest
   {
     $customer = Customer::query()->findOrFail($this->input('customer_id'));
     $type = $this->input('type');
-    // $remainingAmount = $customer->calcTotalSalesAmount() - $customer->payments->sum('amount');
 
     if ($type == 'cheque') {
 

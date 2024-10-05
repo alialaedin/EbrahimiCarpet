@@ -48,28 +48,46 @@ class Customer extends Model
     });
   }
 
-  // Functions
-  public function calcTotalSalesAmount()
+  public function getTotalSalesAmountAttribute()
   {
-    $totalAmount = 0;
-
-    foreach ($this->sales as $sale) {
-      $totalAmount += $sale->getTotalAmountWithDiscount();
-    }
-
-    return $totalAmount;
+    return $this->sales->sum(function ($sale) {  
+      return $sale->getTotalAmountWithDiscount();  
+    }); 
   }
 
-  public function calcTotalSalePaymentsAmount()
+  public function getTotalPaymentsAmountAttribute()
+  {
+    return $this->payments->sum('amount');
+  }
+
+  public function getPaidPaymentsAmountAttribute()
   {
     return $this->payments->filter(function ($payment) {
-      return $payment->status == 1 || $payment->due_date < $payment->payment_date;
+      return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date <= $payment->payment_date;
     })->sum('amount');
   }
 
-  public function getRemainingAmount()
+  public function getUnpaidPaymentsAmountAttribute()
   {
-    return $this->calcTotalSalesAmount() - $this->calcTotalSalePaymentsAmount();
+    return $this->payments->filter(function ($payment) {
+      return $payment->status != 1 || (is_null($payment->payment_date));
+    })->sum('amount');
+  }
+
+  public function getRemainingAmountAttribute()
+  {
+    return $this->total_sales_amount - $this->total_payments_amount;
+  }
+
+  public function getAllPaymentsAmountAttribute()
+  {
+    $payments = $this->payments();
+
+    return [
+      'cheque' => $payments->where('type', '=', SalePayment::TYPE_CHEQUE)->sum('amount'),
+      'cash' => $payments->where('type', '=', SalePayment::TYPE_CASH)->sum('amount'),
+      'installment' => $payments->where('type', '=', SalePayment::TYPE_INSTALLMENT)->sum('amount')
+    ];
   }
 
   public function countSales()

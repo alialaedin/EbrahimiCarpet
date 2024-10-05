@@ -54,7 +54,7 @@ class PaymentStoreRequest extends FormRequest
 	{
 		$supplier = Supplier::query()->findOrFail($this->input('supplier_id'));
 		$type = $this->input('type');
-    // $remainingAmount = $supplier->getRemainingAmount();
+    // $remainingAmount = $supplier->remaining_amount;
 
     if ($type == 'cheque') {
 
