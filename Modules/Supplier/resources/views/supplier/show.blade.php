@@ -116,17 +116,17 @@
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های نقدی (ریال)',
-      'amount' => number_format($supplier->cash_payments_amount),
+      'amount' => number_format($supplier->all_payments_amount['cash']),
       'color' => 'secondary',
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های چکی (ریال)',
-      'amount' => number_format($supplier->cheque_purchases_amount),
+      'amount' => number_format($supplier->all_payments_amount['cheque']),
       'color' => 'danger',
     ])
     @include('admin::dashboard.includes.info-box', [
       'title' => 'پرداختی های قسطی (ریال)',
-      'amount' => number_format($supplier->installment_purchases_amount),
+      'amount' => number_format($supplier->all_payments_amount['installment']),
       'color' => 'purple',
     ])
     @include('admin::dashboard.includes.info-box', [

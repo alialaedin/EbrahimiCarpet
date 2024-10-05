@@ -87,6 +87,17 @@ class Supplier extends BaseModel
     return $this->total_purchases_amount - $this->total_payments_amount;
   }
 
+  public function getAllPaymentsAmountAttribute()
+  {
+    $payments = $this->payments();
+
+    return [
+      'cheque' => $payments->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount'),
+      'cash' => $payments->where('type', '=', Payment::TYPE_CASH)->sum('amount'),
+      'installment' => $payments->where('type', '=', Payment::TYPE_INSTALLMENT)->sum('amount')
+    ];
+  }
+
   public function getChequePaymentsAmountAttribute()
   {
     return $this->payments->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount');
