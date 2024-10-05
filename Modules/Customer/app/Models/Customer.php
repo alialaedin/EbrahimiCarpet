@@ -81,7 +81,7 @@ class Customer extends Model
 
   public function getAllPaymentsAmountAttribute()
   {
-    $payments = $this->payments();
+    $payments = $this->payments()->select(['id', 'type', 'amount']);
 
     return [
       'cheque' => $payments->where('type', '=', SalePayment::TYPE_CHEQUE)->sum('amount'),

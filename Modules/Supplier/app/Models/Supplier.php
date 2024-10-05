@@ -89,7 +89,7 @@ class Supplier extends BaseModel
 
   public function getAllPaymentsAmountAttribute()
   {
-    $payments = $this->payments();
+    $payments = $this->payments()->select(['id', 'type', 'amount']);
 
     return [
       'cheque' => $payments->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount'),
