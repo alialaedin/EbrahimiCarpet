@@ -4,7 +4,6 @@ namespace Modules\Payment\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Hekmatinasser\Verta\Facades\Verta;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
@@ -20,14 +19,13 @@ use Modules\Supplier\Models\Supplier;
 
 class PaymentController extends Controller implements HasMiddleware
 {
-
   public static function middleware(): array
   {
     return [
-      new Middleware('can:view payments', ['index']),
+      new Middleware('can:view payments', ['index', 'cheques']),
       new Middleware('can:create payments', ['create', 'store']),
       new Middleware('can:edit payments', ['edit', 'update']),
-      new Middleware('can:delete payments', ['destroy']),
+      new Middleware('can:delete payments', ['destroy', 'destroyImage']),
     ];
   }
 
@@ -188,6 +186,21 @@ class PaymentController extends Controller implements HasMiddleware
     toastr()->success("عکس با موفقیت حذف شد.");
 
     return redirect()->back();
+  }
+
+  public function cheques()
+  {
+    $chequePayments = Payment::query()
+      ->cheques()
+      ->filters()
+      ->with('supplier:id,name')
+      ->latest('id')
+      ->paginate()
+      ->withQueryString();
+      
+    return view('payment::cheques', compact([
+      'chequePayments' => $chequePayments
+    ]));
   }
 
 }

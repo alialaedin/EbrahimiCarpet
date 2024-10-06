@@ -19,6 +19,8 @@ class Payment extends BaseModel
   public const TYPE_INSTALLMENT = 'installment';
   public const TYPE_CHEQUE = 'cheque';
 
+  private const MAIN_SELECTED_COLUMNS = ['id', 'supplier_id', 'amount', 'type', 'payment_date', 'status', 'created_at'];
+
 	private const TYPES = [
 		'cash' => 'نقد',
 		'installment' => 'قسط',
@@ -103,6 +105,19 @@ class Payment extends BaseModel
       self::TYPE_CHEQUE,
       self::TYPE_INSTALLMENT
     ];
+  }
+
+  public function scopeCheques($query)
+  {
+    $selectedColumns = self::MAIN_SELECTED_COLUMNS;
+    array_push($selectedColumns, 'cheque_holder', 'cheque_serial', 'bank_name', 'pay_to', 'is_mine');
+    
+    return $query->select($selectedColumns)->where('type', '=', self::TYPE_CHEQUE);
+  }
+
+  public function scopeInstallments($query)
+  {
+    return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_INSTALLMENT);
   }
 
   public function scopeFilters($query)
