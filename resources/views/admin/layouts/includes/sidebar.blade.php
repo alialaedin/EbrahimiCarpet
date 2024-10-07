@@ -98,8 +98,9 @@
           <ul class="slide-menu">
             @can('view payments')
               <li><a href="{{route("admin.payments.index")}}" class="slide-item">پرداختی به تامین کننده</a></li>
-              <li><a href="{{route("admin.payments.index")}}" class="slide-item">اقساط پرداختی</a></li>
+              <li><a href="{{route("admin.payments.installments")}}" class="slide-item">اقساط پرداختی</a></li>
               <li><a href="{{route("admin.payments.cheques")}}" class="slide-item">چک های پرداختی</a></li>
+              <li><a href="{{route("admin.payments.cashes")}}" class="slide-item">نقدی های پرداختی</a></li>
             @endcan
             @can('view sale_payments')
               <li><a href="{{route("admin.sale-payments.index")}}" class="slide-item">دریافتی از مشتری</a></li>

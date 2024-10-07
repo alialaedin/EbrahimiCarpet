@@ -190,17 +190,55 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function cheques()
   {
-    $chequePayments = Payment::query()
-      ->cheques()
+    $chequePayments = $this->getPaymentsWithType(Payment::TYPE_CHEQUE);
+    $suppliers = Supplier::getAllSuppliers();
+
+    return view('payment::cheques', compact('chequePayments', 'suppliers'));
+  }
+
+  public function installments()
+  {
+    $installmentPayments = $this->getPaymentsWithType(Payment::TYPE_INSTALLMENT);
+    $suppliers = Supplier::getAllSuppliers();
+
+    return view('payment::installments', compact('installmentPayments', 'suppliers'));
+  }
+
+  public function cashes()
+  {
+    $cashPayments = $this->getPaymentsWithType(Payment::TYPE_CASH);
+    $suppliers = Supplier::getAllSuppliers();
+
+    return view('payment::cashes', compact('cashPayments', 'suppliers'));
+  }
+
+  private function getPaymentsWithType($type)
+  {
+    $paymentsQuery = Payment::query();
+
+    switch ($type) {
+      case Payment::TYPE_CHEQUE:
+        $paymentsQuery->cheques();
+        break;
+      case Payment::TYPE_INSTALLMENT:
+        $paymentsQuery->installments();
+        break;
+      case Payment::TYPE_CASH:
+        $paymentsQuery->cashes();
+        break;
+      default:
+        toastr()->error('نوع پرداخت درخواستی اشتباه است');
+        return redirect()->back();
+    }
+
+    $payments = $paymentsQuery
       ->filters()
       ->with('supplier:id,name')
       ->latest('id')
       ->paginate()
       ->withQueryString();
-      
-    return view('payment::cheques', compact([
-      'chequePayments' => $chequePayments
-    ]));
+
+    return $payments;
   }
 
 }

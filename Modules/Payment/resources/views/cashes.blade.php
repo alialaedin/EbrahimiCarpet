@@ -8,7 +8,7 @@
         </a>
       </li>
       <li class="breadcrumb-item active">
-        <a>چک های پرداختی</a>
+        <a>نقدی های پرداختی</a>
       </li>
     </ol>
   </div>
@@ -17,7 +17,7 @@
     <x-slot name="cardTitle">جستجوی پیشرفته</x-slot>
     <x-slot name="cardOptions"><x-core::card-options/></x-slot>
     <x-slot name="cardBody">
-      <form action="{{ route("admin.payments.cheques") }}">
+      <form action="{{ route("admin.payments.cashes") }}">
         <div class="row">
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
@@ -61,20 +61,13 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-xl-9 col-lg-8 col-md-6 col-12">
-            <button class="btn btn-primary btn-block" type="submit">جستجو <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-            <a href="{{ route("admin.payments.cheques") }}" class="btn btn-danger btn-block">حذف همه فیلتر ها <i class="fa fa-close"></i></a>
-          </div>
-        </div>
+        git 
       </form>
     </x-slot>
   </x-core::card>
 
   <x-core::card>
-    <x-slot name="cardTitle">چک های پرداختی به تامین کننده ({{ $chequePayments->total() }})</x-slot>
+    <x-slot name="cardTitle">نقدی های پرداختی به تامین کننده ({{ $cashPayments->total() }})</x-slot>
     <x-slot name="cardOptions"><x-core::card-options/></x-slot>
     <x-slot name="cardBody">
       <x-core::table>
@@ -82,41 +75,26 @@
           <tr>
             <th>ردیف</th>
             <th>تامین کننده</th>
-            <th>سریال</th>
-            <th>صاحب چک</th>
-            <th>بانک</th>
-            <th>مبلغ (ریال)</th>
-            <th>تاریخ سررسید</th>
+            <th>مبلغ پرداختی (ریال)</th>
             <th>تاریخ پرداخت</th>
             <th>تاریخ ثبت</th>
-            <th>وضعیت</th>
           </tr>
         </x-slot>
         <x-slot name="tableTd">
-          @forelse ($chequePayments as $payment)
+          @forelse ($cashPayments as $payment)
           <tr>
             <td class="font-weight-bold">{{ $loop->iteration }}</td>
             <td>{{ $payment->supplier->name }}</td>
-            <td>{{ $payment->cheque_serial }}</td>
-            <td>{{ $payment->cheque_holder }}</td>
-            <td>{{ $payment->bank_name }}</td>
             <td>{{ number_format($payment->amount) }}</td>
-            <td>@jalaliDateFormat($payment->due_date)</td>
             <td>{{ $payment->getPaymentDate() }}</td>
-            <td>@jalaliDate($payment->created_at)</td>
-            <td>
-              <x-core::light-badge>
-                <slot name="type">{{ $payment->status ? 'success' : 'danger' }}</slot>
-                <slot name="text">{{ $payment->status ? 'پاس شده' : 'پاس نشده' }}</slot>
-              </x-core::light-badge>
-            </td>
+            <td>@jalaliDateFormat($payment->created_at)</td>
           </tr>
         @empty
-          <x-core::data-not-found-alert :colspan="10"/>
+          <x-core::data-not-found-alert :colspan="5"/>
         @endforelse
         </x-slot>
         <x-slot name="extraData">
-          {{ $chequePayments->onEachSide(0)->links('vendor.pagination.bootstrap-4') }}
+          {{ $cashPayments->onEachSide(0)->links('vendor.pagination.bootstrap-4') }}
         </x-slot>
       </x-core::table>
     </x-slot>

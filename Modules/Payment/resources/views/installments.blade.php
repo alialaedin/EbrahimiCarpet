@@ -8,7 +8,7 @@
         </a>
       </li>
       <li class="breadcrumb-item active">
-        <a>چک های پرداختی</a>
+        <a>اقساط پرداختی</a>
       </li>
     </ol>
   </div>
@@ -17,7 +17,7 @@
     <x-slot name="cardTitle">جستجوی پیشرفته</x-slot>
     <x-slot name="cardOptions"><x-core::card-options/></x-slot>
     <x-slot name="cardBody">
-      <form action="{{ route("admin.payments.cheques") }}">
+      <form action="{{ route("admin.payments.installments") }}">
         <div class="row">
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
@@ -66,7 +66,7 @@
             <button class="btn btn-primary btn-block" type="submit">جستجو <i class="fa fa-search"></i></button>
           </div>
           <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-            <a href="{{ route("admin.payments.cheques") }}" class="btn btn-danger btn-block">حذف همه فیلتر ها <i class="fa fa-close"></i></a>
+            <a href="{{ route("admin.payments.installments") }}" class="btn btn-danger btn-block">حذف همه فیلتر ها <i class="fa fa-close"></i></a>
           </div>
         </div>
       </form>
@@ -74,7 +74,7 @@
   </x-core::card>
 
   <x-core::card>
-    <x-slot name="cardTitle">چک های پرداختی به تامین کننده ({{ $chequePayments->total() }})</x-slot>
+    <x-slot name="cardTitle">اقساط پرداختی به تامین کننده ({{ $installmentPayments->total() }})</x-slot>
     <x-slot name="cardOptions"><x-core::card-options/></x-slot>
     <x-slot name="cardBody">
       <x-core::table>
@@ -82,9 +82,6 @@
           <tr>
             <th>ردیف</th>
             <th>تامین کننده</th>
-            <th>سریال</th>
-            <th>صاحب چک</th>
-            <th>بانک</th>
             <th>مبلغ (ریال)</th>
             <th>تاریخ سررسید</th>
             <th>تاریخ پرداخت</th>
@@ -93,17 +90,14 @@
           </tr>
         </x-slot>
         <x-slot name="tableTd">
-          @forelse ($chequePayments as $payment)
+          @forelse ($installmentPayments as $payment)
           <tr>
             <td class="font-weight-bold">{{ $loop->iteration }}</td>
             <td>{{ $payment->supplier->name }}</td>
-            <td>{{ $payment->cheque_serial }}</td>
-            <td>{{ $payment->cheque_holder }}</td>
-            <td>{{ $payment->bank_name }}</td>
             <td>{{ number_format($payment->amount) }}</td>
             <td>@jalaliDateFormat($payment->due_date)</td>
             <td>{{ $payment->getPaymentDate() }}</td>
-            <td>@jalaliDate($payment->created_at)</td>
+            <td>@jalaliDateFormat($payment->created_at)</td>
             <td>
               <x-core::light-badge>
                 <slot name="type">{{ $payment->status ? 'success' : 'danger' }}</slot>
@@ -112,11 +106,11 @@
             </td>
           </tr>
         @empty
-          <x-core::data-not-found-alert :colspan="10"/>
+          <x-core::data-not-found-alert :colspan="7"/>
         @endforelse
         </x-slot>
         <x-slot name="extraData">
-          {{ $chequePayments->onEachSide(0)->links('vendor.pagination.bootstrap-4') }}
+          {{ $installmentPayments->onEachSide(0)->links('vendor.pagination.bootstrap-4') }}
         </x-slot>
       </x-core::table>
     </x-slot>
@@ -127,4 +121,6 @@
 @section('scripts')
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
+  <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
+  <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
 @endsection

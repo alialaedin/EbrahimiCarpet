@@ -120,6 +120,11 @@ class Payment extends BaseModel
     return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_INSTALLMENT);
   }
 
+  public function scopeCashes($query)
+  {
+    return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_CASH);
+  }
+
   public function scopeFilters($query)
   {
     return $query

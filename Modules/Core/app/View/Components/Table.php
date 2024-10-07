@@ -10,9 +10,8 @@ class Table extends Component
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(public $table)
+	public function __construct()
 	{
-		$this->table = $table;
 	}
 
 	/**
