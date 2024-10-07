@@ -131,6 +131,9 @@ class Payment extends BaseModel
       ->when(request('supplier_id'), function(Builder $q) {
         $q->where('supplier_id', request('supplier_id'));
       })
+      ->when(request('cheque_holder'), function(Builder $q) {
+        $q->where('cheque_holder', 'LIKE', '%' . request('cheque_holder') . '%');
+      })
       ->when(request('type'), function(Builder $q) {
         $q->where('type', request('type'));
       })
