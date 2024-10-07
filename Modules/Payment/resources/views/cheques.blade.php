@@ -105,10 +105,11 @@
             <td>{{ $payment->getPaymentDate() }}</td>
             <td>@jalaliDate($payment->created_at)</td>
             <td>
-              <x-core::light-badge>
-                <slot name="type">{{ $payment->status ? 'success' : 'danger' }}</slot>
-                <slot name="text">{{ $payment->status ? 'پاس شده' : 'پاس نشده' }}</slot>
-              </x-core::light-badge>
+              @php  
+                $type = $payment->status ? 'success' : 'danger';  
+                $text = $payment->status ? 'پاس شده' : 'پاس نشده';  
+              @endphp  
+              <x-core::light-badge :type="$type" :text="$text"/>  
             </td>
           </tr>
         @empty
