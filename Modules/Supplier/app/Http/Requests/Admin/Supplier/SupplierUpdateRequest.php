@@ -5,9 +5,18 @@ namespace Modules\Supplier\Http\Requests\Admin\Supplier;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Rules\IranMobile;
+use Modules\Supplier\Models\Supplier;
 
 class SupplierUpdateRequest extends FormRequest
 {
+	private int $nationalCodeDigits = 10;
+	public function prepareForValidation()
+	{
+		if ($this->input('type') == Supplier::TYPE_LEGAL) {
+			$this->nationalCodeDigits = 11;
+		}
+	}
+
 	public function rules(): array
 	{
     $supplierId = $this->route('supplier')->id;
@@ -22,7 +31,7 @@ class SupplierUpdateRequest extends FormRequest
 				new IranMobile
 			],
       'telephone' => ['nullable', 'numeric', Rule::unique('suppliers', 'telephone')->ignore($supplierId), 'digits:11'],
-      'national_code' => ['required', 'numeric', Rule::unique('suppliers', 'national_code')->ignore($supplierId), 'digits:10'],
+      'national_code' => ['required', 'numeric', Rule::unique('suppliers', 'national_code')->ignore($supplierId), 'digits:' . $this->nationalCodeDigits],
       'postal_code' => ['required', 'numeric', Rule::unique('suppliers', 'postal_code')->ignore($supplierId), 'digits:10'],
       'description' => ['nullable', 'string'],
       'type' => ['required', 'in:legal,real'],
