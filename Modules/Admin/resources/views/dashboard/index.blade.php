@@ -123,6 +123,38 @@
 
     @can('view supplier cheques')
       @include('admin::dashboard.includes.table', [
+        'title' => 'چک های پرداختی امروز',
+        'showAllDataBtnId' => 'todayChequePaymentsForm',
+        'table' => 'payments',
+        'allData' => $todayPayableCheques
+      ])
+    @endcan
+    @can('view customer cheques')
+      @include('admin::dashboard.includes.table', [
+        'title' => 'چک های دریافتی امروز',
+        'showAllDataBtnId' => 'todayChequeSalePaymentsForm',
+        'table' => 'sale-payments',
+        'allData' => $todayReceivedCheques
+      ])
+    @endcan
+    @can('view supplier installments')
+      @include('admin::dashboard.includes.table', [
+        'title' => 'اقساط پرداختی امروز',
+        'showAllDataBtnId' => 'todayInstallmentPaymentsForm',
+        'table' => 'payments',
+        'allData' => $todayPayableInstallments
+      ])
+    @endcan
+    @can('view customer installments')
+      @include('admin::dashboard.includes.table', [
+        'title' => 'اقساط دریافتی امروز',
+        'showAllDataBtnId' => 'todayInstallmentSalePaymentsForm',
+        'table' => 'sale-payments',
+        'allData' => $todayReceivedInstallments
+      ])
+    @endcan
+    @can('view supplier cheques')
+      @include('admin::dashboard.includes.table', [
         'title' => 'چک های پرداختی',
         'showAllDataBtnId' => 'chequePaymentsForm',
         'table' => 'payments',

@@ -50,6 +50,11 @@ class DashboardController extends Controller
       'todaySaleAmount',
       'thisMonthSaleAmount',
 
+      'todayReceivedCheques',
+      'todayPayableCheques',
+      'todayReceivedInstallments',
+      'todayPayableInstallments',
+
       'receivedCheques',
       'payableCheques',
       'receivedInstallments',
