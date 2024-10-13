@@ -11,7 +11,7 @@
         </form>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
           <div class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="row">
               <table class="table text-center table-vcenter table-striped">

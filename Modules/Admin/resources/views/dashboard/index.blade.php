@@ -139,7 +139,7 @@
     @endcan
     @can('view supplier installments')
       @include('admin::dashboard.includes.table', [
-        'title' => 'اقساط پرداختی به تامین کنندگان',
+        'title' => 'اقساط پرداختی',
         'showAllDataBtnId' => 'installmentPaymentsForm',
         'table' => 'payments',
         'allData' => $payableInstallments
@@ -147,7 +147,7 @@
     @endcan
     @can('view customer installments')
       @include('admin::dashboard.includes.table', [
-        'title' => 'اقساط دریافتی از مشتری',
+        'title' => 'اقساط دریافتی',
         'showAllDataBtnId' => 'installmentSalePaymentsForm',
         'table' => 'sale-payments',
         'allData' => $receivedInstallments

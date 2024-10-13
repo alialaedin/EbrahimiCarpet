@@ -28,6 +28,11 @@ class DashboardController extends Controller
     $todaySaleAmount = $this->getSaleAmount('today');
     $thisMonthSaleAmount = $this->getSaleAmount('month');
 
+    $todayReceivedCheques = $this->getReceivedCheques('today');
+    $todayPayableCheques = $this->getPayableCheques('today');
+    $todayReceivedInstallments = $this->getReceivedInstallments('today');
+    $todayPayableInstallments = $this->getPayableInstallments('today');
+
     $receivedCheques = $this->getReceivedCheques();
     $payableCheques = $this->getPayableCheques();
     $receivedInstallments = $this->getReceivedInstallments();
@@ -115,51 +120,83 @@ class DashboardController extends Controller
     return $amount;
   }
 
-  private function getReceivedCheques(): Collection|array
+  private function getReceivedCheques(string $time = null): Collection|array
   {
-    return SalePayment::query()
+    $salePayments = SalePayment::query()
       ->select('id', 'customer_id', 'amount', 'type', 'due_date', 'payment_date')
       ->where('type', '=', 'cheque')
       ->whereNull('payment_date')
-      ->with('customer:id,name')
-      ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->orderBy('due_date', 'ASC')
-      ->get();
+      ->with('customer:id,name');
+
+    if ($time != null && $time == 'today') {
+      $salePayments->whereDate('due_date', now());
+    }else {
+      $salePayments->whereDate('due_date', '<=', now()->addWeeks(2));
+    }
+    
+    $salePayments->orderBy('due_date', 'ASC');
+    $salePayments = $salePayments->get();
+
+    return $salePayments;
   }
 
-  private function getPayableCheques(): Collection|array
+  private function getPayableCheques(string $time = null): Collection|array
   {
-    return Payment::query()
+    $payments = Payment::query()
       ->select('id', 'supplier_id', 'amount', 'type', 'due_date', 'payment_date')
       ->where('type', '=', 'cheque')
       ->whereNull('payment_date')
-      ->with('supplier:id,name')
-      ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->orderBy('due_date', 'ASC')
-      ->get();
+      ->with('supplier:id,name');
+
+    if ($time != null && $time == 'today') {
+      $payments->whereDate('due_date', now());
+    }else {
+      $payments->whereDate('due_date', '<=', now()->addWeeks(2));
+    }
+    
+    $payments->orderBy('due_date', 'ASC');
+    $payments = $payments->get();
+
+    return $payments;
   }
 
-  private function getReceivedInstallments(): Collection|array
+  private function getReceivedInstallments(string $time = null): Collection|array
   {
-    return SalePayment::query()
+    $payments = SalePayment::query()
       ->select('id', 'customer_id', 'amount', 'type', 'due_date', 'payment_date', 'image')
       ->where('type', '=', 'installment')
       ->whereNull('payment_date')
-      ->with('customer:id,name,mobile')
-      ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->orderBy('due_date', 'ASC')
-      ->get();
+      ->with('customer:id,name,mobile');
+
+    if ($time != null && $time == 'today') {
+      $payments->whereDate('due_date', now());
+    }else {
+      $payments->whereDate('due_date', '<=', now()->addWeeks(2));
+    }
+    
+    $payments->orderBy('due_date', 'ASC');
+    $payments = $payments->get();
+
+    return $payments;
   }
 
-  private function getPayableInstallments(): Collection|array
+  private function getPayableInstallments(string $time = null): Collection|array
   {
-    return Payment::query()
+    $payments = Payment::query()
       ->select('id', 'supplier_id', 'amount', 'type', 'due_date', 'payment_date', 'image')
       ->where('type', '=', 'installment')
       ->whereNull('payment_date')
-      ->with('supplier:id,name,mobile')
-      ->whereDate('due_date', '<=', now()->addWeeks(2))
-      ->orderBy('due_date', 'ASC')
-      ->get();
+      ->with('supplier:id,name,mobile');
+
+    if ($time != null && $time == 'today') {
+      $payments->whereDate('due_date', now());
+    }else {
+      $payments->whereDate('due_date', '<=', now()->addWeeks(2));
+    }
+    
+    $payments->orderBy('due_date', 'ASC');
+    $payments = $payments->get();
+
+    return $payments;
   }
 }
