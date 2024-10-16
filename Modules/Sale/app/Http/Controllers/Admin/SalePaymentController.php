@@ -200,4 +200,58 @@ class SalePaymentController extends Controller implements HasMiddleware
 
     return redirect()->back();
   }
+
+  public function cheques()
+  {
+    $chequePayments = $this->getPaymentsWithType(SalePayment::TYPE_CHEQUE);
+    $customers = Customer::getAllCustomers();
+
+    return view('sale::sale-payment.cheques', compact('chequePayments', 'customers'));
+  }
+
+  public function installments()
+  {
+    $installmentPayments = $this->getPaymentsWithType(SalePayment::TYPE_INSTALLMENT);
+    $customers = Customer::getAllCustomers();
+
+    return view('sale::sale-payment.installments', compact('installmentPayments', 'customers'));
+  }
+
+  public function cashes()
+  {
+    $cashPayments = $this->getPaymentsWithType(SalePayment::TYPE_CASH);
+    $customers = Customer::getAllCustomers();
+
+    return view('sale::sale-payment.cashes', compact('cashPayments', 'customers'));
+  }
+
+  private function getPaymentsWithType($type)
+  {
+    $paymentsQuery = SalePayment::query();
+
+    switch ($type) {
+      case SalePayment::TYPE_CHEQUE:
+        $paymentsQuery->cheques();
+        break;
+      case SalePayment::TYPE_INSTALLMENT:
+        $paymentsQuery->installments();
+        break;
+      case SalePayment::TYPE_CASH:
+        $paymentsQuery->cashes();
+        break;
+      default:
+        toastr()->error('نوع پرداخت درخواستی اشتباه است');
+        return redirect()->back();
+    }
+
+    $payments = $paymentsQuery
+      ->filters()
+      ->with('customer:id,name')
+      ->latest('id')
+      ->paginate()
+      ->withQueryString();
+
+    return $payments;
+  }
+
 }

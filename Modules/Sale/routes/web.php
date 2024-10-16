@@ -18,6 +18,11 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
   });
 
   Route::name('sale-payments.')->prefix('/sale-payments')->group(function() {
+
+    Route::get('/cheques', [SalePaymentController::class, 'cheques'])->name('cheques');
+    Route::get('/installments', [SalePaymentController::class, 'installments'])->name('installments');
+    Route::get('/cashes', [SalePaymentController::class, 'cashes'])->name('cashes');
+
     Route::get('/', [SalePaymentController::class, 'index'])->name('index');
     Route::get('/{customer}', [SalePaymentController::class, 'show'])->name('show');
     Route::get('/create/{customer}', [SalePaymentController::class, 'create'])->name('create');

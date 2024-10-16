@@ -2,6 +2,7 @@
 
 namespace Modules\Sale\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Core\Models\BaseModel;
 use Modules\Customer\Models\Customer;
@@ -12,6 +13,7 @@ class SalePayment extends BaseModel
   public const TYPE_CASH = 'cash';
   public const TYPE_INSTALLMENT = 'installment';
   public const TYPE_CHEQUE = 'cheque';
+  private const MAIN_SELECTED_COLUMNS = ['id', 'customer_id', 'amount', 'type', 'payment_date', 'status', 'created_at'];
 
   protected $fillable = [
     'customer_id',
@@ -69,6 +71,53 @@ class SalePayment extends BaseModel
       self::TYPE_CHEQUE,
       self::TYPE_INSTALLMENT,
     ];
+  }
+
+  public function scopeCheques($query)
+  {
+    $selectedColumns = self::MAIN_SELECTED_COLUMNS;
+    array_push($selectedColumns, 'cheque_holder', 'cheque_serial', 'bank_name', 'pay_to', 'is_mine');
+    
+    return $query->select($selectedColumns)->where('type', '=', self::TYPE_CHEQUE);
+  }
+
+  public function scopeInstallments($query)
+  {
+    return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_INSTALLMENT);
+  }
+
+  public function scopeCashes($query)
+  {
+    return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_CASH);
+  }
+
+  public function scopeFilters($query)
+  {
+    return $query
+      ->when(request('customer_id'), function(Builder $q) {
+        $q->where('customer_id', request('customer_id'));
+      })
+      ->when(request('cheque_holder'), function(Builder $q) {
+        $q->where('cheque_holder', 'LIKE', '%' . request('cheque_holder') . '%');
+      })
+      ->when(request('type'), function(Builder $q) {
+        $q->where('type', request('type'));
+      })
+      ->when(request('from_payment_date'), function(Builder $q) {
+        $q->whereDate('payment_date', '>=', request('from_payment_date'));
+      })
+      ->when(request('to_payment_date'), function(Builder $q) {
+        $q->whereDate('payment_date', '<=', request('to_payment_date'));
+      })
+      ->when(request('from_due_date'), function(Builder $q) {
+        $q->whereDate('due_date', '>=', request('from_due_date'));
+      })
+      ->when(request('to_due_date'), function(Builder $q) {
+        $q->whereDate('due_date', '<=', request('to_due_date'));
+      })
+      ->when(!is_null(request('status')), function(Builder $q) {
+        $q->where('status', request('status'));
+      });
   }
 
 }

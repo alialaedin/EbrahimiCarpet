@@ -89,25 +89,34 @@
         </li>
       @endcanany
 
-      @canany(['view payments', 'view sale_payments'])
+      @can('view payments')
         <li class="slide">
           <a class="side-menu__item" data-toggle="slide" href="#">
             <i class="fa fa-money sidemenu_icon"></i>
             <span class="side-menu__label">مدیریت پرداختی ها</span><i class="angle fa fa-angle-left"></i>
           </a>
           <ul class="slide-menu">
-            @can('view payments')
-              <li><a href="{{route("admin.payments.index")}}" class="slide-item">پرداختی به تامین کننده</a></li>
-              <li><a href="{{route("admin.payments.installments")}}" class="slide-item">اقساط پرداختی</a></li>
-              <li><a href="{{route("admin.payments.cheques")}}" class="slide-item">چک های پرداختی</a></li>
-              <li><a href="{{route("admin.payments.cashes")}}" class="slide-item">نقدی های پرداختی</a></li>
-            @endcan
-            @can('view sale_payments')
-              <li><a href="{{route("admin.sale-payments.index")}}" class="slide-item">دریافتی از مشتری</a></li>
-            @endcan
+            <li><a href="{{route("admin.payments.index")}}" class="slide-item">تمامی پرداختی ها</a></li>
+            <li><a href="{{route("admin.payments.installments")}}" class="slide-item">اقساط</a></li>
+            <li><a href="{{route("admin.payments.cheques")}}" class="slide-item">چک ها</a></li>
+            <li><a href="{{route("admin.payments.cashes")}}" class="slide-item">نقدی ها</a></li>
           </ul>
         </li>
-      @endcanany
+      @endcan
+      @can('view sale_payments')
+        <li class="slide">
+          <a class="side-menu__item" data-toggle="slide" href="#">
+            <i class="fa fa-money sidemenu_icon"></i>
+            <span class="side-menu__label">مدیریت دریافتی ها</span><i class="angle fa fa-angle-left"></i>
+          </a>
+          <ul class="slide-menu">
+            <li><a href="{{route("admin.sale-payments.index")}}" class="slide-item">تمامی دریافتی ها</a></li>
+            <li><a href="{{route("admin.sale-payments.installments")}}" class="slide-item">اقساط</a></li>
+            <li><a href="{{route("admin.sale-payments.cheques")}}" class="slide-item">چک ها</a></li>
+            <li><a href="{{route("admin.sale-payments.cashes")}}" class="slide-item">نقدی ها</a></li>
+          </ul>
+        </li>
+      @endcan
 
       @canany(['view headlines', 'view revenues', 'view salaries', 'view costs'])
         <li class="slide">
