@@ -131,6 +131,7 @@ class DashboardController extends Controller
       ->select('id', 'customer_id', 'amount', 'type', 'due_date', 'payment_date')
       ->where('type', '=', 'cheque')
       ->whereNull('payment_date')
+      ->where('status', 0)
       ->with('customer:id,name');
 
     if ($time != null && $time == 'today') {
@@ -151,6 +152,7 @@ class DashboardController extends Controller
       ->select('id', 'supplier_id', 'amount', 'type', 'due_date', 'payment_date')
       ->where('type', '=', 'cheque')
       ->whereNull('payment_date')
+      ->where('status', 0)
       ->with('supplier:id,name');
 
     if ($time != null && $time == 'today') {
@@ -171,6 +173,7 @@ class DashboardController extends Controller
       ->select('id', 'customer_id', 'amount', 'type', 'due_date', 'payment_date', 'image')
       ->where('type', '=', 'installment')
       ->whereNull('payment_date')
+      ->where('status', 0)
       ->with('customer:id,name,mobile');
 
     if ($time != null && $time == 'today') {
@@ -191,6 +194,7 @@ class DashboardController extends Controller
       ->select('id', 'supplier_id', 'amount', 'type', 'due_date', 'payment_date', 'image')
       ->where('type', '=', 'installment')
       ->whereNull('payment_date')
+      ->where('status', 0)
       ->with('supplier:id,name,mobile');
 
     if ($time != null && $time == 'today') {
