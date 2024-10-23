@@ -2,6 +2,7 @@
 
 namespace Modules\Sale\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -41,6 +42,12 @@ class Sale extends BaseModel
       });
   }
 
+  public function getSoldAtMonthAttribute()
+  {
+    return Carbon::parse($this->attributes['sold_at'])->month; 
+  }
+
+
   // Functions
   public function getTotalAmount(): int
   {
@@ -55,6 +62,15 @@ class Sale extends BaseModel
   public function getTotalAmountWithDiscount(): int
   {
     return $this->getTotalAmount() - $this->attributes['discount'];
+  }
+
+  public function getTotalDiscountAttribute()
+  {
+    $itemsDiscount = $this->items->sum(function ($item) {  
+      return $item->total_discount_amount;  
+    }); 
+
+    return (int)$itemsDiscount + (int)$this->attributes['discount'];
   }
 
   public function getTotalAmountAttribute()

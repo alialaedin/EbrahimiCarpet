@@ -3,7 +3,6 @@
 namespace Modules\Sale\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Product\Models\Product;
 use Spatie\Activitylog\LogOptions;
@@ -61,5 +60,10 @@ class SaleItem extends BaseModel
   public function getTotalItemPrice(): float|int
   {
     return $this->getPriceWithDiscount() * $this->attributes['quantity'];
+  }
+
+  public function getTotalDiscountAmountAttribute()
+  {
+    return $this->attributes['quantity'] * $this->attributes['discount'];
   }
 }

@@ -18,6 +18,7 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 
     Route::get('/sales', [OrderReportController::class, 'salesFilter'])->name('sales-filter');
     Route::post('/sales', [OrderReportController::class, 'sales'])->name('sales-list');
+    Route::get('/monthly-sales', [OrderReportController::class, 'monthlySales'])->name('monthly-sales');
 
     Route::get('/suppliers-finance', [SupplierFinancialReportController::class, 'allSuppliersFinance'])->name('all-suppliers-finance');
     Route::get('/supplier-finance-filter', [SupplierFinancialReportController::class, 'suppliersFinanceFilter'])->name('suppliers-finance-filter');

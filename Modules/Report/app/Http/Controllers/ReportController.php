@@ -32,6 +32,10 @@ class ReportController extends Controller
         'route' => 'admin.reports.sales-filter'
       ],
       [
+        'title' => 'گزارش فروش ماهانه امسال',
+        'route' => 'admin.reports.monthly-sales'
+      ],
+      [
         'title' => 'گزارش مالی تامین کننده (کلی)',
         'route' => 'admin.reports.all-suppliers-finance'
       ],

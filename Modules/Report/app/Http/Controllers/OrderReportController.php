@@ -3,12 +3,14 @@
 namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Core\Helpers\Helpers;
 use Modules\Customer\Models\Customer;
 use Modules\Purchase\Models\Purchase;
-use Modules\Report\Http\Requests\SaleFilterRequest;
 use Modules\Sale\Models\Sale;
 use Modules\Supplier\Models\Supplier;
 
@@ -82,5 +84,24 @@ class OrderReportController extends Controller
       ->get();
 
     return view('report::sale.list', compact(['sales', 'customer']));
+  }
+
+  public function monthlySales()
+  {
+    $sales = Sale::query()
+      ->select('id', 'customer_id', 'sold_at', 'discount', 'cost_of_sewing', 'created_at')
+      ->with([
+        'customer' => fn ($q) => $q->select(['id', 'name']),
+        'items' => fn ($q) => $q->select(['id', 'sale_id', 'price', 'discount', 'quantity'])
+      ])
+      ->whereBetween('created_at', [
+        Helpers::toGregorian(Verta::startYear()), 
+        Helpers::toGregorian(Verta::endYear())
+      ])
+      ->withCount('items')
+      ->get()
+      ->groupBy('sold_at_month');
+
+    return view('report::sale.monthly-sales', compact('sales'));
   }
 }
