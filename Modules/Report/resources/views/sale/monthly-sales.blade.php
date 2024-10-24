@@ -22,8 +22,21 @@
 					<div class="tabs-menu1 ">
 						<ul class="nav panel-tabs">
 							@foreach ($sales as $month => $items)
-								@php($date = verta()->format('Y') .'/'. $month . '/01')
-								<li><a href="#tab-{{ $month }}" data-toggle="tab" style="cursor: pointer;">{{ verta($date)->format('%B') }}</a></li>
+
+								@php
+									$newMonth = $month < 10 ? '0' . $month : $month;
+									$date = verta()->format('Y') .'/'. $newMonth . '/01'
+								@endphp
+
+								<li>
+									<a 
+										href="#tab-{{ $month }}" 
+										data-toggle="tab" 
+										style="cursor: pointer;">
+										{{ verta()->parse($date)->format('%B') }}
+									</a>
+								</li>
+
 							@endforeach
 						</ul>
 					</div>
@@ -48,7 +61,7 @@
 											</tr>
 											</thead>
 											<tbody>
-												@foreach ($items as $sale)
+												@foreach ($items->sortByDesc('sold_at') as $sale)
 													<tr>
 														<td class="font-weight-bold">{{ $loop->iteration }}</td>
 														<td>{{ $sale->customer->name }}</td>
