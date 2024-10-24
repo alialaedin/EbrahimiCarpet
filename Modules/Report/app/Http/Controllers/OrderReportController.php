@@ -100,7 +100,7 @@ class OrderReportController extends Controller
       ])
       ->withCount('items')
       ->get()
-      ->groupBy('sold_at_month');
+      ->groupBy(fn ($sale) => $sale->sold_at_month);
 
     return view('report::sale.monthly-sales', compact('sales'));
   }

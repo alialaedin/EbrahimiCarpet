@@ -3,9 +3,11 @@
 namespace Modules\Sale\Models;
 
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Core\Helpers\Helpers;
 use Modules\Core\Models\BaseModel;
 use Modules\Customer\Models\Customer;
 use Modules\Employee\Models\Employee;
@@ -42,10 +44,10 @@ class Sale extends BaseModel
       });
   }
 
-  public function getSoldAtMonthAttribute()
-  {
-    return Carbon::parse($this->attributes['sold_at'])->month; 
-  }
+  public function getSoldAtMonthAttribute()  
+  {  
+      return Verta::instance($this->attributes['sold_at'])->month;   
+  }  
 
 
   // Functions
