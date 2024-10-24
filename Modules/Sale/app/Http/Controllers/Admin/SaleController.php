@@ -39,6 +39,7 @@ class SaleController extends Controller implements HasMiddleware
     $customerId = request('customer_id');
     $fromSoldAt = request('from_sold_at');
     $toSoldAt = request('to_sold_at');
+    $id = request('id');
 
     $sales = Sale::query()
       ->with([
@@ -46,6 +47,7 @@ class SaleController extends Controller implements HasMiddleware
         'employee:id,name,mobile'
       ])
       ->when($customerId, fn(Builder $query) => $query->where('customer_id', $customerId))
+      ->when($id, fn(Builder $query) => $query->where('id', $id))
       ->when($fromSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '>=', $fromSoldAt))
       ->when($toSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '<=', $toSoldAt))
       ->latest('id')
@@ -170,7 +172,7 @@ class SaleController extends Controller implements HasMiddleware
     return Customer::query()
       ->where('status', 1)
       ->select('id', 'name', 'mobile')
-      ->orderByDesc('name')
+      ->orderBy('name')
       ->get();
   }
 

@@ -10,7 +10,14 @@
       <form action="{{ route("admin.sales.index") }}" class="col-12">
         <div class="row">
 
-          <div class="col-12 col-md-6 col-xl-4">
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="customer_id">شناسه فاکتور فروش :</label>
+              <input type="text" class="form-control" name="id" value="{{ request('id') }}">
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="customer_id">انتخاب مشتری :</label>
               <select name="customer_id" id="customer_id" class="form-control">
@@ -22,7 +29,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-xl-4">
+          <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="from_sold_at_show">فروش از تاریخ :</label>
               <input class="form-control fc-datepicker" id="from_sold_at_show" type="text" autocomplete="off"/>
@@ -30,7 +37,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-xl-4">
+          <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
               <label for="to_sold_at_show">تا تاریخ :</label>
               <input class="form-control fc-datepicker" id="to_sold_at_show" type="text" autocomplete="off"/>
@@ -50,4 +57,11 @@
 @section('scripts')
   <x-core::date-input-script textInputId="from_sold_at_show" dateInputId="from_sold_at"/>
   <x-core::date-input-script textInputId="to_sold_at_show" dateInputId="to_sold_at"/>
+
+  <script>
+    $('#customer_id').select2({
+      placeholder: 'انتخاب مشتری'
+    });
+  </script>
+
 @endsection
