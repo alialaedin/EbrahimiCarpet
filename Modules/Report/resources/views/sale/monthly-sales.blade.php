@@ -22,7 +22,7 @@
 					<div class="tabs-menu1 ">
 						<ul class="nav panel-tabs">
 							@foreach ($sales as $month => $items)
-								@php($date = date('Y') .'/'. $month . '/01')
+								@php($date = verta()->format('Y') .'/'. $month . '/01')
 								<li><a href="#tab-{{ $month }}" data-toggle="tab" style="cursor: pointer;">{{ verta($date)->format('%B') }}</a></li>
 							@endforeach
 						</ul>
