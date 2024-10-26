@@ -64,15 +64,3 @@
     </div>
   </div>
 </div>
-
-@section('scripts')
-  <script>
-
-    $(document).ready(function() {
-      $('#product_id').select2({
-        placeholder: ''انتخاب محصول
-      });
-    });
-
-  </script>
-@endsection

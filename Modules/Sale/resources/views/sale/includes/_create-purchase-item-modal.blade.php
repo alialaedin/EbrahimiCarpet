@@ -75,7 +75,7 @@
 
     $(document).ready(function() {
       $('#product_id').select2({
-        placeholder: ''انتخاب محصول
+        placeholder: 'انتخاب محصول'
       });
     });
 

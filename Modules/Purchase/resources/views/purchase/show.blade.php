@@ -156,3 +156,15 @@
   @include('purchase::includes._create-purchase-item-modal')
   {{-- @include('purchase::includes._edit-purchase-item-modal') --}}
 @endsection
+
+@section('scripts')
+  <script>
+
+    $(document).ready(function() {
+      $('#product_id').select2({
+        placeholder: 'انتخاب محصول'
+      });
+    });
+
+  </script>
+@endsection
