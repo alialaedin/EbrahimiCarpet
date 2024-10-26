@@ -26,16 +26,10 @@ class PurchaseItemController extends Controller implements HasMiddleware
 
 	public function store(PurchaseItemStoreRequest $request)
 	{
-		$purchaseItem = PurchaseItem::create($request->validated());
+		PurchaseItem::create($request->validated());
 		$product = Product::findOrFail($request->input('product_id'));
 		
 		StoreService::addProductToStore($product, $request->input('price'), $request->input('quantity'));
-
-    $purchaseItem->purchase->transactions()->create([
-      'store_id' => $product->store->id,
-      'type' => 'increment',
-      'quantity' => $request->input('quantity'),
-    ]);
 
 		toastr()->success('آیتم جدید با موفقیت ثبت شد');
 
