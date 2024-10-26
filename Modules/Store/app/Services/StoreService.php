@@ -8,10 +8,11 @@ use Modules\Product\Models\Product;
 use Modules\Sale\Models\SaleItem;
 use Modules\Store\Models\Store;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Purchase\Models\Purchase;
 
 class StoreService
 {
-  public static function addProductToStore(Product|Builder|Collection $product, int $purchasedPrice, int $initialBalance): void
+  public static function addProductToStore(Product|Builder|Collection $product, int $purchasedPrice, int|float $initialBalance): void
   {
     $price = $product->prices()->create([
       'buy_price' => $purchasedPrice,
