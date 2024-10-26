@@ -13,13 +13,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="product_id" class="control-label">انتخاب محصول :<span class="text-danger">&starf;</span></label>
-                <select name="product_id" id="product_id" class="form-control">
-                  <option value="" class="text-muted">-- محصول مورد نظر را انتخاب کنید --</option>
+                <select name="product_id" id="product_id" class="form-control" onchange="getProductStore('#product_id')" required>
+                  <option value=""></option>
                   @foreach ($categories as $category)
-                    @if ($category->products()->exists())
-                      <optgroup label="{{ $category->title }}" class="text-muted">
+                    @if ($category->products->isNotEmpty())
+                      <optgroup label="{{ $category->title }}">
                         @foreach ($category->products->whereNotNull('parent_id') as $product)
-                          <option value="{{ $product->id }}" class="text-dark" @selected(old('product_id') == $product->id)>{{ $product->title .' '. $product->sub_title }}</option>
+                          <option value="{{ $product->id }}" @selected(old('product_id') == $product->id)>{{ $product->title .' - '. $product->sub_title }}</option>
                         @endforeach
                       </optgroup>
                     @endif
@@ -64,3 +64,15 @@
     </div>
   </div>
 </div>
+
+@section('scripts')
+  <script>
+
+    $(document).ready(function() {
+      $('#product_id').select2({
+        placeholder: ''انتخاب محصول
+      });
+    });
+
+  </script>
+@endsection
