@@ -49,17 +49,19 @@ class SupplierFinancialReportController extends Controller
         },
         'purchases.items:id,purchase_id,quantity,price,discount',
         'payments' => function ($query) use ($paymentType) {
-          return $query->when($paymentType, fn($query) => $query->where('type', $paymentType));
+          if ($paymentType) {
+            $query->where('type', $paymentType);
+          }
         },
       ])
       ->select('id', 'name', 'mobile')
       ->findOrFail($supplierId);
 
-    $payments = $supplier->payments;
+    $payments = $supplier->payments->groupBy('type');
 
-    $cashPayments = $payments->where('type', Payment::TYPE_CASH)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CASH)->sortByDesc('id') : null;
-    $chequePayments = $payments->where('type', Payment::TYPE_CHEQUE)->isNotEmpty() ? $payments->where('type', Payment::TYPE_CHEQUE)->sortByDesc('id') : null;
-    $installmentPayments = $payments->where('type', Payment::TYPE_INSTALLMENT)->isNotEmpty() ? $payments->where('type', Payment::TYPE_INSTALLMENT)->sortByDesc('id') : null;
+    $cashPayments = $payments[Payment::TYPE_CASH]->sortByDesc('id') ?? collect();
+    $chequePayments = $payments[Payment::TYPE_CHEQUE]->sortByDesc('id') ?? collect();
+    $installmentPayments = $payments[Payment::TYPE_INSTALLMENT]->sortByDesc('id') ?? collect();
 
     return view('report::suppliers.financial.show', compact([
       'supplier',
