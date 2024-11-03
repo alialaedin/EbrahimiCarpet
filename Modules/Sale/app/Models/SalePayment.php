@@ -76,13 +76,16 @@ class SalePayment extends BaseModel
   public function scopeCheques($query)
   {
     $selectedColumns = self::MAIN_SELECTED_COLUMNS;
-    array_push($selectedColumns, 'cheque_holder', 'cheque_serial', 'bank_name', 'pay_to', 'is_mine');
+    array_push($selectedColumns, 'cheque_holder', 'cheque_serial', 'bank_name', 'pay_to', 'is_mine', 'due_date');
     
     return $query->select($selectedColumns)->where('type', '=', self::TYPE_CHEQUE);
   }
 
   public function scopeInstallments($query)
   {
+    $selectedColumns = self::MAIN_SELECTED_COLUMNS;
+    array_push($selectedColumns, 'due_date');
+    
     return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_INSTALLMENT);
   }
 

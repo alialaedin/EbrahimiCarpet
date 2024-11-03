@@ -11,6 +11,7 @@ use Modules\Purchase\Http\Requests\Admin\PurchaseItem\PurchaseItemUpdateRequest;
 use Modules\Purchase\Models\PurchaseItem;
 use Modules\Store\Models\Store;
 use Modules\Store\Models\StoreTransaction;
+use Modules\Store\Services\StoreService;
 
 class PurchaseItemController extends Controller implements HasMiddleware
 {
@@ -25,16 +26,10 @@ class PurchaseItemController extends Controller implements HasMiddleware
 
 	public function store(PurchaseItemStoreRequest $request)
 	{
-		$purchaseItem = PurchaseItem::create($request->validated());
-
+		PurchaseItem::create($request->validated());
 		$product = Product::findOrFail($request->input('product_id'));
-    $product->store->increment('balance', $request->input('quantity'));
-
-    $purchaseItem->purchase->transactions()->create([
-      'store_id' => $product->store->id,
-      'type' => 'increment',
-      'quantity' => $request->input('quantity'),
-    ]);
+		
+		StoreService::addProductToStore($product, $request->input('price'), $request->input('quantity'));
 
 		toastr()->success('آیتم جدید با موفقیت ثبت شد');
 

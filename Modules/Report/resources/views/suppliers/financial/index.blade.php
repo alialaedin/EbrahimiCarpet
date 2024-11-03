@@ -27,6 +27,7 @@
                 <th class="text-center">کل خرید (ریال)</th>
                 <th class="text-center">پرداختی (ریال)</th>
                 <th class="text-center">مانده (ریال)</th>
+                <th class="text-center">وضعیت</th>
               </tr>
               </thead>
               <tbody>
@@ -46,6 +47,15 @@
                   <td class="text-center">{{ number_format($supplier->total_purchases_amount) }}</td>
                   <td class="text-center">{{ number_format($supplier->total_payments_amount) }}</td>
                   <td class="text-center">{{ number_format($supplier->remaining_amount) }}</td>
+                  <td class="text-center">
+                    @if ($supplier->remaining_amount > 0)
+                      <span>بدهکار</span>
+                    @elseif($supplier->remaining_amount < 0)
+                      <span>بستانکار</span>
+                    @else
+                      <span>صاف شده</span>
+                    @endif
+                  </td>
                 </tr>
 
                 @php

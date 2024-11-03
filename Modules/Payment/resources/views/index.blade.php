@@ -163,7 +163,7 @@
                     />
                   </td>
                   <td class="text-center">
-                    <x-core::show-button route="admin.payments.show" :model="$payment"/>
+                    <x-core::show-button route="admin.payments.show" :model="$payment->supplier"/>
                     <button
                       class="btn btn-sm btn-icon btn-teal "
                       onclick="showPaymentDescriptionModal('{{$payment->description}}')"
@@ -370,6 +370,21 @@
                   </div>
                 </div>
               @endif
+
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="label" class="control-label"> وضعیت: </label>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="status" value="1" @checked(old('status', $payment->status))>
+                    @if ($payment->type === 'cheque')
+                      <span class="custom-control-label">پاس شده</span>
+                    @else
+                      <span class="custom-control-label">پرداخت شده</span>
+                    @endif
+                  </label>
+                  <x-core::show-validation-error name="status"/>
+                </div>
+              </div>
 
             </div>
 
