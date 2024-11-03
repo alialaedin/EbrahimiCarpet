@@ -51,7 +51,10 @@
           <div class="col-xl-4 col-lg-6">
             <div class="form-group">
               <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', number_format($sale->discount)) }}">
+              @php
+                $discount = $sale->discount ? number_format($sale->discount) : null;
+              @endphp
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', $discount) }}">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>
@@ -65,7 +68,10 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="cost_of_sewing" class="control-label"> هزینه دوخت / نصب : </label>
-              <input type="text" id="cost_of_sewing" class="form-control comma" name="cost_of_sewing" placeholder="هزینه دوخت را وارد کنید" value="{{ old('cost_of_sewing', number_format($sale->cost_of_sewing)) }}">
+              @php
+                $costOfSewing = $sale->cost_of_sewing ? number_format($sale->cost_of_sewing) : null;
+              @endphp
+              <input type="text" id="cost_of_sewing" class="form-control comma" name="cost_of_sewing" placeholder="هزینه دوخت را وارد کنید" value="{{ old('cost_of_sewing', $costOfSewing) }}">
               <x-core::show-validation-error name="cost_of_sewing" />
             </div>
           </div>

@@ -21,8 +21,25 @@
         <div class="row">
           <div class="col-12 col-md-6 col-xl-3">
             <div class="form-group">
-              <label for="supplier_id">صاحب چک :</label>
-              <input type="text" name="cheque_holder" value="{{ request('cheque_holder') }}" class="form-control">
+              <label for="cheque_holder">صاحب چک :</label>
+              <input type="text" id="cheque_holder" name="cheque_holder" value="{{ request('cheque_holder') }}" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="cheque_serial">سریال چک :</label>
+              <input type="text" id="cheque_serial" name="cheque_serial" value="{{ request('cheque_serial') }}" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="supplier_id">تامین کننده :</label>
+              <select name="supplier_id" id="supplier_id" class="form-control">
+                <option value="" class="text-muted">انتخاب</option>
+                @foreach ($suppliers as $supplier)
+                  <option value="{{ $supplier->id }}" @selected(request('supplier_id') == $supplier->id)>{{ $supplier->name }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
           <div class="col-12 col-md-6 col-xl-3">
@@ -40,7 +57,6 @@
               <label for="from_payment_date_show">پرداخت از تاریخ : </label>
               <input class="form-control fc-datepicker" id="from_payment_date_show" type="text" autocomplete="off"/>
               <input name="from_payment_date" id="from_payment_date" type="hidden" value="{{ request("from_payment_date") }}"/>
-              <x-core::show-validation-error name="from_payment_date"/>
             </div>
           </div>
           <div class="col-12 col-lg-6 col-xl-3">
@@ -48,7 +64,20 @@
               <label for="to_payment_date_show">تا تاریخ :</label>
               <input class="form-control fc-datepicker" id="to_payment_date_show" type="text" autocomplete="off"/>
               <input name="to_payment_date" id="to_payment_date" type="hidden" value="{{ request("to_payment_date") }}"/>
-              <x-core::show-validation-error name="to_payment_date"/>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6 col-xl-3">
+            <div class="form-group">
+              <label for="from_due_date_show">سررسید از تاریخ : </label>
+              <input class="form-control fc-datepicker" id="from_due_date_show" type="text" autocomplete="off"/>
+              <input name="from_due_date" id="from_due_date" type="hidden" value="{{ request("from_due_date") }}"/>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6 col-xl-3">
+            <div class="form-group">
+              <label for="to_due_date_show">تا تاریخ :</label>
+              <input class="form-control fc-datepicker" id="to_due_date_show" type="text" autocomplete="off"/>
+              <input name="to_due_date" id="to_due_date" type="hidden" value="{{ request("to_due_date") }}"/>
             </div>
           </div>
         </div>
@@ -117,6 +146,15 @@
 @endsection
 
 @section('scripts')
+
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
+  <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
+  <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
+
+  <script>
+    $('#supplier_id').select2({placeholder: 'انتخاب تامین کننده'});
+    $('#status').select2({placeholder: 'وضعیت را انتخاب کنید'});
+  </script>
+
 @endsection
