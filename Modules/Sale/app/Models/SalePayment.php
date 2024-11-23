@@ -106,6 +106,9 @@ class SalePayment extends BaseModel
       ->when(request('type'), function(Builder $q) {
         $q->where('type', request('type'));
       })
+      ->when(request('cheque_serial'), function(Builder $q) {
+        $q->where('cheque_serial', request('cheque_serial'));
+      })
       ->when(request('from_payment_date'), function(Builder $q) {
         $q->whereDate('payment_date', '>=', request('from_payment_date'));
       })

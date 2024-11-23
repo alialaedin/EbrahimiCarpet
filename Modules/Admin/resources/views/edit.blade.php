@@ -41,6 +41,7 @@
             <div class="form-group">
               <label for="role" class="control-label"> انتخاب نقش: <span class="text-danger">&starf;</span></label>
               @if($admin->getRoleName() == config('core.super_admin_role.name'))
+                <input type="hidden" name="role" value="{{ config('core.super_admin_role.name') }}">
                 <input readonly type="text" value="{{ config('core.super_admin_role.label') }}" class="form-control">
                 <span class="text-muted mt-4 fs-12" >
                    {{ "نقش {$admin->getRoleName()} قابل ویرایش نمی باشد! " }}

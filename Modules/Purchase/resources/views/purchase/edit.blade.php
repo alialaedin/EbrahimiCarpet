@@ -49,7 +49,10 @@
           <div class="col-lg-4 col-md-6">
             <div class="form-group">
               <label for="discount" class="control-label"> تخفیف کلی (ریال): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', number_format($purchase->discount)) }}">
+              @php
+                $discount = $purchase->discount ? number_format($purchase->discount) : null;
+              @endphp
+              <input type="text" id="discount" class="form-control comma" name="discount" placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount', $discount) }}">
               <x-core::show-validation-error name="discount" />
             </div>
           </div>

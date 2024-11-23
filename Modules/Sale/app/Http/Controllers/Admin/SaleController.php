@@ -46,10 +46,10 @@ class SaleController extends Controller implements HasMiddleware
         'customer:id,name,mobile',
         'employee:id,name,mobile'
       ])
-      ->when($customerId, fn(Builder $query) => $query->where('customer_id', $customerId))
-      ->when($id, fn(Builder $query) => $query->where('id', $id))
-      ->when($fromSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '>=', $fromSoldAt))
-      ->when($toSoldAt, fn(Builder $query) => $query->whereDate('sold_at', '<=', $toSoldAt))
+      ->when($customerId, fn(Builder $q) => $q->where('customer_id', $customerId))
+      ->when($id, fn(Builder $q) => $q->where('id', $id))
+      ->when($fromSoldAt, fn(Builder $q) => $q->whereDate('sold_at', '>=', $fromSoldAt))
+      ->when($toSoldAt, fn(Builder $q) => $q->whereDate('sold_at', '<=', $toSoldAt))
       ->latest('id')
       ->paginate()
       ->withQueryString();
