@@ -32,7 +32,6 @@ class PaymentController extends Controller implements HasMiddleware
   public function index(): View|Application|Factory|App
   {
     $payments = Payment::query()
-      ->select(['id', 'supplier_id', 'amount', 'type', 'image', 'payment_date', 'due_date', 'status', 'created_at'])
       ->filters()
       ->with('supplier:id,name')
       ->latest('id')

@@ -328,7 +328,7 @@
                 </div>
                 <div class="col-12 col-lg-6">
                   <div class="form-group">
-                    <label class="control-label"> چک برای خودم است:<span class="text-danger">&starf;</span></label>
+                    <label class="control-label"> چک برای خودم است:</label>
                     <div class="custom-controls-stacked">
                       <label class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" name="is_mine" value="1" @checked(old('is_mine', $payment->is_mine) == '1')>
