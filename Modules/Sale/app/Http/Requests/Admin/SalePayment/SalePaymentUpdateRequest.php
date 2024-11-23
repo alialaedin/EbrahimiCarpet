@@ -21,7 +21,7 @@ class SalePaymentUpdateRequest extends FormRequest
       'description' => ['nullable', 'string'],
       'amount' => ['required', 'integer', 'min:1000'],
       'payment_date' => ['nullable', 'date'],
-      'cheque_serial' => ['nullable', 'integer'],
+      'cheque_serial' => ['nullable', 'numeric'],
       'cheque_holder' => ['nullable', 'string', 'min:5', 'max:90'],
       'bank_name' => ['nullable', 'string', 'min:3', 'max:90'],
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],

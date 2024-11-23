@@ -33,7 +33,7 @@ class PaymentStoreRequest extends FormRequest
 
       // Cheque Payment
       'cheque_amount' => ['nullable', 'integer', 'min:1000'],
-      'cheque_serial' => ['nullable', 'integer'],
+      'cheque_serial' => ['nullable', 'numeric'],
       'cheque_holder' => ['nullable', 'string', 'min:5', 'max:90'],
       'bank_name' => ['nullable', 'string', 'min:3', 'max:90'],
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],
