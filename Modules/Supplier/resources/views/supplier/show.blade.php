@@ -171,9 +171,9 @@
           @forelse ($purchases as $purchase)
             <tr>
               <td class="font-weight-bold">{{ $loop->iteration }}</td>
-              <td>{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
+              <td>{{ number_format($purchase->total_items_amount) }}</td>
               <td>{{ number_format($purchase->discount) }}</td>
-              <td>{{ number_format($purchase->getTotalAmountWithDiscount()) }}</td>
+              <td>{{ number_format($purchase->total_amount) }}</td>
               <td> @jalaliDateFormat($purchase->purchased_at)</td>
               <td>
                 @can('view purchases')
