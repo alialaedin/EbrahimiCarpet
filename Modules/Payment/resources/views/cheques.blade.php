@@ -108,8 +108,10 @@
         <x-slot name="tableTd">
           @forelse ($chequePayments as $payment)
           <tr>
-            <td class="font-weight-bold">{{$loop->iteration }}<td>
-            <td><a target="_blank" href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a></td> 
+            <td class="font-weight-bold">{{ $loop->iteration }}</td>
+            <td>
+              <a target="_blank" href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a>
+            </td> 
             <td>{{ $payment->cheque_serial }}</td>
             <td>{{ $payment->cheque_holder }}</td>
             <td>{{ $payment->bank_name }}</td>
