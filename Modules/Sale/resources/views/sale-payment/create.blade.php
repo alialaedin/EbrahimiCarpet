@@ -1,34 +1,23 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.customers.index') }}">لیست مشتریان</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.customers.show', $customer) }}">نمایش مشتری</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.sale-payments.show', $customer) }}">پرداختی ها</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>ثبت پرداختی جدید</a>
-      </li>
-    </ol>
+    <x-core::breadcrumb
+      :items="[
+        ['title' => 'لیست مشتریان', 'route_link' => 'admin.customers.index'],
+        ['title' => 'مشتری', 'route_link' => 'admin.customers.show', 'parameter' => $customer],
+        ['title' => 'پرداختی ها', 'route_link' => 'admin.sale-payments.show', 'parameter' => $customer],
+        ['title' => 'ثبت پرداختی جدید'],
+      ]"
+    />
   </div>
+
   <div class="row">
     <div class="col-12 col-lg-6">
-      <div class="card overflow-hidden">
-        <div class="card-header border-0">
-          <p class="card-title">اطلاعات مشتری</p>
-          <x-core::card-options/>
-        </div>
-        <div class="card-body">
+      <x-core::card>
+        <x-slot name="cardTitle">اطلاعات مشتری</x-slot>
+        <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+        <x-slot name="cardBody">
           <ul class="list-group">
             <li class="list-group-item"><strong>کد : </strong> {{ $customer->id }} </li>
             <li class="list-group-item"><strong>نام و نام خانوادگی : </strong> {{ $customer->name }} </li>
@@ -36,16 +25,14 @@
             <li class="list-group-item"><strong>تاریخ ثبت : </strong> @jalaliDate($customer->created_at) </li>
             <li class="list-group-item"><strong>آدرس : </strong> {{ $customer->address }} </li>
           </ul>
-        </div>
-      </div>
+        </x-slot>
+      </x-core::card>
     </div>
     <div class="col-12 col-lg-6">
-      <div class="card overflow-hidden">
-        <div class="card-header border-0">
-          <p class="card-title">اطلاعات خرید</p>
-          <x-core::card-options/>
-        </div>
-        <div class="card-body">
+      <x-core::card>
+        <x-slot name="cardTitle">اطلاعات خرید</x-slot>
+        <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+        <x-slot name="cardBody">
           <ul class="list-group">
             <li class="list-group-item"><strong>تعداد خرید ها : </strong> {{ $customer->countSales() }} </li>
             <li class="list-group-item"><strong>تعداد پرداختی ها : </strong> {{ $customer->countPayments() }} </li>
@@ -53,16 +40,15 @@
             <li class="list-group-item"><strong>جمع پرداخت شده ها : </strong> {{ number_format($customer->total_payments_amount) }} ریال</li>
             <li class="list-group-item"><strong>مبلغ باقی مانده : </strong> {{ number_format($customer->remaining_amount) }} ریال </li>
           </ul>
-        </div>
-      </div>
+        </x-slot>
+      </x-core::card>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">ثبت پرداختی جدید - ابتدا نوع پرداخت را انتخاب کنید سپس فیلد های لازم را پر کنید</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ثبت پرداختی جدید - ابتدا نوع پرداخت را انتخاب کنید سپس فیلد های لازم را پر کنید</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.sale-payments.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="customer_id" value="{{ $customer->id }}">
@@ -209,8 +195,8 @@
 
         <x-core::store-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
 @endsection
 
 @section('scripts')

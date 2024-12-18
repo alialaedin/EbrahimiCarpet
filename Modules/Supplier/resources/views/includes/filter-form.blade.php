@@ -1,9 +1,8 @@
-<div class="card">
-  <div class="card-header border-0">
-    <p class="card-title">جستجوی پیشرفته</p>
-    <X-core::card-options/>
-  </div>
-  <div class="card-body">
+
+<x-core::card>
+  <x-slot name="cardTitle">جستجوی پیشرفته</x-slot>
+  <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+  <x-slot name="cardBody">
     <div class="row">
       <form action="{{ route("admin.suppliers.index") }}" class="col-12">
         <div class="row">
@@ -48,5 +47,5 @@
         <x-core::filter-buttons table="suppliers"/>
       </form>
     </div>
-  </div>
-</div>
+  </x-slot>
+</x-core::card>

@@ -1,23 +1,14 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.products.index') }}">لیست محصولات</a>
-      </li>
-      <li class="breadcrumb-item active">ویرایش محصول</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست محصولات', 'route_link' => 'admin.products.index'], ['title' => 'ویرایش محصول']]"/>
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <h1 class="card-title">ویرایش محصول</h3>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ویرایش محصول</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.products.update', $product) }}" method="post" class="save" enctype="multipart/form-data">
 
         @csrf
@@ -151,7 +142,7 @@
                 @foreach ($product->children->sortByDesc('id') as $index => $childProduct)
                   <tr>  
                     <td class="p-3">{{ $childProduct->sub_title }}</td>  
-                    <td class="p-3">{{ $childProduct->loadStoreBalance() }}</td>  
+                    <td class="p-3">{{ $childProduct->store_balance }}</td>  
                     <td class="p-3">{{ number_format($childProduct->price) }}</td>  
                     <td class="p-3">{{ number_format($childProduct->discount) }}</td>  
                     <td class="p-3">
@@ -257,9 +248,9 @@
           <input type="hidden" name="product_id" value="{{ $childProduct->id }}">
         </form>
       @endforeach
+    </x-slot>
+  </x-core::card>
 
-    </div>
-  </div>
 @endsection
 
 @section('scripts')

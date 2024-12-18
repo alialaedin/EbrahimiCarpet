@@ -4,6 +4,11 @@
   data-toggle="tooltip"
   data-original-title="حذف"
   @disabled($disabled)>
+  @isset($title)
+    @if (!is_null($title))
+      <span>{{ $title }}</span>
+    @endif
+  @endisset
   <i class="fa fa-trash-o"></i>
 </button>
 <form

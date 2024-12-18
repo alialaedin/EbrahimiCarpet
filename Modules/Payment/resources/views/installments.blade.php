@@ -1,16 +1,8 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>اقساط پرداختی</a>
-      </li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'اقساط پرداختی به تامین کننده']]" />
   </div>
 
   <x-core::card>
@@ -87,6 +79,7 @@
             <th>تاریخ پرداخت</th>
             <th>تاریخ ثبت</th>
             <th>وضعیت</th>
+            <th>عملیات</th>
           </tr>
         </x-slot>
         <x-slot name="tableTd">
@@ -105,9 +98,19 @@
               @endphp  
               <x-core::light-badge :type="$type" :text="$text"/>  
             </td>
+            <td>
+              <x-core::show-button route="admin.payments.show" :model="$payment->supplier"/>
+              <x-payment::payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+              @can('edit payments')
+                <x-core::edit-button target="#edit-payment-modal{{$payment->id}}"/>
+              @endcan
+              @can('delete payments')
+                <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
+              @endcan
+            </td>
           </tr>
         @empty
-          <x-core::data-not-found-alert :colspan="7"/>
+          <x-core::data-not-found-alert :colspan="8"/>
         @endforelse
         </x-slot>
         <x-slot name="extraData">
@@ -117,11 +120,27 @@
     </x-slot>
   </x-core::card>
 
+  <x-payment::edit-payment-modal :payments="$installmentPayments" idExtention="edit-payment-modal"/>
+  <x-payment::payment-description-modal :payments="$installmentPayments" idExtention="payment-description-modal"/>
+
 @endsection
 
 @section('scripts')
+
+  <x-payment::edit-payment-scripts   
+    :cashes="[]"
+    :cheques="[]"
+    :installments="$installmentPayments"
+  /> 
+
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
   <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
   <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
+
+  <script>
+    new CustomSelect('#supplier_id', 'انتخاب تامین کننده'); 
+    new CustomSelect('#status', 'انتخاب وضعیت'); 
+  </script>
+
 @endsection

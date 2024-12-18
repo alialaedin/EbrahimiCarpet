@@ -1,34 +1,23 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.suppliers.index') }}">لیست تامین کنندگان</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.suppliers.show', $supplier) }}">نمایش تامین کننده</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.payments.show', $supplier) }}">پرداختی ها</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>ثبت پرداختی جدید</a>
-      </li>
-    </ol>
-  </div>
+
+<div class="page-header">
+  <x-core::breadcrumb
+    :items="[
+      ['title' => 'لیست تامین کنندگان', 'route_link' => 'admin.suppliers.index'],
+      ['title' => 'نمایش تامین کننده', 'route_link' => 'admin.suppliers.show', 'parameter' => $supplier],
+      ['title' => 'پرداختی ها', 'route_link' => 'admin.payments.show', 'parameter' => $supplier],
+      ['title' => 'ثبت پرداختی جدید'],
+    ]"
+  />
+</div>
+
   <div class="row">
     <div class="col-12 col-lg-6">
-      <div class="card overflow-hidden">
-        <div class="card-header border-0">
-          <p class="card-title">اطلاعات تامین کننده</p>
-          <x-core::card-options/>
-        </div>
-        <div class="card-body">
+      <x-core::card>
+        <x-slot name="cardTitle">اطلاعات تامین کننده</x-slot>
+        <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+        <x-slot name="cardBody">
           <ul class="list-group">
             <li class="list-group-item"><strong class="ml-1">کد : </strong> {{ $supplier->id }} </li>
             <li class="list-group-item"><strong class="ml-1">نام و نام خانوادگی : </strong> {{ $supplier->name }} </li>
@@ -36,16 +25,14 @@
             <li class="list-group-item"><strong class="ml-1">تاریخ ثبت : </strong> @jalaliDate($supplier->created_at) </li>
             <li class="list-group-item"><strong class="ml-1">آدرس : </strong> {{ $supplier->address }} </li>
           </ul>
-        </div>
-      </div>
+        </x-slot>
+      </x-core::card>
     </div>
     <div class="col-12 col-lg-6">
-      <div class="card overflow-hidden">
-        <div class="card-header border-0">
-          <p class="card-title">اطلاعات خرید</p>
-          <x-core::card-options/>
-        </div>
-        <div class="card-body">
+      <x-core::card>
+        <x-slot name="cardTitle">اطلاعات خرید</x-slot>
+        <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+        <x-slot name="cardBody">
           <ul class="list-group">
             <li class="list-group-item"><strong class="ml-1">تعداد خرید ها : </strong> {{ $supplier->purchases_count }} </li>
             <li class="list-group-item"><strong class="ml-1">تعداد پرداختی ها : </strong> {{ $supplier->payments_count }} </li>
@@ -53,17 +40,15 @@
             <li class="list-group-item"><strong class="ml-1">جمع پرداخت شده ها : </strong> {{ number_format($supplier->total_payments_amount) }} ریال</li>
             <li class="list-group-item"><strong class="ml-1">مبلغ باقی مانده : </strong> {{ number_format($supplier->remaining_amount) }} ریال </li>
           </ul>
-        </div>
-      </div>
+        </x-slot>
+      </x-core::card>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">ثبت پرداختی جدید - ابتدا نوع پرداخت را انتخاب کنید سپس فیلد های لازم را پر کنید</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
+  <x-core::card>
+    <x-slot name="cardTitle">ثبت پرداختی جدید - ابتدا نوع پرداخت را انتخاب کنید سپس فیلد های لازم را پر کنید</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.payments.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
@@ -211,17 +196,20 @@
 
         <x-core::store-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')
+
   <x-core::date-input-script textInputId="cash_payment_date_show" dateInputId="cash_payment_date_hidden"/>
   <x-core::date-input-script textInputId="cheque_due_date_show" dateInputId="cheque_due_date_hidden"/>
   <x-core::date-input-script textInputId="installment_start_date_show" dateInputId="installment_start_date_hidden"/>
 
   <script>
     $(document).ready(() => {
+      
       const payType = $('#type');
       const cashInputsBox = $('#cashInputsBox');
       const chequeInputsBox = $('#chequeInputsBox');

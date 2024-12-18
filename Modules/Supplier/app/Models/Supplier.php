@@ -59,7 +59,7 @@ class Supplier extends BaseModel
   public function getTotalPurchasesAmountAttribute()
   {
     return $this->purchases->sum(function ($purchase) {  
-      return $purchase->getTotalAmountWithDiscount();  
+      return $purchase->total_amount;  
     }); 
   }
 
@@ -92,9 +92,9 @@ class Supplier extends BaseModel
     $payments = $this->payments()->select(['id', 'type', 'amount']);
 
     return [
-      'cheque' => $payments->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount'),
-      'cash' => $payments->where('type', '=', Payment::TYPE_CASH)->sum('amount'),
-      'installment' => $payments->where('type', '=', Payment::TYPE_INSTALLMENT)->sum('amount')
+      'cheque' => (clone $payments)->where('type', '=', Payment::TYPE_CHEQUE)->sum('amount'),
+      'cash' => (clone $payments)->where('type', '=', Payment::TYPE_CASH)->sum('amount'),
+      'installment' => (clone $payments)->where('type', '=', Payment::TYPE_INSTALLMENT)->sum('amount')
     ];
   }
 

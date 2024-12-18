@@ -1,16 +1,8 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>چک های پرداختی</a>
-      </li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'چک های پرداختی به تامین کننده']]" />
   </div>
 
   <x-core::card>
@@ -110,13 +102,16 @@
             <th>تاریخ پرداخت</th>
             <th>تاریخ ثبت</th>
             <th>وضعیت</th>
+            <th>عملیات</th>
           </tr>
         </x-slot>
         <x-slot name="tableTd">
           @forelse ($chequePayments as $payment)
           <tr>
-            <td class="font-weight-bold">{{ $loop->iteration }}</td>
-            <td>{{ $payment->supplier->name }}</td>
+            <td class="font-weight-bold">{{<td>
+              <a target="_blank" href="{{ route('admin.suppliers.show', $payment->supplier) }}">{{ $payment->supplier->name }}</a>
+            </td> $loop->iteration }}</td>
+            
             <td>{{ $payment->cheque_serial }}</td>
             <td>{{ $payment->cheque_holder }}</td>
             <td>{{ $payment->bank_name }}</td>
@@ -131,9 +126,19 @@
               @endphp  
               <x-core::light-badge :type="$type" :text="$text"/>  
             </td>
+            <td>
+              <x-core::show-button route="admin.payments.show" :model="$payment->supplier"/>
+              <x-payment::payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+              @can('edit payments')
+                <x-core::edit-button target="#edit-payment-modal{{$payment->id}}"/>
+              @endcan
+              @can('delete payments')
+                <x-core::delete-button route="admin.payments.destroy" :model="$payment"/>
+              @endcan
+            </td>
           </tr>
         @empty
-          <x-core::data-not-found-alert :colspan="10"/>
+          <x-core::data-not-found-alert :colspan="11"/>
         @endforelse
         </x-slot>
         <x-slot name="extraData">
@@ -143,9 +148,18 @@
     </x-slot>
   </x-core::card>
 
+  <x-payment::edit-payment-modal :payments="$chequePayments" idExtention="edit-payment-modal"/>
+  <x-payment::payment-description-modal :payments="$chequePayments" idExtention="payment-description-modal"/>
+
 @endsection
 
 @section('scripts')
+
+  <x-payment::edit-payment-scripts   
+    :cashes="[]"
+    :cheques="$chequePayments"
+    :installments="[]"
+  /> 
 
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
@@ -153,8 +167,8 @@
   <x-core::date-input-script textInputId="to_due_date_show" dateInputId="to_due_date"/>
 
   <script>
-    $('#supplier_id').select2({placeholder: 'انتخاب تامین کننده'});
-    $('#status').select2({placeholder: 'وضعیت را انتخاب کنید'});
+    new CustomSelect('#supplier_id', 'انتخاب تامین کننده'); 
+    new CustomSelect('#status', 'انتخاب وضعیت'); 
   </script>
 
 @endsection

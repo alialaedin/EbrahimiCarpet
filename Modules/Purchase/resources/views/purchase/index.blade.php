@@ -1,76 +1,67 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item active">لیست خرید ها</li>
-    </ol>
-    @can('create purchases')
-      <x-core::register-button route="admin.purchases.create" title="ثبت خرید جدید"/>
-    @endcan
-  </div>
-  @include('purchase::includes._filter-form')
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">لیست خرید ها ({{ $purchasesCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">نام تامین کننده</th>
-                <th class="text-center">شماره موبایل</th>
-                <th class="text-center">مبلغ خرید (ریال)</th>
-                <th class="text-center">تخفیف کلی (ریال)</th>
-                <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
-                <th class="text-center">تاریخ خرید</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($purchases as $purchase)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">
-                    <a href="{{ route('admin.suppliers.show', $purchase->supplier) }}" target="_blank">
-                      {{ $purchase->supplier->name }}
-                    </a>
-                  </td>
-                  <td class="text-center">{{ $purchase->supplier->mobile }}</td>
-                  <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount()) }}</td>
-                  <td class="text-center">{{ number_format($purchase->discount) }}</td>
-                  <td class="text-center">{{ number_format($purchase->getTotalPurchaseAmount() - $purchase->discount) }}</td>
-                  <td class="text-center"> @jalaliDate($purchase->purchased_at) </td>
-                  <td class="text-center">
-                    @can('view purchases')
-                      <x-core::show-button route="admin.purchases.show" :model="$purchase"/>
-                    @endcan
-                    @can('edit purchases')
-                      <x-core::edit-button route="admin.purchases.edit" :model="$purchase"/>
-                    @endcan
-                    @can('delete purchases')
-                      <x-core::delete-button route="admin.purchases.destroy" :model="$purchase"/>
-                    @endcan
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="8"/>
-              @endforelse
-              </tbody>
-            </table>
-            {{ $purchases->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+<div class="page-header">
+  <x-core::breadcrumb :items="[['title' => 'لیست خرید ها']]"/>
+  @can('create purchases')
+    <x-core::create-button route="admin.purchases.create" title="ثبت خرید جدید"/>
+  @endcan
+</div>
+
+@include('purchase::includes._filter-form')
+
+<x-core::card>
+  <x-slot name="cardTitle">لیست خرید ها ({{ $purchasesCount }})</x-slot>
+  <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+  <x-slot name="cardBody">
+    <x-core::table>
+      <x-slot name="tableTh">
+        <tr>
+          <th>ردیف</th>
+          <th>نام تامین کننده</th>
+          <th>شماره موبایل</th>
+          <th>مبلغ خرید (ریال)</th>
+          <th>تخفیف کلی (ریال)</th>
+          <th>مبلغ خرید با تخفیف (ریال)</th>
+          <th>تاریخ خرید</th>
+          <th>عملیات</th>
+        </tr>
+      </x-slot>
+      <x-slot name="tableTd">
+        @forelse ($purchases as $purchase)
+          <tr>
+            <td class="font-weight-bold">{{ $loop->iteration }}</td>
+            <td><a href="{{ route('admin.suppliers.show', $purchase->supplier) }}" target="_blank">{{ $purchase->supplier->name }}</a></td>
+            <td>{{ $purchase->supplier->mobile }}</td>
+            <td>{{ number_format($purchase->total_items_amount) }}</td>
+            <td>{{ number_format($purchase->discount) }}</td>
+            <td>{{ number_format($purchase->total_amount) }}</td>
+            <td> @jalaliDateFormat($purchase->purchased_at) </td>
+            <td>
+              @can('view purchases')
+                <x-core::show-button route="admin.purchases.show" :model="$purchase"/>
+              @endcan
+              @can('edit purchases')
+                <a
+                  href="{{route('admin.purchases.edit', $purchase)}}"
+                  class="btn btn-sm btn-icon btn-warning text-white"
+                  data-toggle="tooltip"
+                  data-original-title="ویرایش">
+                  <i class="fa fa-pencil"></i>
+                </a>
+              @endcan
+              @can('delete purchases')
+                <x-core::delete-button route="admin.purchases.destroy" :model="$purchase"/>
+              @endcan
+            </td>
+          </tr>
+        @empty
+          <x-core::data-not-found-alert :colspan="8"/>
+        @endforelse
+      </x-slot>
+      <x-slot name="extraData">{{ $purchases->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}</x-slot>
+    </x-core::table>
+  </x-slot>
+</x-core::card>
+
 @endsection

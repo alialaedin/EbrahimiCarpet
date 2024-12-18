@@ -1,23 +1,17 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.sales.index') }}">لیست فروش ها</a>
-      </li>
-      <li class="breadcrumb-item active">ثبت فروش جدید</li>
-    </ol>
+    <x-core::breadcrumb :items="[
+      ['title' => 'لیست فروش ها', 'route_link' => 'admin.sales.index'],
+      ['title' => 'ثبت فروش جدید']
+    ]"/>
   </div>
-  <div class="card">
-    <div class="card-header justify-content-between border-bottom-0">
-      <p class="card-title">فاکتور فروش جدید</p>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">فاکتور فروش جدید</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form id="SubmitForm" action="{{ route('admin.sales.store') }}" method="post" class="save">
         @csrf
         <div class="row">
@@ -115,26 +109,26 @@
             </div>
           </div>
         </div>
-      </form>
-    </div>
-  </div>
+      </form>    
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')
   <x-core::date-input-script textInputId="sold_date_show" dateInputId="sold_date"/>
 	<script>
 
-    $('#customer_id').select2({placeholder: 'انتخاب مشتری'});
-    $('#employee_id').select2({placeholder: 'انتخاب کارمند'});
+    new CustomSelect('#customer_id', 'انتخاب مشتری');
+    new CustomSelect('#employee_id', 'انتخاب کارمند');
 
     function getProductStore(id) {
 
       let productId = $(id).val();
-      
       let token = $('meta[name="csrf-token"]').attr('content');
 
       $.ajax({
-        url: '{{ route("admin.sales.get-product-store") }}',
+        url: @json(route("admin.sales.get-product-store")),
         type: 'POST',
         data: {product_id: productId},
         headers: {'X-CSRF-TOKEN': token},

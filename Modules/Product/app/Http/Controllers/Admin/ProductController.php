@@ -3,8 +3,7 @@
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -27,74 +26,37 @@ class ProductController extends Controller implements HasMiddleware
     ];
   }
 
-  private function getParentCategories(): array|Collection
+  public function index(): View
   {
-    return Category::query()
-      ->select('id', 'title', 'unit_type')
-      ->whereNull('parent_id')
-      ->with('children:id,title,parent_id')
-      ->get();
-  }
-
-  public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
-  {
-    $categoryId = request('category_id');
-    $title = request('title');
-    $status = request('status');
-    $hasDiscount = request('has_discount');
-
     $products = Product::query()
-      ->select(
-        'id',   
-        'title',   
-        'print_title',   
-        'category_id',   
-        'status',   
-        'discount',   
-        'price',   
-        'image',   
-        'parent_id', 
-        'created_at'
-      )
+      ->select(Product::INDEX_PAGE_SELECTED_COLUMNS)
       ->with([
-        'category' => fn($query) => $query->select('id', 'title', 'unit_type'),
-        'stores' => fn($query) => $query->select('id', 'product_id', 'balance'),
+        'category' => fn($q) => $q->select('id', 'title', 'unit_type'),
+        'stores' => fn($q) => $q->select('id', 'product_id', 'balance'),
       ])
-      ->when($title, fn(Builder $query) => $query->where('title', 'like', "%{$title}%"))
-      ->when($categoryId, fn(Builder $query) => $query->where('category_id', $categoryId))
-      ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
-      ->when(isset($hasDiscount), function (Builder $query) use ($hasDiscount) {
-        return $query->where(function ($query) use ($hasDiscount) {
-          if ($hasDiscount == 1) {
-            $query->where('discount', '>', 0)->orWhereNotNull('discount');
-          } else {
-            $query->where('discount', '=', 0)->orWhereNull('discount');
-          }
-        });
-      })
-      ->whereNull('parent_id')
-      ->withCount(relations: 'children')
+      ->filters()
+      ->parents()
+      ->withCount('children')
       ->latest('id')
-      ->paginate()
+      ->paginate(request('perPage', 15))
       ->withQueryString();
 
     $categories = Category::query()->select('id', 'title')->get();
-    $productsCount = $products->total();
-    $totalProducts = Product::count();
+    $totalProducts = $products->total();
 
-    return view('product::product.index', compact(['products', 'productsCount', 'categories', 'totalProducts']));
+    return view('product::product.index', compact(['products', 'categories', 'totalProducts']));
   }
 
-  public function show(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function show(Product $product): View
   {
     $product->load(['category.parent', 'children']);
 
     return view('product::product.show', compact('product'));
   }
 
-  public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function create(): View
   {
-    $parentCategories = $this->getParentCategories();
+    $parentCategories = Category::getParentCategories();
 
     return view('product::product.create', compact('parentCategories'));
   }
@@ -125,9 +87,9 @@ class ProductController extends Controller implements HasMiddleware
     return to_route('admin.products.index');
   }
 
-  public function edit(Product $product): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function edit(Product $product): View
   {
-    $parentCategories = $this->getParentCategories();
+    $parentCategories = Category::getParentCategories();
 
     return view('product::product.edit', compact('product', 'parentCategories'));
   }
@@ -144,8 +106,6 @@ class ProductController extends Controller implements HasMiddleware
     }
 
     $product->update($inputs);
-
-    // $product->updateChildrenTitles();
     $product->updateChildren(['title', 'print_title', 'category_id']);
 
     StoreService::updateSellPrice($product);

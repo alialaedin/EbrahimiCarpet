@@ -1,23 +1,14 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.products.index') }}">لیست محصولات</a>
-      </li>
-      <li class="breadcrumb-item active">ثبت محصول جدید</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست محصولات', 'route_link' => 'admin.products.index'], ['title' => 'ثبت محصول جدید']]"/>
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <h1 class="card-title">ثبت محصول جدید</h1>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ثبت محصول جدید</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.products.store') }}" method="post" class="save" enctype="multipart/form-data">
         @csrf
         <div class="row">
@@ -150,8 +141,9 @@
           </div>
         </div>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')
@@ -179,15 +171,9 @@
         }
       });
       $('.hidden-part').hide();
-      // $('#products-dimensions-section').hide();  
-      // $('#warning-messages-section').hide();  
-      // $('#submit-btn-section').hide();  
       let counter = 1; 
       
       $('#add-dimensions-btn').click(() => {
-        // $('#products-dimensions-section').show();
-        // $('#warning-messages-section').show();
-        // $('#submit-btn-section').show();  
         $('.hidden-part').slideDown('slow');
         let html = `
           <tr style="display: none;">  

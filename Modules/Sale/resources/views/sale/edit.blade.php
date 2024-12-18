@@ -1,23 +1,17 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.sales.index') }}">لیست فروش ها</a>
-      </li>
-      <li class="breadcrumb-item active">ویرایش فروش</li>
-    </ol>
+    <x-core::breadcrumb :items="[
+      ['title' => 'لیست فروش ها', 'route_link' => 'admin.sales.index'],
+      ['title' => 'ویرایش فروش']
+    ]"/>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">ویرایش فروش - کد {{ $sale->id }} - مبلغ فروش : {{ number_format($sale->getTotalAmountWithDiscount()) . ' ریال'}}</p>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ویرایش فروش - کد {{ $sale->id }} - مبلغ فروش : {{ number_format($sale->getTotalAmountWithDiscount()) . ' ریال'}}</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.sales.update', $sale) }}" method="post" class="save">
         @csrf
         @method('PATCH')
@@ -78,8 +72,9 @@
         </div>
         <x-core::update-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')

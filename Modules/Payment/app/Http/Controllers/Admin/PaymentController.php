@@ -163,7 +163,7 @@ class PaymentController extends Controller implements HasMiddleware
     $payment->update($request->all());
     toastr()->success("پرداختی با موفقیت بروزرسانی شد.");
 
-    return to_route('admin.payments.show', $payment->supplier);
+    return redirect()->back();
   }
 
   public function destroy(Payment $payment): RedirectResponse

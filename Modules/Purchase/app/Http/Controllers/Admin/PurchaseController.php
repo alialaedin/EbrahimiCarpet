@@ -94,7 +94,7 @@ class PurchaseController extends Controller implements HasMiddleware
 	public function show(Purchase $purchase): View|Application
   {
 		$purchase->load([
-			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile'),
+			'supplier' => fn ($query) => $query->select('id', 'name', 'mobile', 'national_code', 'postal_code'),
 			'items' => fn ($query) => $query->latest('id'),
 			'items.product' => fn ($query) => $query->select('id', 'title', 'image', 'category_id', 'sub_title'),
 			'items.product.category' => fn ($query) => $query->select('id', 'unit_type')

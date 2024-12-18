@@ -31,6 +31,8 @@ class Product extends BaseModel
 		'image'
 	];
 
+	public const INDEX_PAGE_SELECTED_COLUMNS = ['id','title','print_title','category_id','status','discount','price','image','parent_id','created_at'];
+
 	protected static function booted(): void
 	{
 		static::deleting(function (Product $product) {
@@ -75,61 +77,31 @@ class Product extends BaseModel
 	}
 
 	// Functions
-	public function getDiscount()
+	public function getDiscountAttribute()
 	{
 		$discount = $this->attributes['discount'];
 
 		return ($discount == 0 || is_null($discount)) ? 0 : $discount;
 	}
 
-	public function getTotalPriceWithDiscount(): int
-	{
-		$discount = $this->attributes['discount'];
-		$price = $this->attributes['price'];
-
-		if (!is_null($discount)) {
-			$price -= $discount;
-		}
-
-		return $price;
-	}
-
   public function isDeletable(): bool
   {
-	$hasBalance = $this->stores->sum('balance') > 0;
-	$hasPurchaseItem = $this->purchaseItems->isNotEmpty();
-	$hasSaleItem = $this->saleItems->isNotEmpty();
-	$hasChildren = $this->children->isNotEmpty();
+		$hasBalance = $this->stores->sum('balance') > 0;
+		$hasPurchaseItem = $this->purchaseItems->isNotEmpty();
+		$hasSaleItem = $this->saleItems->isNotEmpty();
+		$hasChildren = $this->children->isNotEmpty();
 
     return !$hasPurchaseItem AND !$hasSaleItem AND !$hasChildren AND !$hasBalance;
   }
 
-	public function getTotalDimensionsStoreBalance(): int
-	{
-		$children = $this->children;
-		$totsalBalance = 0;
-
-		foreach ($children as $child) {
-			$balance = $child->stores->sum('balance');
-			$totsalBalance += $balance;
-		}	
-
-		return $totsalBalance;
-	}
-
-	public function loadStoreBalance()
-	{
-		return $this->stores->sum('balance');
-	}
-
-	public function calcAllDemenisionsStoreBalance()
-	{
-		return $this->children->map(fn($product) => $product->store_balance)->sum();
-	}
-
 	public function getStoreBalanceAttribute()
 	{
 		return $this->stores->sum('balance');
+	}
+
+	public function getDemenisionsStoreBalanceAttribute()
+	{
+		return $this->children->map(fn($product) => $product->store_balance)->sum();
 	}
 
 	public function loadDeletableMessages(): array
@@ -140,19 +112,6 @@ class Product extends BaseModel
 			'اگر از این محصول فاکتور خریدی ثبت شده باشد!',
 			'اگر محصول اصلی دارای ابعاد باشد!'
 		];
-	}
-
-
-	public function updateChildrenTitles(): void
-	{
-		if ($this->children->isNotEmpty()) {
-			foreach ($this->children as $product) {
-				$product->update([
-					'title' => $this->title,
-					'print_title' => $this->title,
-				]);
-			}
-		}
 	}
 
 	public function updateChildren(array $columns)
@@ -168,9 +127,34 @@ class Product extends BaseModel
 		}
 	}
 
-	public static function scopeChildrens($query)
+	public function scopeChildrens($query)
 	{
 		return $query->whereNotNull('parent_id');
+	}
+
+	public function scopeParents($query)
+	{
+		return $query->whereNull('parent_id');
+	}
+
+	public function scopeFilters($query)
+	{
+    $status = request('status');
+    $hasDiscount = request('has_discount');
+
+		return $query
+			->when(request('title'), fn($q) => $q->where('title', 'like', "%" . request('title') . "%"))
+			->when(request('category_id'), fn($q) => $q->where('category_id', request('category_id')))
+			->when(isset($status), fn($q) => $q->where('status', $status))
+			->when(isset($hasDiscount), function ($q) use ($hasDiscount) {
+				return $q->where(function ($q) use ($hasDiscount) {
+					if ($hasDiscount == 1) {
+						$q->where('discount', '>', 0)->orWhereNotNull('discount');
+					} else {
+						$q->where('discount', '=', 0)->orWhereNull('discount');
+					}
+				});
+			});
 	}
 
 	public function getRedirectRoute()

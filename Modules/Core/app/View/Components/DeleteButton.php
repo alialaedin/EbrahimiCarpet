@@ -11,10 +11,9 @@ class DeleteButton extends Component
   public function __construct(
     public string $route,
     public Model  $model,
-    public bool   $disabled = false
-  )
-  {
-  }
+    public bool   $disabled = false,
+    public        $title = null
+  ){}
 
   public function render(): View|string
   {

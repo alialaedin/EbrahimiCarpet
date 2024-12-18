@@ -60,7 +60,7 @@ class Purchase extends Model
   }
 
   // Functions
-  public function getTotalPurchaseAmount(): int
+  public function getTotalItemsAmountAttribute(): int
   {
     $totalPrice = 0;
     foreach ($this->items as $item) {
@@ -70,14 +70,9 @@ class Purchase extends Model
     return $totalPrice;
   }
 
-  public function getTotalAmountWithDiscount(): int
+  public function getTotalAmountAttribute(): int
   {
-    return $this->getTotalPurchaseAmount() - $this->attributes['discount'];
-  }
-
-  public function getTotalPaymentAmount(): int
-  {
-    return $this->payments->where('status', 1)->whereNotNull('payment_date')->sum('amount');
+    return $this->total_items_amount - $this->attributes['discount'];
   }
 
   // Relations

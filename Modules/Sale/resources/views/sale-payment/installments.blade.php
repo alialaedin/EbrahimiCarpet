@@ -1,16 +1,8 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>اقساط دریافتی</a>
-      </li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'اقساط دریافتی از مشتری']]" />
   </div>
 
   <x-core::card>
@@ -87,6 +79,7 @@
             <th>تاریخ پرداخت</th>
             <th>تاریخ ثبت</th>
             <th>وضعیت</th>
+            <th>عملیات</th>
           </tr>
         </x-slot>
         <x-slot name="tableTd">
@@ -105,9 +98,19 @@
               @endphp  
               <x-core::light-badge :type="$type" :text="$text"/>  
             </td>
+            <td>
+              <x-core::show-button route="admin.sale-payments.show" :model="$payment->customer"/>
+              <x-sale::sale-payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+              @can('edit sale_payments')
+                <x-core::edit-button target="#edit-payment-modal{{$payment->id}}"/>
+              @endcan
+              @can('delete sale_payments')
+                <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
+              @endcan
+            </td>
           </tr>
         @empty
-          <x-core::data-not-found-alert :colspan="7"/>
+          <x-core::data-not-found-alert :colspan="8"/>
         @endforelse
         </x-slot>
         <x-slot name="extraData">
@@ -117,19 +120,25 @@
     </x-slot>
   </x-core::card>
 
+  <x-sale::edit-sale-payment-modal :payments="$installmentPayments" idExtention="edit-payment-modal"/>
+  <x-sale::sale-payment-description-modal :payments="$installmentPayments" idExtention="payment-description-modal"/>
+
 @endsection
 
 @section('scripts')
+
+  <x-sale::edit-sale-payment-scripts   
+    :cashes="[]"
+    :cheques="[]"
+    :installments="$installmentPayments"
+  /> 
+
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
 
   <script>
-    $('#customer_id').select2({
-      placeholder: 'انتخاب مشتری';
-    });
-    $('#status').select2({
-      placeholder: 'انتخاب وضعیت';
-    });
+    new CustomSelect('#customer_id', 'انتخاب مشتری'); 
+    new CustomSelect('#status', 'انتخاب وضعیت'); 
   </script>
 
 @endsection

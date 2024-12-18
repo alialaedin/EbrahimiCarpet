@@ -83,8 +83,22 @@ class Category extends Model
 
   public function scopeChildren($query)
   {
-	return $query->whereNotNull('parent_id');
+		return $query->whereNotNull('parent_id');
   }
+
+	public function scopeParents($query)
+  {
+		return $query->whereNull('parent_id');
+  }
+
+	public static function getParentCategories()
+	{
+		return self::query()
+			->select(['id', 'title', 'unit_type'])
+			->parents()
+			->with('children:id,title,parent_id')
+			->get();
+	}
 
   // Relations
   public function children(): HasMany

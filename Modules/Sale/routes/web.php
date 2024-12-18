@@ -28,7 +28,7 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
     Route::get('/create/{customer}', [SalePaymentController::class, 'create'])->name('create');
     Route::post('/', [SalePaymentController::class, 'store'])->name('store');
     Route::get('/{sale_payment}/edit', [SalePaymentController::class, 'edit'])->name('edit');
-    Route::patch('/{sale_payment}', [SalePaymentController::class, 'update'])->name('update');
+    Route::put('/{sale_payment}', [SalePaymentController::class, 'update'])->name('update');
     Route::delete('/{sale_payment}', [SalePaymentController::class, 'destroy'])->name('destroy');
     Route::delete('/{sale_payment}/image', [SalePaymentController::class, 'destroyImage'])->name('image.destroy');
   });

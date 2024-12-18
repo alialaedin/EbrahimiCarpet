@@ -32,7 +32,7 @@ class   SupplierController extends Controller implements HasMiddleware
 		$status = request('status');
 
 		$suppliers = Supplier::query()
-			->select('id', 'name', 'mobile', 'status', 'national_code', 'type', 'postal_code')
+			->select('id', 'name', 'mobile', 'status', 'national_code', 'type', 'postal_code', 'created_at')
 			->when($name, fn (Builder $query) => $query->where('name', 'like', "%$name%"))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
 			->when($type, fn (Builder $query) => $query->where('type', $type))
@@ -52,7 +52,7 @@ class   SupplierController extends Controller implements HasMiddleware
 		$numberOfPayments = $supplier->payments->count();
 		$numberOfAccounts = $supplier->accounts->count();
 
-		$payments = $supplier->payments()->latest('id')->get();
+		$payments = $supplier->payments()->latest('id')->take(5)->get();
 		$purchases = $supplier->purchases()->latest('id')->get();
     $accounts = $supplier->accounts()->latest('id')->get();
 

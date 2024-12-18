@@ -35,3 +35,27 @@
     tags: true
   });
 </script>
+
+<script>
+  class CustomSelect {  
+    constructor(selector, placeholder) {  
+      this.selector = selector;  
+      this.placeholder = placeholder;  
+
+      this.initSelect2();  
+    }  
+
+    initSelect2() {  
+      $(this.selector).select2({  
+        placeholder: this.placeholder,  
+        allowClear: true,  
+        dir: 'rtl',
+        language: {  
+          noResults: () => {  
+            return "موردی یافت نشد !";  
+          }  
+        }  
+      });  
+    }  
+	}  
+</script>

@@ -1,11 +1,13 @@
 <div class="table-responsive">
-  <table class="table table-striped table-bordered text-nowrap text-center">
-    <thead class="thead-light">
+  <table class="table table-striped text-nowrap text-center">
+    <thead>
       {{$tableTh}}
     </thead>
     <tbody>
     {{ $tableTd }}
     </tbody>
   </table>
-  {{ $extraData }}
+  @isset($extraData)
+    {{ $extraData }}
+  @endisset
 </div>

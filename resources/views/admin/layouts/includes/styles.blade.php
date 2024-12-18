@@ -45,6 +45,7 @@
     font-family: Vazir;
   }
   .page-header {
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 0px;
   }
 </style>

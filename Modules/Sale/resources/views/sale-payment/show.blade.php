@@ -1,36 +1,27 @@
 @extends('admin.layouts.master')
 @section('content')
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.customers.index') }}">لیست مشتریان</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.customers.show', $customer) }}">نمایش مشتری</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>پرداختی ها</a>
-      </li>
-    </ol>
-    @can('create sale_payments')
-      <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-indigo">
-        ثبت پرداختی جدید
-        <i class="fa fa-plus mr-1"></i>
-      </a>
+
+    <x-core::breadcrumb
+      :items="[
+        ['title' => 'لیست مشتریان', 'route_link' => 'admin.customers.index'],
+        ['title' => 'نمایش مشتری', 'route_link' => 'admin.customers.show', 'parameter' => $customer],
+        ['title' => 'دریافتی ها'],
+      ]"
+    />
+
+    @can('create payments')
+      <x-core::create-button route="admin.sale-payments.create" :param="$customer" title="ثبت دریافتی جدید"/>
     @endcan
+  
   </div>
-  <div class="card">
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">اطلاعات مشتری</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <div class="row">
-        <div class="col-12">
-          <p class="header fs-20 px-5">اطلاعات مشتری</p>
-        </div>
-        <div class="col-lg-6">
+        <div class="col-xl-6">
           <ul class="list-group">
             <li class="list-group-item"><strong>کد : </strong> {{ $customer->id }} </li>
             <li class="list-group-item">
@@ -48,7 +39,7 @@
             <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $customer->mobile }} </li>
           </ul>
         </div>
-        <div class="col-lg-6">
+        <div class="col-xl-6">
           <ul class="list-group">
             <li class="list-group-item"><strong>آدرس: </strong> {{ $customer->address }} </li>
             <li class="list-group-item"><strong>تعداد خرید ها : </strong>{{ number_format($customer->countSales()) }} </li>
@@ -57,11 +48,200 @@
           </ul>
         </div>
       </div>
+    </x-slot>
+  </x-core::card>
 
-    </div>
-  </div>
   @include('customer::includes.helper-boxes')
-  <div class="card">
+
+  <x-core::card>
+    <x-slot name="cardTitle">نقدی ها ({{ $cashPayments->count() }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>مبلغ پرداختی (ریال)</th>
+            <th>تاریخ پرداخت</th>
+            <th>عکس رسید</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($cashPayments as $payment)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ number_format($payment->amount) }}</td>
+              <td> @jalaliDateFormat($payment->payment_date) </td>
+              <td class="m-0 p-0">
+                @if ($payment->image)
+                  <figure class="figure my-2">
+                    <a target="_blank" href="{{ Storage::url($payment->image) }}">
+                      <img
+                        src="{{ Storage::url($payment->image) }}"
+                        class="img-thumbnail"
+                        alt="image"
+                        width="50"
+                        style="max-height: 32px;"
+                      />
+                    </a>
+                  </figure>
+                @else
+                  <span> - </span>
+                @endif
+              </td>
+              <td> @jalaliDate($payment->created_at) </td>
+              <td>
+                <x-sale::sale-payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+                @can('edit sale_payments')
+                  <x-core::edit-button target="#edit-cash-payment-modal{{$payment->id}}"/>
+                @endcan
+                @can('delete sale_payments')
+                  <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="6"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+  <x-core::card>
+    <x-slot name="cardTitle">اقساط ({{ $installmentPayments->count() }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>مبلغ (ریال)</th>
+            <th>تاریخ پرداخت</th>
+            <th>عکس رسید</th>
+            <th>تاریخ سررسید</th>
+            <th>وضعیت</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($installmentPayments as $payment)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ number_format($payment->amount) }}</td>
+              <td>{{ $payment->getPaymentDate() }}</td>
+              <td class="m-0 p-0">
+                @if ($payment->image)
+                  <figure class="figure my-2">
+                    <a target="_blank" href="{{ Storage::url($payment->image) }}">
+                      <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
+                    </a>
+                  </figure>
+                @else
+                  <span> - </span>
+                @endif
+              </td>
+              <td> @jalaliDateFormat($payment->due_date) </td>
+              <td>
+                <x-core::light-badge
+                  type="{{ $payment->status ? 'success' : 'danger' }}"
+                  text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
+                />
+              </td>
+              <td> @jalaliDate($payment->created_at) </td>
+              <td>
+                <x-sale::sale-payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+                @can('edit sale_payments')
+                  <x-core::edit-button target="#edit-installment-payment-modal{{$payment->id}}"/>
+                @endcan
+                @can('delete sale_payments')
+                  <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+  <x-core::card>
+    <x-slot name="cardTitle">چک ها ({{ $chequePayments->count() }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>سریال</th>
+            <th>صاحب چک</th>
+            <th>بانک</th>
+            <th>در وجه</th>
+            <th>مبلغ (ریال)</th>
+            <th>تاریخ سررسید</th>
+            <th>تاریخ پرداخت</th>
+            <th>عکس رسید</th>
+            <th>وضعیت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($chequePayments as $payment)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $payment->cheque_serial }}</td>
+              <td>{{ $payment->cheque_holder }}</td>
+              <td>{{ $payment->bank_name }}</td>
+              <td>{{ $payment->pay_to }}</td>
+              <td>{{ number_format($payment->amount) }}</td>
+              <td>{{ verta($payment->due_date)->format('Y/m/d') }} </td>
+              <td>{{ $payment->getPaymentDate() }}</td>
+              <td class="m-0 p-0">
+                @if ($payment->image)
+                  <figure class="figure my-2">
+                    <a target="_blank" href="{{ Storage::url($payment->image) }}">
+                      <img src="{{ Storage::url($payment->image) }}" class="img-thumbnail" alt="image" width="50" style="max-height: 32px;" />
+                    </a>
+                  </figure>
+                @else
+                  <span> - </span>
+                @endif
+              </td>
+              <td>
+                <x-core::light-badge
+                  type="{{ $payment->status ? 'success' : 'danger' }}"
+                  text="{{ $payment->status ? 'پاس شده' : 'پاس نشده' }}"
+                />
+              </td>
+              <td>
+                <x-sale::sale-payment-description-button target="#payment-description-modal{{$payment->id}}"/>
+                @can('edit sale_payments')
+                  <x-core::edit-button target="#edit-cheque-payment-modal{{$payment->id}}"/>
+                @endcan
+                @can('delete sale_payments')
+                  <x-core::delete-button route="admin.sale-payments.destroy" :model="$payment"/>
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="11"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+  <x-sale::edit-sale-payment-modal :payments="$cashPayments" idExtention="edit-cash-payment-modal"/>
+  <x-sale::edit-sale-payment-modal :payments="$chequePayments" idExtention="edit-cheque-payment-modal"/>
+  <x-sale::edit-sale-payment-modal :payments="$installmentPayments" idExtention="edit-installment-payment-modal"/>
+  <x-sale::sale-payment-description-modal :payments="$salePayments" idExtention="payment-description-modal"/>
+
+  {{-- <div class="card">
     <div class="card-header border-0">
       <p class="card-title">پرداختی های نقدی ({{ $cashPayments->count() }})</p>
       <x-core::card-options/>
@@ -136,6 +316,7 @@
       </div>
     </div>
   </div>
+
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">اقساط ({{ $installmentPayments->count() }})</p>
@@ -214,6 +395,7 @@
       </div>
     </div>
   </div>
+
   <div class="card">
     <div class="card-header border-0">
       <p class="card-title">چک ها ({{ $chequePayments->count() }})</p>
@@ -299,50 +481,16 @@
         </div>
       </div>
     </div>
-  </div>
-  @include('sale::sale-payment._show-description-modal')
-  @include('sale::sale-payment.edit-modal')
+  </div> --}}
+
+  {{-- @include('sale::sale-payment._show-description-modal')
+  @include('sale::sale-payment.edit-modal') --}}
 @endsection
 
 @section('scripts')
-
-@foreach ($cashPayments as $cashPayment)
-  <x-core::date-input-script
-    textInputId="cash_payment_date_show-{{ $cashPayment->id }}"
-    dateInputId="cash_payment_date_hidden-{{ $cashPayment->id }}"
-  />
-@endforeach
-@foreach ($chequePayments as $chequePayment)
-  <x-core::date-input-script
-    textInputId="cheque_due_date_show-{{ $chequePayment->id }}"
-    dateInputId="cheque_due_date_hidden-{{ $chequePayment->id }}"
-  />
-  <x-core::date-input-script
-    textInputId="cheque_payment_date_show-{{ $chequePayment->id }}"
-    dateInputId="cheque_payment_date_hidden-{{ $chequePayment->id }}"
-  />
-@endforeach
-@foreach ($installmentPayments as $installmentPayment)
-  <x-core::date-input-script
-    textInputId="installment_payment_date_show-{{ $installmentPayment->id }}"
-    dateInputId="installment_payment_date_hidden-{{ $installmentPayment->id }}"
-  />
-  <x-core::date-input-script
-    textInputId="installment_due_date_show-{{ $installmentPayment->id }}"
-    dateInputId="installment_due_date_hidden-{{ $installmentPayment->id }}"
-  />
-@endforeach
-
-  <script>
-    function showPaymentDescriptionModal (description) {
-      let modal = $('#showDescriptionModal');
-      modal.find('#description').text(description ?? '-');
-      modal.modal('show');
-    }
-  </script>
-  <script>
-    $(document).ready(function() {
-      console.log(@json($customer->all_payments_amount));
-    });
-  </script>
+  <x-sale::edit-sale-payment-scripts   
+    :cashes="$cashPayments"
+    :cheques="$chequePayments"
+    :installments="$installmentPayments"
+  />  
 @endsection
