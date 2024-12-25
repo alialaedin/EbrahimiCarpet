@@ -84,6 +84,11 @@ class Product extends BaseModel
 		return ($discount == 0 || is_null($discount)) ? 0 : $discount;
 	}
 
+	public function getFullTitleAttribute()
+	{
+		return $this->sub_title === null ? $this->title : $this->title .' '. $this->sub_title; 
+	}
+
   public function isDeletable(): bool
   {
 		$hasBalance = $this->stores->sum('balance') > 0;
@@ -127,7 +132,7 @@ class Product extends BaseModel
 		}
 	}
 
-	public function scopeChildrens($query)
+	public function scopeChildren($query)
 	{
 		return $query->whereNotNull('parent_id');
 	}
@@ -139,16 +144,19 @@ class Product extends BaseModel
 
 	public function scopeFilters($query)
 	{
-    $status = request('status');
-    $hasDiscount = request('has_discount');
-
 		return $query
 			->when(request('title'), fn($q) => $q->where('title', 'like', "%" . request('title') . "%"))
 			->when(request('category_id'), fn($q) => $q->where('category_id', request('category_id')))
-			->when(isset($status), fn($q) => $q->where('status', $status))
-			->when(isset($hasDiscount), function ($q) use ($hasDiscount) {
-				return $q->where(function ($q) use ($hasDiscount) {
-					if ($hasDiscount == 1) {
+			->when(request('product_id'), fn($q) => $q->where('id', request('product_id')))
+			->when(request('start_date'), fn($q) => $q->whereDate('created_at', '>=', request('start_date')))
+			->when(request('end_date'), fn($q) => $q->whereDate('created_at', '<=', request('end_date')))
+			->when(request('unit_type'), function ($query) {
+        return $query->withWhereHas('category', fn($query) => $query->where('unit_type', request('unit_type')));
+      })
+			->when(!is_null(request('status')), fn($q) => $q->where('status', request('status')))
+			->when(!is_null(request('has_discount')), function ($q) {
+				return $q->where(function ($q) {
+					if (request('has_discount') == 1) {
 						$q->where('discount', '>', 0)->orWhereNotNull('discount');
 					} else {
 						$q->where('discount', '=', 0)->orWhereNull('discount');

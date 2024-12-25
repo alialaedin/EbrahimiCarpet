@@ -28,29 +28,20 @@ class StoreController extends Controller implements HasMiddleware
 
   public function index(): View|Application
   {
-    $productId = request('product_id');
-    $unitType = request('unit_type');
-    $fromCreatedAt = request('from_created_at');
-    $toCreatedAt = request('to_created_at') ?? now();
-
     $products = Product::query()
       ->select(['id', 'title', 'category_id', 'sub_title', 'image', 'parent_id', 'created_at'])
       ->with([
-        'stores:id,balance,product_id',
-        'category:id,title,unit_type',
-        'parent:id,image'
+        'stores' => fn($q) => $q->select(['id', 'balance', 'product_id']),
+        'category' => fn($q) => $q->select(['id', 'title', 'unit_type']),
+        'parent' => fn($q) => $q->select(['id', 'image']),
       ])
-      ->when($productId, fn(Builder $query) => $query->where('id', $productId))
-      ->when($fromCreatedAt, fn(Builder $query) => $query->whereDate('created_at', '>=', $fromCreatedAt))
-      ->when($unitType, function ($query) use ($unitType) {
-        return $query->withWhereHas('category', fn($query) => $query->where('unit_type', $unitType));
-      })
-      ->whereDate('created_at', '<=', $toCreatedAt)
-      ->whereNotNull('parent_id')
+      ->filters()
+      ->children()
       ->latest('id')
-      ->paginate();
+      ->paginate()
+      ->withQueryString();
 
-    $productsToFilter = Product::query()->select('id', 'title', 'sub_title')->whereNotNull('parent_id')->get();
+    $productsToFilter = Product::query()->select(['id', 'title', 'sub_title'])->children()->get();
 
     return view('store::index', compact(['products', 'productsToFilter']));
   }

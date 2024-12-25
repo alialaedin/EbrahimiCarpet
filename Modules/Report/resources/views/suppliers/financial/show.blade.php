@@ -1,70 +1,71 @@
 @extends('admin.layouts.master')
 @section('content')
+  
   <div class="page-header d-print-none">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fe fe-home ml-1"></i> داشبورد</a>
-      </li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.reports.index') }}">گزارشات</a></li>
-      <li class="breadcrumb-item"><a href="{{ route('admin.reports.suppliers-finance-filter') }}">فیلتر گزارش مالی تامین
-          کننده</a></li>
-      <li class="breadcrumb-item active">گزارش مالی تامین کننده</li>
-    </ol>
-    <div class="d-flex align-items-center flex-wrap text-nowrap">
-      <x-core::print-button/>
-    </div>
+    <x-core::breadcrumb :items="[
+      ['title' => 'گزارشات', 'route_link' => 'admin.reports.index'],
+      ['title' => 'فیلتر گزارش مالی تامین', 'route_link' => 'admin.reports.suppliers-finance-filter'],
+      ['title' => 'گزارش مالی تامین کننده'],
+    ]"/>
+    <x-core::print-button title="پرینت"/>
   </div>
+
   <div class="row justify-content-center d-flex">
-    <p class="fs-22">گزارش مالی تامین کننده با نام <strong>{{ $supplier->name }}</strong> و شماره
-      همراه {{ $supplier->mobile }}</p>
+    <p class="fs-22">گزارش مالی تامین کننده با نام <b>{{ $supplier->name }}</b> و شماره همراه <b>{{ $supplier->mobile }}</b></p>
   </div>
+
   <div class="card">
     <div class="card-header border-0">
-      <p class="card-title">فاکتور خرید ها</p>
+      <p class="card-title font-weight-bold">فاکتور خرید ها</p>
     </div>
     <div class="card-body">
       <div class="table-responsive">
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
+            <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom">
               <thead>
               <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">تاریخ خرید</th>
-                <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">مبلغ خرید (ریال)</th>
-                <th class="text-center">تخفیف (ریال)</th>
-                <th class="text-center">مبلغ با تخفیف (ریال)</th>
+                <th>ردیف</th>
+                <th>تاریخ خرید</th>
+                <th>تاریخ ثبت</th>
+                <th>مبلغ خرید (ریال)</th>
+                <th>تخفیف (ریال)</th>
+                <th>مبلغ با تخفیف (ریال)</th>
               </tr>
               </thead>
               <tbody>
 
+              @php
+                $totalPurchaseAmount = 0;
+                $totalPurchaseDiscount = 0;
+              @endphp
+
               @forelse ($supplier->purchases as $purchase)
 
                 <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ verta($purchase->purchased_at)->format('Y/m/d') }}</td>
-                  <td class="text-center">{{ verta($purchase->created_at)->format('Y/m/d') }}</td>
-                  <td class="text-center">{{ number_format($purchase->amount) }}</td>
-                  <td class="text-center">{{ number_format($purchase->discount) }}</td>
-                  <td class="text-center">{{ number_format($purchase->getTotalAmountWithDiscount()) }}</td>
+                  <td class="font-weight-bold">{{ $loop->iteration }}</td>
+                  <td>{{ verta($purchase->purchased_at)->format('Y/m/d') }}</td>
+                  <td>{{ verta($purchase->created_at)->format('Y/m/d') }}</td>
+                  <td>{{ number_format($purchase->total_items_amount) }}</td>
+                  <td>{{ number_format($purchase->discount) }}</td>
+                  <td>{{ number_format($purchase->total_amount) }}</td>
                 </tr>
+
+                @php
+                  $totalPurchaseAmount += $purchase->total_items_amount;
+                  $totalPurchaseDiscount += $purchase->discount;
+                @endphp
 
               @empty
                 <x-core::data-not-found-alert :colspan="6"/>
               @endforelse
               @if($supplier->purchases->isNotEmpty())
 
-                @php
-                  $totalPurchaseAmount = $supplier->purchases->sum('amount');
-                  $totalPurchaseDiscount = $supplier->purchases->sum('discount');
-                @endphp
-
                 <tr>
-                  <td colspan="3" class="text-center font-weight-bold">جمع کل</td>
-                  <td colspan="1" class="text-center">{{ number_format($totalPurchaseAmount) }}</td>
-                  <td colspan="1" class="text-center">{{ number_format($totalPurchaseDiscount) }}</td>
-                  <td colspan="1"
-                      class="text-center">{{ number_format($totalPurchaseAmount - $totalPurchaseDiscount) }}</td>
+                  <td colspan="3" class="font-weight-bold">جمع کل</td>
+                  <td colspan="1">{{ number_format($totalPurchaseAmount) }}</td>
+                  <td colspan="1">{{ number_format($totalPurchaseDiscount) }}</td>
+                  <td colspan="1">{{ number_format($totalPurchaseAmount - $totalPurchaseDiscount) }}</td>
                 </tr>
 
               @endif

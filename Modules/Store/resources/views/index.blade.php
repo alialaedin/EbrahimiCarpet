@@ -1,23 +1,14 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item active">لیست انبار</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'انبار']]"/>
   </div>
-  <div class="card">
 
-    <div class="card-header border-0">
-      <p class="card-title">جستجوی پیشرفته</p>
-      <x-core::card-options/>
-    </div>
-
-    <div class="card-body">
+  <x-core::card>
+    <x-slot name="cardTitle">جستجوی پیشرفته</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route("admin.stores.index") }}" class="col-12">
         <div class="row">
 
@@ -30,7 +21,7 @@
                   <option
                     value="{{ $product->id }}"
                     @selected(request("product_id") == $product->id)>
-                    {{ $product->title .' '. $product->sub_title }}
+                    {{ $product->full_title }}
                   </option>
                 @endforeach
               </select>
@@ -80,73 +71,69 @@
         </div>
 
       </form>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">لیست انبار</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">عنوان محصول</th>
-                <th class="text-center">دسته بندی</th>
-                <th class="text-center">تصویر محصول</th>
-                <th class="text-center">نوع واحد</th>
-                <th class="text-center">موجودی</th>
-                <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($products as $product)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $product->title .' - '. $product->sub_title }}</td>
-                  <td class="text-center">{{ $product->category->title }}</td>
-                  <td class="text-center m-0 p-0">
-                    @if ($product->parent->image)
-                      <figure class="figure my-2">
-                        <a target="_blank" href="{{ Storage::url($product->parent->image) }}">
-                          <img
-                            src="{{ Storage::url($product->parent->image) }}"
-                            class="img-thumbnail"
-                            alt="image"
-                            width="50"
-                            style="max-height: 32px;"
-                          />
-                        </a>
-                      </figure>
-                    @else
-                      <span> - </span>
-                    @endif
-                  </td>
-                  <td class="text-center">{{ $product->category->getUnitType() }}</td>
-                  <td class="text-center">{{ $product->stores->sum('balance') }}</td>
-                  <td class="text-center"> @jalaliDate($product->created_at) </td>
-                  <td class="text-center">
-                    <button
-                      class="btn btn-sm btn-success text-white"
-                      style="margin-left: 1px;"
-                      data-target="#increaseStoreFormModal-{{ $product->id }}"
-                      data-toggle="modal">
-                      افزایش
-                      <i class="fa fa-plus-circle mr-1"></i>
-                    </button>
-                    <button
-                      class="btn btn-sm btn-danger text-white"
-                      style="margin-left: 1px; margin-right: 1px;"
-                      data-target="#decreaseStoreFormModal-{{ $product->id }}"
-                      data-toggle="modal">
-                      کاهش
-                      <i class="fa fa-minus-circle mr-1"></i>
-                    </button>
+    </x-slot>
+  </x-core::card>
+
+  <x-core::card>
+    <x-slot name="cardTitle">انبار</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>عنوان محصول</th>
+            <th>دسته بندی</th>
+            <th>تصویر محصول</th>
+            <th>نوع واحد</th>
+            <th>موجودی</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($products as $product)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $product->full_title }}</td>
+              <td>{{ $product->category->title }}</td>
+              <td class="m-0 p-0">
+                @if ($product->parent->image)
+                  <figure class="figure my-2">
+                    <a target="_blank" href="{{ Storage::url($product->parent->image) }}">
+                      <img
+                        src="{{ Storage::url($product->parent->image) }}"
+                        class="img-thumbnail"
+                        alt="image"
+                        width="50"
+                        style="max-height: 32px;"
+                      />
+                    </a>
+                  </figure>
+                @else
+                  <span> - </span>
+                @endif
+              </td>
+              <td>{{ $product->category->getUnitType() }}</td>
+              <td>{{ $product->stores->sum('balance') }}</td>
+              <td> @jalaliDate($product->created_at) </td>
+              <td>
+                <button
+                  class="btn btn-sm btn-success text-white"
+                  style="margin-left: 1px;"
+                  data-target="#increaseStoreFormModal-{{ $product->id }}"
+                  data-toggle="modal">
+                  افزایش
+                  <i class="fa fa-plus-circle mr-1"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-danger text-white"
+                  style="margin-left: 1px; margin-right: 1px;"
+                  data-target="#decreaseStoreFormModal-{{ $product->id }}"
+                  data-toggle="modal">
+                  کاهش
+                  <i class="fa fa-minus-circle mr-1"></i>
+                </button>
 {{--                    <a--}}
 {{--                      href="{{route('admin.stores.show-transactions', $product)}}"--}}
 {{--                      class="btn btn-sm btn-primary text-white"--}}
@@ -154,21 +141,21 @@
 {{--                      تراکنش ها--}}
 {{--                      <i class="fa fa-eye mr-1"></i>--}}
 {{--                    </a>--}}
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="8"/>
-              @endforelse
-              </tbody>
-            </table>
-            {{ $products->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+        <x-slot name="extraData">{{ $products->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}</x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+
   @include('store::includes.increase-store-modal')
   @include('store::includes.decrease-store-modal')
+
 @endsection
 @section('scripts')
   <x-core::date-input-script textInputId="from_created_at_show" dateInputId="from_created_at"/>

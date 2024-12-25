@@ -14,19 +14,7 @@ class ProfitController extends Controller
   {
     $saleItems = SaleItem::query()
       ->select(['id', 'sale_id', 'product_id', 'price', 'quantity', 'discount', 'archived_price'])
-      ->when(request('from_date'), function ($itemQuery) {
-        $itemQuery->whereHas('sale', function ($saleQuery) {
-          $saleQuery->whereBetween('sold_at', [request('from_date'), request('to_date')]);
-        });
-      })
-      ->when(request('product_id'), function ($itemQuery) {
-        $itemQuery->where('product_id', request('product_id'));
-      })
-      ->when(request('category_id'), function ($itemQuery) {
-        $itemQuery->whereHas('product', function ($productQuery) {
-          $productQuery->where('category_id', request('category_id'));
-        });
-      })
+      ->filters()
       ->with([
         'sale' => fn($q) => $q->select(['id', 'discount', 'cost_of_sewing', 'sold_at']),
         'product' => fn($q) => $q->select(['id', 'title', 'sub_title', 'category_id']),
@@ -73,8 +61,8 @@ class ProfitController extends Controller
 
     $profit = $sumTotalSellPrice - $sumTotalBuyPrice - $sumTotalDiscountPrice + $sumTotalCostOfSewingPrice;
 
-    $products = Product::childrens()->select('id', 'title', 'sub_title')->get();
-    $categories = Category::query()->children()->select('id', 'title')->get();
+    $products = Product::query()->children()->select(['id', 'title', 'sub_title'])->get();
+    $categories = Category::query()->children()->select(['id', 'title'])->get();
 
     $totalPrice = [
       'sum_total_sell_price' => $sumTotalSellPrice,

@@ -182,6 +182,12 @@
     :installments="$installmentPayments"
   />  
 
+  <script>
+    new CustomSelect('#type', 'انتخاب نوع پرداخت'); 
+    new CustomSelect('#supplier_id', 'انتخاب تامین کننده'); 
+    new CustomSelect('#status', 'انتخاب وضعیت'); 
+  </script>
+
   <x-core::date-input-script textInputId="from_payment_date_show" dateInputId="from_payment_date"/>
   <x-core::date-input-script textInputId="to_payment_date_show" dateInputId="to_payment_date"/>
   <x-core::date-input-script textInputId="from_due_date_show" dateInputId="from_due_date"/>
