@@ -1,86 +1,124 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">لیست دسته بندی ها</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست دسته بندی ها']]"/>
     @can('create categories')
-      <button class="btn btn-indigo" data-target="#createCategoryModal" data-toggle="modal">
-        ثبت دسته بندی جدید
-        <i class="fa fa-plus mr-1"></i>
-      </button>
+      <x-core::create-button type="modal" target="createCategoryModal" title="ثبت دسته بندی جدید" route=""/>
     @endcan
   </div>
-  @include('product::category.includes._filter-form')
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">لیست دسته بندی ها ({{ $categoriesCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">عنوان</th>
-                <th class="text-center">والد</th>
-                <th class="text-center">نوع واحد</th>
-                <th class="text-center">وضعیت</th>
-                <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">تاریخ آخرین ویرایش</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($categories as $category)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $category->title }}</td>
-                  <td class="text-center">{{ $category->getParentTitle() }}</td>
-                  <td class="text-center">{{ $category->getUnitType() }}</td>
-                  <td class="text-center">
-                    <x-core::badge
-                      type="{{ $category->status ? 'success' : 'danger' }}"
-                      text="{{ $category->status ? 'فعال' : 'غیر فعال' }}"
-                    />
-                  </td>
-                  <td class="text-center"> @jalaliDate($category->created_at)</td>
-                  <td class="text-center"> @jalaliDate($category->updated_at)</td>
-                  <td class="text-center">
-                    @can('edit categories')
-                      <button
-                        class="btn btn-sm btn-icon btn-warning text-white"
-                        data-target="#editCategoryModal-{{ $category->id }}"
-                        data-toggle="modal"
-                        data-original-title="ویرایش">
-                        <i class="fa fa-pencil"></i>
-                      </button>
-                    @endcan
-                    @can('delete categories')<x-core::delete-button
-                        route="admin.categories.destroy"
-                        :model="$category"
-                        disabled="{{ !$category->isDeletable() }}"
-                      />@endcan
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="8"/>
-              @endforelse
-              </tbody>
-            </table>
+
+  <x-core::card>
+    <x-slot name="cardTitle">جستجوی پیشرفته</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <form id="FilterForm" action="{{ route("admin.categories.index") }}" class="col-12">
+        <input type="hidden" name="perPage" value="{{ request('perPage', 15) }}">
+        <div class="row">
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="title">عنوان :</label>
+              <input type="text" id="title" name="title" class="form-control" value="{{ request('title') }}">
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="parent_id">انتخاب والد :</label>
+              <select name="parent_id" id="parent_id" class="form-control">
+                <option value="">همه</option>
+                <option value="none" @selected(request("parent_id") == 'none')>بدون والد</option>
+                @foreach ($parentCategories as $category)
+                  <option value="{{ $category->id }}" @selected(request("parent_id") == $category->id)>{{ $category->title }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="unit_type">نوع واحد :</label>
+              <select name="unit_type" id="unit_type" class="form-control">
+                <option value="">همه</option>
+                <option value="meter" @selected(request("unit_type") == "meter")>متر</option>
+                <option value="number" @selected(request("unit_type") == "number")>عدد</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+            <div class="form-group">
+              <label for="status">وضعیت :</label>
+              <select name="status" id="status" class="form-control">
+                <option value="">همه</option>
+                <option value="1" @selected(request("status") == "1")>فعال</option>
+                <option value="0" @selected(request("status") == "0")>غیر فعال</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+        <x-core::filter-buttons table="categories"/>
+      </form>
+    </x-slot>
+  </x-core::card>
+
+  <x-core::card>
+    <x-slot name="cardTitle">لیست دسته بندی ها ({{ $categoriesCount }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>عنوان</th>
+            <th>والد</th>
+            <th>نوع واحد</th>
+            <th>تعداد محصولات</th>
+            <th>وضعیت</th>
+            <th>تاریخ ثبت</th>
+            <th>تاریخ آخرین ویرایش</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($categories as $category)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $category->title }}</td>
+              <td>{{ $category->parent_title }}</td>
+              <td>{{ $category->getUnitType() }}</td>
+              <td>{{ $category->products_count }}</td>
+              <td>
+                <x-core::light-badge
+                  type="{{ $category->status ? 'success' : 'danger' }}"
+                  text="{{ $category->status ? 'فعال' : 'غیر فعال' }}"
+                />
+              </td>
+              <td> @jalaliDate($category->created_at)</td>
+              <td> @jalaliDate($category->updated_at)</td>
+              <td>
+                @can('edit categories')
+                  <button
+                    class="btn btn-sm btn-icon btn-warning text-white"
+                    data-target="#editCategoryModal-{{ $category->id }}"
+                    data-toggle="modal"
+                    data-original-title="ویرایش">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                @endcan
+                @can('delete categories')<x-core::delete-button
+                    route="admin.categories.destroy"
+                    :model="$category"
+                    disabled="{{ !$category->isDeletable() }}"
+                  />@endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
   @include('product::category.includes.create-category-modal')
   @include('product::category.includes.edit-category-modal')
+
 @endsection

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Cache;
 use Modules\Accounting\Http\Requests\Admin\Headline\HeadlineStoreRequest;
 use Modules\Accounting\Http\Requests\Admin\Headline\HeadlineUpdateRequest;
 use Modules\Accounting\Models\Headline;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class HeadlineController extends Controller implements HasMiddleware
 {
@@ -22,7 +24,7 @@ class HeadlineController extends Controller implements HasMiddleware
     ];
   }
 
-  public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+  public function index(): View
   {
     $headlines = Cache::rememberForever('all_headlines', function () {
       return Headline::query()
@@ -37,24 +39,21 @@ class HeadlineController extends Controller implements HasMiddleware
     return view('accounting::headline.index', compact(['headlines', 'totalHeadlines']));
   }
 
-  public function store(HeadlineStoreRequest $request): \Illuminate\Http\RedirectResponse
+  public function store(HeadlineStoreRequest $request): RedirectResponse
   {
     Headline::query()->create($request->validated());
-
-    return to_route('admin.headlines.index');
+    return redirect()->back();
   }
 
-  public function update(HeadlineUpdateRequest $request, Headline $headline): \Illuminate\Http\RedirectResponse
+  public function update(HeadlineUpdateRequest $request, Headline $headline): RedirectResponse
   {
     $headline->update($request->validated());
-
-    return to_route('admin.headlines.index');
+    return redirect()->back();
   }
 
-  public function destroy(Headline $headline): \Illuminate\Http\RedirectResponse
+  public function destroy(Headline $headline): RedirectResponse
   {
     $headline->delete();
-
-    return to_route('admin.headlines.index');
+    return redirect()->back();
   }
 }

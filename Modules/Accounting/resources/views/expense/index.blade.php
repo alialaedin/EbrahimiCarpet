@@ -1,76 +1,69 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}"><i class="fe fe-home ml-1"></i> داشبورد </a>
-      </li>
-      <li class="breadcrumb-item active">لیست هزینه ها</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست هزینه ها']]"/>
     @can('create expenses')
-      <x-core::register-button route="admin.expenses.create" title="ثبت هزینه جدید"/>
+      <x-core::create-button title="ثبت هزینه جدید" route="admin.expenses.create"/>
     @endcan
   </div>
+
   @include('accounting::expense.filter-form')
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title"> لیست همه هزینه ها ({{ $totalExpenses }}) </p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">سرفصل</th>
-                <th class="text-center">عنوان</th>
-                <th class="text-center">کد</th>
-                <th class="text-center">مبلغ (ریال)</th>
-                <th class="text-center">تاریخ پرداخت</th>
-                <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($expenses as $expense)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $expense->headline->title }}</td>
-                  <td class="text-center">{{ $expense->title }}</td>
-                  <td class="text-center">{{ $expense->id }}</td>
-                  <td class="text-center">{{ number_format($expense->amount) }}</td>
-                  <td class="text-center">{{ verta($expense->payment_date)->format('Y/m/d H:i') }}</td>
-                  <td class="text-center">{{ verta($expense->created_at)->format('Y/m/d H:i') }}</td>
-                  <td class="text-center">
-                    <button
-                      class="btn btn-sm btn-icon btn-primary"
-                      onclick="showExpenseDescriptionModal('{{$expense->description}}')"
-                      data-toggle="modal"
-                      data-original-title="توضیحات">
-                      <i class="fa fa-eye"></i>
-                    </button>
-                    @can('edit expenses')
-                      <x-core::edit-button route="admin.expenses.edit" :model="$expense"/>
-                    @endcan
-                    @can('delete expenses')
-                      <x-core::delete-button route="admin.expenses.destroy" :model="$expense"/>
-                    @endcan
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="8"/>
-              @endforelse
-              </tbody>
-            </table>
-            {{ $expenses->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <x-core::card>
+    <x-slot name="cardTitle">لیست هزینه ها ({{ $totalExpenses }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>سرفصل</th>
+            <th>عنوان</th>
+            <th>کد</th>
+            <th>مبلغ (ریال)</th>
+            <th>تاریخ پرداخت</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($expenses as $expense)
+            <tr>
+              <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
+              <td class="text-center">{{ $expense->headline->title }}</td>
+              <td class="text-center">{{ $expense->title }}</td>
+              <td class="text-center">{{ $expense->id }}</td>
+              <td class="text-center">{{ number_format($expense->amount) }}</td>
+              <td class="text-center">{{ verta($expense->payment_date)->format('Y/m/d H:i') }}</td>
+              <td class="text-center">{{ verta($expense->created_at)->format('Y/m/d H:i') }}</td>
+              <td class="text-center">
+                <button
+                  class="btn btn-sm btn-icon btn-primary"
+                  onclick="showExpenseDescriptionModal('{{$expense->description}}')"
+                  data-toggle="modal"
+                  data-expense-id="{{ $ex }}"
+                  data-original-title="توضیحات">
+                  <i class="fa fa-eye"></i>
+                </button>
+                @can('edit expenses')
+                  <x-core::edit-button route="admin.expenses.edit" :model="$expense"/>
+                @endcan
+                @can('delete expenses')
+                  <x-core::delete-button route="admin.expenses.destroy" :model="$expense"/>
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+        <x-slot name="extraData">{{ $expenses->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}</x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+
   <div class="modal fade" id="showDescriptionModal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content modal-content-demo">

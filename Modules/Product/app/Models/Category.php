@@ -66,7 +66,7 @@ class Category extends Model
 	}
 
 	// Functions
-	public function getParentTitle(): string
+	public function getParentTitleAttribute(): string
 	{
 		return $this->parent ? $this->parent->title : '-';
 	}
@@ -90,6 +90,32 @@ class Category extends Model
   {
 		return $query->whereNull('parent_id');
   }
+
+	public function scopeWithCountProducts($query)
+	{
+		return $query->withCount('products');
+	} 
+	public function scopeWithParents($query)
+	{
+		return $query->with('parent', fn ($q) => $q->select(['id', 'title']));
+	}
+
+  public function scopeFilters($query)
+	{
+		return $query
+			->when(request('title'), fn ($q) => $q->where('title', 'like', "%". request('title') ."%"))
+			->when(request('parent_id'), function ($q) {
+				return $q->where(function ($q) {
+					if (request('parent_id') == 'none') {
+						$q->whereNull('parent_id');
+					} else {
+						$q->where('parent_id', request('parent_id'));
+					}
+				});
+			})
+			->when(request('unit_type'), fn ($q) => $q->where('unit_type', request('unit_type')))
+			->when(!is_null(request('status')), fn ($q) => $q->where('status', request('status')));
+	}
 
 	public static function getParentCategories()
 	{

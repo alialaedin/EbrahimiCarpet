@@ -49,6 +49,15 @@ class Expense extends BaseModel
     });
   }
 
+  public function scopeFilters($query)
+  {
+    return $query 
+      ->when(request('headline_id'), fn($q) => $q->where('headline_id', request('headline_id')))
+      ->when(request('title'), fn($q) => $q->where('title', 'like', "%". request('title') ."%"))
+      ->when(request('from_payment_date'), fn($q) => $q->whereDate('payment_date', '>=', request('from_payment_date')))
+      ->when(request('from_payment_date'), fn($q) => $q->whereDate('payment_date', '<=', request('from_payment_date')));
+  }  
+
   // Relations
   public function headline(): BelongsTo
   {

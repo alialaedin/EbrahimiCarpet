@@ -11,13 +11,13 @@ class CreateButton extends Component
      * Create a new component instance.
      */
     public function __construct(  
-        public string $route,  
+        public string $route = '',  
         public string $title,  
         public string $id = '',       
         public string $class = '',      
         public $param = null,           
         public string $type = 'link',   
-        public $target = null,
+        public string $target = '',
     ) {} 
 
     /**

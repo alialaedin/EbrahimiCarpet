@@ -4,11 +4,9 @@ namespace Modules\Accounting\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Cache;
 use Modules\Accounting\Enums\HeadlineType;
 use Modules\Accounting\Http\Requests\Admin\Expense\ExpenseStoreRequest;
 use Modules\Accounting\Http\Requests\Admin\Expense\ExpenseUpdateRequest;
@@ -36,10 +34,7 @@ class ExpenseController extends Controller implements HasMiddleware
 
     $expenses = Expense::query()
       ->select('id', 'title', 'headline_id', 'amount', 'payment_date', 'description', 'created_at')
-      ->when($headlineId, fn(Builder $query) => $query->where('headline_id', $headlineId))
-      ->when($title, fn(Builder $query) => $query->where('title', 'like', "%$title%"))
-      ->when($fromPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '>=', $fromPaymentDate))
-      ->when($toPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '<=', $toPaymentDate))
+      ->filters()
       ->with(['headline' => fn($query) => $query->select('id', 'title')])
       ->latest('id')
       ->paginate()
@@ -54,35 +49,30 @@ class ExpenseController extends Controller implements HasMiddleware
   public function create(): View
   {
     $headlines = Headline::getHeadlinesByType(HeadlineType::TYPE_EXPENSE);
-
     return view('accounting::expense.create', compact('headlines'));
   }
 
   public function store(ExpenseStoreRequest $request): RedirectResponse
   {
     Expense::query()->create($request->validated());
-
     return to_route('admin.expenses.index');
   }
 
   public function edit(Expense $expense): View
   {
     $headlines = Headline::getHeadlinesByType(HeadlineType::TYPE_EXPENSE);
-
     return view('accounting::expense.edit', compact(['expense', 'headlines']));
   }
 
   public function update(ExpenseUpdateRequest $request, Expense $expense): RedirectResponse
   {
     $expense->update($request->validated());
-
     return to_route('admin.expenses.index');
   }
 
   public function destroy(Expense $expense): RedirectResponse
   {
     $expense->delete();
-
     return to_route('admin.expenses.index');
   }
 
