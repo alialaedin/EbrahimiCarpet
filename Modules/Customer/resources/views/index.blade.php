@@ -51,6 +51,20 @@
                 </select>
               </div>
             </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="form-group">
+                <label for="start_date_show">از تاریخ :</label>
+                <input class="form-control fc-datepicker" id="start_date_show" type="text" autocomplete="off"/>
+                <input name="start_date" id="start_date" type="hidden" value="{{ request("start_date") }}"/>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <div class="form-group">
+                <label for="end_date_show">تا تاریخ :</label>
+                <input class="form-control fc-datepicker" id="end_date_show" type="text" autocomplete="off"/>
+                <input name="end_date" id="end_date" type="hidden" value="{{ request("end_date") }}"/>
+              </div>
+            </div>
           </div>
           <x-core::filter-buttons table="customers"/>
         </form>
@@ -152,4 +166,9 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+  <x-core::date-input-script textInputId="start_date_show" dateInputId="start_date"/>
+  <x-core::date-input-script textInputId="end_date_show" dateInputId="end_date"/>
 @endsection

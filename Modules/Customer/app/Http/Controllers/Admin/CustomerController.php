@@ -36,6 +36,8 @@ class CustomerController extends Controller implements HasMiddleware
 			->when($telephone, fn (Builder $query) => $query->where('telephone', $telephone))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))
 			->when(isset($status), fn (Builder $query) => $query->where('status', $status))
+			->when(request('start_date'), fn ($q) => $q->whereDate('created_at', '>=', request('start_date')))
+			->when(request('end_date'), fn ($q) => $q->whereDate('created_at', '<=', request('end_date')))
 			->latest('id')
 			->paginate(15)
 			->withQueryString();
