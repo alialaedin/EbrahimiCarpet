@@ -70,6 +70,13 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 rounded" >
+            <span class="fs-16">جمع مبلغ کل فاکتور : </span>
+            <span class="font-weight-bold fs-16" id="totalPrice"></span>
+            <span class="font-weight-bold fs-16">ریال</span>
+          </div>
+        </div>
         <x-core::update-button/>
       </form>
     </x-slot>
@@ -78,5 +85,28 @@
 @endsection
 
 @section('scripts')
+
   <x-core::date-input-script textInputId="sold_date_show" dateInputId="sold_date"/>
-@endsection
+
+  <script>
+
+    const discountInput = $('#discount');
+    const costOfSewingInput = $('#cost_of_sewing');
+    const totalItemsAmount = parseInt(@json($sale->total_items_amount));
+
+    function calculateTotalAmount() {
+      let discountAmount = discountInput.val() != null && discountInput.val().length > 0 ? parseInt(discountInput.val().replace(/,/g, '')) : 0;
+      let costOfSewingAmount = costOfSewingInput.val() != null && costOfSewingInput.val().length > 0 ? parseInt(costOfSewingInput.val().replace(/,/g, '')) : 0;
+      let finalPrice = (totalItemsAmount + costOfSewingAmount - discountAmount).toLocaleString();
+      $('#totalPrice').text(finalPrice);
+    }
+
+    $(document).ready(() => {
+      calculateTotalAmount();
+      discountInput.on('input', calculateTotalAmount);
+      costOfSewingInput.on('input', calculateTotalAmount);
+    });
+
+  </script>
+
+  @endsection

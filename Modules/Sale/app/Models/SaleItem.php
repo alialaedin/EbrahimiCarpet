@@ -38,6 +38,24 @@ class SaleItem extends BaseModel
       });
   }
 
+  public function scopeFilters($query)
+  {
+    return $query 
+      ->when(request('from_date'), function ($itemQuery) {
+        $itemQuery->whereHas('sale', function ($saleQuery) {
+          $saleQuery->whereBetween('sold_at', [request('from_date'), request('to_date')]);
+        });
+      })
+      ->when(request('product_id'), function ($itemQuery) {
+        $itemQuery->where('product_id', request('product_id'));
+      })
+      ->when(request('category_id'), function ($itemQuery) {
+        $itemQuery->whereHas('product', function ($productQuery) {
+          $productQuery->where('category_id', request('category_id'));
+        });
+      });
+  } 
+
   // Relations
   public function product(): BelongsTo
   {

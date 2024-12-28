@@ -87,6 +87,16 @@ class Sale extends BaseModel
     return $totalPrice + $costOfSewing - $discount;
   }
 
+  public function getTotalItemsAmountAttribute()
+  {
+    $totalPrice = 0;
+    foreach ($this->items as $item) {
+      $totalPrice += (($item->price - $item->discount) * $item->quantity);
+    }
+
+    return $totalPrice;
+  }
+
   // Relations
   public function customer(): BelongsTo
   {

@@ -16,14 +16,14 @@
             <div class="col-lg-6 col-12">
               <div class="form-group">
                 <label class="control-label">عنوان محصول :</label>
-                <input type="text" class="form-control" value="{{ $product->title .' '. $product->sub_title }}" readonly>
+                <input type="text" class="form-control" value="{{ $product->full_title }}" readonly>
               </div>
             </div>
 
             <div class="col-lg-6 col-12">
               <div class="form-group">
                 <label class="control-label">موجودی فعلی :</label>
-                <input type="number" class="form-control" value="{{ $product->stores->sum('balance') }}" readonly>
+                <input type="number" class="form-control" value="{{ $product->store_balance }}" readonly>
               </div>
             </div>
 

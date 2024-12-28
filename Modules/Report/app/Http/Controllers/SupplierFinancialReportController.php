@@ -59,9 +59,9 @@ class SupplierFinancialReportController extends Controller
 
     $payments = $supplier->payments->groupBy('type');
 
-    $cashPayments = $payments[Payment::TYPE_CASH]->sortByDesc('id') ?? collect();
-    $chequePayments = $payments[Payment::TYPE_CHEQUE]->sortByDesc('id') ?? collect();
-    $installmentPayments = $payments[Payment::TYPE_INSTALLMENT]->sortByDesc('id') ?? collect();
+    $cashPayments = isset($payments[Payment::TYPE_CASH]) ? $payments[Payment::TYPE_CASH]->sortByDesc('id') : collect();
+    $chequePayments = isset($payments[Payment::TYPE_CHEQUE]) ? $payments[Payment::TYPE_CHEQUE]->sortByDesc('id') : collect();
+    $installmentPayments = isset($payments[Payment::TYPE_INSTALLMENT]) ? $payments[Payment::TYPE_INSTALLMENT]->sortByDesc('id') : collect();
 
     return view('report::suppliers.financial.show', compact([
       'supplier',
