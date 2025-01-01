@@ -42,7 +42,7 @@
                   class="btn btn-sm btn-icon btn-primary"
                   onclick="showExpenseDescriptionModal('{{$expense->description}}')"
                   data-toggle="modal"
-                  data-expense-id="{{ $ex }}"
+                  data-expense-id="{{ $expense->id }}"
                   data-original-title="توضیحات">
                   <i class="fa fa-eye"></i>
                 </button>

@@ -41,9 +41,9 @@ class PaymentController extends Controller implements HasMiddleware
     $totalPayments = $payments->total();
     $suppliers = Supplier::getAllSuppliers();
 
-    $cashPayments = $payments->where('type', '=', 'cash');
-    $installmentPayments = $payments->where('type', '=', 'installment');
-    $chequePayments = $payments->where('type', '=', 'cheque');
+    $cashPayments = $payments->where('type', '=', 'cash')->take(20);
+    $installmentPayments = $payments->where('type', '=', 'installment')->take(20);
+    $chequePayments = $payments->where('type', '=', 'cheque')->take(20);
 
     return view('payment::index', compact(['payments', 'totalPayments', 'suppliers', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }
