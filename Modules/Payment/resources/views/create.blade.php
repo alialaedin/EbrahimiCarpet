@@ -208,6 +208,11 @@
   <x-core::date-input-script textInputId="installment_start_date_show" dateInputId="installment_start_date_hidden"/>
 
   <script>
+
+    $('#type').select2({
+      placeholder: 'انتخاب نوع پرداخت'
+    });
+
     $(document).ready(() => {
       
       const payType = $('#type');

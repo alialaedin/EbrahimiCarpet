@@ -50,11 +50,12 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function show(Supplier $supplier): View|Application|Factory|App
   {
-    $payments = Payment::query()->where('supplier_id', $supplier->id)->latest('id')->get();
     $supplier->loadCount(['purchases', 'payments']);
-    $cashPayments = $payments->where('type', '=', 'cash');
-    $installmentPayments = $payments->where('type', '=', 'installment');
-    $chequePayments = $payments->where('type', '=', 'cheque');
+    $payments = $supplier->payments()->latest('id');
+    
+    $cashPayments = $payments->cashes()->take(10)->get();
+    $installmentPayments = $payments->installments()->take(10)->get();
+    $chequePayments = $payments->cheques()->take(10)->get();
 
     return view('payment::show', compact(['supplier', 'payments', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }

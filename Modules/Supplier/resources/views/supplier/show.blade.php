@@ -18,7 +18,10 @@
       </form>
     @endcan
     @can('view payments')
-      <a href="{{ route('admin.payments.show', $supplier) }}" class="btn btn-sm btn-flickr my-md-1">مشاهده پرداختی ها</a>
+      <form action="{{ route('admin.payments.index') }}" method="GET">
+        <input hidden name="supplier_id" value="{{ $supplier->id }}">
+        <button class="btn btn-sm btn-flickr my-md-1">مشاهده پرداختی ها</button>
+      </form>
     @endcan
     @can('create payments')
       <a href="{{ route('admin.payments.create', $supplier) }}" class="btn btn-sm btn-lime my-md-1">پرداختی جدید</a>
@@ -46,48 +49,48 @@
 
 </div>
 
-<x-core::card>
-  <x-slot name="cardTitle">اطلاعات تامین کننده</x-slot>
-  <x-slot name="cardOptions"><x-core::card-options/></x-slot>
-  <x-slot name="cardBody">
-    <div class="row">
-      <div class="col-lg-6">
-        <ul class="list-group">
-          <li class="list-group-item"><strong>کد: </strong> {{ $supplier->id }} </li>
-          <li class="list-group-item"><strong>نام و نام خانوادگی: </strong> {{ $supplier->name }} </li>
-          <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $supplier->mobile }} </li>
-          <li class="list-group-item"><strong>تلفن ثابت: </strong> {{ $supplier->telephone }} </li>
-          <li class="list-group-item"><strong>کد ملی: </strong> {{ $supplier->national_code }} </li>
-          <li class="list-group-item"><strong>کد پستی: </strong> {{ $supplier->postal_code }} </li>
-        </ul>
-      </div>
-      <div class="col-lg-6">
-        <ul class="list-group">
-          <li class="list-group-item"><strong>تعداد خرید ها: </strong> {{ number_format($numberOfPurchases) }} </li>
-          <li class="list-group-item"><strong>تعداد پرداختی ها: </strong> {{ number_format($numberOfPayments) }} </li>
-          <li class="list-group-item"><strong>آدرس: </strong> {{ $supplier->address }} </li>
-          <li class="list-group-item"><strong>نوع: </strong> {{ config('supplier.types.'.$supplier->type) }} </li>
-          <li class="list-group-item">
-            <strong>وضعیت: </strong>
-            @if ($supplier->status)
-              <span class="text-success">فعال</span>
-            @else
-              <span class="text-danger">غیر فعال</span>
-            @endif
-          </li>
-          <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at)</li>
-        </ul>
-      </div>
-      @if ( $supplier->description)
-        <div class="col-12 mt-5">
+  <x-core::card>
+    <x-slot name="cardTitle">اطلاعات تامین کننده</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <div class="row">
+        <div class="col-lg-6">
           <ul class="list-group">
-            <li class="list-group-item"><strong>توضیحات: </strong> {{ $supplier->description}} </li>
+            <li class="list-group-item"><strong>کد: </strong> {{ $supplier->id }} </li>
+            <li class="list-group-item"><strong>نام و نام خانوادگی: </strong> {{ $supplier->name }} </li>
+            <li class="list-group-item"><strong>شماره موبایل: </strong> {{ $supplier->mobile }} </li>
+            <li class="list-group-item"><strong>تلفن ثابت: </strong> {{ $supplier->telephone }} </li>
+            <li class="list-group-item"><strong>کد ملی: </strong> {{ $supplier->national_code }} </li>
+            <li class="list-group-item"><strong>کد پستی: </strong> {{ $supplier->postal_code }} </li>
           </ul>
         </div>
-      @endif
-    </div>
-  </x-slot>
-</x-core::card>
+        <div class="col-lg-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>تعداد خرید ها: </strong> {{ number_format($numberOfPurchases) }} </li>
+            <li class="list-group-item"><strong>تعداد پرداختی ها: </strong> {{ number_format($numberOfPayments) }} </li>
+            <li class="list-group-item"><strong>آدرس: </strong> {{ $supplier->address }} </li>
+            <li class="list-group-item"><strong>نوع: </strong> {{ config('supplier.types.'.$supplier->type) }} </li>
+            <li class="list-group-item">
+              <strong>وضعیت: </strong>
+              @if ($supplier->status)
+                <span class="text-success">فعال</span>
+              @else
+                <span class="text-danger">غیر فعال</span>
+              @endif
+            </li>
+            <li class="list-group-item"><strong>تاریخ ثبت: </strong> @jalaliDate($supplier->created_at)</li>
+          </ul>
+        </div>
+        @if ( $supplier->description)
+          <div class="col-12 mt-5">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>توضیحات: </strong> {{ $supplier->description}} </li>
+            </ul>
+          </div>
+        @endif
+      </div>
+    </x-slot>
+  </x-core::card>
 
   <x-supplier::purchase-statistics :supplier="$supplier"/>
 
@@ -194,18 +197,47 @@
     </x-slot>
   </x-core::card>
 
+  @can('view payments')
+
+    @php
+      $paymentsBoxData = [
+        ['title' => 'تمامی پرداختی ها','route' => route('admin.payments.index', ['supplier_id' => $supplier->id])],
+        ['title' => 'پرداختی های پرداخت شده','route' => route('admin.payments.index', ['supplier_id' => $supplier->id, 'status' => 1])],
+        ['title' => 'پرداختی های پرداخت نشده','route' => route('admin.payments.index', ['supplier_id' => $supplier->id, 'status' => 0])],
+        ['title' => 'تمامی اقساط','route' => route('admin.payments.installments', ['supplier_id' => $supplier->id])],
+        ['title' => 'اقساط پرداخت شده','route' => route('admin.payments.installments', ['supplier_id' => $supplier->id, 'status' => 1])],
+        ['title' => 'اقساط پرداخت نشده','route' => route('admin.payments.installments', ['supplier_id' => $supplier->id, 'status' => 0])],
+        ['title' => 'تمامی چک ها','route' => route('admin.payments.cheques', ['supplier_id' => $supplier->id])],
+        ['title' => 'چک های پاس شده','route' => route('admin.payments.cheques', ['supplier_id' => $supplier->id, 'status' => 1])],
+        ['title' => 'چک های پاس نشده','route' => route('admin.payments.cheques', ['supplier_id' => $supplier->id, 'status' => 0])],
+        ['title' => 'تمامی نقدی ها','route' => route('admin.payments.cashes', ['supplier_id' => $supplier->id])],
+        ['title' => 'نقدی های پرداخت شده','route' => route('admin.payments.cashes', ['supplier_id' => $supplier->id, 'status' => 1])],
+        ['title' => 'نقدی های پرداخت نشده','route' => route('admin.payments.cashes', ['supplier_id' => $supplier->id, 'status' => 0])],
+      ];
+    @endphp 
+
+    <div class="row">
+      @foreach ($paymentsBoxData as $item)
+        <div class="col-xl-2 col-lg-3 col-md-12">
+          <a href="{{ $item['route'] }}" target="_blank">
+            <div class="card">
+              <div class="card-body payment-box-body text-center">
+                <span class="payment-box-title font-weight-bold">{{ $item['title'] }}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      @endforeach
+    </div>
+    
+  @endcan
+
   <x-core::card>
     <x-slot name="cardTitle">آخرین پرداختی های ثبت شده</x-slot>
     <x-slot name="cardOptions">
       <div class="card-options">
-        @can('view payments')
-          <a href="{{ route('admin.payments.show', $supplier) }}" target="_blank" class="btn btn-sm btn-outline-info ml-1">
-            همه پرداختی ها
-            <i class="fa fa-eye"></i>
-          </a>
-        @endcan
         @can('create payments')
-          <a href="{{ route('admin.payments.create', $supplier) }}" target="_blank" class="btn btn-sm btn-outline-primary mr-1">
+          <a href="{{ route('admin.payments.create', $supplier) }}" target="_blank" class="btn btn-sm btn-outline-primary">
             پرداختی جدید
             <i class="fa fa-plus"></i>
           </a>
@@ -335,4 +367,25 @@
 
   @include('supplier::account.edit-modal')
 
+@endsection
+
+@section('styles')
+  <style>
+    @media only screen and (max-width: 1536px) {
+      .payment-box-title {
+        font-size: 10px;
+      }
+      .payment-box-body {
+        padding: 14px;
+      }
+    }
+    @media only screen and (max-width: 1280px) {
+      .payment-box-title {
+        font-size: 7.5px;
+      }
+      .payment-box-body {
+        padding: 8px;
+      }
+    }
+  </style>
 @endsection

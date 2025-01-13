@@ -71,13 +71,20 @@
                   </button>
                 @endcan
                 @can('view payments')
-                  <a
+                  {{-- <a
                     href="{{ route('admin.payments.show', $supplier) }}"
                     class="btn btn-green btn-icon btn-sm"
                     data-toggle="tooltip"
                     data-original-title="پرداختی ها">
                     <i class="fa fa-money"></i>
-                  </a>
+                  </a> --}}
+                  <button
+                    class="btn btn-green btn-icon btn-sm show-all-payments-button"
+                    data-toggle="tooltip"
+                    data-supplier-id="{{ $supplier->id }}"
+                    data-original-title="پرداختی ها">
+                    <i class="fa fa-money"></i>
+                  </button>
                 @endcan
                 @can('view suppliers')
                   <x-core::show-button route="admin.suppliers.show" :model="$supplier"/>
@@ -175,6 +182,10 @@
     </div>
   </div>
 
+  <form id="all-payments-form" action="{{ route('admin.payments.index') }}" method="GET" class="d-none">
+    <input type="hidden" name="supplier_id" value="">
+  </form>
+
 @endsection
 
 @section('scripts')
@@ -185,5 +196,17 @@
       modal.find('#supplier_name').attr('value', name);
       modal.modal('show');
     }
+
+    $(document).ready(() => {
+      $('.show-all-payments-button').each(function () {
+        $(this).click(() => {
+          let supplierId = $(this).data('supplier-id');
+          let form = $('#all-payments-form');
+          form.find('input[name=supplier_id]').val(supplierId);
+          form.submit();
+        }); 
+      });
+    });
+
   </script>
 @endsection
