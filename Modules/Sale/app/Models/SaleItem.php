@@ -66,6 +66,23 @@ class SaleItem extends BaseModel
     return $this->belongsTo(Sale::class);
   }
 
+  function getTotalAmountAttribute()
+  {
+    return ($this->attributes['price'] - $this->attributes['discount'] ?? 0) * $this->attributes['quantity'];
+  }
+
+  public function getTotalDiscountAmountAttribute()
+  {
+    if ($this->attributes['discount'] ?? 0 == 0) 
+      return 0;
+    return $this->attributes['quantity'] * $this->attributes['discount'];
+  }
+
+  function getTotalAmountWithoutDiscountAttribute()
+  {
+    return $this->attributes['price'] * $this->attributes['quantity'];
+  }
+
   // Functions
   public function getPriceWithDiscount(): int
   {
@@ -80,8 +97,5 @@ class SaleItem extends BaseModel
     return $this->getPriceWithDiscount() * $this->attributes['quantity'];
   }
 
-  public function getTotalDiscountAmountAttribute()
-  {
-    return $this->attributes['quantity'] * $this->attributes['discount'];
-  }
+ 
 }

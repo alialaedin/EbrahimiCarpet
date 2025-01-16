@@ -101,11 +101,11 @@ class CustomerController extends Controller implements HasMiddleware
   public function showInvoice(Customer $customer): View
   {
     $customer->load([
-      'payments' ,
-      'sales' => fn ($query) => $query->select(['id', 'customer_id', 'discount']),
-      'sales.items' => fn ($query) => $query->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
-      'sales.items.product' => fn ($query) => $query->select(['id', 'print_title', 'category_id']),
-      'sales.items.product.category' => fn ($query) => $query->select(['id', 'title', 'unit_type']),
+      'payments',
+      'sales' => fn ($q) => $q->select(['id', 'customer_id', 'discount', 'cost_of_sewing']),
+      'sales.items' => fn ($q) => $q->select(['id', 'price', 'discount', 'quantity', 'product_id', 'sale_id']),
+      'sales.items.product' => fn ($q) => $q->select(['id', 'print_title', 'category_id']),
+      'sales.items.product.category' => fn ($q) => $q->select(['id', 'title', 'unit_type']),
     ]);
 
     return view('customer::invoice.show', compact('customer'));

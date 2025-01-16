@@ -66,7 +66,7 @@
 
 <div id="main">
 
-  <div class=" d-flex justify-content-center">
+  <div class="d-flex justify-content-center" style="margin-bottom: 70px;">
     <p class="fs-17">
       فاکتور ارائه شده به
       <strong> {{ config('customer.gender_prefix_to_print.' . $customer->gender) .' '. $customer->name}} </strong>
@@ -75,37 +75,51 @@
     </p>
   </div>
 
-  <div style="margin-top: 70px;">
-    <p class="d-block text-center fs-22 font-weight-bold">محصولات خریداری شده</p>
-    <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom card-table">
-      <thead style="background-color: #EAEAEA">
-      <tr>
-        <th class="text-center">ردیف</th>
-        <th class="text-center">تاریخ خرید</th>
-        <th class="text-center">مبلغ خرید (ریال)</th>
-        <th class="text-center">تخفیف کلی (ریال)</th>
-        <th class="text-center">مبلغ خرید با تخفیف (ریال)</th>
-      </tr>
-      </thead>
-      <tbody>
-      @php($totalSalesAmount = 0)
-      @foreach($customer->sales as $sale)
-        @php($totalSalesAmount += $sale->getTotalAmountWithDiscount())
+  @foreach ($customer->sales as $sale)
+
+    <div style="margin-top: 100px;">
+      <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom card-table">
+        <thead style="background-color: #EAEAEA">
         <tr>
-          <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-          <td class="text-center">@jalaliDate($sale->sold_at)</td>
-          <td class="text-center">{{ number_format($sale->getTotalAmount()) }}</td>
-          <td class="text-center">{{ number_format($sale->discount) }}</td>
-          <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
+          <th>ردیف</th>
+          <th>محصول</th>
+          <th>نوع واحد</th>
+          <th>تعداد</th>
+          <th>قیمت واحد (ریال)</th>
+          <th>تخفیف واحد (ریال)</th>
+          <th>قیمت کل (ریال)</th>
+          <th>تخفیف کل (ریال)</th>
+          <th>قیمت نهایی (ریال)</th>
         </tr>
-      @endforeach
-      <tr>
-        <td class="text-center fs-20 font-weight-bold" colspan="4"> جمع کل</td>
-        <td class="text-center fs-20" colspan="1"> {{ number_format($totalSalesAmount) }} </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          @foreach ($sale->items as $item)
+          <tr>
+            <td class="font-weight-bold">{{ $loop->iteration }}</td>
+            <td>{{ $item->product->print_title .' '. $item->product->sub_title }}</td>
+            <td>{{ $item->product->category->getUnitType() }}</td>
+            <td>{{ $item->quantity }}</td>
+            <td>{{ number_format($item->price) }}</td>
+            <td>{{ number_format($item->discount) }}</td>
+            <td>{{ number_format($item->total_amount_without_discount) }}</td>
+            <td>{{ number_format($item->total_discount_amount) }}</td>
+            <td>{{ number_format($item->total_amount) }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row justify-content-center mt-2">
+      <div class="col-12 col-xl-10 py-3 px-4 d-flex  justify-content-between align-items-center" style="border: black 2px solid; border-radius: 22px;">
+        <span>تخفیف روی فاکتور : <b>{{ number_format($sale->discount) }} تومان</b></span>
+        <span>جمع کل آیتم ها : <b>{{ number_format($sale->total_items_amount) }} تومان</b></span>
+        <span>هزینه نصب : <b>{{ number_format($sale->cost_of_sewing) }} تومان</b></span>
+        <span>مبلغ نهایی فاکتور : <b>{{ number_format($sale->total_amount) }} تومان</b></span>
+      </div>
+    </div>
+
+  @endforeach
 
   @if($customer->payments->where('type', '===', 'cash')->isNotEmpty())
     <div style="margin-top: 70px;">
