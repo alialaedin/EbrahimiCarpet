@@ -5,7 +5,6 @@ namespace Modules\Sale\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -29,22 +28,8 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function index(): View
   {
-    $customerId = \request('customer_id');
-    $type = \request('type');
-    $status = \request('status');
-    $fromPaymentDate = \request('from_payment_date');
-    $toPaymentDate = \request('to_payment_date');
-    $fromDueDate = \request('from_due_date');
-    $toDueDate = \request('to_due_date');
-
     $payments = SalePayment::query()
-      ->when($customerId, fn(Builder $query) => $query->where('customer_id', $customerId))
-      ->when($type, fn(Builder $query) => $query->where('type', $type))
-      ->when(isset($status), fn(Builder $query) => $query->where('status', $status))
-      ->when($fromPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '>=', $fromPaymentDate))
-      ->when($toPaymentDate, fn(Builder $query) => $query->whereDate('payment_date', '<=', $toPaymentDate))
-      ->when($fromDueDate, fn(Builder $query) => $query->whereDate('due_date', '>=', $fromDueDate))
-      ->when($toDueDate, fn(Builder $query) => $query->whereDate('due_date', '<=', $toDueDate))
+      ->filters()
       ->with('customer:id,name')
       ->latest('id')
       ->paginate()
@@ -62,14 +47,11 @@ class SalePaymentController extends Controller implements HasMiddleware
 
   public function show(Customer $customer): View
   {
-    $salePayments = SalePayment::query()
-      ->where('customer_id', $customer->id)
-      ->latest('id')
-      ->get();
+    $salePayments = $customer->payments()->latest('id');
 
-    $cashPayments = $salePayments->where('type', '=', 'cash');
-    $installmentPayments = $salePayments->where('type', '=', 'installment');
-    $chequePayments = $salePayments->where('type', '=', 'cheque');
+    $cashPayments = $salePayments->cashes()->get();
+    $installmentPayments = $salePayments->installments()->get();
+    $chequePayments = $salePayments->cheques()->get();
 
     return view('sale::sale-payment.show', compact(['customer', 'salePayments', 'installmentPayments', 'cashPayments', 'chequePayments']));
   }
@@ -164,7 +146,7 @@ class SalePaymentController extends Controller implements HasMiddleware
     SalePayment::insert($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
-    return to_route('admin.sale-payments.show', $customer);
+    return to_route('admin.customers.show', $customer);
   }
 
   public function edit(SalePayment $salePayment): View

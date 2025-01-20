@@ -76,7 +76,6 @@ class Product extends BaseModel
 			});
 	}
 
-	// Functions
 	public function getDiscountAttribute()
 	{
 		$discount = $this->attributes['discount'];
@@ -172,6 +171,14 @@ class Product extends BaseModel
 		}else {
 			return redirect()->back();
 		}
+	}
+
+	public static function getParentProducts(array $selectedColumns = ['*'])
+	{
+		return self::query()
+			->select($selectedColumns)
+			->parents()
+			->get();
 	}
 
   // Relations

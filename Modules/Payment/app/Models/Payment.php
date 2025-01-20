@@ -74,6 +74,32 @@ class Payment extends BaseModel
       });
   }
 
+  public static function getPaginatedPaymentsByType(String $type)
+  {
+    $paymentsQuery = self::query();
+
+    switch ($type) {
+      case self::TYPE_CHEQUE:
+        $paymentsQuery->cheques();
+        break;
+      case self::TYPE_INSTALLMENT:
+        $paymentsQuery->installments();
+        break;
+      case self::TYPE_CASH:
+        $paymentsQuery->cashes();
+        break;
+    }
+
+    $payments = $paymentsQuery
+      ->filters()
+      ->with('supplier:id,name')
+      ->latest('id')
+      ->paginate()
+      ->withQueryString();
+
+    return $payments;
+  }
+
 	// Relations
 	public function supplier(): BelongsTo
   {

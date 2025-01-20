@@ -151,7 +151,7 @@ class PaymentController extends Controller implements HasMiddleware
     Payment::insert($inputs);
     toastr()->success('پرداختی جدید با موفقیت ثبت شد.');
 
-    return to_route('admin.payments.show', $supplier);
+    return to_route('admin.suppliers.show', $supplier);
   }
 
   public function edit(Payment $payment): View|Application|Factory|App
@@ -190,7 +190,7 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function cheques()
   {
-    $chequePayments = $this->getPaymentsWithType(Payment::TYPE_CHEQUE);
+    $chequePayments = Payment::getPaginatedPaymentsByType(Payment::TYPE_CHEQUE);
     $suppliers = Supplier::getAllSuppliers();
 
     return view('payment::cheques', compact('chequePayments', 'suppliers'));
@@ -198,7 +198,7 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function installments()
   {
-    $installmentPayments = $this->getPaymentsWithType(Payment::TYPE_INSTALLMENT);
+    $installmentPayments = Payment::getPaginatedPaymentsByType(Payment::TYPE_INSTALLMENT);
     $suppliers = Supplier::getAllSuppliers();
 
     return view('payment::installments', compact('installmentPayments', 'suppliers'));
@@ -206,39 +206,10 @@ class PaymentController extends Controller implements HasMiddleware
 
   public function cashes()
   {
-    $cashPayments = $this->getPaymentsWithType(Payment::TYPE_CASH);
+    $cashPayments = Payment::getPaginatedPaymentsByType(Payment::TYPE_CASH);
     $suppliers = Supplier::getAllSuppliers();
 
     return view('payment::cashes', compact('cashPayments', 'suppliers'));
-  }
-
-  private function getPaymentsWithType($type)
-  {
-    $paymentsQuery = Payment::query();
-
-    switch ($type) {
-      case Payment::TYPE_CHEQUE:
-        $paymentsQuery->cheques();
-        break;
-      case Payment::TYPE_INSTALLMENT:
-        $paymentsQuery->installments();
-        break;
-      case Payment::TYPE_CASH:
-        $paymentsQuery->cashes();
-        break;
-      default:
-        toastr()->error('نوع پرداخت درخواستی اشتباه است');
-        return redirect()->back();
-    }
-
-    $payments = $paymentsQuery
-      ->filters()
-      ->with('supplier:id,name')
-      ->latest('id')
-      ->paginate()
-      ->withQueryString();
-
-    return $payments;
   }
 
 }

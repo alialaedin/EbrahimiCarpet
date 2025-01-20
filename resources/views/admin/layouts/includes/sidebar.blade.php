@@ -67,6 +67,7 @@
             @endcan
             @can('view products')
               <li><a href="{{route("admin.products.index")}}" class="slide-item">محصولات</a></li>
+              {{-- <li><a href="{{route("admin.pricing.create")}}" class="slide-item">قیمت گذاری</a></li> --}}
             @endcan
           </ul>
         </li>
@@ -155,23 +156,6 @@
           <span class="side-menu__label">گزارشات</span>
         </a>
       </li>
-
-{{--      <li class="slide">--}}
-{{--        <a class="side-menu__item" data-toggle="slide" href="#">--}}
-{{--          <i class="fe fe-clipboard sidemenu_icon"></i>--}}
-{{--          <span class="side-menu__label">گزارشات </span><i class="angle fa fa-angle-left"></i>--}}
-{{--        </a>--}}
-{{--        <ul class="slide-menu">--}}
-{{--          <li><a href="{{ route('admin.reports.profit') }}" class="slide-item">گزارش سود و ضرر</a></li>--}}
-{{--          <li><a href="{{ route('admin.reports.purchases-filter') }}" class="slide-item">گزارش خرید ها</a></li>--}}
-{{--          <li><a href="{{ route('admin.reports.sales-filter') }}" class="slide-item">گزارش فروش ها</a></li>--}}
-{{--          <li><a href="{{ route('admin.reports.customer-indebtedness') }}" class="slide-item">گزارش مالی مشتریان</a>--}}
-{{--          </li>--}}
-{{--          <li><a href="{{ route('admin.reports.expenses') }}" class="slide-item">گزارش مالی هزینه ها</a></li>--}}
-{{--          <li><a href="{{ route('admin.reports.revenues') }}" class="slide-item">گزارش مالی درامد ها</a></li>--}}
-{{--          <li><a href="{{ route('admin.reports.salaries') }}" class="slide-item">گزارش مالی حقوق ها</a></li>--}}
-{{--        </ul>--}}
-{{--      </li>--}}
       @endrole
     </ul>
   </div>
