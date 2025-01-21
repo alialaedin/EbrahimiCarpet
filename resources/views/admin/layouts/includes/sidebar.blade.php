@@ -67,7 +67,7 @@
             @endcan
             @can('view products')
               <li><a href="{{route("admin.products.index")}}" class="slide-item">محصولات</a></li>
-              {{-- <li><a href="{{route("admin.pricing.create")}}" class="slide-item">قیمت گذاری</a></li> --}}
+              <li><a href="{{route("admin.pricing.create")}}" class="slide-item">قیمت گذاری</a></li>
             @endcan
           </ul>
         </li>

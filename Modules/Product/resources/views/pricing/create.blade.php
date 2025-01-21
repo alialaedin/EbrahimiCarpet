@@ -1,36 +1,32 @@
 @extends('admin.layouts.master')
 @section('content')
 
+  <div class="page-header">
+    <x-core::breadcrumb :items="[['title' => 'قیمت گذاری محصولات']]"/>
+  </div>
+
   <x-core::card>
-    <x-slot name="cardTitle">ثبت محصول جدید</x-slot>
+    <x-slot name="cardTitle">قیمت گذاری محصولات</x-slot>
     <x-slot name="cardOptions"><x-core::card-options/></x-slot>
     <x-slot name="cardBody">
-      <form action="{{ route('admin.products.store') }}" method="post" class="save" enctype="multipart/form-data">
+      <form action="{{ route('admin.pricing.store') }}" method="POST">
         @csrf
         <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <div class="form-group">
-              <label for="title" class="control-label"> عنوان: <span class="text-danger">&starf;</span></label>
-              <input type="text" id="title" class="form-control" name="title" placeholder="عنوان را به فارسی وارد کنید"
-                     value="{{ old('title') }}" required autofocus>
-              <x-core::show-validation-error name="title"/>
+
+          <div class="col-xl-3">
+            <div class="fomr-group">
+              <label>قیمت (ریال) <span class="text-danger">&starf;</span></label>
+              <input type="text" class="comma form-control" name="price" value="{{ old('price') }}" required autofocus>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4">
+
+          <div class="col-xl-3">
             <div class="form-group">
-              <label for="print_title" class="control-label"> عنوان (پرینت فاکتور مشتری): <span class="text-danger">&starf;</span></label>
-              <input type="text" id="print_title" class="form-control" name="print_title"
-                     placeholder="عنوان را به فارسی وارد کنید" value="{{ old('print_title') }}" required autofocus>
-              <x-core::show-validation-error name="print_title"/>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="form-group">
-              <label for="category_id" class="control-label"> انتخاب دسته بندی: <span class="text-danger">&starf;</span></label>
-              <select name="category_id" id="category_id" class="form-control">
+              <label>دسته بندی</label>
+              <select name="category_id" id="category-select-box" class="form-control" required>
                 <option value=""> دسته بندی را انتخاب کنید</option>
-                @foreach ($parentCategories as $category)
-                  <optgroup label="{{ $category->title .' ('. $category->getUnitType() .')'  }}">
+                @foreach ($categories as $category)
+                  <optgroup label="{{ $category->title }}">
                     @if ($category->has('children'))
                       @foreach($category->children as $child)
                         <option value="{{ $child->id }}" @selected(old('category_id') == $child->id)>{{ $child->title }}</option>
@@ -39,101 +35,22 @@
                   </optgroup>
                 @endforeach
               </select>
-              <x-core::show-validation-error name="category_id"/>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4">
+
+          <div class="col-xl-3">
             <div class="form-group">
-              <label for="image" class="control-label"> انتخاب عکس </label>
-              <input type="file" id="image" class="form-control" name="image" value="{{ old('image') }}">
-              <x-core::show-validation-error name="image"/>
+              <label>محصولات</label>
+              <select id="product-select-box" class="form-control" name="product_id">
+                <option value=""></option>
+              </select>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="form-group">
-              <label for="price" class="control-label"> قیمت فروش پایه (ریال): <span
-                  class="text-danger">&starf;</span></label>
-              <input type="text" id="price" class="form-control comma" name="price"
-                     placeholder="قیمت را به ریال وارد کنید" value="{{ old('price') }}">
-              <x-core::show-validation-error name="price"/>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="form-group">
-              <label for="discount" class="control-label"> تخفیف پایه (ریال): </label>
-              <input type="text" id="discount" class="form-control comma" name="discount"
-                     placeholder="تخفیف را به ریال وارد کنید" value="{{ old('discount') }}">
-              <x-core::show-validation-error name="discount"/>
-            </div>
-          </div>
+
+        </div>
+        <div class="row">
           <div class="col-12">
-            <div class="form-group">
-              <label for="description" class="control-label">توضیحات :</label>
-              <textarea name="description" id="description" class="form-control" rows="4"
-                        placeholder="توضیحات لازم را در صورت نیاز وارد کنید"> {{ old('description') }} </textarea>
-              <x-core::show-validation-error name="description"/>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="control-label"> انتخاب وضعیت:<span class="text-danger">&starf;</span></label>
-              <div class="custom-controls-stacked">
-                <label class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input" name="status"
-                         value="1" @checked(old('status', 1) == '1')>
-                  <span class="custom-control-label">فعال</span>
-                </label>
-                <label class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input" name="status"
-                         value="0" @checked(old('status') == '0')>
-                  <span class="custom-control-label">غیر فعال</span>
-                </label>
-              </div>
-              <x-core::show-validation-error name="status"/>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-5">
-          <div class="col-12 d-flex justify-content-center" style="border-radius: 10px;">
-            <button id="add-dimensions-btn" class="btn btn-green d-flex justify-content-center align-items-center" type="button">
-              <span class="ml-1">ثبت ابعاد مختلف</span>
-              <i class="fa fa-plus font-weight-bold"></i>
-            </button>
-          </div>
-        </div>
-        <div class="row hidden-part mb-5 justify-content-center" id="warning-messages-section">
-          <div class="col bg-yellow p-2" style="border-radius: 10px;">
-              <ul class="mr-3">
-                <li class="fs-16 text-gray-dark my-1">فیلد های <span class="text-danger">ستاره دار</span> اجباری هستند!</li>
-                <li class="fs-16 text-gray-dark my-1">در صورت وارد کردن موجودی اولیه باید قیمت خرید را وارد کنید!</li>
-                <li class="fs-16 text-gray-dark my-1">تمامی قیمت ها را به <span class="font-weight-bold">ریال</span> وارد کنید!</li>
-              </ul>
-          </div>
-        </div>
-        <div class="row hidden-part">
-          <div id="products-dimensions-section" class="col-12 mx-auto table-responsive mt-4">
-            <table id="products-dimensions-table" role="table" class="table b-table table-bordered text-center border-top">
-              <thead role="rowgroup">
-              <tr role="row">
-                <th class="fs-15">ابعاد <span class="text-danger">&starf;</span></th>
-                <th class="fs-15">موجودی اولیه</th>
-                <th class="fs-15">قیمت خرید</th>
-                <th class="fs-15">قیمت فروش <span class="text-danger">&starf;</span></th>
-                <th class="fs-15">تخفیف</th>
-                <th class="fs-15">عملیات</th>
-              </tr>
-              </thead>
-              <tbody role="rowgroup"> 
-                
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row hidden-part" id="submit-btn-section">
-          <div class="col">
-            <div class="text-center">
-              <button class="btn btn-pink" type="submit">ثبت و ذخیره</button>
-            </div>
+            <button class="btn btn-sm btn-pink">بروزرسانی قیمت</button>
           </div>
         </div>
       </form>
@@ -144,6 +61,31 @@
 
 @section('scripts')
   <script>
+
+  $('#category-select-box').select2({placeholder: 'انتخاب دسته بندی'});
+  $('#product-select-box').select2({placeholder: 'ابتدا دسته بندی را انتخاب کنید'});
+
+  $(document).ready(() => {
+
+    const allParentProducts = @json($products);
+    const allParentCategories = @json($categories);
+
+    const categorySelectBox = $('#category-select-box');
+    const productSelectBox = $('#product-select-box');
+
+    categorySelectBox.change(() => {
+
+      const categoryId = categorySelectBox.val();
+      const products = allParentProducts.filter(product => product.category_id == categoryId);
+
+      productSelectBox.empty();
+      productSelectBox.append('<option value=""></option>');
+      productSelectBox.select2({ placeholder: 'انتخاب محصولات' });
+      products.forEach(product => {
+        productSelectBox.append(`<option value="${product.id}">${product.title}</option>`)
+      });
+    });
+  });
     
   </script>
 @endsection

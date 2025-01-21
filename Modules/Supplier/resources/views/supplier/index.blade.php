@@ -71,13 +71,6 @@
                   </button>
                 @endcan
                 @can('view payments')
-                  {{-- <a
-                    href="{{ route('admin.payments.show', $supplier) }}"
-                    class="btn btn-green btn-icon btn-sm"
-                    data-toggle="tooltip"
-                    data-original-title="پرداختی ها">
-                    <i class="fa fa-money"></i>
-                  </a> --}}
                   <button
                     class="btn btn-green btn-icon btn-sm show-all-payments-button"
                     data-toggle="tooltip"

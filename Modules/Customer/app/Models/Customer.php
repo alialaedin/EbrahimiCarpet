@@ -84,9 +84,9 @@ class Customer extends Model
     $payments = $this->payments()->select(['id', 'type', 'amount']);
 
     return [
-      'cheque' => $payments->where('type', '=', SalePayment::TYPE_CHEQUE)->sum('amount'),
-      'cash' => $payments->where('type', '=', SalePayment::TYPE_CASH)->sum('amount'),
-      'installment' => $payments->where('type', '=', SalePayment::TYPE_INSTALLMENT)->sum('amount')
+      'cheque' => (clone $payments)->where('type', '=', SalePayment::TYPE_CHEQUE)->sum('amount'),
+      'cash' => (clone $payments)->where('type', '=', SalePayment::TYPE_CASH)->sum('amount'),
+      'installment' => (clone $payments)->where('type', '=', SalePayment::TYPE_INSTALLMENT)->sum('amount')
     ];
   }
 

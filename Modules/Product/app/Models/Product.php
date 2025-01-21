@@ -5,12 +5,14 @@ namespace Modules\Product\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\Request;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Purchase\Models\PurchaseItem;
 use Modules\Sale\Models\SaleItem;
 use Modules\Store\Models\Store;
+use Modules\Store\Services\StoreService;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -31,7 +33,7 @@ class Product extends BaseModel
 		'image'
 	];
 
-	public const INDEX_PAGE_SELECTED_COLUMNS = ['id','title','print_title','category_id','status','discount','price','image','parent_id','created_at'];
+	public const INDEX_PAGE_SELECTED_COLUMNS = ['id', 'title', 'print_title', 'category_id', 'status', 'discount', 'price', 'image', 'parent_id', 'created_at'];
 
 	protected static function booted(): void
 	{
@@ -40,7 +42,7 @@ class Product extends BaseModel
 				throw new ModelCannotBeDeletedException('از این محصول در انبار موجود است و قابل حذف نمی باشد.');
 			} elseif ($product->purchaseItems->isNotEmpty()) {
 				throw new ModelCannotBeDeletedException('ازین محصول خریدی ثبت شده است و قابل حذف نمی باشد.');
-			}elseif ($product->saleItems->isNotEmpty()) {
+			} elseif ($product->saleItems->isNotEmpty()) {
 				throw new ModelCannotBeDeletedException('ازین محصول فروشی ثبت شده است و قابل حذف نمی باشد.');
 			}
 		});
@@ -48,29 +50,29 @@ class Product extends BaseModel
 
 	public function getActivitylogOptions(): LogOptions
 	{
-    $admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
+		$admin = auth()->user() ?? Admin::where('mobile', '09368917169')->first();
 
 		return LogOptions::defaults()
 			->logAll()
 			->setDescriptionForEvent(function (string $eventName) use ($admin) {
 
 				$eventDate = verta()->format('Y/m/d');
-        $eventTime = verta()->formatTime();
+				$eventTime = verta()->formatTime();
 				$messageBase = "ادمین با شناسه {$admin->id}, {$admin->name}, در تاریخ {$eventDate} ساعت {$eventTime}";
 				$productTitle = $this->title;
 				$productSubTitle = $this->sub_title ? "در ابعاد {$this->sub_title}" : null;
 
 				switch ($eventName) {
-          case 'created':
-            $message = "{$messageBase} یک محصول جدید با عنوان {$productTitle} {$productSubTitle} را ثبت کرد.";
-            break;
-          case 'updated':
-            $message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را ویرایش کرد.";
-            break;
-          case 'deleted':
-            $message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را حذف کرد.";
-            break;
-        }
+					case 'created':
+						$message = "{$messageBase} یک محصول جدید با عنوان {$productTitle} {$productSubTitle} را ثبت کرد.";
+						break;
+					case 'updated':
+						$message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را ویرایش کرد.";
+						break;
+					case 'deleted':
+						$message = "{$messageBase} محصول با عنوان {$productTitle} {$productSubTitle} را حذف کرد.";
+						break;
+				}
 
 				return $message;
 			});
@@ -85,18 +87,18 @@ class Product extends BaseModel
 
 	public function getFullTitleAttribute()
 	{
-		return $this->sub_title === null ? $this->title : $this->title .' '. $this->sub_title; 
+		return $this->sub_title === null ? $this->title : $this->title . ' ' . $this->sub_title;
 	}
 
-  public function isDeletable(): bool
-  {
+	public function isDeletable(): bool
+	{
 		$hasBalance = $this->stores->sum('balance') > 0;
 		$hasPurchaseItem = $this->purchaseItems->isNotEmpty();
 		$hasSaleItem = $this->saleItems->isNotEmpty();
 		$hasChildren = $this->children->isNotEmpty();
 
-    return !$hasPurchaseItem AND !$hasSaleItem AND !$hasChildren AND !$hasBalance;
-  }
+		return !$hasPurchaseItem and !$hasSaleItem and !$hasChildren and !$hasBalance;
+	}
 
 	public function getStoreBalanceAttribute()
 	{
@@ -150,8 +152,8 @@ class Product extends BaseModel
 			->when(request('start_date'), fn($q) => $q->whereDate('created_at', '>=', request('start_date')))
 			->when(request('end_date'), fn($q) => $q->whereDate('created_at', '<=', request('end_date')))
 			->when(request('unit_type'), function ($query) {
-        return $query->withWhereHas('category', fn($query) => $query->where('unit_type', request('unit_type')));
-      })
+				return $query->withWhereHas('category', fn($query) => $query->where('unit_type', request('unit_type')));
+			})
 			->when(!is_null(request('status')), fn($q) => $q->where('status', request('status')))
 			->when(!is_null(request('has_discount')), function ($q) {
 				return $q->where(function ($q) {
@@ -168,7 +170,7 @@ class Product extends BaseModel
 	{
 		if (is_null($this->parent_id)) {
 			return to_route('admin.products.index');
-		}else {
+		} else {
 			return redirect()->back();
 		}
 	}
@@ -181,39 +183,69 @@ class Product extends BaseModel
 			->get();
 	}
 
-  // Relations
-  public function category(): BelongsTo
-  {
-    return $this->belongsTo(Category::class);
-  }
+	public static function updatePrice(Request $request)
+	{
+		$categoryId = $request->input('category_id');
+		$productId = $request->input('product_id');
+		$newPrice = $request->input('price');
 
-  public function stores(): HasMany
-  {
-    return $this->hasMany(Store::class);
-  }
+		if ($productId) {
+			$product = self::findOrFail($productId);
+			$product->price = $newPrice;
+			$product->save();
+			StoreService::updateSellPrice($product);
 
-  public function purchaseItems(): HasMany
-  {
-    return $this->hasMany(PurchaseItem::class);
-  }
+			return response()->json(['message' => 'Product price updated successfully.', 'product' => $product], 200);
+		}
 
-  public function saleItems(): HasMany
-  {
-    return $this->hasMany(SaleItem::class);
-  }
+		$updatedCount = self::query()
+			->where('category_id', $categoryId)
+			->update(['price' => $newPrice]);
 
-  public function prices(): HasMany
-  {
-    return $this->hasMany(Price::class);
-  }
+		if ($updatedCount > 0) {
+			$products = self::query()
+				->where('category_id', $categoryId)
+				->get();
 
-  public function children(): HasMany
-  {
-    return $this->hasMany(Product::class, 'parent_id');
-  }
+			foreach ($products as $product) {
+				StoreService::updateSellPrice($product);
+			}
+		}
+	}
 
-  public function parent(): BelongsTo
-  {
-    return $this->belongsTo(Product::class, 'parent_id');
-  }
+	// Relations
+	public function category(): BelongsTo
+	{
+		return $this->belongsTo(Category::class);
+	}
+
+	public function stores(): HasMany
+	{
+		return $this->hasMany(Store::class);
+	}
+
+	public function purchaseItems(): HasMany
+	{
+		return $this->hasMany(PurchaseItem::class);
+	}
+
+	public function saleItems(): HasMany
+	{
+		return $this->hasMany(SaleItem::class);
+	}
+
+	public function prices(): HasMany
+	{
+		return $this->hasMany(Price::class);
+	}
+
+	public function children(): HasMany
+	{
+		return $this->hasMany(Product::class, 'parent_id');
+	}
+
+	public function parent(): BelongsTo
+	{
+		return $this->belongsTo(Product::class, 'parent_id');
+	}
 }

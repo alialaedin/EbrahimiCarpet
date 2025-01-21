@@ -1,23 +1,19 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header" style="margin-bottom: 10px;">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.customers.index') }}">لیست مشتریان</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a>نمایش مشتری</a>
-      </li>
-    </ol>
+
+  <div class="page-header">
+
+    <x-core::breadcrumb
+      :items="[
+        ['title' => 'لیست مشتریان', 'route_link' => 'admin.customers.index'],
+        ['title' => 'نمایش مشتری']
+      ]"
+    />
+
     <div class="d-flex align-items-center flex-wrap text-nowrap">
       <a href="{{ route('admin.customers.show-invoice', $customer) }}" class="btn btn-sm btn-purple mx-1 text-white my-md-1">فاکتور</a>
       @can('edit customers')
-        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">ویرایش </a>
+        <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-warning mx-1 my-md-1">ویرایش</a>
       @endcan
       @can('delete customers')
         <button
@@ -39,19 +35,23 @@
         <a href="{{ route('admin.sales.create') }}" class="btn btn-sm btn-indigo mx-1 my-md-1">فاکتور فروش</a>
       @endcan
       @can('view sale_payments')
-        <a href="{{ route('admin.sale-payments.show', $customer) }}" class="btn btn-sm btn-flickr mx-1 my-md-1">مشاهده پرداختی ها</a>
+        <a 
+          href="{{ route('admin.sale-payments.index',['customer_id' => $customer->id]) }}" 
+          class="btn btn-sm btn-flickr mx-1 my-md-1">
+          مشاهده پرداختی ها
+        </a>
       @endcan
       @can('create sale_payments')
         <a href="{{ route('admin.sale-payments.create', $customer) }}" class="btn btn-sm btn-lime mx-1 my-md-1">پرداختی جدید</a>
       @endcan
     </div>
+
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">اطلاعات مشتری</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">اطلاعات مشتری</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <div class="row">
         <div class="col-lg-6">
           <ul class="list-group">
@@ -74,126 +74,168 @@
           </ul>
         </div>
       </div>
+    </x-slot>
+  </x-core::card>
 
-    </div>
-  </div>
-  @include('customer::includes.helper-boxes')
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">فاکتور های فروش ({{ $salesCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">شناسه فاکتور</th>
-                <th class="text-center">مبلغ (ریال)</th>
-                <th class="text-center">هزینه دوخت / نصب (ریال)</th>
-                <th class="text-center">تخفیف کلی (ریال)</th>
-                <th class="text-center">مبلغ کل فاکتور (ریال)</th>
-                <th class="text-center">تاریخ فروش</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($sales as $sale)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $sale->id }}</td>
-                  <td class="text-center">{{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }}</td>
-                  <td class="text-center">{{ number_format($sale->cost_of_sewing) }}</td>
-                  <td class="text-center">{{ number_format($sale->discount) }}</td>
-                  <td class="text-center">{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
-                  <td class="text-center">{{ verta($sale->sold_at)->formatDate() }} </td>
-                  <td class="text-center">
-                    @can('view sales')
-                      <a
-                        href="{{route('admin.sales.show', $sale)}}"
-                        target="_blank"
-                        class="btn btn-sm btn-cyan">
-                        جزئیات فاکتور
-                      </a>
-                    @endcan
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="6"/>
-              @endforelse
-              </tbody>
-            </table>
-          </div>
-        </div>
+  <x-customer::sale-statistics :customer="$customer"/>
+
+  <x-core::card>
+    <x-slot name="cardTitle">فاکتور های فروش ({{ $salesCount }})</x-slot>
+    <x-slot name="cardOptions">
+      <div class="card-options">
+        @can('create sales')
+          <a
+            href="{{ route('admin.sales.create', ['customer_id' => $customer->id]) }}" 
+            target="_blank"
+            class="btn btn-outline-primary btn-sm">
+            فاکتور فروش جدید
+            <i class="fa fa-plus"></i>
+          </a>
+        @endcan
       </div>
+    </x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>شناسه فاکتور</th>
+            <th>مبلغ (ریال)</th>
+            <th>هزینه دوخت / نصب (ریال)</th>
+            <th>تخفیف کلی (ریال)</th>
+            <th>مبلغ کل فاکتور (ریال)</th>
+            <th>تاریخ فروش</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($sales as $sale)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $sale->id }}</td>
+              <td>{{ number_format($sale->getTotalAmount() - $sale->cost_of_sewing) }}</td>
+              <td>{{ number_format($sale->cost_of_sewing) }}</td>
+              <td>{{ number_format($sale->discount) }}</td>
+              <td>{{ number_format($sale->getTotalAmountWithDiscount()) }}</td>
+              <td>{{ verta($sale->sold_at)->formatDate() }} </td>
+              <td>
+                @can('view sales')
+                  <a
+                    href="{{route('admin.sales.show', $sale)}}"
+                    target="_blank"
+                    class="btn btn-sm btn-cyan">
+                    جزئیات فاکتور
+                  </a>
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="6"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
+  @can('view sale_payments')
+
+    @php
+      $paymentsBoxData = [
+        ['title' => 'تمامی دریافتی ها','route' => route('admin.sale-payments.index', ['customer_id' => $customer->id])],
+        ['title' => 'دریافتی های پرداخت شده','route' => route('admin.sale-payments.index', ['customer_id' => $customer->id, 'status' => 1])],
+        ['title' => 'دریافتی های پرداخت نشده','route' => route('admin.sale-payments.index', ['customer_id' => $customer->id, 'status' => 0])],
+        ['title' => 'تمامی اقساط','route' => route('admin.sale-payments.installments', ['customer_id' => $customer->id])],
+        ['title' => 'اقساط پرداخت شده','route' => route('admin.sale-payments.installments', ['customer_id' => $customer->id, 'status' => 1])],
+        ['title' => 'اقساط پرداخت نشده','route' => route('admin.sale-payments.installments', ['customer_id' => $customer->id, 'status' => 0])],
+        ['title' => 'تمامی چک ها','route' => route('admin.sale-payments.cheques', ['customer_id' => $customer->id])],
+        ['title' => 'چک های پاس شده','route' => route('admin.sale-payments.cheques', ['customer_id' => $customer->id, 'status' => 1])],
+        ['title' => 'چک های پاس نشده','route' => route('admin.sale-payments.cheques', ['customer_id' => $customer->id, 'status' => 0])],
+        ['title' => 'تمامی نقدی ها','route' => route('admin.sale-payments.cashes', ['customer_id' => $customer->id])],
+        ['title' => 'نقدی های پرداخت شده','route' => route('admin.sale-payments.cashes', ['customer_id' => $customer->id, 'status' => 1])],
+        ['title' => 'نقدی های پرداخت نشده','route' => route('admin.sale-payments.cashes', ['customer_id' => $customer->id, 'status' => 0])],
+      ];
+    @endphp 
+
+    <div class="row">
+      @foreach ($paymentsBoxData as $item)
+        <div class="col-xl-2 col-lg-3 col-md-12">
+          <a href="{{ $item['route'] }}" target="_blank">
+            <div class="card">
+              <div class="card-body payment-box-body text-center">
+                <span class="payment-box-title font-weight-bold">{{ $item['title'] }}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      @endforeach
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">پرداختی ها ({{ $salePaymentsCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-                <tr>
-                  <th class="text-center border-top">ردیف</th>
-                  <th class="text-center border-top">نوع پراخت</th>
-                  <th class="text-center border-top">مبلغ (ریال)</th>
-                  <th class="text-center border-top">تاریخ پرداخت</th>
-                  <th class="text-center border-top">عکس رسید</th>
-                  <th class="text-center border-top">تاریخ سررسید</th>
-                  <th class="text-center border-top">وضعیت</th>
-                  <th class="text-center border-top">تاریخ ثبت</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse ($salePayments as $payment)
-                  <tr>
-                    <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                    <td class="text-center">{{ $payment->getType() }}</td>
-                    <td class="text-center">{{ number_format($payment->amount) }}</td>
-                    <td class="text-center">{{ $payment->getPaymentDate() }}</td>
-                    <td class="text-center m-0 p-0">
-                      @if ($payment->image)
-                        <figure class="figure my-2">
-                          <a target="_blank" href="{{ Storage::url($payment->image) }}">
-                            <img
-                              src="{{ Storage::url($payment->image) }}"
-                              class="img-thumbnail"
-                              alt="image"
-                              width="50"
-                              style="max-height: 32px;"
-                            />
-                          </a>
-                        </figure>
-                      @else
-                        <span> - </span>
-                      @endif
-                    </td>
-                    <td class="text-center"> {{ verta($payment->due_date)->formatDate() }} </td>
-                    <td class="text-center">
-                      <x-core::light-badge
-                        type="{{ $payment->status ? 'success' : 'danger' }}"
-                        text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
+    
+  @endcan
+
+  <x-core::card>
+    <x-slot name="cardTitle">آخرین دریافتی های ثبت شده</x-slot>
+    <x-slot name="cardOptions">
+      <div class="card-options">
+        @can('create sale_payments')
+          <a href="{{ route('admin.sale-payments.create', $customer) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+            دریافتی جدید
+            <i class="fa fa-plus"></i>
+          </a>
+        @endcan
+      </div>
+    </x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>نوع پراخت</th>
+            <th>مبلغ (ریال)</th>
+            <th>تاریخ پرداخت</th>
+            <th>عکس رسید</th>
+            <th>تاریخ سررسید</th>
+            <th>وضعیت</th>
+            <th>تاریخ ثبت</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($salePayments as $payment)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $payment->getType() }}</td>
+              <td>{{ number_format($payment->amount) }}</td>
+              <td>{{ $payment->getPaymentDate() }}</td>
+              <td class="m-0 p-0">
+                @if ($payment->image)
+                  <figure class="figure my-2">
+                    <a target="_blank" href="{{ Storage::url($payment->image) }}">
+                      <img
+                        src="{{ Storage::url($payment->image) }}"
+                        class="img-thumbnail"
+                        alt="image"
+                        width="50"
+                        style="max-height: 32px;"
                       />
-                    </td>
-                    <td class="text-center"> @jalaliDate($payment->created_at) </td>
-                  </tr>
-                @empty
-                  <x-core::data-not-found-alert :colspan="8"/>
-                @endforelse
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                    </a>
+                  </figure>
+                @else
+                  <span> - </span>
+                @endif
+              </td>
+              <td> @jalaliDateFormat($payment->due_date)</td>
+              <td>
+                <x-core::light-badge
+                  type="{{ $payment->status ? 'success' : 'danger' }}"
+                  text="{{ $payment->status ? 'پرداخت شده' : 'پرداخت نشده' }}"
+                />
+              </td>
+              <td> @jalaliDate($payment->created_at)</td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
 @endsection
