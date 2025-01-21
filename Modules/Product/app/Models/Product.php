@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
@@ -180,36 +181,26 @@ class Product extends BaseModel
 		return self::query()
 			->select($selectedColumns)
 			->parents()
+			->with([
+				'children' => fn($q) => $q->select(['id', 'parent_id', 'sub_title', 'price']),
+				'category' => fn($q) => $q->select(['id', 'title'])
+			])
 			->get();
 	}
 
 	public static function updatePrice(Request $request)
 	{
-		$categoryId = $request->input('category_id');
-		$productId = $request->input('product_id');
-		$newPrice = $request->input('price');
-
-		if ($productId) {
-			$product = self::findOrFail($productId);
-			$product->price = $newPrice;
-			$product->save();
-			StoreService::updateSellPrice($product);
-
-			return response()->json(['message' => 'Product price updated successfully.', 'product' => $product], 200);
-		}
-
-		$updatedCount = self::query()
-			->where('category_id', $categoryId)
-			->update(['price' => $newPrice]);
-
-		if ($updatedCount > 0) {
-			$products = self::query()
-				->where('category_id', $categoryId)
-				->get();
-
-			foreach ($products as $product) {
+		try {
+			DB::beginTransaction();
+			foreach ($request->products as $requestProduct) {
+				$product = self::findOrFail($requestProduct['id']);
+				$product->price = $requestProduct['price'];
+				$product->save();
 				StoreService::updateSellPrice($product);
 			}
+			DB::commit();
+		} catch (\Throwable $th) {
+			DB::rollBack();
 		}
 	}
 

@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-striped text-nowrap text-center">
+  <table @isset($id) id="{{ $id }}" @endisset class="table table-striped text-nowrap text-center">
     <thead>
       {{$tableTh}}
     </thead>
