@@ -169,9 +169,9 @@
             </td>  
           </tr>  
         `);
-        comma();
         tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
         $('#ProductsTableBody').append(tr);
+        comma();
         tr.find('.negative-btn').click(function() {  
           $(this).closest('tr').remove(); 
           calculateTotalPrice();
