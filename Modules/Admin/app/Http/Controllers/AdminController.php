@@ -112,4 +112,11 @@ class AdminController extends Controller implements HasMiddleware
 
 		return to_route('admin.admins.index');
 	}
+
+	public function activities()
+	{
+		$activities = Activity::latest('id')->paginate(50);
+
+		return view('admin::activities', compact('activities'));
+	}
 }

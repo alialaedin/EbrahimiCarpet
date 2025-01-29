@@ -149,11 +149,16 @@
           <span class="side-menu__label">مدیریت انبار</span>
         </a>
       </li>
-
       <li class="slide">
         <a class="side-menu__item" href="{{route("admin.reports.index")}}">
           <i class="fe fe-clipboard sidemenu_icon"></i>
           <span class="side-menu__label">گزارشات</span>
+        </a>
+      </li>
+      <li class="slide">
+        <a class="side-menu__item" href="{{route("admin.activities.index")}}">
+          <i class="fe fe-activity sidemenu_icon"></i>
+          <span class="side-menu__label">فعالیت ها</span>
         </a>
       </li>
       @endrole

@@ -18,5 +18,6 @@ use Modules\Admin\Http\Controllers\DashboardController;
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function() {
 	Route::resource('/admins', AdminController::class);
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+	Route::get('/activities', [AdminController::class, 'activities'])->name('activities.index');
 });
 
