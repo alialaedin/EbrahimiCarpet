@@ -125,14 +125,22 @@
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های پرداختی امروز',
         'table' => 'payments',
-        'route' => route('admin.payments.cheques', ['from_due_date' => now()->toDate()]),
+        'route' => route('admin.payments.cheques'),
+        'parameters' => [
+          'from_due_date' => now()->toDateString(),
+          'to_due_date' => now()->toDateString(),
+        ],
         'allData' => $todayPayableCheques
       ])
     @endcan
     @can('view customer cheques')
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های دریافتی امروز',
-        'route' => route('admin.sale-payments.cheques', ['from_due_date' => now()->toDate()]),
+        'route' => route('admin.sale-payments.cheques'),
+        'parameters' => [
+          'from_due_date' => now()->toDateString(),
+          'to_due_date' => now()->toDateString(),
+        ],
         'table' => 'sale-payments',
         'allData' => $todayReceivedCheques
       ])
@@ -140,7 +148,11 @@
     @can('view supplier installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط پرداختی امروز',
-        'route' => route('admin.payments.installments', ['from_due_date' => now()->toDate()]),
+        'route' => route('admin.payments.installments'),
+        'parameters' => [
+          'from_due_date' => now()->toDateString(),
+          'to_due_date' => now()->toDateString(),
+        ],
         'table' => 'payments',
         'allData' => $todayPayableInstallments
       ])
@@ -148,7 +160,11 @@
     @can('view customer installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط دریافتی امروز',
-        'route' => route('admin.sale-payments.installments', ['from_due_date' => now()->toDate()]),
+        'route' => route('admin.sale-payments.installments'),
+        'parameters' => [
+          'from_due_date' => now()->toDateString(),
+          'to_due_date' => now()->toDateString(),
+        ],
         'table' => 'sale-payments',
         'allData' => $todayReceivedInstallments
       ])

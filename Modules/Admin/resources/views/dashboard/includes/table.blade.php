@@ -2,7 +2,16 @@
   <div class="card">
     <div class="card-header border-0 justify-content-between">
       <p class="card-title fs-15 font-weight-bold">{{ $title }}</p>
-      <a href="{{ $route }}" class="btn btn-sm btn-outline-info" target="_blank">مشاهده همه</a>
+      {{-- <a href="{{ $route }}" class="btn btn-sm btn-outline-info" target="_blank">مشاهده همه</a> --}}
+      <button class="btn btn-sm btn-outline-info" onclick="$(this).closest('.card-header').find('form').submit()">مشاهده همه</button>
+      <form action="{{ $route }}" method="GET" class="d-none">
+        <input name="status" value="0">
+        @isset($parameters)
+          @foreach ($parameters ?? [] as $name => $value)
+            <input name="{{ $name }}" value="{{ $value }}">
+          @endforeach
+        @endisset
+      </form>
     </div>
     <div class="card-body">
       <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
