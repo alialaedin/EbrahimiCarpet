@@ -18,7 +18,7 @@ class CustomerUpdateRequest extends FormRequest
         'numeric',
         Rule::unique('customers', 'mobile')->ignore($this->route('customer')),
         'digits:11',
-        new IranMobile()
+        'starts_with:09'
       ],
 			'telephone' => ['nullable', Rule::unique('customers', 'telephone')->ignore($this->route('customer')->id)],
 			'address' => ['nullable', 'string'],

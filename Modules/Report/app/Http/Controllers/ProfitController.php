@@ -22,7 +22,7 @@ class ProfitController extends Controller
 
     if (!request()->has('to_date') || request()->isNotFilled('to_date')) {
       request()->merge([
-        'to_date' => now()
+        'to_date' => now()->toDate()
       ]);
     }
 

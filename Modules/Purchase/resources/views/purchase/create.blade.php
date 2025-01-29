@@ -78,11 +78,35 @@
           </div>
         </div>
       </div>
-      <div class="row mx-4">
-        <div class="col-12 text-center mb-5 bg-black-8 text-white-80 py-3 rounded" >
-          <span class="fs-16">جمع مبلغ کل فاکتور : </span>
-          <span class="font-weight-bold fs-16" id="totalPrice">0</span>
-          <span class="font-weight-bold fs-16">ریال</span>
+      <div class="row mx-4 justify-content-center" style="margin-top: 50px">
+
+        <div class="col-12 col-xl-4">
+          <div class="card shadow-lg">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                  <b>مجموع تعداد کالا ها</b>
+                  <span id="total-items-quantity">0</span>
+                </div>
+                <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                  <b>مجموع قیمت کالا ها</b>
+                  <span id="total-items-amount">0</span>
+                </div>
+                <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                  <b>مجموع تخفیف روی کالا ها</b>
+                  <span id="total-items-discount-amount">0</span>
+                </div>
+                <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                  <b>تخفیف روی سفارش</b>
+                  <span id="purchase-discount-amount">0</span>
+                </div>
+                <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                  <b>جمع کل</b>
+                  <span id="total-amount">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-12" id="submitButton">
           <div class="text-center">
@@ -112,25 +136,51 @@
       let index = 0;
 
       const addPurchaseItemButton = $("#addPurchaseItemButton");
-      const totalPriceBox = $("#totalPrice");
       const discountInput = $("#discount");
 
+      const totalItemsQuantityTextBox = $('#total-items-quantity');
+      const totalItemsAmountTextBox = $('#total-items-amount');
+      const totalItemsDiscountAmountTextBox = $('#total-items-discount-amount');
+      const purhcaseDiscountAmountTextBox = $('#purchase-discount-amount');
+      const totalAmountTextBox = $('#total-amount');
+
       function calculateTotalPrice() {  
-        let total = 0;  
-        let totalDiscount = discountInput.val().replace(/,/g, '') || 0;
+
+        let totalItemsAmount = 0;
+        let totalItemsQuantity = 0;  
+        let totalItemsDiscountAmount = 0;  
+        let totalAmount = 0;
+        let purhcaseDiscountAmount = discountInput.val().replace(/,/g, '') || 0;
+
         $('#ProductsTableBody tr').each(function() {  
+
           const quantityInput = $(this).find('.product-quantity');  
           const priceInput = $(this).find('.product-price');
           const discountInput = $(this).find('.product-discount');
+
           const quantity = Math.max(parseFloat(quantityInput.val()) || 0, 0);  
-          const priceValue = priceInput.val().replace(',', ''); 
-          const discountValue = discountInput.val().replace(',', ''); 
-          const price = priceValue ? Math.max(parseFloat(priceValue.replace(',', '')) || 0, 0) : 0;
-          const discount = discountValue ? Math.max(parseFloat(discountValue.replace(',', '')) || 0, 0) : 0;
-          total += quantity * (price - discount);  
+
+          const priceValue = priceInput.val().replace(/,/g, ''); 
+          const discountValue = discountInput.val().replace(/,/g, ''); 
+
+          const price = priceValue ? Math.max(parseInt(priceValue.replace(/,/g, '')) || 0, 0) : 0;
+          const discount = discountValue ? Math.max(parseFloat(discountValue.replace(/,/g, '')) || 0, 0) : 0;
+
+          totalItemsQuantity += quantity;  
+          totalItemsDiscountAmount += (discount * quantity);
+          totalItemsAmount += (price * quantity);
+          totalAmount += (quantity * (price - discount));
+
         });  
-        total -= totalDiscount;
-        totalPriceBox.text(total.toLocaleString()); 
+
+        totalAmount -= purhcaseDiscountAmount;
+
+        totalItemsQuantityTextBox.text(totalItemsQuantity); 
+        totalItemsAmountTextBox.text(totalItemsAmount.toLocaleString() + ' ریال'); 
+        totalItemsDiscountAmountTextBox.text(totalItemsDiscountAmount.toLocaleString() + ' ریال'); 
+        purhcaseDiscountAmountTextBox.text(purhcaseDiscountAmount.toLocaleString() + ' ریال'); 
+        totalAmountTextBox.text(totalAmount.toLocaleString() + ' ریال'); 
+
       } 
 
       discountInput.on('input', () => {

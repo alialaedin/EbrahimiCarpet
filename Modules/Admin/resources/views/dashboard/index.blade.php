@@ -124,15 +124,15 @@
     @can('view supplier cheques')
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های پرداختی امروز',
-        'showAllDataBtnId' => 'todayChequePaymentsForm',
         'table' => 'payments',
+        'route' => route('admin.payments.cheques', ['from_due_date' => now()->toDate()]),
         'allData' => $todayPayableCheques
       ])
     @endcan
     @can('view customer cheques')
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های دریافتی امروز',
-        'showAllDataBtnId' => 'todayChequeSalePaymentsForm',
+        'route' => route('admin.sale-payments.cheques', ['from_due_date' => now()->toDate()]),
         'table' => 'sale-payments',
         'allData' => $todayReceivedCheques
       ])
@@ -140,7 +140,7 @@
     @can('view supplier installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط پرداختی امروز',
-        'showAllDataBtnId' => 'todayInstallmentPaymentsForm',
+        'route' => route('admin.payments.installments', ['from_due_date' => now()->toDate()]),
         'table' => 'payments',
         'allData' => $todayPayableInstallments
       ])
@@ -148,7 +148,7 @@
     @can('view customer installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط دریافتی امروز',
-        'showAllDataBtnId' => 'todayInstallmentSalePaymentsForm',
+        'route' => route('admin.sale-payments.installments', ['from_due_date' => now()->toDate()]),
         'table' => 'sale-payments',
         'allData' => $todayReceivedInstallments
       ])
@@ -156,7 +156,7 @@
     @can('view supplier cheques')
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های پرداختی',
-        'showAllDataBtnId' => 'chequePaymentsForm',
+        'route' => route('admin.payments.cheques'),
         'table' => 'payments',
         'allData' => $payableCheques
       ])
@@ -164,7 +164,7 @@
     @can('view customer cheques')
       @include('admin::dashboard.includes.table', [
         'title' => 'چک های دریافتی',
-        'showAllDataBtnId' => 'chequeSalePaymentsForm',
+        'route' => route('admin.sale-payments.cheques'),
         'table' => 'sale-payments',
         'allData' => $receivedCheques
       ])
@@ -172,7 +172,7 @@
     @can('view supplier installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط پرداختی',
-        'showAllDataBtnId' => 'installmentPaymentsForm',
+        'route' => route('admin.payments.installments'),
         'table' => 'payments',
         'allData' => $payableInstallments
       ])
@@ -180,7 +180,7 @@
     @can('view customer installments')
       @include('admin::dashboard.includes.table', [
         'title' => 'اقساط دریافتی',
-        'showAllDataBtnId' => 'installmentSalePaymentsForm',
+        'route' => route('admin.sale-payments.installments'),
         'table' => 'sale-payments',
         'allData' => $receivedInstallments
       ])
