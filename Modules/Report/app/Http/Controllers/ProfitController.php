@@ -4,6 +4,7 @@ namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Modules\Core\Helpers\Helpers;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Sale\Models\SaleItem;
@@ -12,6 +13,19 @@ class ProfitController extends Controller
 {
   public function index(): View
   {
+
+    if (!request()->has('from_date') || request()->isNotFilled('from_date')) {
+      request()->merge([
+        'from_date' => Helpers::toGregorian(verta()->startMonth())
+      ]);
+    }
+
+    if (!request()->has('to_date') || request()->isNotFilled('to_date')) {
+      request()->merge([
+        'to_date' => now()
+      ]);
+    }
+
     $saleItems = SaleItem::query()
       ->select(['id', 'sale_id', 'product_id', 'price', 'quantity', 'discount', 'archived_price'])
       ->filters()

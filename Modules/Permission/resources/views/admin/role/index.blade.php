@@ -1,65 +1,51 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">لیست نقش ها</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست نقش ها']]"/>
     @can('create roles')
-      <x-core::register-button route="admin.roles.create" title="ثبت نقش جدید"/>
+      <x-core::create-button route="admin.roles.create" title="ثبت نقش جدید"/>
     @endcan
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">لیست نقش ها ({{ $rolesCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-                <tr>
-                  <th class="text-center">ردیف</th>
-                  <th class="text-center">نام</th>
-                  <th class="text-center">نام قابل مشاهده</th>
-                  <th class="text-center">تاریخ ثبت</th>
-                  <th class="text-center">عملیات</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse ($roles as $role)
-                  <tr>
-                    <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                    <td class="text-center">{{ $role->name }}</td>
-                    <td class="text-center">{{ $role->label }}</td>
-                    <td class="text-center">@jalaliDate($role->created_at)</td>
-                    <td class="text-center">
-                      <a
-                        href="{{route('admin.roles.edit', $role)}}"
-                        class="btn btn-sm btn-icon btn-warning text-white"
-                        data-toggle="tooltip"
-                        data-original-title="ویرایش"
-                        @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
-                        <i class="fa fa-pencil"></i>
-                      </a>
-                      <x-core::delete-button route="admin.roles.destroy" :model="$role" disabled="{{ !$role->isDeletable() }}"/>
-                    </td>
-                  </tr>
-                @empty
-                  <x-core::data-not-found-alert :colspan="5"/>
-                @endforelse
-              </tbody>
-            </table>
-            {{ $roles->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <x-core::card>
+    <x-slot name="cardTitle">لیست نقش ها ({{ $roles->count() }})</x-slot>
+    <x-slot name="cardOptions"></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>نام</th>
+            <th>نام قابل مشاهده</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($roles as $role)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $role->name }}</td>
+              <td>{{ $role->label }}</td>
+              <td>@jalaliDate($role->created_at)</td>
+              <td>
+                <a
+                  href="{{route('admin.roles.edit', $role)}}"
+                  class="btn btn-sm btn-icon btn-warning text-white"
+                  data-toggle="tooltip"
+                  data-original-title="ویرایش"
+                  @if ($role->name == 'super_admin') style="pointer-events: none;" @endif>
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <x-core::delete-button route="admin.roles.destroy" :model="$role" disabled="{{ !$role->isDeletable() }}"/>
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="5"/>
+          @endforelse
+        </x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
 @endsection

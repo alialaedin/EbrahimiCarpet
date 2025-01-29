@@ -8,15 +8,15 @@ use Modules\Core\Helpers\Helpers;
 
 class PaymentUpdateRequest extends FormRequest
 {
-	protected function prepareForValidation(): void
-	{
+  protected function prepareForValidation(): void
+  {
     $this->merge([
       'amount' => str_replace(',', '', $this->input('amount')),
     ]);
-	}
+  }
 
-	public function rules(): array
-	{
+  public function rules(): array
+  {
     return [
       'description' => ['nullable', 'string'],
       'amount' => ['required', 'integer', 'min:1000'],
@@ -27,67 +27,71 @@ class PaymentUpdateRequest extends FormRequest
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],
       'due_date' => ['nullable', 'date'],
       'is_mine' => ['nullable', 'boolean'],
-      'status' => ['nullable', 'boolean']
+      'status' => ['nullable', 'boolean'],
     ];
-	}
+  }
 
-  /**
-   * @throws ValidationException
+  /**  
+   * @throws ValidationException  
    */
   public function passedValidation(): void
   {
-		$payment = $this->route('payment');
-		$supplier = $payment->supplier;
-		$type = $this->input('type');
-    // $remainingAmount = $supplier->remaining_amount + $payment->amount;
+    $payment = $this->route('payment');
+    $supplier = $payment->supplier;
+    $type = $this->input('type');
 
-    if ($type == 'cheque') {
+    $requiredFields = $this->getRequiredFields($type);
+    $this->checkRequiredFields($requiredFields);
 
-      if ($this->isNotFilled('amount')) {
-        throw Helpers::makeWebValidationException('مبلغ چک را وارد کنید.', 'amount');
-      }elseif ($this->isNotFilled('cheque_serial')) {
-        throw Helpers::makeWebValidationException('شماره سریال چک الزامی است!', 'cheque_serial');
-      }elseif ($this->isNotFilled('cheque_holder')) {
-        throw Helpers::makeWebValidationException('نام و نام خانوادگی صاحب چک الزامی است!', 'cheque_holder');
-      }elseif ($this->isNotFilled('bank_name')) {
-        throw Helpers::makeWebValidationException('نام بانک الزامی است!', 'bank_name');
-      }elseif ($this->isNotFilled('pay_to')) {
-        throw Helpers::makeWebValidationException('در وجه چک الزامی است!', 'pay_to');
-      }elseif ($this->isNotFilled('due_date')) {
-        throw Helpers::makeWebValidationException('تاریخ موعد چک الزامی است!', 'due_date');
-      }/*elseif ($this->input('amount') > $remainingAmount) {
-        throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
-      }*/
+    $this->mergeAdditionalData($supplier);
+  }
 
-    } elseif ($type == 'cash') {
+  protected function getRequiredFields(string $type): array
+  {
+    $fields = [
+      'cheque' => ['amount', 'cheque_serial', 'cheque_holder', 'bank_name', 'pay_to', 'due_date'],
+      'cash' => ['amount', 'payment_date'],
+      'installment' => ['amount', 'due_date'],
+    ];
 
-      if ($this->isNotFilled('payment_date')) {
-        throw Helpers::makeWebValidationException('تاریخ پرداخت را مشخص کنید.', 'payment_date');
-      } elseif ($this->isNotFilled('amount')) {
-        throw Helpers::makeWebValidationException('مبلغ پرداختی را وارد کنید.', 'amount');
-      }/*elseif ($this->input('amount') > $remainingAmount) {
-        throw Helpers::makeWebValidationException('مبلغ پرداختی بیشتر از مبلغ قابل پرداخت است.', 'amount');
-      }*/
+    return $fields[$type] ?? [];
+  }
 
-    }elseif ($type == 'installment') {
-
-      if ($this->isNotFilled('due_date')) {
-        throw Helpers::makeWebValidationException('تاریخ موعد قسط الزامی است.', 'due_date');
-      } elseif ($this->isNotFilled('amount')) {
-        throw Helpers::makeWebValidationException('مبلغ قسط الزامی است.', 'amount');
+  protected function checkRequiredFields(array $requiredFields): void
+  {
+    foreach ($requiredFields as $field) {
+      if ($this->isNotFilled($field)) {
+        throw Helpers::makeWebValidationException($this->getErrorMessage($field), $field);
       }
-
     }
+  }
 
+  protected function getErrorMessage(string $field): string
+  {
+    $messages = [
+      'amount' => 'مبلغ پرداختی را وارد کنید.',
+      'cheque_serial' => 'شماره سریال چک الزامی است!',
+      'cheque_holder' => 'نام و نام خانوادگی صاحب چک الزامی است!',
+      'bank_name' => 'نام بانک الزامی است!',
+      'pay_to' => 'در وجه چک الزامی است!',
+      'due_date' => 'تاریخ موعد چک الزامی است!',
+      'payment_date' => 'تاریخ پرداخت را مشخص کنید.',
+    ];
+
+    return $messages[$field] ?? 'فیلد الزامی است.';
+  }
+
+  protected function mergeAdditionalData($supplier): void
+  {
     $this->merge([
       'supplier' => $supplier,
       'status' => $this->filled('status') ? 1 : 0,
       'is_mine' => $this->filled('is_mine') ? 1 : 0,
     ]);
-	}
+  }
 
-	public function authorize(): bool
-	{
-		return true;
-	}
+  public function authorize(): bool
+  {
+    return true;
+  }
 }

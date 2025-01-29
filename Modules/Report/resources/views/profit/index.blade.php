@@ -65,14 +65,18 @@
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="form-group">
                 <input class="form-control fc-datepicker" id="from_date_show" type="text" autocomplete="off" placeholder="از تاریخ"/>
-                <input name="from_date" id="from_date_hidden" type="hidden" value="{{ request("from_date") }}"/>
+                <input 
+                  name="from_date" id="from_date_hidden" type="hidden" 
+                  value="{{ request("from_date") }}"/>
               </div>
             </div>
   
             <div class="col-12 col-lg-6 col-xl-3">
               <div class="form-group">
                 <input class="form-control fc-datepicker" id="to_date_show" type="text" autocomplete="off" placeholder="تا تاریخ"/>
-                <input name="to_date" id="to_date_hidden" type="hidden" value="{{ request("to_date") }}"/>
+                <input 
+                  name="to_date" id="to_date_hidden" type="hidden" 
+                  value="{{ request("to_date") }}"/>
               </div>
             </div>
   
@@ -169,11 +173,20 @@
     <div class="card-body">
       <div class="table-responsive">
         <div class="dataTables_wrapper dt-bootstrap4 no-footer"> 
+          <div class="row">
+            <div class="col-12">
+              <p class="mb-0">
+                <span>از تاریخ </span>
+                <b class="fs-16">{{ verta(request('from_date'))->format('Y/m/d') }} </b>
+                <span>تا تاریخ </span>
+                <b class="fs-16">{{ verta(request('to_date'))->format('Y/m/d') }}</b>
+              </p>
+            </div>
+          </div>
           <table class="table table-vcenter text-center table-striped text-nowrap table-bordered border-bottom" style="margin-top: 25px;">
               <thead class="thead-light">
               <tr>
                 <th>ردیف</th>
-                <th>شناسه فاکتور فروش</th>
                 <th>محصول</th>
                 <th>ابعاد</th>
                 <th>دسته بندی</th>
@@ -188,7 +201,6 @@
                   @forelse($saleItems as $saleItem)
                     <tr class="table-body">
                       <td class="font-weight-bold">{{ $counter }}</td>
-                      <td>{{ $saleItem->sale->id }}</td>
                       <td>{{ $saleItem->product->title }}</td>
                       <td>{{ $saleItem->product->sub_title }}</td>
                       <td>{{ $saleItem->product->category->title }}</td>
@@ -197,8 +209,8 @@
                       <td>{{ number_format($saleItem->getPriceWithDiscount() * $saleItem->quantity) }}</td>
                     </tr>
                     @php($counter++)
-                    @empty
-                      <x-core::data-not-found-alert :colspan="7"/>
+                  @empty
+                    <x-core::data-not-found-alert :colspan="7"/>
                   @endforelse
                 {{-- @empty --}}
                   {{-- <x-core::data-not-found-alert :colspan="7"/> --}}

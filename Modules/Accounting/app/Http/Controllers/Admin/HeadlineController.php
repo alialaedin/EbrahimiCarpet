@@ -30,11 +30,10 @@ class HeadlineController extends Controller implements HasMiddleware
       return Headline::query()
         ->select('id', 'title', 'type', 'status', 'created_at')
         ->latest('id')
-        ->paginate()
-        ->withQueryString();
+        ->get();
     });
 
-    $totalHeadlines = $headlines->total();
+    $totalHeadlines = Headline::count();
 
     return view('accounting::headline.index', compact(['headlines', 'totalHeadlines']));
   }

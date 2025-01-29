@@ -9,6 +9,7 @@ use Modules\Core\Exceptions\ModelCannotBeDeletedException;
 use Modules\Core\Models\BaseModel;
 use Modules\Core\Traits\HasCache;
 use Modules\Employee\Database\Factories\EmployeeFactory;
+use Modules\Sale\Models\Sale;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -61,7 +62,7 @@ class Employee extends BaseModel
   // Functions
   public function isDeletable()
   {
-    return $this->salaries->isEmpty();
+    return $this->salaries->isEmpty() && $this->sales->isEmpty(); 
   }
 
   // Relations
@@ -69,5 +70,10 @@ class Employee extends BaseModel
   {
     return $this->hasMany(Salary::class);
   }
+
+	public function sales(): HasMany
+	{
+		return $this->hasMany(Sale::class);
+	}
 
 }

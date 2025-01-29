@@ -1,24 +1,17 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.admins.index') }}">لیست ادمین ها</a>
-      </li>
-      <li class="breadcrumb-item active">ویرایش ادمین</li>
-    </ol>
+    <x-core::breadcrumb :items="[
+      ['title' => 'لیست ادمین ها', 'route_link' => 'admin.admins.index'],
+      ['title' => 'ویرایش ادمین']
+    ]"/>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">ویرایش ادمین - کد {{ $admin->id }}</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ویرایش ادمین</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.admins.update', $admin) }}" method="post" class="save">
         @csrf
         @method('PATCH')
@@ -83,6 +76,7 @@
         </div>
         <x-core::update-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection

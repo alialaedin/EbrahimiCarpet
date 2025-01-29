@@ -96,17 +96,4 @@ class PurchaseItem extends Model
 		return $this->getPriceWithDiscount() * $this->attributes['quantity'];
 	}
 
-  private function decrementProductStore(): void
-  {
-    $store = $this->product->store;
-    $purchase = $this->purchase;
-
-    $store->decrement('balance', $this->attributes['quantity']);
-    $purchase->transactions()->create([
-      'store_id' => $store->id,
-      'type' => 'decrement',
-      'quantity' => $this->attributes['quantity']
-    ]);
-  }
-
 }

@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Core\Models\BaseModel;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Category extends Model
+class Category extends BaseModel
 {
 	use HasFactory, LogsActivity;
 
@@ -65,6 +66,14 @@ class Category extends Model
 			});
 	}
 
+	public static function getAvailableUnitTypes()
+	{
+		return [
+			self::UNIT_TYPE_METER,
+			self::UNIT_TYPE_NUMBER,
+		];
+	} 
+
 	// Functions
 	public function getParentTitleAttribute(): string
 	{
@@ -102,19 +111,15 @@ class Category extends Model
 
   public function scopeFilters($query)
 	{
+		$unitType = request()->has('unit_type') && in_array(request('unit_type'), self::getAvailableUnitTypes());
+		$status = request()->has('status') && in_array(request('status'), ['0', '1']);
+		$parentId = !in_array(request('parent_id'), ['all', null, '', ' ']);
+
 		return $query
 			->when(request('title'), fn ($q) => $q->where('title', 'like', "%". request('title') ."%"))
-			->when(request('parent_id'), function ($q) {
-				return $q->where(function ($q) {
-					if (request('parent_id') == 'none') {
-						$q->whereNull('parent_id');
-					} else {
-						$q->where('parent_id', request('parent_id'));
-					}
-				});
-			})
-			->when(request('unit_type'), fn ($q) => $q->where('unit_type', request('unit_type')))
-			->when(!is_null(request('status')), fn ($q) => $q->where('status', request('status')));
+			->when($parentId, fn ($q) => $q->where('parent_id', request('parent_id')))
+			->when($unitType, fn ($q) => $q->where('unit_type', request('unit_type')))
+			->when($status, fn ($q) => $q->where('status', request('status')));
 	}
 
 	public static function getParentCategories()

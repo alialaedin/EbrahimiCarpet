@@ -1,78 +1,68 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}"><i class="fe fe-home ml-1"></i> داشبورد</a>
-      </li>
-      <li class="breadcrumb-item active">لیست ادمین ها</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست ادمین ها']]"/>
     @can('create admins')
-      <x-core::register-button route="admin.admins.create" title="ثبت ادمین جدید"/>
+      <x-core::create-button route="admin.admins.create" title="ثبت ادمین جدید"/>
     @endcan
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">لیست ادمین ها ({{ $adminsCount }})</p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">نام و نام خانوادگی</th>
-                <th class="text-center">شناسه</th>
-                <th class="text-center">شماره موبایل</th>
-                <th class="text-center">نقش</th>
-                <th class="text-center">وضعیت</th>
-                <th class="text-center">تاریخ ثبت</th>
-                <th class="text-center">عملیات</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($admins as $admin)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $admin->name }}</td>
-                  <td class="text-center">{{ $admin->id }}</td>
-                  <td class="text-center">{{ $admin->mobile }}</td>
-                  <td class="text-center">{{ $admin->getRoleLabel() }}</td>
-                  <td class="text-center">
-                    <x-core::badge
-                      type="{{ $admin->getStatusBadgeType() }}"
-                      text="{{ $admin->getStatus() }}"
-                    />
-                  </td>
-                  <td class="text-center"> @jalaliDate($admin->created_at)</td>
-                  <td class="text-center">
-                    @can('view admins')
-                      <x-core::show-button route="admin.admins.show" :model="$admin"/>
-                    @endcan
-                    @can('edit admins')
-                      <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
-                    @endcan
-                    @can('delete admins')
-                      <x-core::delete-button
-                        route="admin.admins.destroy"
-                        :model="$admin"
-                        disabled="{{ !$admin->isDeletable() }}"
-                      />
-                    @endcan
-                  </td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="8"/>
-              @endforelse
-              </tbody>
-            </table>
-            {{ $admins->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <x-core::card>
+    <x-slot name="cardTitle">لیست ادمین ها ({{ $adminsCount }})</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+            <th>ردیف</th>
+            <th>نام و نام خانوادگی</th>
+            <th>شناسه</th>
+            <th>شماره موبایل</th>
+            <th>نقش</th>
+            <th>وضعیت</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($admins as $admin)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $admin->name }}</td>
+              <td>{{ $admin->id }}</td>
+              <td>{{ $admin->mobile }}</td>
+              <td>{{ $admin->getRoleLabel() }}</td>
+              <td>
+                <x-core::badge
+                  type="{{ $admin->getStatusBadgeType() }}"
+                  text="{{ $admin->getStatus() }}"
+                />
+              </td>
+              <td> @jalaliDate($admin->created_at)</td>
+              <td>
+                @can('view admins')
+                  <x-core::show-button route="admin.admins.show" :model="$admin"/>
+                @endcan
+                @can('edit admins')
+                  <x-core::edit-button route="admin.admins.edit" :model="$admin"/>
+                @endcan
+                @can('delete admins')
+                  <x-core::delete-button
+                    route="admin.admins.destroy"
+                    :model="$admin"
+                    disabled="{{ !$admin->isDeletable() }}"
+                  />
+                @endcan
+              </td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="8"/>
+          @endforelse
+        </x-slot>
+        <x-slot name="extraData">{{ $admins->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}</x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+ 
 @endsection

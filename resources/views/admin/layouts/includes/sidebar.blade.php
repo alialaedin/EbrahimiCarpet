@@ -43,7 +43,7 @@
             <li><a href="{{route("admin.admins.index")}}" class="slide-item">ادمین ها</a></li>
             @endrole
             @can('view customers')
-              <li><a href="{{route("admin.customers.index")}}" class="slide-item">مشتری ها</a></li>
+              <li><a href="{{route("admin.customers.index")}}" class="slide-item">مشتریان</a></li>
             @endcan
             @can('view employees')
               <li><a href="{{route("admin.employees.index")}}" class="slide-item">پرسنل</a></li>

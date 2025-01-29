@@ -21,10 +21,10 @@ class Payment extends BaseModel
 
   private const MAIN_SELECTED_COLUMNS = ['id', 'supplier_id', 'amount', 'type', 'payment_date', 'status', 'created_at'];
 
-	private const TYPES = [
-		'cash' => 'نقد',
-		'installment' => 'قسط',
-		'cheque' => 'چک',
+	private const TYPES_LABELS = [
+		self::TYPE_CASH => 'نقد',
+		self::TYPE_INSTALLMENT => 'قسط',
+		self::TYPE_CHEQUE => 'چک',
 	];
 
 	protected $fillable = [
@@ -109,7 +109,7 @@ class Payment extends BaseModel
 	// Functions
 	public function getType(): string
   {
-		return self::TYPES[$this->attributes['type']];
+		return self::TYPES_LABELS[$this->attributes['type']];
 	}
 
   public function getPaymentDate(): string

@@ -1,24 +1,14 @@
 @extends('admin.layouts.master')
 @section('content')
-  <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.employees.index') }}">لیست کارمندان</a>
-      </li>
-      <li class="breadcrumb-item active">ثبت کارمند جدید</li>
-    </ol>
-  </div>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">ویرایش کارمند - کد {{ $employee->id }}</p>
-    </div>
-    <div class="card-body">
 
+  <div class="page-header">
+    <x-core::breadcrumb :items="[['title' => 'لیست کارمندان', 'route_link' => 'admin.employees.index'], ['title' => 'ویرایش کارمند']]"/>
+  </div>
+  
+  <x-core::card>
+    <x-slot name="cardTitle">ویرایش کارمند</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.employees.update', $employee) }}" method="POST">
         @csrf
         @method('PUT')
@@ -181,8 +171,9 @@
         </div>
         <x-core::update-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')

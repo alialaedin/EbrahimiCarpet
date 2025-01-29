@@ -1,23 +1,14 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.employees.index') }}">لیست کارمندان</a>
-      </li>
-      <li class="breadcrumb-item active">ثبت کارمند جدید</li>
-    </ol>
+    <x-core::breadcrumb :items="[['title' => 'لیست کارمندان', 'route_link' => 'admin.employees.index'], ['title' => 'ثبت کارمند جدید']]"/>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">ثبت کارمند جدید</p>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ثبت کارمند جدید</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.employees.store') }}" method="post" class="save">
         @csrf
         <div class="row">
@@ -95,8 +86,9 @@
         </div>
         <x-core::store-button/>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
 @endsection
 
 @section('scripts')

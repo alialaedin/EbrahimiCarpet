@@ -1,23 +1,17 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.roles.index') }}">لیست نقش ها</a>
-      </li>
-      <li class="breadcrumb-item active">ثبت نقش جدید</li>
-    </ol>
+    <x-core::breadcrumb :items="[
+      ['title' => 'لیست نقش ها', 'route_link' => 'admin.roles.index'],
+      ['title' => 'ثبت نقش جدید']
+    ]"/>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">ثبت نقش جدید</p>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">ثبت نقش جدید</x-slot>
+    <x-slot name="cardOptions"></x-slot>
+    <x-slot name="cardBody">
       <form action="{{ route('admin.roles.store') }}" method="post" class="save">
         @csrf
         <div class="row">
@@ -77,6 +71,6 @@
           </div>
         </div>
       </form>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
 @endsection

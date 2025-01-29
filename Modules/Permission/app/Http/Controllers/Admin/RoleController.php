@@ -39,11 +39,9 @@ class RoleController extends Controller implements HasMiddleware
 		$roles = Role::query()
 			->latest('id')
 			->select(['id', 'name', 'label', 'created_at'])
-			->paginate();
+			->get();
 
-		$rolesCount = $roles->total();
-
-		return view('permission::admin.role.index', compact('roles', 'rolesCount'));
+		return view('permission::admin.role.index', compact('roles'));
 	}
 
 	public function create(): Renderable

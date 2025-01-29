@@ -25,8 +25,8 @@
             <div class="form-group">
               <label for="parent_id">انتخاب والد :</label>
               <select name="parent_id" id="parent_id" class="form-control">
-                <option value="">همه</option>
-                <option value="none" @selected(request("parent_id") == 'none')>بدون والد</option>
+                <option value=""></option>
+                <option value="all">همه</option>
                 @foreach ($parentCategories as $category)
                   <option value="{{ $category->id }}" @selected(request("parent_id") == $category->id)>{{ $category->title }}</option>
                 @endforeach
@@ -37,7 +37,8 @@
             <div class="form-group">
               <label for="unit_type">نوع واحد :</label>
               <select name="unit_type" id="unit_type" class="form-control">
-                <option value="">همه</option>
+                <option value=""></option>
+                <option value="all">همه</option>
                 <option value="meter" @selected(request("unit_type") == "meter")>متر</option>
                 <option value="number" @selected(request("unit_type") == "number")>عدد</option>
               </select>
@@ -47,7 +48,8 @@
             <div class="form-group">
               <label for="status">وضعیت :</label>
               <select name="status" id="status" class="form-control">
-                <option value="">همه</option>
+                <option value=""></option>
+                <option value="all">همه</option>
                 <option value="1" @selected(request("status") == "1")>فعال</option>
                 <option value="0" @selected(request("status") == "0")>غیر فعال</option>
               </select>
@@ -103,11 +105,13 @@
                     <i class="fa fa-pencil"></i>
                   </button>
                 @endcan
-                @can('delete categories')<x-core::delete-button
+                @can('delete categories')
+                  <x-core::delete-button
                     route="admin.categories.destroy"
                     :model="$category"
-                    disabled="{{ !$category->isDeletable() }}"
-                  />@endcan
+                    :disabled="!$category->isDeletable()"
+                  />
+                @endcan
               </td>
             </tr>
           @empty
@@ -121,4 +125,12 @@
   @include('product::category.includes.create-category-modal')
   @include('product::category.includes.edit-category-modal')
 
+@endsection
+
+@section('scripts')
+  <script>
+    new CustomSelect('#status', 'انتخاب وضعیت');
+    new CustomSelect('#unit_type', 'انتخاب نوع واحد');
+    new CustomSelect('#parent_id', 'انتخاب والد');
+  </script>
 @endsection

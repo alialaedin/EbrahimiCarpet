@@ -1,23 +1,17 @@
 @extends('admin.layouts.master')
 @section('content')
+
   <div class="page-header">
-    <ol class="breadcrumb align-items-center">
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.dashboard') }}">
-          <i class="fe fe-home ml-1"></i> داشبورد
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('admin.admins.index') }}">لیست ادمین ها</a>
-      </li>
-      <li class="breadcrumb-item active">نمایش ادمین</li>
-    </ol>
+    <x-core::breadcrumb :items="[
+      ['title' => 'لیست ادمین ها', 'route_link' => 'admin.admins.index'],
+      ['title' => 'نمایش ادمین']
+    ]"/>
   </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title">مشخصات ادمین</p>
-    </div>
-    <div class="card-body">
+
+  <x-core::card>
+    <x-slot name="cardTitle">مشخصات ادمین</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
       <div class="row">
         <div class="col-lg-4 col-md-6 col-12 fs-16 my-1">
           <span><strong>شناسه کاربر : </strong> {{ $admin->id }}</span>
@@ -44,45 +38,39 @@
           <span><strong>تاریخ ثبت : </strong> @jalaliDate($admin->created_at) </span>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header border-0">
-      <p class="card-title ml-2">لیست فعالیت ها <span class="fs-15">({{ $totalActivity }})</span></p>
-      <x-core::card-options/>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-          <div class="row">
-            <table class="table table-vcenter table-striped text-nowrap table-bordered border-bottom">
-              <thead class="thead-light">
-              <tr>
-                <th class="text-center">ردیف</th>
-                <th class="text-center">توضیحات</th>
-                <th class="text-center">شناسه لاگ</th>
-                <th class="text-center">تاریخ</th>
-                <th class="text-center">ساعت</th>
-              </tr>
-              </thead>
-              <tbody>
-              @forelse ($activities as $activity)
-                <tr>
-                  <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                  <td class="text-center">{{ $activity->description }}</td>
-                  <td class="text-center">{{ $activity->id }}</td>
-                  <td class="text-center">{{ verta($activity->created_at)->formatDate() }}</td>
-                  <td class="text-center">{{ verta($activity->created_at)->formatTime() }}</td>
-                </tr>
-              @empty
-                <x-core::data-not-found-alert :colspan="4"/>
-              @endforelse
-              </tbody>
-            </table>
-            {{ $activities->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    </x-slot>
+  </x-core::card>
+
+  <x-core::card>
+    <x-slot name="cardTitle">لیست فعالیت ها <span class="fs-15">({{ $totalActivity }})</span></x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <x-core::table>
+        <x-slot name="tableTh">
+          <tr>
+          <th>ردیف</th>
+          <th>توضیحات</th>
+          <th>شناسه لاگ</th>
+          <th>تاریخ</th>
+          <th>ساعت</th>
+          </tr>
+        </x-slot>
+        <x-slot name="tableTd">
+          @forelse ($activities as $activity)
+            <tr>
+              <td class="font-weight-bold">{{ $loop->iteration }}</td>
+              <td>{{ $activity->description }}</td>
+              <td>{{ $activity->id }}</td>
+              <td>{{ verta($activity->created_at)->formatDate() }}</td>
+              <td>{{ verta($activity->created_at)->formatTime() }}</td>
+            </tr>
+          @empty
+            <x-core::data-not-found-alert :colspan="5"/>
+          @endforelse
+        </x-slot>
+        <x-slot name="extraData">{{ $activities->onEachSide(0)->links("vendor.pagination.bootstrap-4") }}</x-slot>
+      </x-core::table>
+    </x-slot>
+  </x-core::card>
+
 @endsection
