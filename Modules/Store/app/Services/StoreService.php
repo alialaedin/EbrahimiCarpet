@@ -18,15 +18,17 @@ class StoreService
       'sell_price' => $product->price,
     ]);
 
+    $priority = 1;
     if ($product->stores()->exists()) {
       $store = Store::query()
         ->select('id', 'priority', 'product_id')
         ->where('product_id', $product->id)
         ->orderByDesc('priority')
         ->first();
-      $priority = $store->priority + 1;
-    } else {
-      $priority = 1;
+
+      if ($store) {
+        $priority = $store->priority + 1;
+      }
     }
 
     $product->stores()->create([

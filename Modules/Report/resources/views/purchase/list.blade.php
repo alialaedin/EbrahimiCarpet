@@ -56,7 +56,7 @@
                   <td class="text-center">{{ $purchase->id }}</td>
                   <td class="text-center"> @jalaliDate($purchase->purchased_at)</td>
                   <td class="text-center"> @jalaliDate($purchase->created_at)</td>
-                  <td class="text-center">{{ number_format($purchase->total_items_amount) }}</td>
+                  <td class="text-center">{{ number_format($purchase->total_items_amount_with_discount) }}</td>
                   <td class="text-center">{{ number_format($purchase->discount) }}</td>
                   <td class="text-center">{{ number_format($purchase->total_amount) }}</td>
                 </tr>

@@ -102,6 +102,20 @@
           </div>
           <div class="col-12">
             <div class="form-group">
+              <label for="description" class="control-label">توضیحات:</label>
+              <textarea
+                name="description"
+                id="description"
+                class="form-control"
+                rows="3"
+                placeholder="توضیحات خود را وارد کنید">
+                {{ old('description') }}
+              </textarea>
+              <x-core::show-validation-error name="description" />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
               <label for="status" class="control-label"> وضعیت: </label>
               <label class="custom-control custom-checkbox">
                 <input type="checkbox" id="status" class="custom-control-input" name="status" value="1" checked>

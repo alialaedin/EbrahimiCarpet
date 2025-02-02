@@ -99,6 +99,20 @@
 							<x-core::show-validation-error name="address" />
 						</div>
 					</div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="description" class="control-label">توضیحات:</label>
+              <textarea
+                name="description"
+                id="description"
+                class="form-control"
+                rows="3"
+                placeholder="توضیحات خود را وارد کنید">
+                {{ old('description', $customer->description) }}
+              </textarea>
+              <x-core::show-validation-error name="description" />
+            </div>
+          </div>
 					<div class="col-12">
 						<div class="form-group">
 							<label for="label" class="control-label"> وضعیت: </label>

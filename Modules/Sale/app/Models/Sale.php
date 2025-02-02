@@ -2,12 +2,11 @@
 
 namespace Modules\Sale\Models;
 
-use Carbon\Carbon;
 use Hekmatinasser\Verta\Facades\Verta;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Modules\Core\Helpers\Helpers;
 use Modules\Core\Models\BaseModel;
 use Modules\Customer\Models\Customer;
 use Modules\Employee\Models\Employee;
@@ -44,13 +43,21 @@ class Sale extends BaseModel
       });
   }
 
-  public function getSoldAtMonthAttribute()  
-  {  
-      return Verta::instance($this->attributes['sold_at'])->month;   
-  }  
 
+  public function soldAtMonth(): Attribute
+  {
+    return Attribute::make(
+      get: fn($value) => Verta::instance($value)->month
+    );
+  }
 
-  // Functions
+  public function costOfSewing(): Attribute
+  {
+    return Attribute::make(
+      get: fn($value) => $value ?? 0
+    );
+  }
+
   public function getTotalAmount(): int
   {
     $totalPrice = 0;
@@ -68,9 +75,9 @@ class Sale extends BaseModel
 
   public function getTotalDiscountAttribute()
   {
-    $itemsDiscount = $this->items->sum(function ($item) {  
-      return $item->total_discount_amount;  
-    }); 
+    $itemsDiscount = $this->items->sum(function ($item) {
+      return $item->total_discount_amount;
+    });
 
     return (int)$itemsDiscount + (int)$this->attributes['discount'];
   }

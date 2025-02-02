@@ -26,6 +26,7 @@ class Customer extends Model
     'status',
     'birthday',
     'gender',
+    'description'
   ];
 
   public function getActivitylogOptions(): LogOptions

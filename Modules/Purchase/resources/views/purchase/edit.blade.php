@@ -79,7 +79,7 @@
   <script>
 
     const discountInput = $('#discount');
-    const totalItemsAmount = parseInt(@json($purchase->total_items_amount));
+    const totalItemsAmount = parseInt(@json($purchase->total_items_amount_with_discount));
 
     function calculateTotalAmount() {
       let discountAmount = discountInput.val() != null && discountInput.val().length > 0 ? parseInt(discountInput.val().replace(/,/g, '')) : 0;

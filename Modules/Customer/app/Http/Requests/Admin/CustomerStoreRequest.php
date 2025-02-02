@@ -3,9 +3,6 @@
 namespace Modules\Customer\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Modules\Core\Rules\IranMobile;
-use Modules\Customer\Models\Customer;
 
 class CustomerStoreRequest extends FormRequest
 {
@@ -21,7 +18,8 @@ class CustomerStoreRequest extends FormRequest
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
       'gender' => ['required', 'string', 'in:male,female'],
-      'birthday' => ['nullable', 'date']
+      'birthday' => ['nullable', 'date'],
+			'description' => ['nullable', 'string'],
 		];
 	}
 

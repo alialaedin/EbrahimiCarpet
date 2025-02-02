@@ -13,6 +13,8 @@
             @csrf
             @method('PUT')
 
+            <input hidden name="type" value="{{ $payment->type }}">
+
             <div class="row">
 
               @if($payment->type === 'cash')

@@ -77,6 +77,18 @@
     </x-slot>
   </x-core::card>
 
+  <x-core::card>
+    <x-slot name="cardTitle">توضیحات</x-slot>
+    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardBody">
+      <div class="row">
+        <div class="col-12">
+          <p>{{ $customer->description }}</p>
+        </div>
+      </div>
+    </x-slot>
+  </x-core::card>
+
   <x-customer::sale-statistics :customer="$customer"/>
 
   <x-core::card>

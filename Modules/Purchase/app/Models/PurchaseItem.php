@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Request;
 use Modules\Admin\Models\Admin;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Modules\Core\Helpers\Helpers;
+use Modules\Product\Models\Price;
 use Modules\Product\Models\Product;
 use Modules\Store\Models\Store;
 use Modules\Store\Services\StoreService;
@@ -94,6 +97,54 @@ class PurchaseItem extends Model
 	public function getTotalItemPrice()
 	{
 		return $this->getPriceWithDiscount() * $this->attributes['quantity'];
+	}
+
+	protected static function updateQuantityAndPrice(self $purchaseItem, Request $request) 
+	{
+		if ($request->quantity)
+			self::updateQuantity($purchaseItem, $request);
+		if ($request->price)
+			self::updatePrice($purchaseItem, $request->price);
+		
+		if ($request->discount) {
+			$purchaseItem->discount = $request->discount;
+			$purchaseItem->save();		
+		}
+	}
+
+	private static function updateQuantity($purchaseItem, $request)
+	{
+		$oldQuantity = $purchaseItem->quantity;
+		$newQuantity = $request->quantity;
+		
+		$product = $purchaseItem->product;
+		
+		$purchasedPrice = $request->price ?? $purchaseItem->price;
+		$diffQuantity = abs($newQuantity - $oldQuantity);
+
+		if ($newQuantity > $oldQuantity) {
+			StoreService::addProductToStore($product, $purchasedPrice, $diffQuantity);
+		}else {
+			StoreService::decrementStoreBalance($product, $diffQuantity);
+		}
+
+		$purchaseItem->quantity = $newQuantity;
+		$purchaseItem->save();
+	} 
+
+	private static function updatePrice($purchaseItem, $newPrice)
+	{
+		Price::query()
+			->where('product_id', $purchaseItem->product_id)
+			->where('buy_price', $purchaseItem->price)
+			->orderByDesc('id')
+			->first()
+			->update([
+				'buy_price' => $newPrice
+			]);
+
+		$purchaseItem->price = $newPrice;
+		$purchaseItem->save();
 	}
 
 }

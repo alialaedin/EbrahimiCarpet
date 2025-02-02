@@ -2,6 +2,7 @@
 
 namespace Modules\Purchase\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,20 +60,44 @@ class Purchase extends Model
     });
   }
 
-  // Functions
-  public function getTotalItemsAmountAttribute(): int
+  // getters
+  public function totalItemsAmountWithDiscount(): Attribute
   {
-    $totalPrice = 0;
-    foreach ($this->items as $item) {
-      $totalPrice += (($item->price - $item->discount) * $item->quantity);
-    }
-
-    return $totalPrice;
+    $this->loadItemsRelation();
+    return Attribute::make(
+      get: fn () => $this->items->sum(fn ($item) => $item->quantity * ($item->price - $item->discount))
+    );
   }
 
-  public function getTotalAmountAttribute(): int
+  public function totalItemsDiscountAmount(): Attribute
   {
-    return $this->total_items_amount - $this->attributes['discount'];
+    $this->loadItemsRelation();
+    return Attribute::make(
+      get: fn () => $this->items->sum(fn ($item) => $item->quantity * $item->discount)
+    );
+  }
+
+  public function totalItemsAmount(): Attribute
+  {
+    $this->loadItemsRelation();
+    return Attribute::make(
+      get: fn () => $this->items->sum(fn ($item) => $item->quantity * $item->price)
+    );
+  } 
+
+  public function totalAmount(): Attribute
+  {
+    $this->loadItemsRelation();
+    return Attribute::make(
+      get: fn () => $this->total_items_amount - $this->total_items_discount_amount - $this->attributes['discount']
+    );
+  }
+
+  private function loadItemsRelation()
+  {
+    if (!$this->relationLoaded('items')){
+      $this->load('items');
+    }
   }
 
   // Relations

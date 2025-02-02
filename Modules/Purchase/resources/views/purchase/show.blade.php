@@ -49,7 +49,7 @@
       <x-slot name="cardOptions"><x-core::card-options/></x-slot>
       <x-slot name="cardBody">
         <ul class="list-group">
-          <li class="list-group-item"><strong>قیمت کل خرید : </strong> {{ number_format($purchase->total_items_amount) }} ریال</li>
+          <li class="list-group-item"><strong>قیمت کل خرید : </strong> {{ number_format($purchase->total_items_amount_with_discount) }} ریال</li>
           <li class="list-group-item"><strong>تخفیف کل خرید : </strong> {{ number_format($purchase->discount) }} ریال</li>
           <li class="list-group-item"><strong>قیمت با تخفیف : </strong> {{ number_format($purchase->total_amount) }} ریال</li>
           <li class="list-group-item"><strong>تاریخ خرید : </strong> {{ verta($purchase->purchased_at)->format('Y/m/d') }} </li>
@@ -125,6 +125,9 @@
             <td>{{ number_format($item->getPriceWithDiscount()) }}</td>
             <td>{{ number_format($item->getTotalItemPrice()) }}</td>
             <td>
+              @can('edit purchase_items')
+                <x-core::edit-button target="#edit-item-modal-{{ $item->id }}"/>
+              @endcan
               @can('delete purchase_items')
                 <x-core::delete-button route="admin.purchase-items.destroy" :model="$item"/>
               @endcan
@@ -135,8 +138,101 @@
         @endforelse
       </x-slot>
     </x-core::table>
+
+    <div class="row mx-4 justify-content-center" style="margin-top: 50px">
+      <div class="col-12 col-xl-4">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                <b>مجموع تعداد کالا ها</b>
+                <span>{{ $purchase->items->sum('quantity') }}</span>
+              </div>
+              <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                <b>مجموع قیمت کالا ها</b>
+                <span>{{ number_format($purchase->total_items_amount) }} ریال</span>
+              </div>
+              <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                <b>مجموع تخفیف روی کالا ها</b>
+                <span>{{ number_format($purchase->total_items_discount_amount) }} ریال</span>
+              </div>
+              <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                <b>تخفیف روی سفارش</b>
+                <span>{{ number_format($purchase->discount) }} ریال</span>
+              </div>
+              <div class="col-12 my-1 d-flex justify-content-between align-items-center">
+                <b>جمع کل</b>
+                <span>{{ number_format($purchase->total_amount) }} ریال</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </x-slot>
 </x-core::card>
+
+@foreach ($purchase->items ?? [] as $item)
+  <div class="modal fade" id="edit-item-modal-{{ $item->id }}" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-content-demo">
+        <div class="modal-header">
+          <p class="modal-title" style="font-size: 20px;">ویرایش آیتم خرید</p>
+          <button aria-label="Close" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ route('admin.purchase-items.update', $item) }}" method="POST">
+
+            @csrf
+            @method('PUT')
+
+            <div class="row mb-4">
+              <div class="col-12">
+                <p class="text-center fs-14 text-gray-200 bg-warning py-2"">تمام اینپوت ها اختیاری هستند</p>
+              </div>
+            </div>
+
+            <x-core::table class="table-bordered">
+              <x-slot name="tableTh">
+                <tr>
+                  <th>ویژگی</th>
+                  <th>مقدار فعلی</th>
+                  <th>مقدار جدید</th>
+                </tr>
+              </x-slot>
+              <x-slot name="tableTd">
+                <tr>
+                  <td>تعداد</td>
+                  <td>{{ $item->quantity }}</td>
+                  <td><input type="number" class="form-control" name="quantity"></td>
+                </tr>
+                <tr>
+                  <td>قیمت</td>
+                  <td>{{ number_format($item->price) }} ریال</td>
+                  <td><input type="text" class="form-control comma" name="price"></td>   
+                </tr>
+                <tr>
+                  <td>تخفیف</td>
+                  <td>{{ number_format($item->discount) }} ریال</td>
+                  <td><input type="text" class="form-control comma" name="discount"></td>  
+                </tr>
+              </x-slot>
+            </x-core::table>
+
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center" style="gap: 8px">
+                <button class="btn btn-sm btn-warning" type="submit">بروزرسانی</button>
+                <button class="btn btn-sm btn-outline-danger" data-dismiss="modal">انصراف</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+@endforeach
 
 @include('purchase::includes._create-purchase-item-modal')
 

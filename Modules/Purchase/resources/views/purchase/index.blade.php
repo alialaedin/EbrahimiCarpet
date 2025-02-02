@@ -33,7 +33,7 @@
             <td class="font-weight-bold">{{ $loop->iteration }}</td>
             <td><a href="{{ route('admin.suppliers.show', $purchase->supplier) }}" target="_blank">{{ $purchase->supplier->name }}</a></td>
             <td>{{ $purchase->supplier->mobile }}</td>
-            <td>{{ number_format($purchase->total_items_amount) }}</td>
+            <td>{{ number_format($purchase->total_items_amount_with_discount) }}</td>
             <td>{{ number_format($purchase->discount) }}</td>
             <td>{{ number_format($purchase->total_amount) }}</td>
             <td> @jalaliDateFormat($purchase->purchased_at) </td>

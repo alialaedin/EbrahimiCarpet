@@ -9,8 +9,6 @@ use Modules\Product\Models\Product;
 use Modules\Purchase\Http\Requests\Admin\PurchaseItem\PurchaseItemStoreRequest;
 use Modules\Purchase\Http\Requests\Admin\PurchaseItem\PurchaseItemUpdateRequest;
 use Modules\Purchase\Models\PurchaseItem;
-use Modules\Store\Models\Store;
-use Modules\Store\Models\StoreTransaction;
 use Modules\Store\Services\StoreService;
 
 class PurchaseItemController extends Controller implements HasMiddleware
@@ -38,26 +36,11 @@ class PurchaseItemController extends Controller implements HasMiddleware
 
 	public function update(PurchaseItemUpdateRequest $request, PurchaseItem $purchaseItem)
 	{
-		$diff = $request->input('quantity') - $purchaseItem->quantity;
-
-		$purchaseItem->update($request->only(['quantity', 'price', 'discount']));
-
-		$store = $purchaseItem->product->store;
-		$store->balance += $diff;
-		$store->save();
-
-		$type = $diff < 0 ? 'decrement' : 'increment';
-		$quantity = abs($diff);
-
-    $purchaseItem->purchase->transactions()->create([
-      'store_id' => $store->id,
-      'type' => $type,
-      'quantity' => $quantity
-    ]);
-
+		$purchaseItem->load(['product.stores.price']);
+		PurchaseItem::updateQuantityAndPrice($purchaseItem, $request);
 		toastr()->success('آیتم مورد نظر با موفقیت بروزرسانی شد');
 
-		return redirect()->back();
+		return redirect()->back();	
 	}
 
 	public function destroy(PurchaseItem $purchaseItem)

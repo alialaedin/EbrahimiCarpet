@@ -76,9 +76,10 @@ class DashboardController extends Controller
     $endDate = Helpers::toGregorian(Verta::endMonth());
 
     $purchases = Purchase::query()
+      ->select(['id', 'discount', 'purchased_at'])
       ->when($time === 'today', fn($query) => $query->whereDate('purchased_at', today()))
       ->when($time === 'month', fn($query) => $query->whereBetween('purchased_at', [$startDate, $endDate]))
-      ->with('items')
+      ->with('items', fn ($q) => $q->select(['id', 'purchase_id', 'price', 'quantity', 'discount']))
       ->get();
 
     $amount = 0;
@@ -107,9 +108,10 @@ class DashboardController extends Controller
     $endDate = Helpers::toGregorian(Verta::endMonth());
 
     $sales = Sale::query()
+      ->select(['id', 'discount', 'sold_at', 'cost_of_sewing'])
       ->when($time == 'today', fn($q) => $q->whereDate('sold_at', today()))
       ->when($time == 'month', fn($q) => $q->whereBetween('sold_at', [$startDate, $endDate]))
-      ->with('items')
+      ->with('items', fn ($q) => $q->select(['id', 'sale_id', 'price', 'quantity', 'discount']))
       ->get();
 
     $amount = 0;
