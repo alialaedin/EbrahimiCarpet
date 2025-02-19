@@ -10,19 +10,20 @@ class CustomerUpdateRequest extends FormRequest
 {
 	public function rules(): array
 	{
+		$customerId = $this->route('customer')->id;
 		return [
 			'name' => ['required', 'string', 'min:3', 'max:50'],
 			'mobile' => [
         'required',
         'numeric',
-        Rule::unique('customers', 'mobile')->ignore($this->route('customer')),
+        Rule::unique('customers', 'mobile')->ignore($customerId),
         'digits:11',
         'starts_with:09'
       ],
-			'telephone' => ['nullable', Rule::unique('customers', 'telephone')->ignore($this->route('customer')->id)],
+			'telephone' => ['nullable', 'numeric', Rule::unique('customers', 'telephone')->ignore($customerId)],
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
-      'gender' => ['required', 'string', Rule::in(Customer::GENDER_MALE,Customer::GENDER_FEMALE)],
+      'gender' => ['required', 'string', Rule::in(Customer::getAvailableGenders())],
       'birthday' => ['nullable', 'date'],
       'description' => ['nullable', 'string'],
 		];

@@ -34,7 +34,7 @@ class SaleItem extends BaseModel
     return LogOptions::defaults()
       ->logAll()
       ->setDescriptionForEvent(function (string $eventName) {
-        return "آیتم فروش با کد $this->id برای فروش با کد {$this->sale->id} متعلق به {$this->sale->customer->name} را " . config('core.events.' . $eventName);
+        return "آیتم فروش با کد {$this->id} برای فروش با کد {$this->sale->id} متعلق به {$this->sale->customer->name} را " . config('core.events.' . $eventName);
       });
   }
 

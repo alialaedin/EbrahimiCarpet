@@ -2,10 +2,11 @@
 
 namespace Modules\Customer\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Exceptions\ModelCannotBeDeletedException;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Sale\Models\Sale;
 use Modules\Sale\Models\SalePayment;
 use Spatie\Activitylog\LogOptions;
@@ -13,7 +14,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Customer extends Model
 {
-  use HasFactory, LogsActivity;
+  use LogsActivity;
 
   public const GENDER_MALE = 'male';
   public const GENDER_FEMALE = 'female';
@@ -49,54 +50,94 @@ class Customer extends Model
     });
   }
 
-  public function getTotalSalesAmountAttribute()
+  public static function getAvailableGenders(): array
   {
-    return $this->sales->sum(function ($sale) {  
-      return $sale->total_amount;  
-    }); 
-  }
-
-  public function getTotalPaymentsAmountAttribute()
-  {
-    return $this->payments->sum('amount');
-  }
-
-  public function getPaidPaymentsAmountAttribute()
-  {
-    return $this->payments->filter(function ($payment) {
-      return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date <= $payment->payment_date;
-    })->sum('amount');
-  }
-
-  public function getUnpaidPaymentsAmountAttribute()
-  {
-    return $this->payments->filter(function ($payment) {
-      return $payment->status != 1 || (is_null($payment->payment_date));
-    })->sum('amount');
-  }
-
-  public function getRemainingAmountAttribute()
-  {
-    return $this->total_sales_amount - $this->total_payments_amount;
-  }
-
-  public function getAllPaymentsAmountAttribute()
-  {
-    $payments = $this->payments()->select(['id', 'type', 'amount']);
-
     return [
-      'cheque' => (clone $payments)->where('type', '=', SalePayment::TYPE_CHEQUE)->sum('amount'),
-      'cash' => (clone $payments)->where('type', '=', SalePayment::TYPE_CASH)->sum('amount'),
-      'installment' => (clone $payments)->where('type', '=', SalePayment::TYPE_INSTALLMENT)->sum('amount')
+      self::GENDER_MALE, 
+      self::GENDER_FEMALE
     ];
   }
 
-  public function countSales()
+  public static function getAllCustomers($columns = ['id', 'name', 'mobile']): Collection|array
+  {
+    return Customer::query()->select($columns)->get();
+  }
+
+  public function totalSalesAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->sales->sum(fn($sale) =>  $sale->total_amount)
+    );
+  }
+
+  public function totalPaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->payments->sum('amount')
+    );
+  }
+
+  public function paidPaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: function () {
+        return $this->payments->filter(function ($payment) {
+          return $payment->status == 1 && !is_null($payment->payment_date) && $payment->due_date <= $payment->payment_date;
+        })->sum('amount');
+      }
+    );
+  }
+
+  public function unpaidPaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: function () {
+        return $this->payments->filter(function ($payment) {
+          return $payment->status != 1 || (is_null($payment->payment_date));
+        })->sum('amount');
+      }
+    );
+  }
+
+  public function remainingAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn() => $this->total_sales_amount - $this->total_payments_amount
+    );
+  }
+
+  public function cashPaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn() => $this->getPaymentsAmountByType(SalePayment::TYPE_CASH)
+    );
+  }
+
+  public function chequePaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn() => $this->getPaymentsAmountByType(SalePayment::TYPE_CHEQUE)
+    );
+  }
+
+  public function installmentPaymentsAmount(): Attribute
+  {
+    return Attribute::make(
+      get: fn() => $this->getPaymentsAmountByType(SalePayment::TYPE_INSTALLMENT)
+    );
+  }
+
+  private function getPaymentsAmountByType($type): mixed
+  {
+    return $this->payments->where('type', $type)->sum('amount');
+  }
+  
+  public function countSales(): mixed
   {
     return $this->sales->count();
   }
 
-  public function countPayments()
+  public function countPayments(): mixed
   {
     return $this->payments->count();
   }
@@ -106,22 +147,6 @@ class Customer extends Model
     return $this->sales->isEmpty() && $this->payments->isEmpty();
   }
 
-  public function getStatusBadgeType(): string
-  {
-    return $this->attributes['status'] ? 'success' : 'danger';
-  }
-
-  public function getStatus(): string
-  {
-    return $this->attributes['status'] ? 'فعال' : 'غیر فعال';
-  }
-
-  public static function getAllCustomers(): \Illuminate\Database\Eloquent\Collection|array
-  {
-    return Customer::query()->select('id', 'name', 'mobile')->get();
-  }
-
-  // Relations
   public function sales(): HasMany
   {
     return $this->hasMany(Sale::class);

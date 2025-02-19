@@ -91,8 +91,8 @@
               <td>{{ verta($customer->birthday)->format("Y/m/d") }}</td>
               <td>
                 <x-core::badge
-                  type="{{ $customer->getStatusBadgeType() }}"
-                  text="{{ $customer->getStatus() }}"
+                  :type="$customer->status ? 'success' : 'danger'"
+                  :text="$customer->status ? 'فعال' : 'غیر فعال'"
                 />
               </td>
               <td>@jalaliDate($customer->created_at)</td>

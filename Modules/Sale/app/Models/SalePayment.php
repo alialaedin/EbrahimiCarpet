@@ -86,7 +86,7 @@ class SalePayment extends BaseModel
     $selectedColumns = self::MAIN_SELECTED_COLUMNS;
     array_push($selectedColumns, 'due_date');
     
-    return $query->select(self::MAIN_SELECTED_COLUMNS)->where('type', '=', self::TYPE_INSTALLMENT);
+    return $query->select($selectedColumns)->where('type', '=', self::TYPE_INSTALLMENT);
   }
 
   public function scopeCashes($query)

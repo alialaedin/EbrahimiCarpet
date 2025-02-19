@@ -22,17 +22,17 @@
   ])
   @include('admin::dashboard.includes.info-box', [
     'title' => 'پرداختی های نقدی (ریال)',
-    'amount' => number_format($customer->all_payments_amount['cash']),
+    'amount' => number_format($customer->cash_payments_amount),
     'color' => 'secondary',
   ])
   @include('admin::dashboard.includes.info-box', [
     'title' => 'پرداختی های چکی (ریال)',
-    'amount' => number_format($customer->all_payments_amount['cheque']),
+    'amount' => number_format($customer->cheque_payments_amount),
     'color' => 'danger',
   ])
   @include('admin::dashboard.includes.info-box', [
     'title' => 'پرداختی های قسطی (ریال)',
-    'amount' => number_format($customer->all_payments_amount['installment']),
+    'amount' => number_format($customer->installment_payments_amount),
     'color' => 'purple',
   ])
   @include('admin::dashboard.includes.info-box', [

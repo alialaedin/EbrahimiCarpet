@@ -3,6 +3,8 @@
 namespace Modules\Customer\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Customer\Models\Customer;
 
 class CustomerStoreRequest extends FormRequest
 {
@@ -17,7 +19,7 @@ class CustomerStoreRequest extends FormRequest
 			'telephone' => ['nullable', 'unique:customers,telephone'],
 			'address' => ['nullable', 'string'],
 			'status' => ['nullable', 'in:1'],
-      'gender' => ['required', 'string', 'in:male,female'],
+      'gender' => ['required', 'string', Rule::in(Customer::getAvailableGenders())],
       'birthday' => ['nullable', 'date'],
 			'description' => ['nullable', 'string'],
 		];
