@@ -224,6 +224,8 @@
         `);
 
         tr.find('.product-quantity').on('input', calculateTotalPrice);
+        tr.find('.product-price').on('input', calculateTotalPrice);
+        tr.find('.product-discount').on('input', calculateTotalPrice);
 
         // comma();
         tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
