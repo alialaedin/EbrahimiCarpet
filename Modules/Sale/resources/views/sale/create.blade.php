@@ -134,6 +134,7 @@
         headers: {'X-CSRF-TOKEN': token},
         success: function(response) {
           $(id + '-balance').val(response.balance);
+          $(id + '-balance-text').text(response.balance);
           $(id + '-price').val(response.price);
           $(id + '-discount').val(response.discount);
         }
@@ -208,9 +209,12 @@
                 @endforeach
               </select>
             </td>  
-            <td><input type="text" class="form-control text-center" name="products[${index + 1}][balance]" id="product-${index + 1}-balance" readonly></td>  
-            <td><input type="text" class="form-control text-center product-price" name="products[${index + 1}][price]" id="product-${index + 1}-price" readonly></td>  
-            <td><input type="text" class="form-control text-center product-discount" name="products[${index + 1}][discount]" readonly></td>  
+            <td>
+              <span id="product-${index + 1}-balance-text">-</span>
+              <input name="products[${index + 1}][balance]" id="product-${index + 1}-balance" hidden>
+            </td>  
+            <td><input type="text" class="form-control text-center product-price comma" name="products[${index + 1}][price]" id="product-${index + 1}-price"></td>  
+            <td><input type="text" class="form-control text-center product-discount comma" name="products[${index + 1}][discount]"></td>  
             <td><input type="number" step="0.01" class="form-control text-center product-quantity" name="products[${index + 1}][quantity]"></td>  
             <td>  
               <button type="button" class="positive-btn font-weight-bold btn btn-sm btn-icon btn-success ml-1">+</button>
@@ -221,9 +225,10 @@
 
         tr.find('.product-quantity').on('input', calculateTotalPrice);
 
-        comma();
+        // comma();
         tr.find('.product-select').select2({placeholder: 'محصول مورد نظر را انتخاب کنید'});
         productsTableBody.append(tr);
+        comma();
         tr.find('.negative-btn').click(function() {  
           $(this).closest('tr').remove(); 
           calculateTotalPrice();
