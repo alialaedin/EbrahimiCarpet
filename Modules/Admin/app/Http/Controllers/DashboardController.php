@@ -244,7 +244,7 @@ class DashboardController extends Controller
     return [
       ['title' => Payment::TYPE_INSTALLMENT, 'label' => 'قسط', 'count' => Payment::where('type', Payment::TYPE_INSTALLMENT)->count()],
       ['title' => Payment::TYPE_CASH, 'label' => 'نقد', 'count' => Payment::where('type', Payment::TYPE_CASH)->count()],
-      ['title' => Payment::TYPE_CHEQUE, 'label' => 'چک', 'count' => Payment::where('type', Payment::TYPE_INSTALLMENT)->count()],
+      ['title' => Payment::TYPE_CHEQUE, 'label' => 'چک', 'count' => Payment::where('type', Payment::TYPE_CHEQUE)->count()],
     ];
   }
 
@@ -253,7 +253,7 @@ class DashboardController extends Controller
     return [
       ['title' => SalePayment::TYPE_INSTALLMENT, 'label' => 'قسط', 'count' => SalePayment::where('type', SalePayment::TYPE_INSTALLMENT)->count()],
       ['title' => SalePayment::TYPE_CASH, 'label' => 'نقد', 'count' => SalePayment::where('type', SalePayment::TYPE_CASH)->count()],
-      ['title' => SalePayment::TYPE_CHEQUE, 'label' => 'چک', 'count' => SalePayment::where('type', SalePayment::TYPE_INSTALLMENT)->count()],
+      ['title' => SalePayment::TYPE_CHEQUE, 'label' => 'چک', 'count' => SalePayment::where('type', SalePayment::TYPE_CHEQUE)->count()],
     ];
   }
 }
