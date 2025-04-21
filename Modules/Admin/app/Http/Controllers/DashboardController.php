@@ -13,6 +13,7 @@ use Modules\Sale\Models\SaleItem;
 use Modules\Sale\Models\SalePayment;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Helpers\Helpers;
+use Modules\Customer\Models\Customer;
 
 class DashboardController extends Controller
 {
@@ -38,6 +39,11 @@ class DashboardController extends Controller
     $receivedInstallments = $this->getReceivedInstallments();
     $payableInstallments = $this->getPayableInstallments();
 
+    $customerGendersStatistics = $this->getCustomerGenders();
+    $ordersStatistics = $this->getOrdersStatistics();
+    $paymentsStatistics = $this->getPaymentsStatistics();
+    $salePaymentsStatistics = $this->getSalePaymentsStatistics();
+
     return view('admin::dashboard.index', compact([
 
       'todayPurchaseCount',
@@ -58,7 +64,13 @@ class DashboardController extends Controller
       'receivedCheques',
       'payableCheques',
       'receivedInstallments',
-      'payableInstallments'
+      'payableInstallments',
+
+      'customerGendersStatistics',
+      'ordersStatistics',
+      'paymentsStatistics',
+      'salePaymentsStatistics'
+
     ]));
   }
 
@@ -102,7 +114,7 @@ class DashboardController extends Controller
       })->count();
   }
 
-  private function getSaleAmount(string $time)
+  private function getSaleAmount(string $time): float|int
   {
     $startDate = Helpers::toGregorian(Verta::startMonth());
     $endDate = Helpers::toGregorian(Verta::endMonth());
@@ -209,5 +221,39 @@ class DashboardController extends Controller
     $payments = $payments->get();
 
     return $payments;
+  }
+
+  private function getCustomerGenders()
+  {
+    return [
+      ['title' => Customer::GENDER_MALE, 'label' => 'مرد', 'count' => Customer::where('gender', Customer::GENDER_MALE)->count()],   
+      ['title' => Customer::GENDER_FEMALE, 'label' => 'زن', 'count' => Customer::where('gender', Customer::GENDER_FEMALE)->count()],   
+    ];
+  }
+
+  private function getOrdersStatistics()
+  {
+    return [
+      ['title' => 'purchase', 'label' => 'خرید', 'count' => Purchase::count()],   
+      ['title' => 'sale', 'label' => 'فروش', 'count' => Sale::count()], 
+    ];
+  }
+
+  private function getPaymentsStatistics()
+  {
+    return [
+      ['title' => Payment::TYPE_INSTALLMENT, 'label' => 'قسط', 'count' => Payment::where('type', Payment::TYPE_INSTALLMENT)->count()],
+      ['title' => Payment::TYPE_CASH, 'label' => 'نقد', 'count' => Payment::where('type', Payment::TYPE_CASH)->count()],
+      ['title' => Payment::TYPE_CHEQUE, 'label' => 'چک', 'count' => Payment::where('type', Payment::TYPE_INSTALLMENT)->count()],
+    ];
+  }
+
+  private function getSalePaymentsStatistics()
+  {
+    return [
+      ['title' => SalePayment::TYPE_INSTALLMENT, 'label' => 'قسط', 'count' => SalePayment::where('type', SalePayment::TYPE_INSTALLMENT)->count()],
+      ['title' => SalePayment::TYPE_CASH, 'label' => 'نقد', 'count' => SalePayment::where('type', SalePayment::TYPE_CASH)->count()],
+      ['title' => SalePayment::TYPE_CHEQUE, 'label' => 'چک', 'count' => SalePayment::where('type', SalePayment::TYPE_INSTALLMENT)->count()],
+    ];
   }
 }
