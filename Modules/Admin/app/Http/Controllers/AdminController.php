@@ -115,7 +115,7 @@ class AdminController extends Controller implements HasMiddleware
 
 	public function activities()
 	{
-		$activities = Activity::latest('id')->paginate(50);
+		$activities = Activity::latest('id')->paginate(100);
 
 		return view('admin::activities', compact('activities'));
 	}
