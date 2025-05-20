@@ -12,6 +12,5 @@
     "Employee": true,
     "Sale": true,
     "Accounting": true,
-    "Report": true,
-    "Setting": true
+    "Report": true
 }
