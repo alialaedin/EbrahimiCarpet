@@ -20,7 +20,7 @@ trait BaseModelTrait
 		return $date->format('Y-m-d H:i:s');
 	}
 
-	public function scopePaginateOrAll($query, $perPage = self::$perPage, $columns = ['*'])
+	public function scopePaginateOrAll($query, $perPage = 50, $columns = ['*'])
 	{
 		$perPage = request('per_page', $perPage);
 
