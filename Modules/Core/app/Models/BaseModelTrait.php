@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait BaseModelTrait
 {
-	protected $perPage = 50;
 
 	/**
 	 * Prepare a date for array / JSON serialization.
