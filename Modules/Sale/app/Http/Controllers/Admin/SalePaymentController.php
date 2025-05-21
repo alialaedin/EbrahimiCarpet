@@ -3,9 +3,11 @@
 namespace Modules\Sale\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Flasher\Toastr\Laravel\Facade\Toastr;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
@@ -234,6 +236,24 @@ class SalePaymentController extends Controller implements HasMiddleware
       ->withQueryString();
 
     return $payments;
+  }
+
+  public function updateStatuses(Request $request)
+  {
+    $request->validate([
+      'ids' => 'required|array',
+      'ids.*' => 'required|integer|exists:sale_payments,id'
+    ]);
+
+    $attributes = [
+      'status' => 1,
+      'payment_date' => now()->format('Y-m-d H:i:s')
+    ];
+
+    SalePayment::whereIn('id', $request->ids)->where('status', 0)->update($attributes);
+    Toastr::success('وضعیت دریافتی های انتخاب شده با موفقیت تغییر کرد');
+
+    return redirect()->back();
   }
 
 }

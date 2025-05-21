@@ -5,6 +5,7 @@ use Modules\Payment\Http\Controllers\Admin\PaymentController;
 
 Route::middleware('auth')->prefix('/admin/payments')->name('admin.payments.')->group(function () {
 	
+	Route::patch('/update-statuses', [PaymentController::class, 'updateStatuses'])->name('update-statuses');
 	Route::get('/cheques', [PaymentController::class, 'cheques'])->name('cheques');
 	Route::get('/installments', [PaymentController::class, 'installments'])->name('installments');
 	Route::get('/cashes', [PaymentController::class, 'cashes'])->name('cashes');

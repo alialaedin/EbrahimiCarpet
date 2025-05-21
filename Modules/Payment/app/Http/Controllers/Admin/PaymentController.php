@@ -3,6 +3,7 @@
 namespace Modules\Payment\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Flasher\Toastr\Laravel\Facade\Toastr;
 use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -12,6 +13,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application as App;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Modules\Payment\Http\Requests\PaymentStoreRequest;
 use Modules\Payment\Http\Requests\PaymentUpdateRequest;
 use Modules\Payment\Models\Payment;
@@ -22,9 +24,9 @@ class PaymentController extends Controller implements HasMiddleware
   public static function middleware(): array
   {
     return [
-      new Middleware('can:view payments', ['index', 'cheques']),
+      new Middleware('can:view payments', ['index', 'show', 'cheques', 'installments', 'cashes']),
       new Middleware('can:create payments', ['create', 'store']),
-      new Middleware('can:edit payments', ['edit', 'update']),
+      new Middleware('can:edit payments', ['edit', 'update', 'updateStatuses']),
       new Middleware('can:delete payments', ['destroy', 'destroyImage']),
     ];
   }
@@ -210,6 +212,24 @@ class PaymentController extends Controller implements HasMiddleware
     $suppliers = Supplier::getAllSuppliers();
 
     return view('payment::cashes', compact('cashPayments', 'suppliers'));
+  }
+
+  public function updateStatuses(Request $request)
+  {
+    $request->validate([
+      'ids' => 'required|array',
+      'ids.*' => 'required|integer|exists:payments,id'
+    ]);
+
+    $attributes = [
+      'status' => 1,
+      'payment_date' => now()->format('Y-m-d H:i:s')
+    ];
+
+    Payment::whereIn('id', $request->ids)->where('status', 0)->update($attributes);
+    Toastr::success('وضعیت پرداختی های انتخاب شده با موفقیت تغییر کرد');
+
+    return redirect()->back();
   }
 
 }

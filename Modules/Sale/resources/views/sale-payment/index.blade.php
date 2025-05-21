@@ -93,11 +93,20 @@
 
   <x-core::card>
     <x-slot name="cardTitle">لیست تمام دریافتی ها ({{ $totalPayments }})</x-slot>
-    <x-slot name="cardOptions"><x-core::card-options/></x-slot>
+    <x-slot name="cardOptions">
+      <div id="operation-buttons-row" class="card-options" style="gap: 8px">
+        <button class="btn btn-sm btn-outline-success">تغییر وضعیت به پرداخت شده</button>
+        <form action="{{ route('admin.sale-payments.update-statuses') }}" class="d-none" method="POST">
+          @method('PATCH')
+          @csrf
+        </form>
+      </div>
+    </x-slot>
     <x-slot name="cardBody">
       <x-core::table>
         <x-slot name="tableTh">
           <tr>
+            <th>#</th>
             <th>ردیف</th>
             <th>مشتری</th>
             <th>مبلغ پرداختی (ریال)</th>
@@ -113,6 +122,7 @@
         <x-slot name="tableTd">
           @forelse ($payments as $payment)
             <tr>
+              <td><input type="checkbox" class="checkbox payment-change-status-checkbox" value="{{ $payment->id }}" /></td>
               <td class="font-weight-bold">{{ $loop->iteration }}</td>
               <td>
                 <a href="{{ route('admin.customers.show', $payment->customer->id) }}">{{ $payment->customer->name }}</a>
@@ -187,6 +197,53 @@
     new CustomSelect('#customer_id', 'انتخاب مشتری'); 
     new CustomSelect('#status', 'انتخاب وضعیت'); 
     new CustomSelect('#type', 'انتخاب نوع پرداخت'); 
+  </script>
+
+  <script>
+
+    function hideOperationButtonsRow() {
+      $('#operation-buttons-row').removeClass('d-flex');
+      $('#operation-buttons-row').addClass('d-none');
+    }
+
+    function showOperationButtonsRow() {
+      $('#operation-buttons-row').removeClass('d-none');
+      $('#operation-buttons-row').addClass('d-flex');
+    }
+
+    function handleShowingOperationButtons() {  
+      $('.payment-change-status-checkbox').each(function () {  
+        $(this).change(() => {
+          if ($('.payment-change-status-checkbox:checked').length > 0) {  
+            showOperationButtonsRow();  
+          }else {
+            hideOperationButtonsRow();
+          }
+        });  
+      });  
+    }  
+
+    function updateStatus() {
+      const changeStatusBtn = $('#operation-buttons-row button');
+      const changeStatusForm = $('#operation-buttons-row form');
+      changeStatusBtn.click(() => {
+        changeStatusBtn.prop('disabled', true);
+        let counter = 0;
+        $('.payment-change-status-checkbox:checked').each(function () {  
+          const paymentId = $(this).val();
+          const input = $(`<input hidden name="ids[${counter++}]" value="${paymentId}" />`);
+          changeStatusForm.append(input);
+        });  
+        changeStatusForm.submit();
+      });
+    }
+
+    $(document).ready(() => {
+      hideOperationButtonsRow();
+      handleShowingOperationButtons();
+      updateStatus();
+    });
+
   </script>
 
 @endsection

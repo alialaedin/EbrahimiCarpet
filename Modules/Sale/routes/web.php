@@ -19,6 +19,7 @@ Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
 
   Route::name('sale-payments.')->prefix('/sale-payments')->group(function() {
 
+    Route::patch('/update-statuses', [SalePaymentController::class, 'updateStatuses'])->name('update-statuses');
     Route::get('/cheques', [SalePaymentController::class, 'cheques'])->name('cheques');
     Route::get('/installments', [SalePaymentController::class, 'installments'])->name('installments');
     Route::get('/cashes', [SalePaymentController::class, 'cashes'])->name('cashes');
