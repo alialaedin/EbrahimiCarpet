@@ -73,7 +73,6 @@
               placeholder="کد ملی را وارد کنید"
               value="{{ old('national_code') }}"
               required
-              maxlength="10"
             />
             <x-core::show-validation-error name="national_code" />
           </div>
