@@ -4,7 +4,6 @@ namespace Modules\Payment\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rule;
 use Modules\Core\Helpers\Helpers;
 
 class PaymentUpdateRequest extends FormRequest
@@ -22,7 +21,7 @@ class PaymentUpdateRequest extends FormRequest
       'description' => ['nullable', 'string'],
       'amount' => ['required', 'integer', 'min:1000'],
       'payment_date' => ['nullable', 'date'],
-      'cheque_serial' => ['nullable', 'numeric', Rule::unique('payments', 'cheque_serial')->ignore($this->route('payment')->id)],
+      'cheque_serial' => ['nullable', 'numeric'],
       'cheque_holder' => ['nullable', 'string', 'min:5', 'max:90'],
       'bank_name' => ['nullable', 'string', 'min:3', 'max:90'],
       'pay_to' => ['nullable', 'string', 'min:3', 'max:90'],
