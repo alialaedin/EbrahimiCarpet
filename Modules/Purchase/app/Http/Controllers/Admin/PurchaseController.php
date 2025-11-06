@@ -140,7 +140,7 @@ class PurchaseController extends Controller implements HasMiddleware
 		return Category::query()
 			->select('id', 'parent_id', 'title')
 			->where('status', 1)
-			->with('products')
+			->with('products', fn($q) => $q->where('status', 1))
 			->get();
 	}
 
