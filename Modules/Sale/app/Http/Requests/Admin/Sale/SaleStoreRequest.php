@@ -27,7 +27,7 @@ class SaleStoreRequest extends FormRequest
     $this->merge([
       'discount' => $this->filled('discount') ? str_replace(',', '', $this->input('discount')) : null,
       'cost_of_sewing' => $this->filled('cost_of_sewing') ? str_replace(',', '', $this->input('cost_of_sewing')) : null,
-      'products' => $products
+      'products' => $products,
     ]);
 
   }
@@ -44,6 +44,7 @@ class SaleStoreRequest extends FormRequest
       'products' => ['required', 'array'],
       'products.*.id' => ['required', 'integer', 'exists:products,id'],
       'products.*.quantity' => ['required', 'decimal:2', 'min:0.01'],
+      'description' => ['nullable', 'string']
     ];
   }
 

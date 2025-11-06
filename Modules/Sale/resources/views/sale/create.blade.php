@@ -68,6 +68,13 @@
               <x-core::show-validation-error name="cost_of_sewing" />
             </div>
           </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="description" class="control-label"> توضیحات : </label>
+              <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+            </div>
+            <x-core::show-validation-error name="description" />
+          </div>
         </div>
         <div class="row mb-5">
           <div class="col-12 d-flex justify-content-center" style="border-radius: 10px;">

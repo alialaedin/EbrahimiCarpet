@@ -23,6 +23,7 @@ class SaleUpdateRequest extends FormRequest
       'cost_of_sewing' => ['nullable', 'integer', 'min:1000'],
       'employee_id' => ['required', 'integer', Rule::exists('employees', 'id')],
       'discount_for' => ['nullable', 'string'],
+      'description' => ['nullable', 'string']
     ];
   }
 

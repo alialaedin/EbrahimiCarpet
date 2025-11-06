@@ -26,7 +26,8 @@ class Sale extends BaseModel
     'employee_id',
     'discount_for',
     'total_sell_prices',
-    'total_buy_prices'
+    'total_buy_prices',
+    'description'
   ];
 
   protected $hidden = [
