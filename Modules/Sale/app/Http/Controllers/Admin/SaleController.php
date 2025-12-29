@@ -84,6 +84,7 @@ class SaleController extends Controller implements HasMiddleware
       'discount_for' => $request->discount_for,
       'cost_of_sewing' => $request->cost_of_sewing,
       'total_sell_prices' => $totalSellPrices,
+      'description' => $request->description,
       'total_buy_prices' => $totalBuyPrices
     ]);
 

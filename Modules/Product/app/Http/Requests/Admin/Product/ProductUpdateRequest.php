@@ -10,20 +10,20 @@ class ProductUpdateRequest extends FormRequest
 	protected function prepareForValidation(): void
 	{
 		$productDimensions = [];
-		
+
 		if ($this->filled('product_dimensions')) {
 			foreach ($this->input('product_dimensions') as $productDimension) {
-				
+
 				$balance = $productDimension['initial_balance'];
 				$purchasedPrice = $productDimension['purchased_price'];
-				
+
 				$hasInitialBalance = !is_null($balance);
 				$hasPurchasedPrice = !is_null($purchasedPrice) && $purchasedPrice > 0;
-				
+
 				if ($hasInitialBalance && !$hasPurchasedPrice) {
 					throw Helpers::makeWebValidationException('با وارد کردن موجودی اولیه باید حتما قیمت خرید را وارد کنید', 'initial_balance');
 				}
-				
+
 				$productDimensions[] = [
 					'sub_title' => $productDimension['dimensions'],
 					'price' => Helpers::removeComma($productDimension['price']),
@@ -45,6 +45,7 @@ class ProductUpdateRequest extends FormRequest
 	{
 		return [
 			'title' => ['required', 'string', 'min:3', 'max:100'],
+			'sub_title' => ['nullable', 'string', 'min:3', 'max:100'],
 			'print_title' => ['required', 'string', 'min:3', 'max:100'],
 			'category_id' => ['required', 'integer', 'exists:categories,id'],
 			'price' => ['required', 'integer', 'min:1000'],

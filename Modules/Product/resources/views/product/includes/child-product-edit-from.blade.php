@@ -21,6 +21,14 @@
 
               <div class="col-12">
                 <div class="form-group">
+                  <label> عنوان ابعاد: <span class="text-danger">&starf;</span></label>
+                  <input type="text" class="form-control" name="sub_title" value="{{ $childProduct->sub_title }}">
+                  <x-core::show-validation-error name="sub_title" />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-group">
                   <label> قیمت (ریال): <span class="text-danger">&starf;</span></label>
                   <input type="text" class="form-control comma" name="price" value="{{ old('price', number_format($childProduct->price)) }}">
                   <x-core::show-validation-error name="price" />

@@ -146,6 +146,7 @@ class ProductController extends Controller implements HasMiddleware
   {
     return [
       'title' => $request->input('title'),
+      'sub_title' => $request->input('sub_title'),
       'print_title' => $request->input('print_title'),
       'category_id' => $request->input('category_id'),
       'price' => $request->input('price'),
