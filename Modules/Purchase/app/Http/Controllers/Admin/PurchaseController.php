@@ -77,7 +77,7 @@ class PurchaseController extends Controller implements HasMiddleware
 				'price' => $product['price']
 			]);
 
-      StoreService::addProductToStore($thisProduct, $product['price'], $product['quantity']);
+      // StoreService::addProductToStore($thisProduct, $product['price'], $product['quantity']);
 
 //      $purchase->transactions()->create([
 //        'store_id' => $thisProduct->store->id,
