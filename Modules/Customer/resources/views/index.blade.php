@@ -75,7 +75,7 @@
             <th>نام و نام خانوادگی</th>
             <th>جنسیت</th>
             <th>شماره موبایل</th>
-            <th>تاریخ تولد</th>
+            <th>آدرس</th>
             <th>وضعیت</th>
             <th>تاریخ ثبت</th>
             <th>عملیات</th>
@@ -88,7 +88,7 @@
               <td>{{ $customer->name }}</td>
               <td>{{ config('customer.genders.'.$customer->gender) }}</td>
               <td>{{ $customer->mobile }}</td>
-              <td>{{ verta($customer->birthday)->format("Y/m/d") }}</td>
+              <td>{{ $customer->address ?? '-' }}</td>
               <td>
                 <x-core::badge
                   :type="$customer->status ? 'success' : 'danger'"

@@ -31,7 +31,7 @@ class CustomerController extends Controller implements HasMiddleware
 		$status = request('status');
 
 		$customers = Customer::query()
-			->select('id', 'name', 'mobile', 'telephone', 'status', 'gender', 'birthday', 'created_at')
+			->select('id', 'name', 'mobile', 'telephone', 'status', 'gender', 'address', 'created_at')
 			->when($fullName, fn (Builder $query) => $query->where('name', 'like', "%{$fullName}%"))
 			->when($telephone, fn (Builder $query) => $query->where('telephone', $telephone))
 			->when($mobile, fn (Builder $query) => $query->where('mobile', $mobile))

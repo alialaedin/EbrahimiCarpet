@@ -162,6 +162,10 @@
               <li class="fs-16"><strong>مهر و امضای مدیر :</strong></li>
             </ul>
           </div>
+
+          <div class="col-12 mt-3">
+            {{ $sale->description }}
+          </div>
         </div>
 
       </div>
